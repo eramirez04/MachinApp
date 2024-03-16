@@ -1,7 +1,6 @@
 import Express from "express"
 import bodyParser from "body-parser"
 
-
 const serve = Express()
 const port = 3000
 
