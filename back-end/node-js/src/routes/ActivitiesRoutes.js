@@ -1,16 +1,16 @@
 import { Router } from "express"; 
 
-import {listarUsuarios, registrarUsuarios,eliminarUsuarios,actualizarUsuarios} from "../controllers/activitiesController.js";
+import {listarActividades, registrarActividades,eliminarActividades,actualizarActividades} from "../controllers/activitiesController.js";
 
 const ActivitiesRoutes = Router()
 
 
-ActivitiesRoutes.get('/listar', listarUsuarios )
+ActivitiesRoutes.get('/listar', listarActividades )
 
-ActivitiesRoutes.post('/registrar', registrarUsuarios)
+ActivitiesRoutes.post('/registrar', registrarActividades)
 
-ActivitiesRoutes.delete('/eliminar/:idActividades', eliminarUsuarios)
-ActivitiesRoutes.put('/actualizar/:id_actividades', actualizarUsuarios)
+ActivitiesRoutes.delete('/eliminar/:idActividades', eliminarActividades)
+ActivitiesRoutes.put('/actualizar/:id_actividades', actualizarActividades)
 
 
 

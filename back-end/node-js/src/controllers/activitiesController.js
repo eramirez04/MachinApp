@@ -2,7 +2,7 @@ import {conexion} from "../database/database.js"   // importamos lo que tenemos 
 
 
 
-export const listarUsuarios= async (req,res)=>{     
+export const listarActividades= async (req,res)=>{     
     
     try{
        
@@ -21,7 +21,7 @@ export const listarUsuarios= async (req,res)=>{
 
 }
 
-export const registrarUsuarios= async (req,res)=>{
+export const registrarActividades= async (req,res)=>{
     try {
         let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento,}=req.body
 
@@ -40,7 +40,7 @@ export const registrarUsuarios= async (req,res)=>{
     }
   
 }
-export const eliminarUsuarios= async (req,res)=>{
+export const eliminarActividades= async (req,res)=>{
     try {
         let idActividades=req.params.idActividades
 
@@ -60,7 +60,7 @@ export const eliminarUsuarios= async (req,res)=>{
   
 }
 
-export const actualizarUsuarios= async (req,res)=>{
+export const actualizarActividades= async (req,res)=>{
     try {
         
         let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento}=req.body
