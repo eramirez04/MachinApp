@@ -72,7 +72,6 @@ export const listarMantenimientoPorFechaProxima = async (req, res) => {
 export const registrarMantenimiento = async (req, res) => {
     try {
         let {
-            idMantenimiento,
             mant_codigo_mantenimiento,
             mant_fecha_realizacion,
             mant_fecha_proxima,
@@ -81,8 +80,8 @@ export const registrarMantenimiento = async (req, res) => {
             mant_descripcion
         } = req.body;
 
-        let sql = `INSERT INTO mantenimiento (idMantenimiento,mant_codigo_mantenimiento, mant_fecha_realizacion, mant_fecha_proxima, mant_fk_fichas, fk_tipo_mantenimiento, mant_descripcion)
-        values('${idMantenimiento}' ,'${mant_codigo_mantenimiento}', '${mant_fecha_realizacion}', '${mant_fecha_proxima}', '${mant_fk_fichas}', '${fk_tipo_mantenimiento}', '${mant_descripcion}')`;
+        let sql = `INSERT INTO mantenimiento (mant_codigo_mantenimiento, mant_fecha_realizacion, mant_fecha_proxima, mant_fk_fichas, fk_tipo_mantenimiento, mant_descripcion)
+        values('${mant_codigo_mantenimiento}', '${mant_fecha_realizacion}', '${mant_fecha_proxima}', '${mant_fk_fichas}', '${fk_tipo_mantenimiento}', '${mant_descripcion}')`;
         
         const [respuesta] = await conexion.query(sql);
 
