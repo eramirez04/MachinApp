@@ -8,7 +8,7 @@ export const listarSede = async (req, res) => {
 
         if (result.length > 0) res.status(200).json(result)
 
-        else res.status(404).json({ "message" : "No se encontraron sedes en la BD" })
+        else res.status(404).json({ "message" : "No se encontraron sedes en la Base de Datos" })
     }
     catch (error) {
         res.status(500).json({ "message" : "Error", error })
