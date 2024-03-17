@@ -17,10 +17,10 @@ export const listarTipoMantenimiento=async(req,res) =>{
 /* funcional */
 export const registrarTipoMantenimiento = async(req, res) =>{
     try{
-    let {idTipo_mantenimiento, tipo_mantenimiento} = req.body;
+    let { tipo_mantenimiento} = req.body;
 
-    let sql =`INSERT INTO tipo_mantenimiento (idTipo_mantenimiento, tipo_mantenimiento)
-                Values('${idTipo_mantenimiento}', '${tipo_mantenimiento}')`
+    let sql =`INSERT INTO tipo_mantenimiento (tipo_mantenimiento)
+                Values('${tipo_mantenimiento}')`
 
     const [respuesta] = await conexion.query(sql);
     if (respuesta.affectedRows > 0){
