@@ -1,0 +1,15 @@
+import rutaTipoFicha from "./src/routes/TipoFichaRoutes.js"
+import rutaFicha from "./src/routes/FichaRoutes.js"
+import rutaVariable from "./src/routes/VariableRoutes.js"
+import rutaDetalle from "./src/routes/DetalleRoutes.js"
+
+
+
+
+
+
+
+serve.use('/tipoFicha', rutaTipoFicha)
+serve.use('/ficha', rutaFicha)
+serve.use('/variable',rutaVariable)
+serve.use('/detalle',rutaDetalle)

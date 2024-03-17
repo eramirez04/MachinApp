@@ -4,8 +4,8 @@ import {registrarDetalle,  listarDetalle, actualizarDetalle, eliminarDetalle} fr
 
 const rutaDetalle = Router()
 
-rutaDetalle.get('/registrar', registrarDetalle)
-rutaDetalle.post('/listar', listarDetalle)
+rutaDetalle.post('/registrar', registrarDetalle)
+rutaDetalle.get('/listar', listarDetalle)
 rutaDetalle.put('/actualizar/:idDetalle', actualizarDetalle)
 rutaDetalle.delete('/eliminar/:idDetalle', eliminarDetalle)
 
