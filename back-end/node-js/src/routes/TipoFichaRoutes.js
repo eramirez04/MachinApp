@@ -4,8 +4,8 @@ import {registrarTipoFicha, listarTipoFicha, actualizarTipoFicha, eliminarTipoFi
 
 const rutaTipoFicha = Router()
 
-rutaTipoFicha.get('/registrar', registrarTipoFicha )
-rutaTipoFicha.post('/listar', listarTipoFicha )
+rutaTipoFicha.post('/registrar', registrarTipoFicha )
+rutaTipoFicha.get('/listar', listarTipoFicha )
 rutaTipoFicha.put('/actualizar/:idTipoFicha',actualizarTipoFicha)
 rutaTipoFicha.delete('/eliminar/:idTipoFicha', eliminarTipoFicha)
 

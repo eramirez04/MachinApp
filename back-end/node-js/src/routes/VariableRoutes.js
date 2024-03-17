@@ -5,8 +5,8 @@ import{registrarVariable, actualizarVariable, listarVariable, eliminarVariable} 
 
 const rutaVariable = Router()
 
-rutaVariable.get('/registrar',registrarVariable)
-rutaVariable.post('/listar', listarVariable)
+rutaVariable.post('/registrar',registrarVariable)
+rutaVariable.get('/listar', listarVariable)
 rutaVariable.put('/actualizar/:idVariable', actualizarVariable)
 rutaVariable.delete('/eliminar/:idVariable', eliminarVariable)
 
