@@ -40,7 +40,7 @@ export const eliminarSede = async (req, res) => {
     try {
         let idSedes = req.params.id_sede
 
-        let sql = `delete from sedes where idSedes = ${idSedes}`
+        let sql = `delete from sedes where idSede = ${idSedes}`
 
         const [respuesta] = await conexion.query(sql)
 
@@ -62,7 +62,7 @@ export const editarSede = async (req, res) => {
 
         let id = req.params.id_sede
 
-        let sql = `update sedes set sede_nombre = '${sede_nombre}', sede_descripcion = '${sede_descripcion}', sede_direccion = '${sede_direccion}', sede_fk_centros = '${sede_fk_centros}' where idSedes = ${id}`
+        let sql = `update sedes set sede_nombre = '${sede_nombre}', sede_descripcion = '${sede_descripcion}', sede_direccion = '${sede_direccion}', sede_fk_centros = '${sede_fk_centros}' where idSede = ${id}`
 
         const [respuesta] = await conexion.query(sql)
 
