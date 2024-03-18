@@ -58,11 +58,11 @@ export const eliminarArea = async (req, res) => {
 
 export const editarArea = async (req, res) => {
     try {
-        let {area_nombre, area_fk_sedes} = req.body
+        let {area_nombre} = req.body
 
         let id = req.params.id_area
 
-        let sql = `update areas set area_nombre = '${area_nombre}', area_fk_sedes = '${area_fk_sedes}' where idArea = ${id}`
+        let sql = `update areas set area_nombre = '${area_nombre}' where idArea = ${id}`
 
         const [respuesta] = await conexion.query(sql)
 
