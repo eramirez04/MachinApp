@@ -1,5 +1,4 @@
-import { Conexion } from "../database/database.js";
-
+import { conexion } from "../database/database"
 export const Store = async (req, res) => {
   try {
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
@@ -10,7 +9,7 @@ export const Store = async (req, res) => {
      ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${contrasenia}','${especialidad}','${empresa}'
      )
     `
-    const [resultadoUser] = await Conexion.query(sql)
+    const [resultadoUser] = await conexion.query(sql)
 
     if (resultadoUser.affectedRows > 0) {
       res.status(200).json({
@@ -34,7 +33,7 @@ export const ListarUsuarios = async (req, res) => {
   try {
     let sql = "SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles"
 
-    const [resultadoUser] = await Conexion.query(sql)
+    const [resultadoUser] = await conexion.query(sql)
 
     if (resultadoUser.length > 0) {
       res.status(200).json({
@@ -62,7 +61,7 @@ export const actualizarUsuario = async (req, res) => {
     us_numero_documento= '${numero_documento}', us_tipo_documento= '${tipo_documento}', us_contrasenia= '${contrasenia}',
     us_especialidad= '${especialidad}', us_empresa = '${empresa}' where idUsuarios = '${id}' 
     `
-    const [reActualizar] = await Conexion.query(sql)
+    const [reActualizar] = await conexion.query(sql)
 
     if (reActualizar.affectedRows > 0) {
       res.status(200).json({
@@ -86,7 +85,7 @@ export const EliminarUsuario = async (req, res) => {
     let sqlDelete = `delete from usuarios where idUsuarios = ${id}`
     console.log(sqlDelete)
 
-    const [eliminarUs] = await Conexion.query(sqlDelete)
+    const [eliminarUs] = await conexion.query(sqlDelete)
     if (eliminarUs.affectedRows > 0) {
       res.status(200).json({
         "Mensaje": "Usuario Eliminado",
@@ -107,7 +106,7 @@ export const ListarUsuarioId = async (req, res) => {
     let id = req.params.id
     let sqlListarId = `SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ${id} `
 
-    const [resultado] = await Conexion.query(sqlListarId)
+    const [resultado] = await conexion.query(sqlListarId)
     if (resultado.length > 0) {
       res.status(200).json(resultado)
     } else {
@@ -126,7 +125,7 @@ export const ListarTecnicos = async (req, res) => {
     let sqlListarIdT = `
     SELECT idUsuarios,us_nombre, rol_nombre FROM usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'tecnico'`
 
-    const [resultado] = await Conexion.query(sqlListarIdT)
+    const [resultado] = await conexion.query(sqlListarIdT)
     if (resultado.length > 0) {
       res.status(200).json(resultado)
     } else {

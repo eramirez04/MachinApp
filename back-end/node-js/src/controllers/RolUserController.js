@@ -1,4 +1,4 @@
-import { Conexion } from "../database/database.js";
+import { conexion } from "../database/database"
 
 export const RegistraRol = async (req, res) => {
 
@@ -6,7 +6,7 @@ export const RegistraRol = async (req, res) => {
     const { nombre, descripcion } = req.body
 
     let sqlRol = `insert into roles (rol_nombre,rol_descripcion) values('${nombre}','${descripcion}')`
-    const [resultado] = await Conexion.query(sqlRol)
+    const [resultado] = await conexion.query(sqlRol)
 
     if (resultado.affectedRows > 0) {
       res.status(200).json({ 'mensaje': resultado })
@@ -22,7 +22,7 @@ export const RegistraRol = async (req, res) => {
 const listarRoles = async (req, res) => {
   try {
     let sqlListar = 'select * from roles'
-    const [rolesResultado] = await Conexion.query(sqlListar)
+    const [rolesResultado] = await conexion.query(sqlListar)
     res.status = 200
     res.json({
       "Mensaje": "se ",
@@ -39,7 +39,7 @@ export const eliminarRol = async (req, res) => {
 
     let sqlEliminar = `delete from roles where idRoles = '${idRol}'`
 
-    const [resultadoEl] = await Conexion.query(sqlEliminar)
+    const [resultadoEl] = await conexion.query(sqlEliminar)
 
     if (resultadoEl.affectedRows > 0) {
       return res.status(200).json({
@@ -65,7 +65,7 @@ export const actualizarRol = async (req, res) => {
     const { nombre, descripcion } = req.body
     let sql = `update roles set rol_nombre = '${nombre}', rol_descripcion = '${descripcion}' where idRoles = '${id}'`
 
-    const [resultado] = await Conexion.query(sql)
+    const [resultado] = await conexion.query(sql)
 
     if (resultado.affectedRows > 0) {
       res.status(200).json({
@@ -83,7 +83,7 @@ export const listarRolId = async (req, res) => {
   try {
     let id = req.params.id
     let sql = 'select * from roles where idRoles =' + id
-    const [rolId] = await Conexion.query(sql)
+    const [rolId] = await conexion.query(sql)
     if (rolId.length > 0) {
       res.status = 200
       res.json({
