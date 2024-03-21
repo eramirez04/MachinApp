@@ -1,4 +1,4 @@
-import { conexion } from "../database/database"
+import { conexion } from "../database/database.js"
 export const Store = async (req, res) => {
   try {
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
@@ -13,8 +13,7 @@ export const Store = async (req, res) => {
 
     if (resultadoUser.affectedRows > 0) {
       res.status(200).json({
-        "Mensaje": "Registro de usuario exitoso",
-        resultadoUser
+        "Mensaje": "Registro de usuario exitoso"
       })
     } else {
       return res.status(404).json({
@@ -23,7 +22,7 @@ export const Store = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      "Mensaje": "n", error
+      "Mensaje": "Error en el servidor, " + error
     })
   }
 }
