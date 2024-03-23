@@ -1,4 +1,4 @@
-import { conexion } from "../database/database"
+import { conexion } from "../database/database.js"
 export const Store = async (req, res) => {
   try {
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body

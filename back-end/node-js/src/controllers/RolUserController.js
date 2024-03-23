@@ -1,4 +1,4 @@
-import { conexion } from "../database/database"
+import { conexion } from "../database/database.js"
 
 export const RegistraRol = async (req, res) => {
 
