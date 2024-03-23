@@ -15,11 +15,3 @@ serve.get('/', (req,res) =>{
 serve.listen(port,()=>{
   console.log(`servidor escuchando en el http://localhost:${port}`)
 })
-
-
-
-
-
-
-
-
