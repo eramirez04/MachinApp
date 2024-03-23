@@ -7,6 +7,10 @@ mantenimiento.get('/listar',listarMantenimiento);
 /* lista por ID y activdades*/
 mantenimiento.get('/listar/:idMantenimiento', listarMantenimientoPorId_actividades);
 
+/* esta era el espacio donde hiba listar por proxima fecha */
+
+
+
 /* lista por ID */
 mantenimiento.get('/listarPorIdMantenimiento/:idMantenimiento', listarMantenimientoPorId);
 
