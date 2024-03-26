@@ -18,6 +18,10 @@ import rutaTipoSitio from "./src/routes/tipo_sitioRouter.js"
 const serve = Express()
 const port = 3000
 
+import cors from 'cors'
+
+serve.use(cors())
+
 serve.use(bodyParser.json())
 serve.use(bodyParser.urlencoded({extended : false}))
 
