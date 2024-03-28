@@ -14,10 +14,11 @@ export const RegistraRol = async (req, res) => {
         res.status(404).json({ 'Mensaje': 'Usuario no registrado' })
       }
     } else {
-      return res.status(400).json({ "Mensaje": "Campos Vacios" })
+      res.status = 404
+      res.json({ 'Mensaje': 'Usuario no registrado' })
     }
   } catch (error) {
-    return res.status(500).json({ 'Mensaje': error })
+    return res.status(500).json({ 'Mensaje': error.menssage })
   }
 }
 
@@ -56,7 +57,7 @@ export const eliminarRol = async (req, res) => {
   } catch (e) {
     res.status = 500
     res.json({
-      "Mensaje": e.menssage
+      "Mensaje": e.message
     })
   }
 }
