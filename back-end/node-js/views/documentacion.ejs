@@ -652,6 +652,65 @@
           </tbody>
         </table>
       </section>
+      <!-- kevin 5 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R5</span>listar fecha de proximo mantenimineto</span>
+          <span class="descripcion_requerimiento">
+            Cuando el usuario entre en la plataforma en la página principal encontrará un calendario donde se encontrarán las fechas de los próximos mantenimientos, al dar clic en dichas fechas con mantenimientos activos, el usuario podrá entrar a una página en donde encontrará información general de las máquinas agendadas para dicha fecha
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF05</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/listarRequerimiento</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                    'muestra los datos'
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron los requerimientos completos en la base de datos." }
+                } <br>
+                error : {
+                    { "message": "Error en el controlador mantenimientoController.js: " + err }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   </div>
 </body>
