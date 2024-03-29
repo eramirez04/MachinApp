@@ -72,7 +72,7 @@ export const actualizarActividades= async (req,res)=>{
         const[respuesta]=await conexion.query(sql);
     
         if(respuesta.affectedRows>0){
-            return res.status(200).json({"menssage":"se registro con exito"});
+            return res.status(200).json({"menssage":"se actualizo con exito"});
         }else{
             return res.status(404).json({"menssage":"No se actualizo"})
         } 

@@ -107,6 +107,9 @@ td {
 .put {
   background-color: #ff9800;
 }
+.delete {
+  background-color: #ff0e43;
+}
 
 @media screen and (max-width: 767px) {
   body {
