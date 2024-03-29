@@ -169,7 +169,6 @@ export const actualizarMantenimiento = async(req, res) =>{
         return res.status(500).json({"menssage":"error" + e});
     }
 }
-
 /* requerimiento 5 */
 export const listarRequerimiento5 = async (req, res) => {
     try {
