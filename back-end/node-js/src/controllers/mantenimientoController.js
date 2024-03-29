@@ -91,7 +91,7 @@ export const listarMantenimientoPorId = async (req, res) => {
 };
 
 
-/* funcional*/
+/* funcional */
 export const registrarMantenimiento = async (req, res) => {
     try {
         let {
@@ -169,6 +169,7 @@ export const listarRequerimiento17 = async (req, res) => {
         } else {
             res.status(404).json({ "message": "No se encontraron la fecha de realizacion deese mantenimiento en la base de datos" });
         }
+        
     } catch (err) {
         res.status(500).json({ "message": "Error en el controlador listarRequerimiento17: " + err.message });
     }

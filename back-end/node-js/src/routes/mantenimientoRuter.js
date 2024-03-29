@@ -9,11 +9,11 @@ mantenimiento.get('/listar/:idMantenimiento', listarMantenimientoPorId_actividad
 
 /* esta era el espacio donde hiba listar por proxima fecha */
 
-/* listar es el requerimiento 17 */
-mantenimiento.get('/listarRequerimiento17/:fecha_realizacion', listarRequerimiento17);
+
 
 /* lista por ID */
 mantenimiento.get('/listarPorIdMantenimiento/:idMantenimiento', listarMantenimientoPorId);
+
 /* registrar */
 mantenimiento.post('/registrar',registrarMantenimiento);
 /* eliminar */
@@ -24,5 +24,7 @@ mantenimiento.put('/actualizar/:id_mantenimiento',actualizarMantenimiento);
 /* requerimineto 5*/
 mantenimiento.get('/listarRequerimiento/', listarRequerimiento5);
 
+/* listar es el requerimiento 17 */
+mantenimiento.get('/listarRequerimiento17/:fecha_realizacion', listarRequerimiento17);
 
 export default mantenimiento
