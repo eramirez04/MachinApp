@@ -53,7 +53,7 @@ export const listarMantenimiento = async (req, res) => {
         res.status(500).json({ "message": "Error en el controlador mantenimientoController.js: " + err });
     }
 };
-/* listar por actividades*/
+
 export const listarMantenimientoPorId_actividades = async (req, res) => {
     try {
         const { idMantenimiento } = req.params;
