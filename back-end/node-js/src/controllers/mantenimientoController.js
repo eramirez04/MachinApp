@@ -118,63 +118,6 @@ export const registrarMantenimiento = async (req, res) => {
     }
 }
 
-/* requerimiento 17 */
-export const listarRequerimiento17 = async (req, res) => {
-    try {
-        let objeto = {};
-        let ayudante = '';
-
-        /* obtiene la fecha de realizacion*/
-        const { fecha_realizacion } = req.params;
-
-        
-        let sql = `
-            SELECT
-                fichas.fi_placa_sena AS referencia_maquina,
-                mantenimiento.mant_codigo_mantenimiento,
-                mantenimiento.mant_descripcion,
-                mantenimiento.mant_fecha_realizacion,
-                actividades.acti_estado
-            FROM
-                mantenimiento
-            LEFT JOIN
-                fichas ON mantenimiento.mant_fk_fichas = fichas.idFichas
-            LEFT JOIN
-                actividades ON actividades.fk_mantenimiento = mantenimiento.idMantenimiento
-            WHERE 
-                mantenimiento.mant_fecha_realizacion = '${fecha_realizacion}'
-        `;
-        const [result] = await conexion.query(sql);
-
-        let array = [];
-
-        for (let i = 0; i < result.length; i++) {
-            ayudante = result[i];
-
-            /* crear un objeto para almacenar la informacion */
-            objeto = {
-                referencia_maquina: ayudante.referencia_maquina,
-                codigo_mantenimiento: ayudante.mant_codigo_mantenimiento,
-                descripcion_mantenimiento: ayudante.mant_descripcion,
-                fecha_realizacion: ayudante.mant_fecha_realizacion,
-                estado_maquina: ayudante.acti_estado
-            };
-
-            array.push(objeto);
-        }
-
-        /* verificar si se encontraron requerimientos de mantenimiento */
-        if (array.length > 0) {
-            res.status(200).json(array);
-        } else {
-            res.status(404).json({ "message": "No se encontraron la fecha de realizacion deese mantenimiento en la base de datos" });
-        }
-        
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarRequerimiento17: " + err.message });
-    }
-};
-
 /* funcional */
 export const eliminarMantenimiento = async(req, res) =>{
     try{
@@ -257,5 +200,62 @@ export const listarRequerimiento5 = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({ "message": "Error en el controlador listarRequerimiento5: " + err.message });
+    }
+};
+
+/* requerimiento 17 */
+export const listarRequerimiento17 = async (req, res) => {
+    try {
+        let objeto = {};
+        let ayudante = '';
+
+        /* obtiene la fecha de realizacion*/
+        const { fecha_realizacion } = req.params;
+
+        
+        let sql = `
+            SELECT
+                fichas.fi_placa_sena AS referencia_maquina,
+                mantenimiento.mant_codigo_mantenimiento,
+                mantenimiento.mant_descripcion,
+                mantenimiento.mant_fecha_realizacion,
+                actividades.acti_estado
+            FROM
+                mantenimiento
+            LEFT JOIN
+                fichas ON mantenimiento.mant_fk_fichas = fichas.idFichas
+            LEFT JOIN
+                actividades ON actividades.fk_mantenimiento = mantenimiento.idMantenimiento
+            WHERE 
+                mantenimiento.mant_fecha_realizacion = '${fecha_realizacion}'
+        `;
+        const [result] = await conexion.query(sql);
+
+        let array = [];
+
+        for (let i = 0; i < result.length; i++) {
+            ayudante = result[i];
+
+            /* crear un objeto para almacenar la informacion */
+            objeto = {
+                referencia_maquina: ayudante.referencia_maquina,
+                codigo_mantenimiento: ayudante.mant_codigo_mantenimiento,
+                descripcion_mantenimiento: ayudante.mant_descripcion,
+                fecha_realizacion: ayudante.mant_fecha_realizacion,
+                estado_maquina: ayudante.acti_estado
+            };
+
+            array.push(objeto);
+        }
+
+        /* verificar si se encontraron requerimientos de mantenimiento */
+        if (array.length > 0) {
+            res.status(200).json(array);
+        } else {
+            res.status(404).json({ "message": "No se encontraron la fecha de realizacion deese mantenimiento en la base de datos" });
+        }
+        
+    } catch (err) {
+        res.status(500).json({ "message": "Error en el controlador listarRequerimiento17: " + err.message });
     }
 };
