@@ -711,6 +711,197 @@
           </tbody>
         </table>
       </section>
+      <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6</span>Administrar información de actividades añadir</span>
+          <span class="descripcion_requerimiento">
+            Una vez cargado el informe de mantenimiento, se podrá añadir cuales son las actividades a realizar del próximo mantenimiento en el calendario y allí mismo se podrán visualizar, teniendo en cuenta que las actividades a realizar depende del mantenimiento en donde se encuentre.
+            Los instructores junto con el administrador podrán añadir más actividades a este mantenimiento sin la necesidad de hacer un nuevo informe
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                    "acti_nombre":"y sal",<br>
+                    "acti_descripcion":"cambio de sal",<br>
+                    "acti_fecha_realizacion":"2024-03-19",<br>
+                    "acti_estado":"realizado",<br>
+                    "fk_mantenimiento":1<br>
+                  
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "menssage":"se registro con exito"
+                }
+                <br>
+                incorrecto: {
+                  { "menssage":"No se registro" }
+                } <br>
+                error : {
+                    { "menssage":"error"+error }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+            <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6.1</span>Actualizar información de actividades </span>
+          <span class="descripcion_requerimiento">
+            Las actividades, tendrá la opción de ser editadas una vez cargado el informe de mantenimiento, se podrá actualizar las actividades a realizar del próximo mantenimiento en el calendario en caso de que la información sea incorrecta o cambie
+            Esta opción será tanto para el rol de instructores y administradores en el apartado del calendario.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/actualizar/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                  
+                    "acti_nombre":"y tal",<br>
+                    "acti_descripcion":"cambio de tal",<br>
+                    "acti_fecha_realizacion":"2024-03-19",<br>
+                    "acti_estado":"realizado",<br>
+                    "fk_mantenimiento":1<br>
+                   
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "menssage":"se actualizo con exito"
+                }
+                <br>
+                incorrecto: {
+                  { "menssage":"No se actualizo" }
+                } <br>
+                error : {
+                    { "menssage":"error"+error }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+                  <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6.2</span>Visualizar actividades cargadas al mantenimiento </span>
+          <span class="descripcion_requerimiento">
+            Una vez cargado el informe de mantenimiento, se podrá añadir cuales son las actividades a realizar del próximo mantenimiento en el calendario y allí mismo se podrán visualizar, teniendo en cuenta que las actividades a realizar depende del mantenimiento en donde se encuentre.
+            Los instructores junto con el administrador podrán añadir más actividades a este mantenimiento sin la necesidad de hacer un nuevo informe
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/listar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, tecnicos, aprendiz y externo</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "muestra los datos"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"no se encontro usuarios en la base de datos" }
+                } <br>
+                error : {
+                    { "message":"error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   </div>
 </body>
