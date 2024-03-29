@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentacion</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="logo">
+        <div>
+          <img src="imagenes/logo.jpeg" alt="" style="width: 100%; height: 100%">
+        </div>
+        <span>MachinApp</span>
+      </div>
+    </header>
+    <div class="presentacion">
+      <span>Documentacion de API RestFull</span>
+    </div>
+    <div class="requerimientos">
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R1 </span>Registro de usuario en la plataforma</span>
+          <span class="descripcion_requerimiento">
+            Al entrar por primera vez en la plataforma se le pedirá al usuario ingresar sus datos personales, como el
+            nombre completo, correo, tipo de documento, documento de identidad y contraseña para ser registrado en
+            nuestro software, una vez que sea registrado podrá ingresar al inicio de la plataforma
+            Primer ingreso a la plataforma.
+            El sistema mostrara al usuario un formulario, en donde el usuario podrá rellenar en los campos con la
+            información que se le pida. Una vez completada la información de registro, el sistema creara una nueva
+            cuenta de usuario y la información quedara registrada en la base de datos. Y por último se mostrará un
+            mensaje indicando al usuario que la creación de la cuenta fue exitosa. <br>
+            Ingreso de datos personales como: <br>
+            ● el nombre completo<br>
+            ● correo<br>
+            ● tipo de documento<br>
+            ● documento<br>
+            ● contraseña<br>
+            Una vez registrado y confirmado que el usuario no está repetido se <br>le dará paso al usuario para ingresar
+            al
+            inicio de página.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento </th>
+              <td> RF01 </td>
+            </tr>
+            <tr>
+              <th> verbo HTTP</th>
+              <td> <span class="btn post">POST</span> </td>
+            </tr>
+            <tr>
+              <th> URL </th>
+              <td> <span class="btn url">http://localhost:3000/user/registrar</span> </td>
+            </tr>
+            <tr>
+              <th> Header </th>
+              <td> NULL </td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : { <br>
+                { <br>
+                "nombre": "Emersson", <br>
+                "apellidos" : "Ramirzez Ruiz", <br>
+                "correo" : "eramirez@soy.sena.edu.co", <br>
+                "numero_documento" : "43123241", <br>
+                "tipo_documento" : "CC", <br>
+                "contrasenia" : "123", <br>
+                "especialidad" : "", <br>
+                "empresa" : "", <br>
+                "rol": 150 <br>
+                } <br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                {
+                "Mensaje": "Registro de usuario exitoso",
+                "resultadoUser": {
+                "fieldCount": 0,
+                "affectedRows": 1,
+                "insertId": 48,
+                "info": "",
+                "serverStatus": 2,
+                "warningStatus": 0,
+                "changedRows": 0
+                }
+                }
+                } <br>
+                incorrecto: {
+                "Mensaje": "No se pudo registrar usuario"
+                } <br>
+                error : {
+                "Mensaje": "Error en el servidor"
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R1.1 </span>Listar Información de usuarios</span>
+          <span class="descripcion_requerimiento">
+            El sistema debe proporcionar que se puede visualizar la información personal registrada
+            El usuario al seleccionar la opción de apartado de usuarios, el sistema recuperara toda la información del
+            usuario atreves de su ID asignada internamente el en sistema que esta almacenada en la base de datos.
+            En el apartado seleccionado por el usuario, se presentará la información del usuario en una interfaz clara y
+            organizada, brindando al usuario un panorama completo de los datos que el sistema ha almacenado.
+            La información presentada en este apartado es (nombre, correo tipo de documento, imagen del usuario,
+            contraseña en forma cifrada y el número de documento)
+
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento </th>
+              <td> RF01.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td> <span class="btn get">GET</span> </td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                <span class="btn url">http://localhost:3000/user/listar/idUsuario</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL </td>
+            </tr>
+            <tr>
+              <th> Usuario </th>
+              <td> Usuarios</td>
+            </tr>
+            <tr>
+              <th> Peticion Body </th>
+              <td>
+                json : <br>
+                { <br>
+                NULL<br>}
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                [
+                {
+                "idUsuarios": 56,
+                "us_nombre": "Emersson",
+                "us_apellidos": "Ramirzez Ruiz",
+                "us_correo": "eramirez@soy.sena.edu.co",
+                "us_tipo_documento": "CC",
+                "us_numero_documento": "43123241",
+                "rol_nombre": "undefined"
+                }
+                ]
+
+                }
+                <br>
+                incorrecto: {
+                {
+                "Mensaje": "Usuario no encontrado"
+                }
+                } <br>
+                error : {
+                {
+                {
+                "Mensaje": "Error en el servidor",
+                "error": {
+                "message": "",
+                "code": "ECONNREFUSED"
+                }
+                }
+                }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R1.2 </span>Creación de roles para el sistema </span>
+          <span class="descripcion_requerimiento">
+            Es importante que el sistema, tenga algunas restricciones a los usuarios, por esta razón el administrador
+            tendrá la autonomía de crear los roles necesarios para que los usuarios no hagan acciones dentro del sistema
+            que no son acordes.
+            Con la creación de roles, se restringirá ciertas acciones dentro del sistema, para que solo sean exclusivas
+            de ciertos roles <br>
+            Ingreso de datos para crear rol: <br>
+            • nombre del rol <br>
+            • descripción del rol. <br>
+            Una vez sea creado el rol, se le puede asignar a los usuarios, para tener mejor control de las acciones de
+            los usuarios.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF01.2 </td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td> <span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/rol/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                {
+                "nombre" : "Instructor de ambiente Y14", <br>
+                "descripcion" : "Este rol sera encargado de el ambiente Y14 y tendra la responsabilidad de mantener
+                todos los equipos en buen estado" <br>
+                }
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                {
+                "mensaje": {
+                "fieldCount": 0,
+                "affectedRows": 1,
+                "insertId": 152,
+                "info": "",
+                "serverStatus": 2,
+                "warningStatus": 0,
+                "changedRows": 0}
+                }
+                }
+                <br>
+                incorrecto: {
+                {
+                "Mensaje": "No se encontro usuario para actulizar"
+                }
+                } <br>
+                error : {
+                {
+                {
+                "Mensaje": "Error en en servidor", <br>
+                "error": { <br>
+                "message": "", <br>
+                "code": "ECONNREFUSED" <br>
+                }
+                }
+                }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R1.3 </span>Listar todos los usuarios en el apartado de
+            administración </span>
+          <span class="descripcion_requerimiento">
+            El sistema en un módulo especial de administración, en donde debe en forma de tablas se debe mostrar todos
+            los usuarios que se han registrados en el sistema. <br>
+            Esto permitirá a usuario administrador tener control de todos los usuarios que la asignación de roles y
+            registro de técnicos
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF01.3</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td> <span class="btn get">GET</span> </td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/user/listar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th> Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th> Peticion Body</th>
+              <td>
+                json : <br>
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                {
+                "Mensaje": "Usuarios encontrado",
+                "resultadoUser": [
+                {
+                "idUsuarios": 54,
+                "us_nombre": "fdfdf",
+                "us_apellidos": "Ramirzez Ruiz",
+                "us_correo": "eramirez@soy.sena.edu.co",
+                "us_tipo_documento": "CC",
+                "us_numero_documento": "43123241",
+                "rol_nombre": "sddsf"
+                },
+                {
+                "idUsuarios": 56,
+                "us_nombre": "Emersson",
+                "us_apellidos": "Ramirzez Ruiz",
+                "us_correo": "eramirez@soy.sena.edu.co",
+                "us_tipo_documento": "CC",
+                "us_numero_documento": "43123241",
+                "rol_nombre": "undefined"
+                }
+                ]
+                }
+                }
+                <br>
+                incorrecto: {
+                Cannot GET /user/listsr
+                } <br>
+                error : {
+                {
+                "Mensaje": "Error en el servidor",
+                "error": {
+                "message": "",
+                "code": "ECONNREFUSED"
+                }
+                }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R1.4 </span> Editar datos y Asignación de roles por parte del
+            administrador</span>
+          <span class="descripcion_requerimiento">
+            El sistema debe permitir a los usuarios, que tengan el rol de administrador, asignar roles en específico a
+            los demás usuarios del sistema
+
+            El usuario administrador, accederá al apartado gestión de usuarios, el sistema muestra la lista de todos los
+            usuarios que están registrados en el sistema, al seleccionar un usuario que se le desea cambiar el rol, el
+            sistema muestra una lista de los roles que existan en la base de datos, al seleccionar el rol que se desea
+            cambiar y se confirme, se actualiza el rol que tenia ese usuario en la base de datos y se mostrara un
+            mensaje de confirmación.
+            En ser necesario los usuarios con roles de administradores, podrán cambiar la información de que esta
+            registrada en la base de datos, como puede ser nombre, apellidos, correo, contraseña.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th>ID de requerimiento</th>
+              <td>RF1.4</td>
+            </tr>
+            <tr>
+              <th> verbo HTTP </th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th> URL </th>
+              <td>
+                <span class="btn url">http://localhost:3000/user/actulizar/56</>
+              </td>
+            </tr>
+            <tr>
+              <th> Header</th>
+              <td> NULL </td>
+            </tr>
+            <tr>
+              <th>Usuario </th>
+              <td> Administrador </td>
+            </tr>
+            <tr>
+              <th> Peticion Body </th>
+              <td>
+                json : <br>
+                {
+                "nombre": "Emersson", <br>
+                "apellidos": "Ramirez Ruiz", <br>
+                "correo": "eramirez@soy.sena.edu.co", <br>
+                "numero_documento": "CC", <br>
+                "tipo_documento": "43123241", <br>
+                "contrasenia": "123", <br>
+                "especialidad" : "Mecanico en pantallas", <br>
+                "empresa" : "Sena Empresa", <br>
+                "rol" : 150 <br> }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                {
+                "Mensaje": "Usuario Actualizado",
+                "reActualizar": {
+                "fieldCount": 0,
+                "affectedRows": 1,
+                "insertId": 0,
+                "info": "Rows matched: 1 Changed: 1 Warnings: 0",
+                "serverStatus": 2,
+                "warningStatus": 0,
+                "changedRows": 1
+                }
+                }
+                }
+                <br>
+                incorrecto: {
+                "Mensaje": "No se encontro usuario para actulizar"
+                } <br>
+                error : {
+                "Mensaje": "Error en el servidor"
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R2 </span> Realizar inicio de sesión</span>
+          <span class="descripcion_requerimiento">
+            <p>Una vez que el usuario se ha registrado y vuelva a entrar en la plataforma se le pedirá el ingresar datos
+              específicos del mismo, cuando la plataforma realice la autenticación de estos datos se la dará el pase a
+              el
+              inicio de la plataforma.</p>
+            <ul style="margin-left: 20px;">
+              Datos específicos del usuario:
+              <li>tipo de documento</li>
+              <li> documento</li>
+              <li>contraseña</li>
+            </ul>
+            <p>El sistema autenticará la cuenta con un token especia, y de la dará el permiso de ingresar a las
+              diferentes
+              ventanas (pantallas) que necesitan de cuenta autenticada.</p>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th>ID de requerimiento</th>
+              <td>RF02</td>
+            </tr>
+            <tr>
+              <th> verbo HTTP</th>
+              <td> <span class="btn post"> POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+
+                }
+                <br>
+                incorrecto: {
+
+                } <br>
+                error : {
+
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R2.1</span>Cerrar sesión </span>
+          <span class="descripcion_requerimiento">
+            Se le debe permitir a los usuarios registrados poder cerrar su sesión de manera segura, de manera de poder
+            garantizar que los datos.
+            El token generado al momento de ingresar las credenciales válidas, se debe destruir,
+            En la barra de navegación en la parte inferior, en forma de botón el usuario podrá hacer clic, de esta forma
+            la sesión se destruirá y será dirigido a la página de bienvenida de la aplicación.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF01</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post"> POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+
+                }
+                <br>
+                incorrecto: {
+
+                } <br>
+                error : {
+
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R3</span>Recperacion de contraseña</span>
+          <span class="descripcion_requerimiento">
+            En el caso tal que el usuario no recuerde o haya perdido su contraseña, se brinda a los usuarios una
+            solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en
+            el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún
+            administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de
+            recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web. <br>
+            Datos para recuperación de contraseña <br>
+            ● correo <br>
+            ● código de que proporciona el software <br>
+            Cuando el usuario ingrese el código e ingrese su contraseña, accede al inicio de la página
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF01</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+
+                }
+                <br>
+                incorrecto: {
+
+                } <br>
+                error : {
+
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- kevin 5 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R5</span>listar fecha de proximo mantenimineto</span>
+          <span class="descripcion_requerimiento">
+            Cuando el usuario entre en la plataforma en la página principal encontrará un calendario donde se encontrarán las fechas de los próximos mantenimientos, al dar clic en dichas fechas con mantenimientos activos, el usuario podrá entrar a una página en donde encontrará información general de las máquinas agendadas para dicha fecha
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF05</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/listarRequerimiento</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                    'muestra los datos'
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron los requerimientos completos en la base de datos." }
+                } <br>
+                error : {
+                    { "message": "Error en el controlador mantenimientoController.js: " + err }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
