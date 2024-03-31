@@ -902,6 +902,751 @@
           </tbody>
         </table>
       </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7</span>Registrar un centro </span>
+          <span class="descripcion_requerimiento">
+            El administrador deberá registrar el centro al que se le asignará el software. En este centro es donde los usuarios se podrán registrar y podrán acceder a su ambiente y los equipos que allí se encuentran. Para registrar un centro se debe ingresar al apartado de sitios, donde se encontrará un botón "crear centro" en la parte inferior derecha. De esta manera aparecerá un formulario donde se rellenarán los siguientes datos: <br>
+            ●Nombre del centro<br>
+            ●Descripción del centro<br>
+            ●Subdirector<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/registrarcentro</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "cen_nombre":"CGDSS",<br>
+                "cen_descripcion":"Centro ubicado en Pitalito Huila donde se encuentra la ENCF",<br>
+                "cen_regional":"Huila",<br>
+                "cen_municipio":"Pitalito",<br>
+                "cen_subdirector":"Carlos Muñoz"<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Centro registrado correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7.1</span>Actualización de información de centro </span>
+          <span class="descripcion_requerimiento">
+            El administrador tendrá acceso a la opción de actualizar la información que se tiene del centro en el que se encuentra registrado. Esta opción se encuentra en el apartado "sitios y lugares". La información que se podrá actualizar del centro es la siguiente:<br>
+            ●Nombre del centro<br>
+            ●Descripción del centro<br>
+            ●Subdirector<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/editarcentro/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "cen_nombre":"CGDSS",<br>
+                "cen_descripcion":"Centro ubicado en Pitalito Huila donde se encuentra la ENCF",<br>
+                "cen_regional":"Huila",<br>
+                "cen_municipio":"Pitalito",<br>
+                "cen_subdirector":"Carlos Muñoz"<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se registró con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7.2</span>Listar información de centro </span>
+          <span class="descripcion_requerimiento">
+            La información se listará en el apartado de “sitios.” El título será el nombre del centro. Habrá pequeño párrafo en donde se brinde una breve descripción del centro, la regional a la que pertenece y el municipio en el que este ubicado. Los siguientes datos estarán disponibles para su visualización:<br>
+            ●Nombre<br>
+            ●Descripción<br>
+            ●Imagen<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/listarcentro</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra los datos"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontró el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8</span>Administrar información de Sedes (Añadir) </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios, aparecerán los centros registrados. En la parte de abajo estarán visibles las sedes que pertenecen a este centro, y aparecerá un botón “crear sede”. El formulario que se abrirá será información para registrar una sede:<br>
+            ●Nombre de la Sede<br>
+            ●Descripción de la Sede<br>
+            ●Dirección de la Sede
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/registrarsede</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sede_nombre":"Sede Yamboro",<br>
+                "sede_descripcion":"Sede ubicada en Pitalito Huila, en el corregimiento de Yamboro",<br>
+                "sede_direccion":"Cra 2 #24 C",<br>
+                "sede_fk_centros":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Sede registrada correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró la sede" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8.1</span>Administrar información de Sedes (Listar) </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios o lugares, las sedes que pertenecen a un centro se mostrarán debajo de su respectivo centro. La información de las sedes podrá ser visualizada por cualquier usuario registrado.<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/listarsede</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra la información"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontraron sedes en la Base de Datos" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8.2</span>Administrar información de Sedes (Editar) </span>
+          <span class="descripcion_requerimiento">
+            En caso de que la información de una sede requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual que posee la sede. Esto será posible mediante un formulario donde se podrán editar los siguientes datos:<br>
+            ●Nombre de la Sede<br>
+            ●Descripción de la Sede<br>
+            ●Dirección de la Sede
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/editarsede/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sede_nombre":"Sede Yamboro",<br>
+                "sede_descripcion":"Sede ubicada en Pitalito Huila, en el corregimiento de Yamboro",<br>
+                "sede_direccion":"Cra 2 #24 C",<br>
+                "sede_fk_centros":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se registró con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó la sede" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R9 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R9</span>Registrar Areas de la Sede </span>
+          <span class="descripcion_requerimiento">
+            El administrador podrá registrar cada una de las áreas pertenecientes a sus respectivas sedes. Para registrar el área es necesario ingresar los siguientes datos:<br>
+            ●Nombre del área<br>
+            ●Descripción del área
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF09</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/area/registrararea</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "area_nombre":"Barismo",<br>
+                "area_descripcion":"En este area se encuentra la Escuela Nacional de la Calidad del Cafe",<br>
+                "area_fk_sedes":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Area registrada correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el area" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+        <!-- Santiago R9 -->
+      <section class="contenido-requerimientos">
+      <div class="requerimiento_funcional">
+      <span class="titulo_requerimiento"> <span>R9.1</span>Listar información de Areas </span>
+      <span class="descripcion_requerimiento">
+        En el apartado de sitios o lugares, las areas que pertenecen a una sede se mostrarán debajo de esta. La información de las areas podrá ser visualizada por cualquier usuario registrado.<br>
+      </span>
+      </div>
+      <table>
+      <tbody>
+        <tr>
+          <th> ID de requerimiento</th>
+          <td>RF09.1</td>
+        </tr>
+        <tr>
+          <th>verbo HTTP</th>
+          <td><span class="btn get">GET</span></td>
+        </tr>
+        <tr>
+          <th>URL</th>
+          <td><span class="btn url">http://localhost:3000/area/listararea</span></td>
+        </tr>
+        <tr>
+          <th>Header</th>
+          <td>NULL</td>
+        </tr>
+        <tr>
+          <th>Usuario</th>
+          <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+        </tr>
+        <tr>
+          <th>Peticion Body</th>
+          <td>
+            json :<br>
+            {<br>
+            }
+          </td>
+        </tr>
+
+        <tr>
+          <th>Respuesta json</th>
+          <td>
+            correcto :{
+              "Muestra la información"
+            }
+            <br>
+            incorrecto: {
+              { "message":"No se encontraron areas en la BD" }
+            } <br>
+            error : {
+                { "message" : "Error", error}
+            } <br>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  <!-- Santiago R9 -->
+  <section class="contenido-requerimientos">
+    <div class="requerimiento_funcional">
+      <span class="titulo_requerimiento"> <span>R9.2</span>Editar información de Areas </span>
+      <span class="descripcion_requerimiento">
+        En caso de que la información de un area requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual que posee ese area. Esto será posible mediante un formulario donde se podrán editar los siguientes datos:<br>
+        ●Nombre del Area<br>
+        ●Descripción del Area
+      </span>
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <th> ID de requerimiento</th>
+          <td>RF09.2</td>
+        </tr>
+        <tr>
+          <th>verbo HTTP</th>
+          <td><span class="btn put">PUT</span></td>
+        </tr>
+        <tr>
+          <th>URL</th>
+          <td><span class="btn url">http://localhost:3000/area/editararea/1</span></td>
+        </tr>
+        <tr>
+          <th>Header</th>
+          <td>NULL</td>
+        </tr>
+        <tr>
+          <th>Usuario</th>
+          <td>Administrador</td>
+        </tr>
+        <tr>
+          <th>Peticion Body</th>
+          <td>
+            json :<br>
+            {<br>
+            "area_nombre":"Barismo",<br>
+            "area_descripcion":"En este area se encuentra la Escuela Nacional de la Calidad del Cafe",<br>
+            "area_fk_sedes":1<br>
+            }
+          </td>
+        </tr>
+
+        <tr>
+          <th>Respuesta json</th>
+          <td>
+            correcto :{
+              "Se registró con éxito"
+            }
+            <br>
+            incorrecto: {
+              { "message":"No se actualizó el area" }
+            } <br>
+            error : {
+                { "message" : "Error", error}
+            } <br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10</span>Registrar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios, aparecerá un area junto con sus respectivos ambientes. Aquí encontraremos las sedes que están ligadas a esa area. En el caso que se requiera registrar un nuevo ambiente, se abrirá una plantilla tipo ficha técnica en la que ya habrá información preestablecida. Cuando el administrador vaya a añadir información de los ambientes se pedirán los siguientes datos:<br>
+            ●Nombre del Ambiente<br>
+            ●Tipo de Sitio<br>
+            ●Variables que posee el ambiente
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/registrarsitio</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sit_nombre":"Ambiente Y12",<br>
+                "sit_fk_areas":1,<br>
+                "sit_fk_tipo_sitio":1,<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Ambiente registrado correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el ambiente" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10.1</span>Listar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios o lugares, los ambientes que pertenecen a un area estarán disponibles debajo de su respectiva area. La información de los ambientes podrá ser visualizada por cualquier usuario registrado.<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/listarsitio</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra la información"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontraron ambientes en la BD" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10.2</span>Editar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En caso de que la información de un ambiente requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual. Esto será posible mediante la ficha técnica donde se podrán editar los siguientes datos:<br>
+            ●Nombre del Ambiente<br>
+            ●Tipo de Sitio<br>
+            ●Variables que posee el ambiente
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/editarsitio/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sit_nombre":"Ambiente Y12",<br>
+                "sit_fk_areas":1,<br>
+                "sit_fk_tipo_sitio":1,<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se actualizó con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó el ambiente" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   </div>
 </body>
