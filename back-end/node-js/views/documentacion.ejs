@@ -669,7 +669,7 @@
             </tr>
             <tr>
               <th>verbo HTTP</th>
-              <td><span class="btn put">GET</span></td>
+              <td><span class="btn get">GET</span></td>
             </tr>
             <tr>
               <th>URL</th>
@@ -2517,6 +2517,73 @@
         </table>
       </section>      
 
+      <!-- requerimiento 14-->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R14</span>Registrar ficha de mantenimiento.</span>
+          <span class="descripcion_requerimiento">
+            Una vez estemos en la información general de una máquina en específico, habrá una un botón de agregar nueva ficha de mantenimiento, el cual al dar clic, se abrirá una plantilla tipo ficha de técnica el cual tendrá toda la información para rellenar sobre el mantenimiento que se le hizo a dicha máquina, una vez toda la información requerida sea registrada, en la parte inferior aparecerán dos botones, uno cual será para guardar la información y el otro para descargar la ficha técnica generada, en varios formatos (pdf, Excel, word)
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF014</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  {
+                    "mant_codigo_mantenimiento": "23",<br>
+                    "mant_fecha_realizacion": "2024-12-23",<br>
+                    "mant_fecha_proxima": "2025-01-23",<br>
+                    "mant_fk_fichas": "1",<br>
+                    "fk_tipo_mantenimiento": "1",<br>
+                    "mant_descripcion": "no se encontro nada"<br>
+                  }
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje": "Se registró con éxito"}
+                }
+                <br>
+                incorrecto: {
+                  {"mensaje": "No se registró con éxito el mantenimiento"}
+                } <br>
+                error : {
+                  {"mensaje": "Error: " + e.message}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
       <!-- R15  -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -2588,6 +2655,65 @@
                 } <br>
                 error : {
                   {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- requrimiento 16 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R16</span>Generar informe de mantenimiento</span>
+          <span class="descripcion_requerimiento">
+            Se generará un informe de mantenimiento descargable, de todas las máquinas que se encuentren en un rango determinado de fechas y que pertenecen a un área en específica.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF016</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/listarRequerimiento17/fecha_realizacion</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores o encargados</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                    'muestra los datos'
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron la fecha de realizacion deese mantenimiento en la base de datos" }
+                } <br>
+                error : {
+                  { "message": "Error en el controlador listarRequerimiento17: " + err.message }
                 } <br>
               </td>
             </tr>
