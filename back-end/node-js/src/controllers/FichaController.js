@@ -13,7 +13,7 @@ export const registrarFicha = async(req, res)=>{
         let [respuesta] = await conexion.query(sql)
 
         if(respuesta.affectedRows>0){
-            return res.status(200).json(respuesta)
+            return res.status(200).json({"mensaje":"Se registro correctamente"})
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
@@ -160,11 +160,11 @@ export const listarFichaPorAmbiente = async(req, res)=>{
     
         let maquinas = array
         if (maquinas.length > 0) res.status(200).json({ maquinas });
-        else res.status(404).json({ "message": "No se encontraron maquinas en la base de datos." });
+        else res.status(404).json({ "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." });
 
     }
     catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"message":"Error en el servidor"})
     }
 
 
