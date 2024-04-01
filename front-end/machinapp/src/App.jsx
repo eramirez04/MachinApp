@@ -6,7 +6,9 @@ import Historial from "./pages/Historial";
 import Maquinas from "./pages/Maquinas";
 import Sitios from "./pages/Sitios";
 import PanelControl from "./pages/PaneldeControl";
-import Nav from './components/Nav'
+import PanelcontrolSedes from "./pages/PanelControlSedes";
+import PanelcontrolAreas from "./pages/PanelControlAreas";
+import PanelcontrolAmbientes from "./pages/PanelControlAmbientes";
 
 const App = () => {
   return (
@@ -18,6 +20,9 @@ const App = () => {
         <Route path="/Maquinas" element={<Maquinas />} />
         <Route path="/Sitios" element={<Sitios />} />
         <Route path="/Panelcontrol" element={<PanelControl />} />
+        <Route path="/PanelcontrolSedes" element={<PanelcontrolSedes />} />
+        <Route path="/PanelcontrolAreas" element={<PanelcontrolAreas />} />
+        <Route path="/PanelcontrolAmbientes" element={<PanelcontrolAmbientes />} />
       </Routes>
     </div>
   );

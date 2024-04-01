@@ -31,7 +31,7 @@ export const Store = async (req, res) => {
 
 export const ListarUsuarios = async (req, res) => {
   try {
-    let sql = "SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles"
+    let sql = "SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles"
 
     const [resultadoUser] = await conexion.query(sql)
 
@@ -47,7 +47,7 @@ export const ListarUsuarios = async (req, res) => {
       )
     }
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).json({"Mensaje"  : "Error en el servidor", error})
   }
 }
 
