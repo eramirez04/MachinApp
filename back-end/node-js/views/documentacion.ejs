@@ -1647,6 +1647,966 @@
           </tbody>
         </table>
       </section>
+
+
+      <!-- R11  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R11</span> Listar maquinas por ambientes</span>
+          <span class="descripcion_requerimiento">
+
+            En este apartado se mostran todas las maquinas pertenecientes al ambiente o sitio seleccionado. Se mostrara informacion muy basica de las maquinas como: <br>
+            ●Nombre de la maquina<br>
+            ●Imagen<br>
+            ●Placa sena<br>
+            ●Estado<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/listarPorAmbiente/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{<br>
+                    "maquinas": [
+                    {<br>
+                      "maquina": {
+                        "fi_serial": "22222222",<br>
+                        "variables": [<br>
+                          {
+                            "var_nombre": "nombre equipo",
+                            "var_descripcion": "Equipo DELL N-11",
+                            "det_valor": "DELL N-11"
+                          },<br>
+                          {
+                            "var_nombre": "imagen equipo",
+                            "var_descripcion": "Imagen equipo DELL",
+                            "det_valor": "dell-n11.png"
+                          },<br>
+                          {
+                            "var_nombre": "estado equipo",
+                            "var_descripcion": "estado de la maquina DELL n-11",
+                            "det_valor": "Activo"
+                          }<br>
+                        ]
+                      }
+                    }
+                  ]
+                }
+                <br>
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+
+      <!-- R12  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12</span> Crear ficha tecnica de maquinas.</span>
+          <span class="descripcion_requerimiento">
+
+            Para crear la ficha técnica de las máquinas es necesario ingresar los siguientes datos obligatoriamente:<br>
+            ●	Placa SENA <br>
+            ●	Imagen máquina <br>
+            ●	Serial<br>
+            ●	Fecha adquisición<br>
+            ●	Fecha inicio garantía<br>
+            ●	Fecha fin garantía<br>
+            ●	Descripción garantía<br>
+            ●	Tipo de ficha<br>
+
+            Estas fichas seran dinamicas, lo que quiere decir que el administrador y los instructores podran crear diferentes variables junto con sus valores y almacenar alli la informacion que deseen.  
+
+
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                
+                    "fiFecha": "2024-03-02", <br>
+                    "placaSena": "292922RR", <br>
+                    "serial":"222223", <br>
+                    "fechaAdquisicion": "2023-03-08", <br>
+                    "fechaInicioGarantia": "2023-03-08", <br>
+                    "fechaFinGarantia":"2024-03-08",<br>
+                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
+                    "equipoPlano":"equipo plano",<br>
+                    "fk_sitio":"2", <br>
+                    "fk_tipo_ficha":"12"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro correctamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "Error al registrar ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R12.1.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.1</span> Crear tipo de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán añadir los tipos de fichas en sistema. 
+            
+            Habrá diferentes tipos de ficha, inicialmente se crearán 3 tipde fichas para las cuales está pensado el sistema, las cuales so<br>
+            ●	Ficha tecnica, <br>
+            ●	Ficha de mantenimiento, <br>
+            ●	Ficha de ambientes <br>
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicregistrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                    "tipoFicha": "ficha tecnica"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro con exito" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+        <!-- R12.1.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.2</span> Actualizar tipos de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán editar los diferentes tipos de fichas, ya registrados en el sistema. <br>
+            Para esto es necesario ingresar el nuevo nombre de la ficha.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/actualizar/3</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                    "tipoFicha": "ficha tecnica"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+   
+      <!-- R12.1.3  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.3</span> Eliminar tipos de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán eliminar los diferentes tipos de fichas. <br>Para esto es necesario indicarle el ID del tipo de ficha
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.3</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/eliminar/13</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino con exito" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+        <!-- R12.2.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.2.1</span> Crear variables</span>
+          <span class="descripcion_requerimiento">
+            Los administradores e instructores podrán crear variables a las fichas anteriormente mencionadas. 
+            Estas variables contendrán la información que deseen guardar en la ficha. <br>
+            
+            Para crear una variable es necesario la siguiente información: <br>
+            ●	Nombre <br>
+            ●	Descripción <br>
+
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.2.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "varNombre":"Disco duro",<br>
+                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                    "fkTipoFicha":"3"<br>
+                  }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+        <!-- R12.2.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.2.2</span> Actualizar variables</span>
+          <span class="descripcion_requerimiento">
+            Los administradores e instructores podrán editar variables que ya estén dentro de una ficha.  Se podrá actualizar su nombre y su descripción
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.2.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/actualizar/19</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "varNombre":"Disco de estado solido",<br>
+                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                    "fkTipoFicha":"3"<br>
+                  }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- R12.2.3  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.2.3</span> Eliminar variables</span>
+          <span class="descripcion_requerimiento">  
+            Los administradores e instructores podrán eliminar variables que ya estén dentro de una ficha. Se eliminarán por completo de la ficha en la que se encuentran listadas. 
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.2.3</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/eliminar/12</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R12.3.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.3.1</span> Crear detalles</span>
+          <span class="descripcion_requerimiento">
+            El administrador e instructor podrán añadir los detalles. Los detalles son el valor que se le asigna a cada variable creada. 
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.3.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "detFkFicha":11,<br>
+                    "detFkVariable":19,<br>
+                    "detValor":"2Tera"<br>
+                    }
+                    
+
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro correctamente" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R12.3.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.3.2</span> Actualizar detalles</span>
+          <span class="descripcion_requerimiento">
+            El administrador e instructor podrán editar los detalles. Añadiéndoles un nuevo valor a su respectiva variable dentro de la ficha.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.3.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/actualizar/16</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "detFkFicha":11,<br>
+                    "detFkVariable":19,<br>
+                    "detValor":"5Tera"<br>
+                    }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo correctamente" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R12.3.3  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.3.3</span> Eliminar detalles</span>
+          <span class="descripcion_requerimiento">  
+            El administrador e instructor podrán eliminar los detalles.  Una vez eliminado, las variables dentro de la ficha no tendrán algún valor, simplemente su nombre y descripción.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.3.3</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/eliminar/</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      
+      <!-- R13  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R13</span> Listar información detallada de la máquina junto con su respectivo historial de mantenimiento</span>
+          <span class="descripcion_requerimiento">  
+             
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 13</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url"></span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":""}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      
+      <!-- R13.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R13.1</span> Listar ficha tecnica</span>
+          <span class="descripcion_requerimiento">
+            Todos los usuarios podrán observar la ficha técnica de dicha máquina. <br>
+            En ella se encontrarán todas las variables con su descripción y detalles registrados por un instructor o administrador. Esta ficha se podrá descargar en diferentes formatos, ya sea Word, pdf o exel.
+            Nos traera la informacion basica de la ficha y cada una de sus varaibles con su respectiva descripcion y valor.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 13.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/listarUnica/9</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{[<br>
+                  {<br>
+                    "fi_fecha": "2024-03-30T05:00:00.000Z",<br>
+                    "fi_placa_sena": "dell-n11-placa33",<br>
+                    "fi_serial": "22222222",<br>
+                    "fi_fecha_adquisicion": "2024-03-01T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2024-03-04T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-25T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": "no cubre el portatul DELL N-11",<br>
+                    "fi_equipo_plano": "(equipo plano)",<br>
+                    "ti_fi_nombre": "ficha tecnica"<br>
+                  },<br>
+                  {<br>
+                    "var_nombre": "nombre equipo",<br>
+                    "var_descripcion": "Equipo DELL N-11",<br>
+                    "det_valor": "DELL N-11"<br>
+                  },<br>
+                  {<br>
+                    "var_nombre": "imagen equipo",<br>
+                    "var_descripcion": "Imagen equipo DELL",<br>
+                    "det_valor": "dell-n11.png"<br>
+                  },<br>
+                  {<br>
+                    "var_nombre": "estado equipo",<br>
+                    "var_descripcion": "estado de la maquina DELL n-11",<br>
+                    "det_valor": "Activo"<br>
+                  }<br>
+                ]
+                  
+                }
+                <br>
+                <br><br>
+                incorrecto: {
+                  { "message": "No se encontro ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>      
+
+      <!-- R15  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15</span> Actualizar ficha técnica de máquinas. </span>
+          <span class="descripcion_requerimiento">
+            Al querer editar una ficha se desplegará la plantilla de ficha técnica, con toda la información de la máquina o equipo. Cuando entremos en este apartado encontraremos información básica de las máquinas como: <br>
+            
+            ●	Nombrebr <br>
+            ●	Ambiente en el que se encuentra<br>
+            ●	Estado<br>
+            ●	Referencia<br>
+            ●	Informacion Especifica (en donde estará la información más detallada de la máquina, toda la informacion de las variables registradas, su descripcion y el valor del detalle. )<br>
+
+            Cuando el administrador o instructor añadan o editen dicha información, estos datos serán guardados en la base de datos y se actualizará, de forma automática
+
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/actualizar/9</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                
+                    "fiFecha": "2024-03-02", <br>
+                    "placaSena": "292922RR", <br>
+                    "serial":"222223", <br>
+                    "fechaAdquisicion": "2023-03-08", <br>
+                    "fechaInicioGarantia": "2023-03-08", <br>
+                    "fechaFinGarantia":"2024-03-08",<br>
+                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
+                    "equipoPlano":"equipo plano",<br>
+                    "fk_sitio":"2", <br>
+                    "fk_tipo_ficha":"12"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo correctamente la ficha"}
+                }
+                <br>
+      
+                incorrecto: {
+                  { "message": "Error al actualizar la ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+
+      
+
+
+
+
+
+
+      
+
+
     </div>
   </div>
 </body>
