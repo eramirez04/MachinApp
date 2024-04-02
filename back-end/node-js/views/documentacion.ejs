@@ -1735,8 +1735,6 @@
         </table>
       </section>
 
-
-
       <!-- R12  -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -1844,7 +1842,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/tipoFicregistrar</span></td>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/registrar</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -2000,7 +1998,7 @@
         </table>
       </section>
 
-        <!-- R12.2.1  -->
+        <!-- R12.2-->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
           <span class="titulo_requerimiento"> <span>R12.2.1</span> Crear variables</span>
@@ -2068,126 +2066,6 @@
         </table>
       </section>
 
-        <!-- R12.2.2  -->
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R12.2.2</span> Actualizar variables</span>
-          <span class="descripcion_requerimiento">
-            Los administradores e instructores podrán editar variables que ya estén dentro de una ficha.  Se podrá actualizar su nombre y su descripción
-         </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF 12.2.2</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn put">PUT</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/variable/actualizar/19</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Administrador, instructores</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json :<br>
-                {
-                  {<br>
-                    "varNombre":"Disco de estado solido",<br>
-                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
-                    "fkTipoFicha":"3"<br>
-                  }
-                }
-              </td>
-            </tr>
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-                  {"mensaje":"Se actualizo conrrectamente"}
-                }
-                <br>
-                incorrecto: {
-                  { "message": "No se actualizo " }
-                } <br>
-                error : {
-                  {"message":"Error en el servidor"}
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-
-      <!-- R12.2.3  -->
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R12.2.3</span> Eliminar variables</span>
-          <span class="descripcion_requerimiento">  
-            Los administradores e instructores podrán eliminar variables que ya estén dentro de una ficha. Se eliminarán por completo de la ficha en la que se encuentran listadas. 
-         </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF 12.2.3</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn delete">DELETE</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/variable/eliminar/12</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Administrador, instructores</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json :<br>
-                {<br>
-                }
-              </td>
-            </tr>
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-                  {"mensaje":"Se elimino conrrectamente"}
-                }
-                <br>
-                incorrecto: {
-                  { "message": "No se elimino " }
-                } <br>
-                error : {
-                  {"message":"Error en el servidor"}
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      
       <!-- R12.3.1  -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -2251,126 +2129,6 @@
           </tbody>
         </table>
       </section>
-      
-      <!-- R12.3.2  -->
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R12.3.2</span> Actualizar detalles</span>
-          <span class="descripcion_requerimiento">
-            El administrador e instructor podrán editar los detalles. Añadiéndoles un nuevo valor a su respectiva variable dentro de la ficha.  
-         </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF 12.3.2</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn put">PUT</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/detalle/actualizar/16</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Administrador, instructores</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json :<br>
-                {
-                  {<br>
-                    "detFkFicha":11,<br>
-                    "detFkVariable":19,<br>
-                    "detValor":"5Tera"<br>
-                    }
-                }
-              </td>
-            </tr>
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-                  {"mensaje":"Se actualizo conrrectamente"}
-                }
-                <br>
-                incorrecto: {
-                  { "message": "No se actualizo correctamente" }
-                } <br>
-                error : {
-                  {"message":"Error en el servidor"}
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      
-      <!-- R12.3.3  -->
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R12.3.3</span> Eliminar detalles</span>
-          <span class="descripcion_requerimiento">  
-            El administrador e instructor podrán eliminar los detalles.  Una vez eliminado, las variables dentro de la ficha no tendrán algún valor, simplemente su nombre y descripción.  
-         </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF 12.3.3</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn delete">DELETE</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/detalle/eliminar/</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Administrador, instructores</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json :<br>
-                {<br>
-                }
-              </td>
-            </tr>
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-                  {"mensaje":"Se elimino conrrectamente"}
-                }
-                <br>
-                incorrecto: {
-                  { "message": "No se elimino " }
-                } <br>
-                error : {
-                  {"message":"Error en el servidor"}
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      
       
       <!-- R13  -->
       <section class="contenido-requerimientos">
@@ -2591,7 +2349,7 @@
           <span class="descripcion_requerimiento">
             Al querer editar una ficha se desplegará la plantilla de ficha técnica, con toda la información de la máquina o equipo. Cuando entremos en este apartado encontraremos información básica de las máquinas como: <br>
             
-            ●	Nombrebr <br>
+            ●	Nombre <br>
             ●	Ambiente en el que se encuentra<br>
             ●	Estado<br>
             ●	Referencia<br>
@@ -2660,11 +2418,251 @@
             </tr>
           </tbody>
         </table>
+      </section>         
+      
+      <!-- R15.1.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.1.1</span> Actualizar variables</span>
+          <span class="descripcion_requerimiento">
+            Los administradores e instructores podrán editar variables que ya estén dentro de una ficha.  Se podrá actualizar su nombre y su descripción
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.1.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/actualizar/19</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "varNombre":"Disco de estado solido",<br>
+                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                    "fkTipoFicha":"3"<br>
+                  }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </section>
+
+      <!-- R15.1.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.1.2</span> Eliminar variables</span>
+          <span class="descripcion_requerimiento">  
+            Los administradores e instructores podrán eliminar variables que ya estén dentro de una ficha. Se eliminarán por completo de la ficha en la que se encuentran listadas.
+            Tener en cuenta que para eliminar una variable primero de debe eliminar su respectivo detalle si lo tiene. 
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.1.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/eliminar/12</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R15.2.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.2.1</span> Actualizar detalles</span>
+          <span class="descripcion_requerimiento">
+            El administrador e instructor podrán editar los detalles. Añadiéndoles un nuevo valor a su respectiva variable dentro de la ficha.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.2.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/actualizar/16</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "detFkFicha":11,<br>
+                    "detFkVariable":19,<br>
+                    "detValor":"5Tera"<br>
+                    }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo correctamente" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R15.2.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.2.2</span> Eliminar detalles</span>
+          <span class="descripcion_requerimiento">  
+            El administrador e instructor podrán eliminar los detalles.  Una vez eliminado, las variables dentro de la ficha no tendrán algún valor, simplemente su nombre y descripción.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.2.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/eliminar/</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
       <!-- requrimiento 16 -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R16</span>Generar informe de mantenimiento</span>
+          <span class="titulo_requerimiento"> <span>R16 </span>Generar informe de mantenimiento</span>
           <span class="descripcion_requerimiento">
             Se generará un informe de mantenimiento descargable, de todas las máquinas que se encuentren en un rango determinado de fechas y que pertenecen a un área en específica.
             
@@ -2696,8 +2694,7 @@
               <th>Peticion Body</th>
               <td>
                 json : <br>
-                { <br>
-                        
+                { <br>    
                 }
               </td>
             </tr>
@@ -2720,18 +2717,6 @@
           </tbody>
         </table>
       </section>
-
-
-
-      
-
-
-
-
-
-
-      
-
 
     </div>
   </div>
