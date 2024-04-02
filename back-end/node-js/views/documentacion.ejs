@@ -748,8 +748,8 @@
                 json : <br>
                 { <br>
                   
-                    "acti_nombre":"y sal",<br>
-                    "acti_descripcion":"cambio de sal",<br>
+                    "acti_nombre":"Renovación de RAM",<br>
+                    "acti_descripcion":"cambio de ram",<br>
                     "acti_fecha_realizacion":"2024-03-19",<br>
                     "acti_estado":"realizado",<br>
                     "fk_mantenimiento":1<br>
@@ -814,12 +814,14 @@
                 json : <br>
                 { <br>
                   
-                  
-                    "acti_nombre":"y tal",<br>
-                    "acti_descripcion":"cambio de tal",<br>
+                  {
+                    "acti_nombre":"Renovación de DISCO",<br>
+                    "acti_descripcion":"cambio de disco",<br>
                     "acti_fecha_realizacion":"2024-03-19",<br>
                     "acti_estado":"realizado",<br>
                     "fk_mantenimiento":1<br>
+                  }
+
                    
                 }
               </td>
@@ -888,7 +890,14 @@
               <th>Respuesta json</th>
               <td>
                 correcto :{
-                  "muestra los datos"
+                  {
+                    "idActividades": 1,
+                    "acti_nombre": "Renovación de DISCO",
+                    "acti_descripcion": "cambio de disco",
+                    "acti_fecha_realizacion": "2024-03-19",
+                    "acti_estado": "realizado ",
+                    "fk_mantenimiento":1
+                  }
                 }
                 <br>
                 incorrecto: {
