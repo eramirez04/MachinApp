@@ -82,3 +82,4 @@ export const actualizarActividades= async (req,res)=>{
     }
   
 }
+  
