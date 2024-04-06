@@ -2,18 +2,25 @@ import { conexion } from "../database/database.js"
 
 export const listarSede = async (req, res) => {
     try {
-        let sql = "select * from sedes"
-
-        const [result] = await conexion.query(sql)
-
-        if (result.length > 0) res.status(200).json(result)
-
-        else res.status(404).json({ "message" : "No se encontraron sedes en la Base de Datos" })
-    }
-    catch (error) {
-        res.status(500).json({ "message" : "Error", error })
-    }
+      let sql = "SELECT idSede, cen_nombre, sede_nombre, sede_descripcion, sede_direccion FROM sedes INNER JOIN centros ON sede_fk_centros = idCentros"
+      const [resultadoSede] = await conexion.query(sql)
+  
+      if (resultadoSede.length > 0) {
+        res.status(200).json({
+          "Mensaje": "Sede encontrada",
+          resultadoSede
+        })
+      }
+      else {
+        return res.status(404).json(
+          { "Mensaje": "No se encontraron Sedes" }
+        )
+      }
+    } catch (error) {
+      return res.status(500).json({"Mensaje"  : "Error en el servidor", error})
+    }
 }
+
 
 export const registrarSede = async (req, res) => {
     try {

@@ -2,17 +2,24 @@ import { conexion } from "../database/database.js"
 
 export const listarSitio = async (req, res) => {
     try {
-        let sql = "select * from sitios"
+        let sql = "select idAmbientes,sit_nombre,tipo_sitio,area_nombre from sitios INNER JOIN tipo_sitio ON sit_fk_tipo_sitio = idTipo_sitio INNER JOIN areas ON sit_fk_areas = idArea"
 
-        const [result] = await conexion.query(sql)
-
-        if (result.length > 0) res.status(200).json(result)
-
-        else res.status(404).json({ "message" : "No se encontraron ambientes en la BD" })
-    }
-    catch (error) {
-        res.status(500).json({ "message" : "Error", error })
-    }
+        const [resultadoSitio] = await conexion.query(sql)
+  
+        if (resultadoSitio.length > 0) {
+          res.status(200).json({
+            "Mensaje": "Sitio encontrado",
+            resultadoSitio
+          })
+        }
+        else {
+          return res.status(404).json(
+            { "Mensaje": "No se encontraron Sitios" }
+          )
+        }
+      } catch (error) {
+        return res.status(500).json({"Mensaje"  : "Error en el servidor", error})
+      }
 }
 
 export const registrarSitio = async (req, res) => {
