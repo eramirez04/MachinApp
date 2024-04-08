@@ -1705,32 +1705,35 @@
               <th>Respuesta json</th>
               <td>
                 correcto :{<br>
-                    "maquinas": [
-                    {<br>
-                      "maquina": {
-                        "fi_serial": "22222222",<br>
-                        "variables": [<br>
-                          {
-                            "var_nombre": "nombre equipo",
-                            "var_descripcion": "Equipo DELL N-11",
-                            "det_valor": "DELL N-11"
-                          },<br>
-                          {
-                            "var_nombre": "imagen equipo",
-                            "var_descripcion": "Imagen equipo DELL",
-                            "det_valor": "dell-n11.png"
-                          },<br>
-                          {
-                            "var_nombre": "estado equipo",
-                            "var_descripcion": "estado de la maquina DELL n-11",
-                            "det_valor": "Activo"
-                          }<br>
-                        ]
+                [<br>
+                  {<br>
+                    "idFicha": 1,<br>
+                    "placa_sena": "292922RR",<br>
+                    "serial": "222223",<br>
+                    "imagen": "equipo plano",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
                       }
-                    }
-                  ]
-                }
-                <br>
+                    ]
+                  },<br>
+                  {<br>
+                    "idFicha": 2,<br>
+                    "placa_sena": "sena _123",<br>
+                    "serial": "12345678",<br>
+                    "imagen": "no contiene",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }<br>
+                    ]
+                  }
+                ]
+                }<br>
                 <br>
                 incorrecto: {
                   { "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." }
@@ -1792,18 +1795,19 @@
               <td>
                 json :<br>
                 {<br>
-                
-                    "fiFecha": "2024-03-02", <br>
-                    "placaSena": "292922RR", <br>
-                    "serial":"222223", <br>
-                    "fechaAdquisicion": "2023-03-08", <br>
-                    "fechaInicioGarantia": "2023-03-08", <br>
-                    "fechaFinGarantia":"2024-03-08",<br>
-                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
-                    "equipoPlano":"equipo plano",<br>
-                    "fk_sitio":"2", <br>
-                    "fk_tipo_ficha":"12"<br>
-                }
+                  
+                    "fiFecha": "2024-08-08",<br>
+                    "placaSena": "RRRR222",<br>
+                    "serial": "333",<br>
+                    "fechaAdquisicion": "2022-01-01",<br>
+                    "fechaInicioGarantia": "2022-01-01",<br>
+                    "fechaFinGarantia": "2023-01-01",<br>
+                    "descipcionGarantia": "descripcion garantia",<br>
+                    "fiImagen": "imagen.png",<br>
+                    "fiEstado": "operacion",<br>
+                    "fk_sitio": 4,<br>
+                    "fk_tipo_ficha": 7<br>
+                }<br>
               </td>
             </tr>
             <tr>
@@ -2240,35 +2244,31 @@
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{[<br>
+                correcto :{<br>
                   {<br>
-                    "fi_fecha": "2024-03-30T05:00:00.000Z",<br>
-                    "fi_placa_sena": "dell-n11-placa33",<br>
-                    "fi_serial": "22222222",<br>
-                    "fi_fecha_adquisicion": "2024-03-01T05:00:00.000Z",<br>
-                    "fi_fecha_inicio_garantia": "2024-03-04T05:00:00.000Z",<br>
-                    "fi_fecha_fin_garantia": "2024-03-25T05:00:00.000Z",<br>
-                    "fi_descripcion_garantia": "no cubre el portatul DELL N-11",<br>
-                    "fi_equipo_plano": "(equipo plano)",<br>
-                    "ti_fi_nombre": "ficha tecnica"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "nombre equipo",<br>
-                    "var_descripcion": "Equipo DELL N-11",<br>
-                    "det_valor": "DELL N-11"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "imagen equipo",<br>
-                    "var_descripcion": "Imagen equipo DELL",<br>
-                    "det_valor": "dell-n11.png"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "estado equipo",<br>
-                    "var_descripcion": "estado de la maquina DELL n-11",<br>
-                    "det_valor": "Activo"<br>
-                  }<br>
-                ]
-                  
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo plano",<br>
+                    "fi_estado": "operacion",<br>
+                    "ubicacion": "biblioteca",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }
+                    ],<br>
+                    "variables": [<br>
+                      {<br>
+                        "var_nombre": "estado equipo",<br>
+                        "var_descripcion": "asldfkñasdf ",<br>
+                        "det_valor": "memoria con capacidad de una tera"<br>
+                      }]<br>
+                  }
                 }
                 <br>
                 <br><br>
@@ -2395,18 +2395,18 @@
               <td>
                 json :<br>
                 {<br>
-                
-                    "fiFecha": "2024-03-02", <br>
-                    "placaSena": "292922RR", <br>
-                    "serial":"222223", <br>
-                    "fechaAdquisicion": "2023-03-08", <br>
-                    "fechaInicioGarantia": "2023-03-08", <br>
-                    "fechaFinGarantia":"2024-03-08",<br>
-                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
-                    "equipoPlano":"equipo plano",<br>
-                    "fk_sitio":"2", <br>
-                    "fk_tipo_ficha":"12"<br>
-                }
+                  "fiFecha": "2024-08-08",<br>
+                  "placaSena": "RRRR222",<br>
+                  "serial": "3333333333333333333",<br>
+                  "fechaAdquisicion": "2022-01-01",<br>
+                  "fechaInicioGarantia": "2022-01-01",<br>
+                  "fechaFinGarantia": "2023-01-01",<br>
+                  "descipcionGarantia": "descripcion garantia",<br>
+                  "fiImagen": "imagen.png",<br>
+                  "fiEstado": "operacion",<br>
+                  "fk_sitio": 4,<br>
+                  "fk_tipo_ficha": 7<br>
+                }<br>
               </td>
             </tr>
             <tr>

@@ -1,14 +1,15 @@
 
+import { response } from 'express'
 import { conexion } from '../database/database.js'
 
 export const registrarFicha = async(req, res)=>{
 
     try{
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, equipoPlano, fk_sitio, fk_tipo_ficha}= req.body
+        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
 
-        let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_equipo_plano, fi_fk_sitios, fi_fk_tipo_ficha ) 
-        values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${equipoPlano}', ${fk_sitio} , ${fk_tipo_ficha})`
+        let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha ) 
+        values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha})`
     
         let [respuesta] = await conexion.query(sql)
 
@@ -47,10 +48,11 @@ export const actualizarFicha = async(req, res)=>{
     try{
 
         let idFicha = req.params.idFicha
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, equipoPlano, fk_sitio, fk_tipo_ficha}= req.body
+
+        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
 
         let sql = `update fichas set  fi_fecha = '${fiFecha}', fi_placa_sena = '${placaSena}' , fi_serial='${serial}', fi_fecha_adquisicion='${fechaAdquisicion}', 
-        fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_equipo_plano='${equipoPlano}', fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
+        fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_imagen='${fiImagen}',fi_estado = '${fiEstado}' , fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
         where idFichas = ${idFicha}`
     
         let [respuesta] = await conexion.query(sql)
@@ -87,166 +89,214 @@ export const eliminarFicha = async(req, res)=>{
     }
 }
 
+
 export const listarFichaPorAmbiente = async(req, res)=>{
 
     try{
 
         let idAmbiente = req.params.idAmbiente
 
-        let sql  = `
-        SELECT 
-            fi_serial, 
-            var_nombre, 
-            var_descripcion, 
-            det_valor
-            FROM sitios
-            LEFT JOIN fichas ON idAmbientes = fi_fk_sitios
-            LEFT JOIN detalle ON idFichas = det_fk_fichas
-            LEFT JOIN variable ON det_fk_variable = idVariable
-            LEFT JOIN tipo_ficha ON var_fk_tipo_ficha = idTipo_ficha
-            WHERE idAmbientes = ${idAmbiente} and ti_fi_nombre = 'ficha tecnica'
+        let sql = `
+        SELECT fichas.idFichas, 
+        fichas.fi_placa_sena,
+        fichas.fi_serial,
+        fichas.fi_imagen,
+        fichas.fi_fk_tipo_ficha,
+        fichas.fi_estado
+        FROM fichas 
+        INNER JOIN sitios ON sitios.idAmbientes = fichas.fi_fk_sitios 
+        WHERE sitios.idAmbientes = ${idAmbiente}
         `
-        /* para evitar que me traiga todas las fichas, especifico la condicion de que solo traiga las fichas tecnicas de ese ambiente o sitio*/
-    
-        let [respuesta] = await conexion.query(sql)
-    
-    
-        /* Para que me elija solo a siertas variables y no utiilizar todas las variables de las fichas tecnicas. */
-        let infoBasicaMaquinas= []
-        
-        for(let i = 0; i <respuesta.length; i++){
-    
-            // asi como se llaman aca, se deben ser nombradas las variables 
-            if(respuesta[i].var_nombre == 'estado equipo' || respuesta[i].var_nombre == 'imagen equipo'  || respuesta[i].var_nombre ==  'nombre equipo'){
-    
-                infoBasicaMaquinas.push(respuesta[i])
+        const [resuladoFichas] = await conexion.query(sql)
+
+        let Maquinas = []
+
+        for (let i = 0; i < resuladoFichas.length; i++){
+            let idFicha = resuladoFichas[i].idFichas
+
+            let sqlTipoEquipo = `
+            SELECT tipo_equipo.idTipo_ficha, tipo_equipo.ti_fi_nombre
+            FROM tipo_equipo 
+            INNER JOIN fichas ON fichas.fi_fk_tipo_ficha = tipo_equipo.idTipo_ficha 
+            WHERE fichas.idFichas = ${idFicha};
+            `
+            const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
+
+            let ObjMaquina = {
+                idFicha: resuladoFichas[i].idFichas,
+                placa_sena: resuladoFichas[i].fi_placa_sena,
+                serial: resuladoFichas[i].fi_serial,
+                imagen: resuladoFichas[i].fi_imagen,
+                estado: resuladoFichas[i].fi_estado,
+                tipoEquipo
             }
+          Maquinas[i] = ObjMaquina
         }
-    
-    
-    
-    
-        let objeto = {}
-        let ayudante = ''
-    
-        let array = [];
-    
-        /* Usamos un objeto para tener las maquinas temporalmente */
-        let maquina = {};
-    
-        for (let i = 0; i < infoBasicaMaquinas.length; i++) {
-            ayudante = infoBasicaMaquinas[i]
-    
-    
-            if (!maquina[ayudante.fi_serial]) {
-                objeto = {
-                    maquina: {
-                        fi_serial: ayudante.fi_serial,
-                        variables: [] /* Inicializamos un array para almacenar las variables */
-                    }
-                }
-                /* Marcar la maquina para evitar que se repita */
-                maquina[ayudante.fi_serial] = objeto.maquina;
-                array.push(objeto); /* Agregamos el objeto al array */
-            }
-    
-            /* Hacemos que las variables vayan a  donde les corresponde */
-            maquina[ayudante.fi_serial].variables.push({
-                var_nombre: ayudante.var_nombre,
-                var_descripcion: ayudante.var_descripcion,
-                det_valor: ayudante.det_valor
-            });
+
+        if (Maquinas.length === 0){
+            return res.status(404).json({
+                "Estado" : 404,
+                "Mensage" :"No se encontraron maquinas o equipos al ambiente"
+            })
         }
-    
-        let maquinas = array
-        if (maquinas.length > 0) res.status(200).json({ maquinas });
-        else res.status(404).json({ "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." });
+
+        res.status(200).json(Maquinas)
 
     }
     catch(error){
         return res.status(500).json({"message":"Error en el servidor"})
     }
 
-
-
-
 } 
 
-/* Tener en cuanta el ingreso de datos para el correcto funcionamiento de la funcion del controlador (revisar) */
 export const listarFichaUnica=async (req, res)=>{
+    
+   try{
+        let idFicha = req.params.idFicha
 
-    try{
-
-        let idFicha= req.params.idFicha
-
-
-        /* Para que una ficha pertenesca a un tipo de ficha debe tener una variable con su detalle. */
         let sql = `
         SELECT 
+        idFichas, 
         fi_fecha,
-        fi_placa_sena, 
-        fi_serial, 
+        fi_placa_sena,
+        fi_serial,
         fi_fecha_adquisicion, 
-        fi_fecha_inicio_garantia, 
+        fi_fecha_inicio_garantia,
         fi_fecha_fin_garantia, 
-        fi_descripcion_garantia, 
-        fi_equipo_plano, 
-        ti_fi_nombre, 
-        var_nombre, 
-        var_descripcion, 
-        det_valor
+        fi_descripcion_garantia,
+        fi_imagen,
+        fi_estado,
+        sit_nombre as ubicacion,   
+        fi_fk_tipo_ficha
         FROM fichas
-        LEFT JOIN detalle ON idFichas = det_fk_fichas
-        LEFT JOIN variable ON det_fk_variable = idVariable
-        LEFT JOIN tipo_ficha ON var_fk_tipo_ficha = idTipo_ficha
+        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+        WHERE idFichas = ${idFicha}`
+
+        const [respuesta] = await conexion.query(sql)
+
+        if (respuesta.length >0){
+
+             //para que me traiga el id y el tipo de la ficha
+            let sqlTipoEquipo = `
+            SELECT 
+            idTipo_ficha,
+            ti_fi_nombre
+            FROM tipo_equipo 
+            INNER JOIN fichas ON fi_fk_tipo_ficha = idTipo_ficha 
+            WHERE idFichas = ${idFicha}`
+            
+            const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
+
+            //traer todas las variables de esa ficha. 
+            let sqlVariables = `
+            SELECT
+            var_nombre, 
+            var_descripcion,
+            det_valor
+            FROM detalle
+            INNER JOIN variable ON det_fk_variable = idVariable
+            WHERE det_fk_fichas = ${idFicha}
+            `
+
+            const [variables] = await conexion.query(sqlVariables)
+
+            
+            let objFicha = {
+                idFichas: respuesta[0].idFichas,
+                fi_fecha: respuesta[0].id_fecha,
+                fi_placa_sena: respuesta[0].fi_placa_sena, 
+                fi_serial: respuesta[0].fi_serial,
+                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
+                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
+                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
+                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
+                fi_imagen: respuesta[0].fi_imagen, 
+                fi_estado: respuesta[0].fi_estado, 
+                ubicacion: respuesta[0].ubicacion,
+                tipoEquipo,
+                variables
+            }
+            return res.status(200).json(objFicha)
+
+        }
+        else{
+            return res.status(404).json({"mensaje":"No se encontraron fichas."})
+        }
+
+   }catch(error){
+        return res.status(500).json({"mensaje":"Error en el servidor"})
+   }
+
+}
+
+export const listarInfoEspecifica = async(req, res)=>{
+
+    try{
+        let idFicha = req.params.idFicha
+
+        //buscamos informacion de la ficha correspondiente
+        let sqlFicha = `
+        SELECT 
+        idFichas, 
+        fi_fecha,
+        fi_placa_sena,
+        fi_serial,
+        fi_fecha_adquisicion, 
+        fi_fecha_inicio_garantia,
+        fi_fecha_fin_garantia, 
+        fi_descripcion_garantia,
+        fi_imagen,
+        fi_estado,
+        ti_fi_nombre as tipoEquipo
+        FROM fichas
+        INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
         WHERE idFichas = ${idFicha}
         `
 
-        let [respuesta]= await conexion.query(sql)
-        
-        //console.log(objeto)
-        
+        const[respuesta] = await conexion.query(sqlFicha)
 
-        if(respuesta.length>0){
 
-            /* Estos datos nunca van a cambiar. */
-            let objeto = [
-                {
-                  "fi_fecha": respuesta[0].fi_fecha,
-                  "fi_placa_sena": respuesta[0].fi_placa_sena,
-                  "fi_serial": respuesta[0].fi_serial,
-                  "fi_fecha_adquisicion": respuesta[0].fi_fecha_adquisicion,
-                  "fi_fecha_inicio_garantia": respuesta[0].fi_fecha_inicio_garantia,
-                  "fi_fecha_fin_garantia": respuesta[0].fi_fecha_fin_garantia,
-                  "fi_descripcion_garantia": respuesta[0].fi_descripcion_garantia,
-                  "fi_equipo_plano": respuesta[0].fi_equipo_plano,
-                  "ti_fi_nombre": respuesta[0].ti_fi_nombre
-                }
-            ]
-
-            for (let i = 0; i < respuesta.length; i++) {
-            
-                if (respuesta[i].var_nombre != null){
-
-                    let objetoInfoVar = 
-                        {
-                            "var_nombre": respuesta[i].var_nombre, 
-                            "var_descripcion": respuesta[i].var_descripcion,
-                            "det_valor": respuesta[i].det_valor
-                        }
-
-                    objeto.push(objetoInfoVar)
-                }
+        if(respuesta.length > 0 ){
+           
+    
+            //buscamos los mantenimientos que se le an echo a esa ficha 
+    
+            let sqlMantenimientos = `
+            SELECT
+            idMantenimiento,
+            mant_codigo_mantenimiento,
+            mant_fecha_realizacion,
+            tipo_mantenimiento
+            FROM mantenimiento
+            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
+            WHERE mant_fk_fichas = ${idFicha}
+            `
+            const[mantenimientos] = await conexion.query(sqlMantenimientos)
+    
+            let objInfoEspecifica = {
+                idFichas: respuesta[0].idFichas,
+                fi_fecha: respuesta[0].id_fecha,
+                fi_placa_sena: respuesta[0].fi_placa_sena, 
+                fi_serial: respuesta[0].fi_serial,
+                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
+                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
+                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
+                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
+                fi_imagen: respuesta[0].fi_imagen, 
+                fi_estado: respuesta[0].fi_estado,
+                tipoEquipo: respuesta[0].tipoEquipo, 
+                mantenimientos
             }
-            
-            res.status(200).json(objeto)
-        }
-        else{
-            res.status(404).json({"mensaje":"No se ecntraron fichas"})
+    
+            return res.status(200).json(objInfoEspecifica)
+    
+    
+        }else{
+            return res.status(404).json({"mensaje":"No se encontro ficha"})
         }
 
     }catch(error){
         return res.status(500).json({"mensaje":"Error en el servidor"})
     }
-
+    
 }
