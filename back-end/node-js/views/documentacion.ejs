@@ -2146,9 +2146,12 @@
       <!-- R13  -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R13</span> Listar información detallada de la máquina junto con su respectivo historial de mantenimiento</span>
+          <span class="titulo_requerimiento"> <span>R13</span> Listar información de la máquina junto con su respectivo historial de mantenimiento</span>
           <span class="descripcion_requerimiento">  
-             
+             En este apartado se podra observar la informacion mas relevante de la ficha tecnica de la maquina, ademas de esto, por medio de una tabla se generara un  listado con todos los mantenimientos registrados a esa maquina mostrando la informacion mas relevante.
+             <br>
+             Estara disponible para descargar la ficha tecnica y cada una de las fichas de mantenimiento. 
+
          </span>
         </div>
         <table>
@@ -2163,7 +2166,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url"></span></td>
+              <td><span class="btn url">http://localhost:3000/ficha/listarInfoEspecifica/1</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -2184,12 +2187,36 @@
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{
-                  {"mensaje":""}
-                }
+                correcto :{<br>
+                  {<br>
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo redondo",<br>
+                    "fi_estado": "operacion",<br>
+                    "tipoEquipo": "portatil APLE",<br>
+                    "mantenimientos": [<br>
+                      {<br>
+                        "idMantenimiento": 6,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      },<br>
+                      {<br>
+                        "idMantenimiento": 4,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      }]<br>
+                  }
+                }<br>
                 <br>
                 incorrecto: {
-                  { "message": "" }
+                  { "message": "No se encontro ficha" }
                 } <br>
                 error : {
                   {"message":"Error en el servidor"}
