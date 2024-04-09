@@ -7,7 +7,7 @@ export const registrarTipoFicha= async(req, res)=>{
 
         let tipoFicha = req.body.tipoFicha
 
-        let sql = `insert into tipo_ficha (ti_fi_nombre) values ('${tipoFicha}')`
+        let sql = `insert into tipo_equipo (ti_fi_nombre) values ('${tipoFicha}')`
 
         const [respuesta] = await conexion.query(sql)
 
@@ -26,7 +26,7 @@ export const registrarTipoFicha= async(req, res)=>{
 export const listarTipoFicha = async(req, res)=>{
     try{
 
-        let sql= `SELECT * FROM tipo_ficha `
+        let sql= `SELECT * FROM tipo_equipo `
 
         let [respuesta] = await conexion.query(sql)
 
@@ -47,7 +47,7 @@ export const actualizarTipoFicha = async(req, res)=>{
         let idTipoFicha = req.params.idTipoFicha
         let nombreTipoFicha = req.body.tipoFicha
 
-        let sql= `update tipo_ficha set ti_fi_nombre='${nombreTipoFicha}' where idTipo_ficha=${idTipoFicha}`
+        let sql= `update tipo_equipo set ti_fi_nombre='${nombreTipoFicha}' where idTipo_ficha=${idTipoFicha}`
 
         let [respuesta] = await conexion.query(sql)
 
@@ -69,7 +69,7 @@ export const eliminarTipoFicha = async(req, res)=>{
         
         let idTipoFicha = req.params.idTipoFicha
 
-        let sql = `delete from  tipo_ficha where idTipo_ficha=${idTipoFicha}`
+        let sql = `delete from  tipo_equipo where idTipo_ficha=${idTipoFicha}`
 
         let[respuesta] = await conexion.query(sql)
 

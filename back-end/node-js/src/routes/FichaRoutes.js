@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { registrarFicha, eliminarFicha, actualizarFicha, listarFicha, listarFichaUnica, listarFichaPorAmbiente} from '../controllers/FichaController.js'
+import { registrarFicha, eliminarFicha, actualizarFicha, listarFicha, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica} from '../controllers/FichaController.js'
 
 const rutaFicha = Router()
 
@@ -12,6 +12,11 @@ rutaFicha.put('/actualizar/:idFicha', actualizarFicha)
 rutaFicha.get('/listarUnica/:idFicha', listarFichaUnica)
 
 rutaFicha.get('/listarPorAmbiente/:idAmbiente', listarFichaPorAmbiente)
+
+
+rutaFicha.get('/listarInfoEspecifica/:idFicha', listarInfoEspecifica )
+
+
 
 
 
