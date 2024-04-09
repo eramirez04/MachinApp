@@ -80,7 +80,7 @@
                 "contrasenia" : "123", <br>
                 "especialidad" : "", <br>
                 "empresa" : "", <br>
-                "rol": 150 <br>
+                "rol": 6 <br>
                 } <br>
                 }
               </td>
@@ -117,14 +117,12 @@
         <div class="requerimiento_funcional">
           <span class="titulo_requerimiento"> <span>R1.1 </span>Listar Información de usuarios</span>
           <span class="descripcion_requerimiento">
-            El sistema debe proporcionar que se puede visualizar la información personal registrada
+            El sistema debe permitir la visualización de la información personal registrada.
             El usuario al seleccionar la opción de apartado de usuarios, el sistema recuperara toda la información del
             usuario atreves de su ID asignada internamente el en sistema que esta almacenada en la base de datos.
             En el apartado seleccionado por el usuario, se presentará la información del usuario en una interfaz clara y
             organizada, brindando al usuario un panorama completo de los datos que el sistema ha almacenado.
-            La información presentada en este apartado es (nombre, correo tipo de documento, imagen del usuario,
-            contraseña en forma cifrada y el número de documento)
-
+            La información presentada en este apartado incluirá el nombre, correo electrónico, tipo de documento, imagen del usuario, contraseña cifrada y número de documento.
           </span>
         </div>
         <table>
@@ -400,7 +398,7 @@
             <tr>
               <th> URL </th>
               <td>
-                <span class="btn url">http://localhost:3000/user/actulizar/56</>
+                <span class="btn url">http://localhost:3000/user/actualizar/1</>
               </td>
             </tr>
             <tr>
@@ -424,7 +422,7 @@
                 "contrasenia": "123", <br>
                 "especialidad" : "Mecanico en pantallas", <br>
                 "empresa" : "Sena Empresa", <br>
-                "rol" : 150 <br> }
+                "rol" : 4 <br> }
               </td>
             </tr>
             <tr>
@@ -589,17 +587,9 @@
       </section>
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R3</span>Recperacion de contraseña</span>
+          <span class="titulo_requerimiento"> <span>R3</span>Recuperacion de contraseña</span>
           <span class="descripcion_requerimiento">
-            En el caso tal que el usuario no recuerde o haya perdido su contraseña, se brinda a los usuarios una
-            solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en
-            el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún
-            administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de
-            recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web. <br>
-            Datos para recuperación de contraseña <br>
-            ● correo <br>
-            ● código de que proporciona el software <br>
-            Cuando el usuario ingrese el código e ingrese su contraseña, accede al inicio de la página
+            En el caso de que el usuario no recuerde su contraseña, se brinda a los usuarios una solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web
           </span>
         </div>
         <table>
