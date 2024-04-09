@@ -13,6 +13,7 @@ export const registrarFicha = async(req, res)=>{
     
         let [respuesta] = await conexion.query(sql)
 
+
         if(respuesta.affectedRows>0){
             return res.status(200).json({"mensaje":"Se registro correctamente"})
         }
