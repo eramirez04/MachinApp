@@ -147,14 +147,12 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         return res.status(500).json({"message":"Error en el servidor"})
     }
 
-} 
+}
 
 export const listarFichaUnica=async (req, res)=>{
     
    try{
         let idFicha = req.params.idFicha
-
-
 
         let sql = `
         SELECT 
@@ -178,7 +176,7 @@ export const listarFichaUnica=async (req, res)=>{
 
         if (respuesta.length >0){
 
-             //para que me traiga el id y el tipo de la ficha
+            //para que me traiga el id y el tipo de la ficha
             let sqlTipoEquipo = `
             SELECT 
             idTipo_ficha,
@@ -189,19 +187,58 @@ export const listarFichaUnica=async (req, res)=>{
             
             const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
 
-            //traer todas las variables de esa ficha. 
-            let sqlVariables = `
-            SELECT
-            var_nombre, 
-            var_descripcion,
-            det_valor
-            FROM detalle
-            INNER JOIN variable ON det_fk_variable = idVariable
-            WHERE det_fk_fichas = ${idFicha}
-            `
 
-            const [variables] = await conexion.query(sqlVariables)
+            // traer las variables de la ficha
+            let detallesql = `
+                SELECT 
+                det_fk_variable
+                FROM detalle
+                WHERE det_fk_fichas = ${idFicha}`
 
+            const[detalles] = await conexion.query(detallesql)
+
+            // for para no repetir variable. 
+            let variables = []
+
+            for (let i = 0; i<detalles.length; i++ ){
+                if (!variables.includes(detalles[i].det_fk_variable)){
+                    variables.push(detalles[i].det_fk_variable)
+                }
+            }
+
+            //hacemos la consulta de los detalles e informacion de esas variables.
+
+            let infoVariables= []
+            for(let i =0; i<variables.length; i++){
+
+                //info de la variable
+                let varsql= `
+                SELECT
+                var_nombre,
+                var_descripcion
+                FROM variable
+                WHERE idVariable = ${variables[i]}`
+
+                const[variable] = await conexion.query(varsql)
+
+                //consultamos los detalles de esa variable. 
+                let detSql = `
+                SELECT
+                det_valor
+                FROM detalle
+                WHERE det_fk_variable = ${variables[i]} AND det_fk_fichas = ${idFicha}
+                `
+                const[detallesVar] = await conexion.query(detSql)
+
+                let objVar = {
+                    var_nombre: variable[0].var_nombre,
+                    var_descripcion: variable[0].var_descripcion,
+                    detallesVar: detallesVar
+                }
+
+                infoVariables.push(objVar)
+
+            }
             
             let objFicha = {
                 idFichas: respuesta[0].idFichas,
@@ -216,7 +253,7 @@ export const listarFichaUnica=async (req, res)=>{
                 fi_estado: respuesta[0].fi_estado, 
                 ubicacion: respuesta[0].ubicacion,
                 tipoEquipo,
-                variables
+                infoVariables
             }
             return res.status(200).json(objFicha)
 
@@ -228,7 +265,6 @@ export const listarFichaUnica=async (req, res)=>{
    }catch(error){
         return res.status(500).json({"mensaje":"Error en el servidor"})
    }
-
 }
 
 export const listarInfoEspecifica = async(req, res)=>{
