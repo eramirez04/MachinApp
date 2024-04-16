@@ -154,6 +154,8 @@ export const listarFichaUnica=async (req, res)=>{
    try{
         let idFicha = req.params.idFicha
 
+
+
         let sql = `
         SELECT 
         idFichas, 
@@ -296,7 +298,7 @@ export const listarInfoEspecifica = async(req, res)=>{
         }
 
     }catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"error en el servidor"})
     }
     
 }
