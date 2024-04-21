@@ -23,7 +23,7 @@ export const Store = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      "Mensaje": "n", error
+      "Mensaje": "Error en el servidor", error
     })
   }
 }
@@ -75,7 +75,7 @@ export const actualizarUsuario = async (req, res) => {
       })
     }
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).json({"Mensaje": "Error en el servidor"})
   }
 }
 
@@ -97,14 +97,14 @@ export const EliminarUsuario = async (req, res) => {
       })
     }
   } catch (error) {
-    return res.status(500).json(error.menssage)
+    return res.status(500).json({"Mensaje": "Error en el servidor", error})
   }
 }
 
 export const ListarUsuarioId = async (req, res) => {
   try {
     let id = req.params.id
-    let sqlListarId = `SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ${id} `
+    let sqlListarId = `SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ${id} `
 
     const [resultado] = await conexion.query(sqlListarId)
     if (resultado.length > 0) {
@@ -115,7 +115,7 @@ export const ListarUsuarioId = async (req, res) => {
       })
     }
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).json({"Mensaje":"Error en el servidor",error})
   }
 }
 
