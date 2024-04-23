@@ -6,7 +6,7 @@ export const listarActividades= async (req,res)=>{
     
     try{
        
-        let sql = "select us_nombre,rol_nombre,acti_nombre,acti_descripcion,acti_fecha_realizacion,acti_estado,fk_mantenimiento from actividades INNER JOIN tecnicos_has_actividades ON fk_actividades=idActividades INNER JOIN usuarios ON idUsuarios=fk_usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'tecnico'"
+        let sql = "SELECT * FROM actividades "
 
         const [result] =await conexion.query(sql)  //se puede llamar la variable o escribir directamente 
                                                                                                               //el comando sql 
@@ -15,7 +15,7 @@ export const listarActividades= async (req,res)=>{
         else res.status(404).json({"message":"no se encontro usuarios en la base de datos"})
     }
     catch(err){
-        res.status(500).json({"message":"error en el servidor"+err})
+        res.status(500).json({"message":"error en el servidor"})
 
     }
 
@@ -23,7 +23,7 @@ export const listarActividades= async (req,res)=>{
 
 export const registrarActividades= async (req,res)=>{
     try {
-        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento}=req.body
+        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento,}=req.body
 
         let sql =`insert into actividades(acti_nombre,acti_descripcion,acti_fecha_realizacion, acti_estado, fk_mantenimiento)values('${acti_nombre}','${acti_descripcion}','${acti_fecha_realizacion}','${acti_estado}','${fk_mantenimiento}')`;
     

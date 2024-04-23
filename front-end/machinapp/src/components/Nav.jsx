@@ -23,7 +23,7 @@ const Nav = () => {
     <section className="flex gap-6 fixed">
       <div
         className={`bg-[white] min-h-screen ${
-          open ? " w-52" : "w-16"
+          open ? "w-72" : "w-16"
         } duration-500 text-black px-4`}
       >
         <div className="py-3 flex justify-end">
@@ -39,8 +39,8 @@ const Nav = () => {
               to={menu?.link}
               key={i}
               className={` ${
-                menu?.margin && " mt-72"
-              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-300 rounded-md`}
+                menu?.margin && "mt-96"
+              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
             >
               <div>{React.createElement(menu?.icon, { size: "20" })}</div>
               <h2
