@@ -67,54 +67,68 @@ export const registrarMantenimiento = async (req, res) => {
     }
 }
 
-/* esta bien pero esta dudable */
+/* 16 generar ficha de mantenimiento */
 export const listarRequerimiento17 = async (req, res) => {
     try {
-        let objeto = {};
-        let ayudante = '';
-
-        /* obtiene la fecha de realizacion*/
         const { fecha_realizacion } = req.params;
 
-        
-        let sql = `
+        const sql = `
             SELECT
                 fichas.fi_placa_sena AS referencia_maquina,
                 mantenimiento.mant_codigo_mantenimiento,
                 mantenimiento.mant_descripcion,
                 mantenimiento.mant_fecha_realizacion,
-                actividades.acti_estado
+                actividades.acti_estado,
+                actividades.idActividades,
+                actividades.acti_nombre,
+                tipo_mantenimiento.tipo_mantenimiento,
+                fichas.idFichas,
+                fichas.fi_fecha_inicio_garantia,
+                fichas.fi_fecha_fin_garantia,
+                fichas.fi_descripcion_garantia
             FROM
                 mantenimiento
             LEFT JOIN
                 fichas ON mantenimiento.mant_fk_fichas = fichas.idFichas
             LEFT JOIN
                 actividades ON actividades.fk_mantenimiento = mantenimiento.idMantenimiento
+            LEFT JOIN
+                tipo_mantenimiento ON mantenimiento.fk_tipo_mantenimiento = tipo_mantenimiento.idTipo_mantenimiento
             WHERE 
-                mantenimiento.mant_fecha_realizacion = '${fecha_realizacion}'
+                mantenimiento.mant_fecha_realizacion = ?
         `;
-        const [result] = await conexion.query(sql);
 
-        let array = [];
+        const [result] = await conexion.query(sql, [fecha_realizacion]);
 
-        for (let i = 0; i < result.length; i++) {
-            ayudante = result[i];
+        if (result.length > 0) {
+            const requerimientos = [];
+            const idsProcesados = new Set();
 
-            /* crear un objeto para almacenar la informacion */
-            objeto = {
-                referencia_maquina: ayudante.referencia_maquina,
-                codigo_mantenimiento: ayudante.mant_codigo_mantenimiento,
-                descripcion_mantenimiento: ayudante.mant_descripcion,
-                fecha_realizacion: ayudante.mant_fecha_realizacion,
-                estado_maquina: ayudante.acti_estado
-            };
-
-            array.push(objeto);
-        }
-
-        /* verificar si se encontraron requerimientos de mantenimiento */
-        if (array.length > 0) {
-            res.status(200).json(array);
+            for (let i = 0; i < result.length; i++) {
+                const row = result[i];
+                
+                /* evitar la repetición de datos */
+                if (!idsProcesados.has(row.idActividades)) {
+                    const requerimiento = {
+                        referencia_maquina: row.referencia_maquina,
+                        codigo_mantenimiento: row.mant_codigo_mantenimiento,
+                        descripcion_mantenimiento: row.mant_descripcion,
+                        fecha_realizacion: row.mant_fecha_realizacion,
+                        estado_maquina: row.acti_estado,
+                        idActividades: row.idActividades,
+                        acti_nombre: row.acti_nombre,
+                        tipo_mantenimiento: row.tipo_mantenimiento,
+                        idFichas: row.idFichas,
+                        fi_fecha_inicio_garantia: row.fi_fecha_inicio_garantia,
+                        fi_fecha_fin_garantia: row.fi_fecha_fin_garantia,
+                        fi_descripcion_garantia: row.fi_descripcion_garantia
+                    };
+                    requerimientos.push(requerimiento);
+                    idsProcesados.add(row.idActividades);
+                }
+            }
+            
+            res.status(200).json(requerimientos);
         } else {
             res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." });
         }
