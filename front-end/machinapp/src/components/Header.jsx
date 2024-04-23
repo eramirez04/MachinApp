@@ -3,14 +3,23 @@ import React, { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
 import sena3 from '../assets/img/sena3.jpg'
+import { Link } from "react-router-dom";
 
 const Header = () => {
+
+    const menus = [
+        {link: "/", img:sena3 },
+      ];
     return(
         <header >
-            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 bg-greental">
+            <nav className="px-4 lg:px-6 py-2.5 bg-greental">
                 <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <a className="flex items-center">
-                        <img src={sena3} className=" h-20" />
+                    {menus?.map((menu) => (
+                          <Link to={menu?.link}>
+                            {menu.img}
+                          </Link>
+                        ))}
                     </a>
                     <div className="flex items-center lg:order-2">
                         <a href="#" className=" dark:text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  "><FaRegUserCircle size="4rem" /></a>
