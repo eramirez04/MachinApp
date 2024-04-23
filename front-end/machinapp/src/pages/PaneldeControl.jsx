@@ -4,15 +4,12 @@ import api from '../components/Api'
 
 import { Link, useNavigate } from 'react-router-dom'
 
-import Header from '../components/Header'
 import Nav from '../components/Nav'
-import NavR from '../components/NavR'
+import Header from '../components/Header'
 
 import ButtonU from '../components/BottonU'
 import ButtonD from '../components/BottonD'
 import ButtonC from '../components/BottonC'
-
-import InputSearch from '../components/InputSearch'
 
 const ListarUsuarios = () =>{
 
@@ -54,43 +51,31 @@ const ListarUsuarios = () =>{
         <>
             <div className=' bg-yellow-50'>
                 <Header/>
-                <Nav/> 
-                <NavR/> 
-                <InputSearch/> 
+                <Nav/>    
 
-               
+                <div className='m-3 p-96 flex flex-row'>
+                    <p className='font-bold'>
+                        <Link to="/registrar"><ButtonC/></Link>
+                    </p>
 
-                <Link to="/registrar" className=' float-right'><ButtonC/></Link>
-
-
-                <div className='m-3 pl-52 flex-auto pt-32 '>
-
-                    <table className='table'>
-                        <thead className=' text-slate-800 text-sm pl-52'>
-                            <tr >
-                                <th className=' pb-8'>ID</th>
-                                <th className=' pb-8'>Nombre</th>
-                                <th className=' pb-8'>Correo</th>
-                                <th className=' pb-8'>contraseña</th>
-                                <th className=' pb-8'>tipo de documento</th>
-                                <th className=' pb-8'>numero de documento</th>
-                                <th className=' pb-8'>roles</th>
-                                <th className=' pb-8'>Eliminar</th>
-                                <th className=' pb-8'>Editar</th>
+                    <table className='table bg-white'>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Eliminar</th>
+                                <th>Editar</th>
                             </tr>
                         </thead>
-                        <tbody className=' bg-white text-sm border-b-neutral-500'>
+                        <tbody >
                             {
                                 usuarios.map((usuario)=>(
                                     <tr  key={usuario.idUsuarios}>
-                                        <td className=' px-14'>{usuario.idUsuarios} </td>
-                                        <td className=' pr-24'>{usuario.us_nombre}</td>
-                                        <td className=' px-5 pr-16'>{usuario.us_correo}</td>
-                                        <td className=' pr-24'>{usuario.us_contrasenia}</td>
-                                        <td className=' pr-16'>{usuario.us_tipo_documento}</td>
-                                        <td className=''>{usuario.us_numero_documento}</td>
-                                        <td className=''>{usuario.rol_nombre}</td>
-                                        <td className=''><button onClick={borrarUsuario} ></button><ButtonD/></td>
+                                        <td className='p-3'>{usuario.idUsuarios} </td>
+                                        <td className='p-4'>{usuario.us_nombre}</td>
+                                        <td className='p-5'>{usuario.us_correo}</td>
+                                        <td className='p-3'><button onClick={borrarUsuario} ></button><ButtonD/></td>
                                         <td ><Link to={`/actualizar/${usuario.idUsuarios}`}><ButtonU/></Link></td>
                                     </tr>
                                 ))
@@ -98,9 +83,9 @@ const ListarUsuarios = () =>{
 
                         </tbody>
                     </table>
+                        
                 </div>
-                
-            </div>
+                </div>
 
         </>
     )
