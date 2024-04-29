@@ -8,23 +8,27 @@ export const Login = async (req, res) => {
         const { correo, contrasenia } = req.body
 
         if (!correo && !contrasenia) {
-            return res.status(400).json({ message: "Correo y Contraseña son requeridos" });
+            return res.status(400).json({ mensaje: "Correo y Contraseña son requeridos" });
         }
 
-        let sql = `SELECT * FROM usuarios WHERE us_correo = '${correo}' AND us_contrasenia = '${contrasenia}'`
+        let sql = `SELECT idUsuarios,us_nombre, us_especialidad, fk_roles FROM usuarios WHERE us_correo = '${correo}' AND us_contrasenia = '${contrasenia}'`
         const [resultado] = await conexion.query(sql)
         let usuario = {}
         usuario = resultado[0]
 
         if (resultado.length === 0) {
-            return res.status(400).json({ message: "Contraseña o correo incorrectos" })
+            return res.status(400).json({ mensaje: "Contraseña o correo incorrectos" })
         } else {
-            const token = Jwt.sign({ usuario }, process.env.AUTH_SECRET, { expiresIn: process.env.TIME })
-            return res.status(200).json({ token })
+            const token = Jwt.sign({ user: usuario }, process.env.AUTH_SECRET, { expiresIn: process.env.TIME })
+            return res.status(200).json({
+                "Mensaje": "Usuario autorizado",
+                usuario: resultado,
+                token: token
+            })
         }
     } catch (error) {
         return res.status(500).json({
-            "Mensaje": "Error en el servidor"
+            Mensaje: "Error en el servidor"
         })
     }
 }
