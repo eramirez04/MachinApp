@@ -1,4 +1,5 @@
 import { conexion } from '../database/database.js';
+import {validationResult} from 'express-validator'
 
 /* funcional */
 export const listarTipoMantenimiento=async(req,res) =>{
@@ -17,6 +18,10 @@ export const listarTipoMantenimiento=async(req,res) =>{
 /* funcional */
 export const registrarTipoMantenimiento = async(req, res) =>{
     try{
+        const error = validationResult(req);
+        if (!error.isEmpty()){
+            return res.status(400).json(error);
+        }
     let { tipo_mantenimiento} = req.body;
 
     let sql =`INSERT INTO tipo_mantenimiento (tipo_mantenimiento)
@@ -54,6 +59,10 @@ export const eliminarTipoMantenimiento = async (req, res) => {
 /* funcional */
 export const actualizarTipoMantenimiento= async (req,res)=>{
     try {
+        const error = validationResult(req);
+        if (!error.isEmpty()){
+            return res.status(400).json(error);
+        }
         
         let{ tipo_mantenimiento}=req.body
 

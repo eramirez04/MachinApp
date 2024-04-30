@@ -1,8 +1,15 @@
 import {conexion} from '../database/database.js'
 
+import { validationResult } from 'express-validator'
 
 export const registrarVariable= async(req, res)=>{
     try{
+
+
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
 
         let{varNombre, varDescripcion, fkTipoFicha}= req.body
 
@@ -19,7 +26,7 @@ export const registrarVariable= async(req, res)=>{
         }
 
     }catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor"+error})
     }
 }
 
@@ -45,6 +52,13 @@ export const listarVariable = async(req, res)=>{
 export const actualizarVariable = async (req, res)=>{
 
     try{
+
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
+        
         let idVariable = req.params.idVariable
         let{varNombre, varDescripcion, fkTipoFicha}= req.body
     
