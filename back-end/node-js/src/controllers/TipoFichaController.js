@@ -1,9 +1,18 @@
 import { conexion } from '../database/database.js'
 
+import { validationResult } from 'express-validator'
+
 
 export const registrarTipoFicha= async(req, res)=>{
 
     try{
+
+        const error = validationResult(req)
+        
+        if (!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
 
         let tipoFicha = req.body.tipoFicha
 
@@ -19,7 +28,7 @@ export const registrarTipoFicha= async(req, res)=>{
         }
 
     }catch(e){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor"+ e})
     }
 }
 
@@ -44,6 +53,13 @@ export const listarTipoFicha = async(req, res)=>{
 export const actualizarTipoFicha = async(req, res)=>{
     
     try{
+
+        const error = validationResult(req)
+        
+        if (!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
         let idTipoFicha = req.params.idTipoFicha
         let nombreTipoFicha = req.body.tipoFicha
 
