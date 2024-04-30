@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { listarSitio, editarSitio, eliminarSitio, registrarSitio } from "../controllers/sitiosController.js"
-import { verificarSitio } from "../../../validar/sitiosValidation.js"
+import { verificarSitio } from "../../validar/sitiosValidation.js"
 import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaSitio = Router()
