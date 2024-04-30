@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Documentacion</title>
+  <title>Documentacion MachinApp</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 
@@ -76,11 +76,11 @@
                 "apellidos" : "Ramirzez Ruiz", <br>
                 "correo" : "eramirez@soy.sena.edu.co", <br>
                 "numero_documento" : "43123241", <br>
-                "tipo_documento" : "CC", <br>
-                "contrasenia" : "123", <br>
+                "tipo_documento" : "cedula ciudadania", <br>
+                "contrasenia" : "12345678", <br>
                 "especialidad" : "", <br>
                 "empresa" : "", <br>
-                "rol": 6 <br>
+                "rol": 98 <br>
                 } <br>
                 }
               </td>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL </td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario </th>
@@ -228,7 +228,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -309,7 +309,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario</th>
@@ -403,7 +403,7 @@
             </tr>
             <tr>
               <th> Header</th>
-              <td> NULL </td>
+              <td> token </td>
             </tr>
             <tr>
               <th>Usuario </th>
@@ -413,16 +413,19 @@
               <th> Peticion Body </th>
               <td>
                 json : <br>
-                {
-                "nombre": "Emersson", <br>
-                "apellidos": "Ramirez Ruiz", <br>
-                "correo": "eramirez@soy.sena.edu.co", <br>
-                "numero_documento": "CC", <br>
-                "tipo_documento": "43123241", <br>
-                "contrasenia": "123", <br>
-                "especialidad" : "Mecanico en pantallas", <br>
-                "empresa" : "Sena Empresa", <br>
-                "rol" : 4 <br> }
+                <pre>
+                  {
+                    "nombre": "Emersson",
+                    "apellidos": "Ramirez Ruiz",
+                    "correo": "eramirez@soy.sena.edu.co",
+                    "numero_documento": "242342343424",
+                    "contrasenia": "123",
+                    "especialidad": "Mecanico en pantallas",
+                    "empresa": "Sena Empresa",
+                    "rol": 98
+                  }
+                </pre>
+                
               </td>
             </tr>
             <tr>
@@ -485,7 +488,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+              <td><span class="btn url">http://localhost:3000/login</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -498,93 +501,50 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json : <br>
-                { <br>
-
-                }
+                json : <pre>
+                  {
+                    "correo" : "emerssonramirez11@gmail.com",
+                    "contrasenia" : "123456"
+                  }
+                </pre>
+                
               </td>
             </tr>
 
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{
+                <pre>
+                  correcto :{
+                    {
+                      "Mensaje": "Usuario autorizado",
+                      "usuario": [
+                        {
+                          "idUsuarios": 48,
+                          "us_nombre": "Emersson",
+                          "us_especialidad": "",
+                          "fk_roles": 76
+                        }
+                      ],
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXN1YXJpb3MiOjQ4LCJ1c19ub21icmUiOiJFbWVyc3NvbiIsInVzX2VzcGVjaWFsaWRhZCI6IiIsImZrX3JvbGVzIjo3Nn0sImlhdCI6MTcxNDQ0MjUzNiwiZXhwIjoxNzE0NTI4OTM2fQ.fEu64kmRLau1FqZ9ogh-KlcucQltCtcY-jMqdBdRJ7s"
+                    }
+                  }
+                </pre>
+               <pre>
+               incorrecto: { mensaje: "Contraseña o correo incorrectos" }
+               </pre>
+               <pre>
+                error {
+                  Mensaje: "Error en el servidor"
+              }
+               </pre>
 
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
               </td>
             </tr>
           </tbody>
         </table>
       </section>
 
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R2.1</span>Cerrar sesión </span>
-          <span class="descripcion_requerimiento">
-            Se le debe permitir a los usuarios registrados poder cerrar su sesión de manera segura, de manera de poder
-            garantizar que los datos.
-            El token generado al momento de ingresar las credenciales válidas, se debe destruir,
-            En la barra de navegación en la parte inferior, en forma de botón el usuario podrá hacer clic, de esta forma
-            la sesión se destruirá y será dirigido a la página de bienvenida de la aplicación.
-          </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF01</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn post"> POST</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Usuarios</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json : <br>
-                { <br>
-
-                }
-              </td>
-            </tr>
-
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
           <span class="titulo_requerimiento"> <span>R3</span>Recuperacion de contraseña</span>
@@ -608,7 +568,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
