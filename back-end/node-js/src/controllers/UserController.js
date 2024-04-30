@@ -1,5 +1,5 @@
 import { conexion } from "../database/database.js"
-import { validationResult } from "express-validator"
+import { body, validationResult } from "express-validator"
 
 
 export const Store = async (req, res) => {
@@ -147,6 +147,33 @@ export const ListarTecnicos = async (req, res) => {
         "Mensaje": "Usuario no encontrado"
       })
     }
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+import { transporter } from "../config/email.js"
+
+export const recuperaraContra = async (req,res) =>{
+  try {
+
+    const id = req.body
+
+    let numero = 43123241111
+    let sql = `select * from usuarios where us_numero_documento = ${numero}`
+
+    const [resultado] = await conexion.query(sql)
+
+
+    const result = await transporter.sendMail({
+      from: '"Holis pamiñin" <machinappsena@gmail.com>', // sender address
+      to: "davidsantiagorodriguezlosada@gmail.com", // list of receivers
+      subject: "enviando 7000 mensajes a pamiñin", // Subject line
+      body: resultado
+    });
+  
+   res.status(200).json({'mensahe' : true, result})
+    
   } catch (error) {
     return res.status(500).json(error)
   }

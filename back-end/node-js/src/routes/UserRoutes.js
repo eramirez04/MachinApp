@@ -7,6 +7,9 @@ import { middlewareUsuario, middlewareUsuarioActualizar } from "../../validar/mi
 // validar token 
 import { verificar } from "../middlewares/LoginMidleware.js";
 
+
+import { recuperaraContra } from "../controllers/UserController.js";
+
 const RutaUsuario = Router()
 
 RutaUsuario.post('/registrar', middlewareUsuario,Store)
@@ -15,5 +18,7 @@ RutaUsuario.put('/actualizar/:id',middlewareUsuarioActualizar, verificar,actuali
 RutaUsuario.delete('/eliminar/:id', verificar, EliminarUsuario)
 RutaUsuario.get('/listar/:id', verificar, ListarUsuarioId)
 RutaUsuario.get('/tecnico', verificar, ListarTecnicos)
+
+RutaUsuario.post('/recuperar',recuperaraContra)
 
 export default RutaUsuario
