@@ -1,6 +1,15 @@
 import { conexion } from "../database/database.js"
+import { validationResult } from "express-validator"
+
+
 export const Store = async (req, res) => {
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
+
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
     let sql = `
     INSERT INTO usuarios
@@ -52,6 +61,12 @@ export const ListarUsuarios = async (req, res) => {
 
 export const actualizarUsuario = async (req, res) => {
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
+    
     let id = req.params.id
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
     let sql = `
