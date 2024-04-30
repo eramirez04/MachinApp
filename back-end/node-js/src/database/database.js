@@ -1,8 +1,13 @@
-import {createPool} from "mysql2/promise"
+import { createPool } from "mysql2/promise"
+import dotenv from "dotenv"
+dotenv.config({ path: 'env/.env' })
+
+
 
 export const conexion = createPool({
-    host: 'localhost',
-    user:'root',
-    port:3306,
-    database:'modelofisico'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    database: process.env.DB_DATABASE
 })
