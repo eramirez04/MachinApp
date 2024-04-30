@@ -2,12 +2,15 @@ import { Router } from "express";
 import {listarTipoMantenimiento, registrarTipoMantenimiento, eliminarTipoMantenimiento, actualizarTipoMantenimiento} from "../controllers/tipoMantController.js";
 const tipoMantRoutes= Router();
 
-tipoMantRoutes.get('/listar',listarTipoMantenimiento);
+import {VerificarTipoMantenimiento} from '../../validar/mantenimiento/tipo_mantenimiento_validar.js'
+import {verificar} from '../middlewares/LoginMidleware.js'
 
-tipoMantRoutes.post('/registrar',registrarTipoMantenimiento);
+tipoMantRoutes.get('/listar', verificar,listarTipoMantenimiento);
 
-tipoMantRoutes.delete('/eliminar/:idTipo_mantenimiento',eliminarTipoMantenimiento);
+tipoMantRoutes.post('/registrar', verificar,VerificarTipoMantenimiento, registrarTipoMantenimiento);
 
-tipoMantRoutes.put('/actualizar/:idTipo_mantenimiento',actualizarTipoMantenimiento);
+tipoMantRoutes.delete('/eliminar/:idTipo_mantenimiento', verificar, eliminarTipoMantenimiento);
+
+tipoMantRoutes.put('/actualizar/:idTipo_mantenimiento',VerificarTipoMantenimiento, actualizarTipoMantenimiento);
 
 export default tipoMantRoutes
