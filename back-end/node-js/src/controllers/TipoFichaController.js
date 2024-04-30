@@ -1,13 +1,22 @@
 import { conexion } from '../database/database.js'
 
+import { validationResult } from 'express-validator'
+
 
 export const registrarTipoFicha= async(req, res)=>{
 
     try{
 
+        const error = validationResult(req)
+        
+        if (!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
+
         let tipoFicha = req.body.tipoFicha
 
-        let sql = `insert into tipo_ficha (ti_fi_nombre) values ('${tipoFicha}')`
+        let sql = `insert into tipo_equipo (ti_fi_nombre) values ('${tipoFicha}')`
 
         const [respuesta] = await conexion.query(sql)
 
@@ -19,14 +28,14 @@ export const registrarTipoFicha= async(req, res)=>{
         }
 
     }catch(e){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor"+ e})
     }
 }
 
 export const listarTipoFicha = async(req, res)=>{
     try{
 
-        let sql= `SELECT * FROM tipo_ficha `
+        let sql= `SELECT * FROM tipo_equipo `
 
         let [respuesta] = await conexion.query(sql)
 
@@ -44,10 +53,17 @@ export const listarTipoFicha = async(req, res)=>{
 export const actualizarTipoFicha = async(req, res)=>{
     
     try{
+
+        const error = validationResult(req)
+        
+        if (!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
         let idTipoFicha = req.params.idTipoFicha
         let nombreTipoFicha = req.body.tipoFicha
 
-        let sql= `update tipo_ficha set ti_fi_nombre='${nombreTipoFicha}' where idTipo_ficha=${idTipoFicha}`
+        let sql= `update tipo_equipo set ti_fi_nombre='${nombreTipoFicha}' where idTipo_ficha=${idTipoFicha}`
 
         let [respuesta] = await conexion.query(sql)
 
@@ -69,7 +85,7 @@ export const eliminarTipoFicha = async(req, res)=>{
         
         let idTipoFicha = req.params.idTipoFicha
 
-        let sql = `delete from  tipo_ficha where idTipo_ficha=${idTipoFicha}`
+        let sql = `delete from  tipo_equipo where idTipo_ficha=${idTipoFicha}`
 
         let[respuesta] = await conexion.query(sql)
 

@@ -1,26 +1,24 @@
 /* routeusuario */
 import { Router } from "express";
-import {listarMantenimiento, registrarMantenimiento, eliminarMantenimiento, actualizarMantenimiento, listarMantenimientoPorId, listarMantenimientoPorId_actividades} from "../controllers/mantenimientoController.js";
+import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, listarRequerimiento17, mantenimientoDeMaquinas } from "../controllers/mantenimientoController.js";
 const mantenimiento= Router();
-/* lista general */
-mantenimiento.get('/listar',listarMantenimiento);
-/* lista por ID y activdades*/
-mantenimiento.get('/listar/:idMantenimiento', listarMantenimientoPorId_actividades);
 
-/* esta era el espacio donde hiba listar por proxima fecha */
+import {VerificarMantenimiento} from '../../validar/mantenimiento/mantenimiento_validar'
+import {verificar} from '../middlewares/LoginMidleware.js'
 
+/* requerimiento 5 */
+mantenimiento.get('/listarRequerimiento/', verificar, listarRequerimiento5);
 
+/* 5.2 lista por ID y activdades*/
+mantenimiento.get('/listar_por_id/:idMantenimiento',verificar, listarMantenimientoPorId);
 
-/* lista por ID */
-mantenimiento.get('/listarPorIdMantenimiento/:idMantenimiento', listarMantenimientoPorId);
+/* registrar es el requerimiento 14 */
+mantenimiento.post('/registrar',verificar, VerificarMantenimiento, registrarMantenimiento);
 
-/* registrar */
-mantenimiento.post('/registrar',registrarMantenimiento);
-/* eliminar */
-mantenimiento.delete('/eliminar/:id_mantenimiento',eliminarMantenimiento);
-/* actualizar */
-mantenimiento.put('/actualizar/:id_mantenimiento',actualizarMantenimiento);
+/* listar es el requerimiento 17 */
+mantenimiento.get('/listarRequerimiento17/:fecha_realizacion', verificar, listarRequerimiento17);
 
-
+/* listar por id de fichas */
+mantenimiento.get('/listar_por_ficha/:idFichas', verificar, mantenimientoDeMaquinas);
 
 export default mantenimiento

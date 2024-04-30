@@ -1,22 +1,34 @@
 import { conexion } from "../database/database.js"
+import { validationResult } from "express-validator"
 
 export const listarArea = async (req, res) => {
     try {
-        let sql = "select * from areas"
-
-        const [result] = await conexion.query(sql)
-
-        if (result.length > 0) res.status(200).json(result)
-
-        else res.status(404).json({ "message" : "No se encontraron areas en la BD" })
-    }
-    catch (error) {
-        res.status(500).json({ "message" : "Error", error })
-    }
+      let sql = "SELECT idArea, sede_nombre, area_nombre FROM areas INNER JOIN sedes ON area_fk_sedes = idSede"
+      const [resultadoArea] = await conexion.query(sql)
+  
+      if (resultadoArea.length > 0) {
+        res.status(200).json({
+          "Mensaje": "Area encontrado",
+          resultadoArea
+        })
+      }
+      else {
+        return res.status(404).json(
+          { "Mensaje": "No se encontraron Area" }
+        )
+      }
+    } catch (error) {
+      return res.status(500).json({"Mensaje"  : "Error en el servidor", error})
+    }
 }
 
 export const registrarArea = async (req, res) => {
     try {
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json(error)
+        }
+
         let {area_nombre, area_fk_sedes} = req.body
 
         let sql = `insert into areas (area_nombre, area_fk_sedes)
@@ -58,6 +70,11 @@ export const eliminarArea = async (req, res) => {
 
 export const editarArea = async (req, res) => {
     try {
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json(error)
+        }
+        
         let {area_nombre} = req.body
 
         let id = req.params.id_area

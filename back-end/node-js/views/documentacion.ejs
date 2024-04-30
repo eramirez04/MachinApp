@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Documentacion</title>
+  <title>Documentacion MachinApp</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 
@@ -76,11 +76,11 @@
                 "apellidos" : "Ramirzez Ruiz", <br>
                 "correo" : "eramirez@soy.sena.edu.co", <br>
                 "numero_documento" : "43123241", <br>
-                "tipo_documento" : "CC", <br>
-                "contrasenia" : "123", <br>
+                "tipo_documento" : "cedula ciudadania", <br>
+                "contrasenia" : "12345678", <br>
                 "especialidad" : "", <br>
                 "empresa" : "", <br>
-                "rol": 150 <br>
+                "rol": 98 <br>
                 } <br>
                 }
               </td>
@@ -117,14 +117,12 @@
         <div class="requerimiento_funcional">
           <span class="titulo_requerimiento"> <span>R1.1 </span>Listar Información de usuarios</span>
           <span class="descripcion_requerimiento">
-            El sistema debe proporcionar que se puede visualizar la información personal registrada
+            El sistema debe permitir la visualización de la información personal registrada.
             El usuario al seleccionar la opción de apartado de usuarios, el sistema recuperara toda la información del
             usuario atreves de su ID asignada internamente el en sistema que esta almacenada en la base de datos.
             En el apartado seleccionado por el usuario, se presentará la información del usuario en una interfaz clara y
             organizada, brindando al usuario un panorama completo de los datos que el sistema ha almacenado.
-            La información presentada en este apartado es (nombre, correo tipo de documento, imagen del usuario,
-            contraseña en forma cifrada y el número de documento)
-
+            La información presentada en este apartado incluirá el nombre, correo electrónico, tipo de documento, imagen del usuario, contraseña cifrada y número de documento.
           </span>
         </div>
         <table>
@@ -145,7 +143,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL </td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario </th>
@@ -230,7 +228,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -311,7 +309,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario</th>
@@ -400,12 +398,12 @@
             <tr>
               <th> URL </th>
               <td>
-                <span class="btn url">http://localhost:3000/user/actulizar/56</>
+                <span class="btn url">http://localhost:3000/user/actualizar/1</>
               </td>
             </tr>
             <tr>
               <th> Header</th>
-              <td> NULL </td>
+              <td> token </td>
             </tr>
             <tr>
               <th>Usuario </th>
@@ -415,16 +413,19 @@
               <th> Peticion Body </th>
               <td>
                 json : <br>
-                {
-                "nombre": "Emersson", <br>
-                "apellidos": "Ramirez Ruiz", <br>
-                "correo": "eramirez@soy.sena.edu.co", <br>
-                "numero_documento": "CC", <br>
-                "tipo_documento": "43123241", <br>
-                "contrasenia": "123", <br>
-                "especialidad" : "Mecanico en pantallas", <br>
-                "empresa" : "Sena Empresa", <br>
-                "rol" : 150 <br> }
+                <pre>
+                  {
+                    "nombre": "Emersson",
+                    "apellidos": "Ramirez Ruiz",
+                    "correo": "eramirez@soy.sena.edu.co",
+                    "numero_documento": "242342343424",
+                    "contrasenia": "123",
+                    "especialidad": "Mecanico en pantallas",
+                    "empresa": "Sena Empresa",
+                    "rol": 98
+                  }
+                </pre>
+                
               </td>
             </tr>
             <tr>
@@ -487,7 +488,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+              <td><span class="btn url">http://localhost:3000/login</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -500,26 +501,44 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json : <br>
-                { <br>
-
-                }
+                json : <pre>
+                  {
+                    "correo" : "emerssonramirez11@gmail.com",
+                    "contrasenia" : "123456"
+                  }
+                </pre>
+                
               </td>
             </tr>
 
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{
+                <pre>
+                  correcto :{
+                    {
+                      "Mensaje": "Usuario autorizado",
+                      "usuario": [
+                        {
+                          "idUsuarios": 48,
+                          "us_nombre": "Emersson",
+                          "us_especialidad": "",
+                          "fk_roles": 76
+                        }
+                      ],
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXN1YXJpb3MiOjQ4LCJ1c19ub21icmUiOiJFbWVyc3NvbiIsInVzX2VzcGVjaWFsaWRhZCI6IiIsImZrX3JvbGVzIjo3Nn0sImlhdCI6MTcxNDQ0MjUzNiwiZXhwIjoxNzE0NTI4OTM2fQ.fEu64kmRLau1FqZ9ogh-KlcucQltCtcY-jMqdBdRJ7s"
+                    }
+                  }
+                </pre>
+               <pre>
+               incorrecto: { mensaje: "Contraseña o correo incorrectos" }
+               </pre>
+               <pre>
+                error {
+                  Mensaje: "Error en el servidor"
+              }
+               </pre>
 
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
               </td>
             </tr>
           </tbody>
@@ -528,78 +547,9 @@
 
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R2.1</span>Cerrar sesión </span>
+          <span class="titulo_requerimiento"> <span>R3</span>Recuperacion de contraseña</span>
           <span class="descripcion_requerimiento">
-            Se le debe permitir a los usuarios registrados poder cerrar su sesión de manera segura, de manera de poder
-            garantizar que los datos.
-            El token generado al momento de ingresar las credenciales válidas, se debe destruir,
-            En la barra de navegación en la parte inferior, en forma de botón el usuario podrá hacer clic, de esta forma
-            la sesión se destruirá y será dirigido a la página de bienvenida de la aplicación.
-          </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF01</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn post"> POST</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Usuarios</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json : <br>
-                { <br>
-
-                }
-              </td>
-            </tr>
-
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R3</span>Recperacion de contraseña</span>
-          <span class="descripcion_requerimiento">
-            En el caso tal que el usuario no recuerde o haya perdido su contraseña, se brinda a los usuarios una
-            solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en
-            el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún
-            administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de
-            recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web. <br>
-            Datos para recuperación de contraseña <br>
-            ● correo <br>
-            ● código de que proporciona el software <br>
-            Cuando el usuario ingrese el código e ingrese su contraseña, accede al inicio de la página
+            En el caso de que el usuario no recuerde su contraseña, se brinda a los usuarios una solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web
           </span>
         </div>
         <table>
@@ -618,7 +568,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -652,6 +602,2109 @@
           </tbody>
         </table>
       </section>
+      <!-- kevin 5 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R5</span>listar fecha de proximo mantenimineto</span>
+          <span class="descripcion_requerimiento">
+            Cuando el usuario entre en la plataforma en la página principal encontrará un calendario donde se encontrarán las fechas de los próximos mantenimientos, al dar clic en dichas fechas con mantenimientos activos, el usuario podrá entrar a una página en donde encontrará información general de las máquinas agendadas para dicha fecha
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF05</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/listarRequerimiento</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                    'muestra los datos'
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron los requerimientos completos en la base de datos." }
+                } <br>
+                error : {
+                    { "message": "Error en el controlador mantenimientoController.js: " + err }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6</span>Administrar información de actividades añadir</span>
+          <span class="descripcion_requerimiento">
+            Una vez cargado el informe de mantenimiento, se podrá añadir cuales son las actividades a realizar del próximo mantenimiento en el calendario y allí mismo se podrán visualizar, teniendo en cuenta que las actividades a realizar depende del mantenimiento en donde se encuentre.
+            Los instructores junto con el administrador podrán añadir más actividades a este mantenimiento sin la necesidad de hacer un nuevo informe
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                    "acti_nombre":"Renovación de RAM",<br>
+                    "acti_descripcion":"cambio de ram",<br>
+                    "acti_fecha_realizacion":"2024-03-19",<br>
+                    "acti_estado":"realizado",<br>
+                    "fk_mantenimiento":1<br>
+                  
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "menssage":"se registro con exito"
+                }
+                <br>
+                incorrecto: {
+                  { "menssage":"No se registro" }
+                } <br>
+                error : {
+                    { "menssage":"error"+error }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+            <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6.1</span>Actualizar información de actividades </span>
+          <span class="descripcion_requerimiento">
+            Las actividades, tendrá la opción de ser editadas una vez cargado el informe de mantenimiento, se podrá actualizar las actividades a realizar del próximo mantenimiento en el calendario en caso de que la información sea incorrecta o cambie
+            Esta opción será tanto para el rol de instructores y administradores en el apartado del calendario.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/actualizar/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                  {
+                    "acti_nombre":"Renovación de DISCO",<br>
+                    "acti_descripcion":"cambio de disco",<br>
+                    "acti_fecha_realizacion":"2024-03-19",<br>
+                    "acti_estado":"realizado",<br>
+                    "fk_mantenimiento":1<br>
+                  }
+
+                   
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "menssage":"se actualizo con exito"
+                }
+                <br>
+                incorrecto: {
+                  { "menssage":"No se actualizo" }
+                } <br>
+                error : {
+                    { "menssage":"error"+error }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+                  <!-- jose luis R6 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R6.2</span>Visualizar actividades cargadas al mantenimiento </span>
+          <span class="descripcion_requerimiento">
+            Una vez cargado el informe de mantenimiento, se podrá añadir cuales son las actividades a realizar del próximo mantenimiento en el calendario y allí mismo se podrán visualizar, teniendo en cuenta que las actividades a realizar depende del mantenimiento en donde se encuentre.
+            Los instructores junto con el administrador podrán añadir más actividades a este mantenimiento sin la necesidad de hacer un nuevo informe
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF06.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/actividades/listar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, tecnicos, aprendiz y externo</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {
+                    "us_nombre": "Emersson",<br>
+                    "rol_nombre":"tecnico",<br>
+                    "acti_nombre": "Renovación de DISCO",<br>
+                    "acti_descripcion": "cambio de disco",<br>
+                    "acti_fecha_realizacion": "2024-03-19",<br>
+                    "acti_estado": "realizado ",<br>
+                    "fk_mantenimiento":1<br>
+                  }
+                }
+                <br>
+                incorrecto: {
+                  { "message":"no se encontro usuarios en la base de datos" }
+                } <br>
+                error : {
+                    { "message":"error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7</span>Registrar un centro </span>
+          <span class="descripcion_requerimiento">
+            El administrador deberá registrar el centro al que se le asignará el software. En este centro es donde los usuarios se podrán registrar y podrán acceder a su ambiente y los equipos que allí se encuentran. Para registrar un centro se debe ingresar al apartado de sitios, donde se encontrará un botón "crear centro" en la parte inferior derecha. De esta manera aparecerá un formulario donde se rellenarán los siguientes datos: <br>
+            ●Nombre del centro<br>
+            ●Descripción del centro<br>
+            ●Subdirector<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/registrarcentro</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "cen_nombre":"CGDSS",<br>
+                "cen_descripcion":"Centro ubicado en Pitalito Huila donde se encuentra la ENCF",<br>
+                "cen_regional":"Huila",<br>
+                "cen_municipio":"Pitalito",<br>
+                "cen_subdirector":"Carlos Muñoz"<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Centro registrado correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7.1</span>Actualización de información de centro </span>
+          <span class="descripcion_requerimiento">
+            El administrador tendrá acceso a la opción de actualizar la información que se tiene del centro en el que se encuentra registrado. Esta opción se encuentra en el apartado "sitios y lugares". La información que se podrá actualizar del centro es la siguiente:<br>
+            ●Nombre del centro<br>
+            ●Descripción del centro<br>
+            ●Subdirector<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/editarcentro/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "cen_nombre":"CGDSS",<br>
+                "cen_descripcion":"Centro ubicado en Pitalito Huila donde se encuentra la ENCF",<br>
+                "cen_regional":"Huila",<br>
+                "cen_municipio":"Pitalito",<br>
+                "cen_subdirector":"Carlos Muñoz"<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se registró con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R7 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R7.2</span>Listar información de centro </span>
+          <span class="descripcion_requerimiento">
+            La información se listará en el apartado de “sitios.” El título será el nombre del centro. Habrá pequeño párrafo en donde se brinde una breve descripción del centro, la regional a la que pertenece y el municipio en el que este ubicado. Los siguientes datos estarán disponibles para su visualización:<br>
+            ●Nombre<br>
+            ●Descripción<br>
+            ●Imagen<br>
+            ●Regional<br>
+            ●Municipio
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF07.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/centro/listarcentro</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra los datos"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontró el centro" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8</span>Administrar información de Sedes (Añadir) </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios, aparecerán los centros registrados. En la parte de abajo estarán visibles las sedes que pertenecen a este centro, y aparecerá un botón “crear sede”. El formulario que se abrirá será información para registrar una sede:<br>
+            ●Nombre de la Sede<br>
+            ●Descripción de la Sede<br>
+            ●Dirección de la Sede
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/registrarsede</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sede_nombre":"Sede Yamboro",<br>
+                "sede_descripcion":"Sede ubicada en Pitalito Huila, en el corregimiento de Yamboro",<br>
+                "sede_direccion":"Cra 2 #24 C",<br>
+                "sede_fk_centros":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Sede registrada correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró la sede" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8.1</span>Administrar información de Sedes (Listar) </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios o lugares, las sedes que pertenecen a un centro se mostrarán debajo de su respectivo centro. La información de las sedes podrá ser visualizada por cualquier usuario registrado.<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/listarsede</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra la información"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontraron sedes en la Base de Datos" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R8 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R8.2</span>Administrar información de Sedes (Editar) </span>
+          <span class="descripcion_requerimiento">
+            En caso de que la información de una sede requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual que posee la sede. Esto será posible mediante un formulario donde se podrán editar los siguientes datos:<br>
+            ●Nombre de la Sede<br>
+            ●Descripción de la Sede<br>
+            ●Dirección de la Sede
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF08.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sede/editarsede/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sede_nombre":"Sede Yamboro",<br>
+                "sede_descripcion":"Sede ubicada en Pitalito Huila, en el corregimiento de Yamboro",<br>
+                "sede_direccion":"Cra 2 #24 C",<br>
+                "sede_fk_centros":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se registró con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó la sede" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R9 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R9</span>Registrar Areas de la Sede </span>
+          <span class="descripcion_requerimiento">
+            El administrador podrá registrar cada una de las áreas pertenecientes a sus respectivas sedes. Para registrar el área es necesario ingresar los siguientes datos:<br>
+            ●Nombre del área<br>
+            ●Descripción del área
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF09</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/area/registrararea</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "area_nombre":"Barismo",<br>
+                "area_descripcion":"En este area se encuentra la Escuela Nacional de la Calidad del Cafe",<br>
+                "area_fk_sedes":1<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Area registrada correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el area" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+        <!-- Santiago R9 -->
+      <section class="contenido-requerimientos">
+      <div class="requerimiento_funcional">
+      <span class="titulo_requerimiento"> <span>R9.1</span>Listar información de Areas </span>
+      <span class="descripcion_requerimiento">
+        En el apartado de sitios o lugares, las areas que pertenecen a una sede se mostrarán debajo de esta. La información de las areas podrá ser visualizada por cualquier usuario registrado.<br>
+      </span>
+      </div>
+      <table>
+      <tbody>
+        <tr>
+          <th> ID de requerimiento</th>
+          <td>RF09.1</td>
+        </tr>
+        <tr>
+          <th>verbo HTTP</th>
+          <td><span class="btn get">GET</span></td>
+        </tr>
+        <tr>
+          <th>URL</th>
+          <td><span class="btn url">http://localhost:3000/area/listararea</span></td>
+        </tr>
+        <tr>
+          <th>Header</th>
+          <td>NULL</td>
+        </tr>
+        <tr>
+          <th>Usuario</th>
+          <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+        </tr>
+        <tr>
+          <th>Peticion Body</th>
+          <td>
+            json :<br>
+            {<br>
+            }
+          </td>
+        </tr>
+
+        <tr>
+          <th>Respuesta json</th>
+          <td>
+            correcto :{
+              "Muestra la información"
+            }
+            <br>
+            incorrecto: {
+              { "message":"No se encontraron areas en la BD" }
+            } <br>
+            error : {
+                { "message" : "Error", error}
+            } <br>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  <!-- Santiago R9 -->
+  <section class="contenido-requerimientos">
+    <div class="requerimiento_funcional">
+      <span class="titulo_requerimiento"> <span>R9.2</span>Editar información de Areas </span>
+      <span class="descripcion_requerimiento">
+        En caso de que la información de un area requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual que posee ese area. Esto será posible mediante un formulario donde se podrán editar los siguientes datos:<br>
+        ●Nombre del Area<br>
+        ●Descripción del Area
+      </span>
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <th> ID de requerimiento</th>
+          <td>RF09.2</td>
+        </tr>
+        <tr>
+          <th>verbo HTTP</th>
+          <td><span class="btn put">PUT</span></td>
+        </tr>
+        <tr>
+          <th>URL</th>
+          <td><span class="btn url">http://localhost:3000/area/editararea/1</span></td>
+        </tr>
+        <tr>
+          <th>Header</th>
+          <td>NULL</td>
+        </tr>
+        <tr>
+          <th>Usuario</th>
+          <td>Administrador</td>
+        </tr>
+        <tr>
+          <th>Peticion Body</th>
+          <td>
+            json :<br>
+            {<br>
+            "area_nombre":"Barismo",<br>
+            "area_descripcion":"En este area se encuentra la Escuela Nacional de la Calidad del Cafe",<br>
+            "area_fk_sedes":1<br>
+            }
+          </td>
+        </tr>
+
+        <tr>
+          <th>Respuesta json</th>
+          <td>
+            correcto :{
+              "Se registró con éxito"
+            }
+            <br>
+            incorrecto: {
+              { "message":"No se actualizó el area" }
+            } <br>
+            error : {
+                { "message" : "Error", error}
+            } <br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10</span>Registrar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios, aparecerá un area junto con sus respectivos ambientes. Aquí encontraremos las sedes que están ligadas a esa area. En el caso que se requiera registrar un nuevo ambiente, se abrirá una plantilla tipo ficha técnica en la que ya habrá información preestablecida. Cuando el administrador vaya a añadir información de los ambientes se pedirán los siguientes datos:<br>
+            ●Nombre del Ambiente<br>
+            ●Tipo de Sitio<br>
+            ●Variables que posee el ambiente
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/registrarsitio</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sit_nombre":"Ambiente Y12",<br>
+                "sit_fk_areas":1,<br>
+                "sit_fk_tipo_sitio":1,<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Ambiente registrado correctamente"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se registró el ambiente" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10.1</span>Listar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En el apartado de sitios o lugares, los ambientes que pertenecen a un area estarán disponibles debajo de su respectiva area. La información de los ambientes podrá ser visualizada por cualquier usuario registrado.<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/listarsitio</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores, Técnicos, Aprendices y Externos</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Muestra la información"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se encontraron ambientes en la BD" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- Santiago R10 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R10.2</span>Editar información de Ambientes </span>
+          <span class="descripcion_requerimiento">
+            En caso de que la información de un ambiente requiera ser cambiada o actualizada, el administrador tendrá la opción de editar la información actual. Esto será posible mediante la ficha técnica donde se podrán editar los siguientes datos:<br>
+            ●Nombre del Ambiente<br>
+            ●Tipo de Sitio<br>
+            ●Variables que posee el ambiente
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF10.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/sitio/editarsitio/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                "sit_nombre":"Ambiente Y12",<br>
+                "sit_fk_areas":1,<br>
+                "sit_fk_tipo_sitio":1,<br>
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Se actualizó con éxito"
+                }
+                <br>
+                incorrecto: {
+                  { "message":"No se actualizó el ambiente" }
+                } <br>
+                error : {
+                    { "message" : "Error", error}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- R11  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R11</span> Listar maquinas por ambientes</span>
+          <span class="descripcion_requerimiento">
+
+            En este apartado se mostran todas las maquinas pertenecientes al ambiente o sitio seleccionado. Se mostrara informacion muy basica de las maquinas como: <br>
+            ●Nombre de la maquina<br>
+            ●Imagen<br>
+            ●Placa sena<br>
+            ●Estado<br>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/listarPorAmbiente/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{<br>
+                [<br>
+                  {<br>
+                    "idFicha": 1,<br>
+                    "placa_sena": "292922RR",<br>
+                    "serial": "222223",<br>
+                    "imagen": "equipo plano",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }
+                    ]
+                  },<br>
+                  {<br>
+                    "idFicha": 2,<br>
+                    "placa_sena": "sena _123",<br>
+                    "serial": "12345678",<br>
+                    "imagen": "no contiene",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }<br>
+                    ]
+                  }
+                ]
+                }<br>
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R12  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12</span> Crear ficha tecnica de maquinas.</span>
+          <span class="descripcion_requerimiento">
+
+            Para crear la ficha técnica de las máquinas es necesario ingresar los siguientes datos obligatoriamente:<br>
+            ●	Placa SENA <br>
+            ●	Imagen máquina <br>
+            ●	Serial<br>
+            ●	Fecha adquisición<br>
+            ●	Fecha inicio garantía<br>
+            ●	Fecha fin garantía<br>
+            ●	Descripción garantía<br>
+            ●	Tipo de ficha<br>
+
+            Estas fichas seran dinamicas, lo que quiere decir que el administrador y los instructores podran crear diferentes variables junto con sus valores y almacenar alli la informacion que deseen.  
+
+
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                  
+                    "fiFecha": "2024-08-08",<br>
+                    "placaSena": "RRRR222",<br>
+                    "serial": "333",<br>
+                    "fechaAdquisicion": "2022-01-01",<br>
+                    "fechaInicioGarantia": "2022-01-01",<br>
+                    "fechaFinGarantia": "2023-01-01",<br>
+                    "descipcionGarantia": "descripcion garantia",<br>
+                    "fiImagen": "imagen.png",<br>
+                    "fiEstado": "operacion",<br>
+                    "fk_sitio": 4,<br>
+                    "fk_tipo_ficha": 7<br>
+                }<br>
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro correctamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "Error al registrar ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R12.1.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.1</span> Crear tipo de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán añadir los tipos de fichas en sistema. 
+            
+            Habrá diferentes tipos de ficha, inicialmente se crearán 3 tipde fichas para las cuales está pensado el sistema, las cuales so<br>
+            ●	Ficha tecnica, <br>
+            ●	Ficha de mantenimiento, <br>
+            ●	Ficha de ambientes <br>
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                    "tipoFicha": "ficha tecnica"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro con exito" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+        <!-- R12.1.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.2</span> Actualizar tipos de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán editar los diferentes tipos de fichas, ya registrados en el sistema. <br>
+            Para esto es necesario ingresar el nuevo nombre de la ficha.
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/actualizar/3</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                    "tipoFicha": "ficha tecnica"<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+   
+      <!-- R12.1.3  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.3</span> Eliminar tipos de ficha</span>
+          <span class="descripcion_requerimiento">
+            Este apartado solo estará disponible para los administradores e instructores. Quienes podrán eliminar los diferentes tipos de fichas. <br>Para esto es necesario indicarle el ID del tipo de ficha
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.3</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/eliminar/13</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino con exito"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino con exito" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+        <!-- R12.2-->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.2.1</span> Crear variables</span>
+          <span class="descripcion_requerimiento">
+            Los administradores e instructores podrán crear variables a las fichas anteriormente mencionadas. 
+            Estas variables contendrán la información que deseen guardar en la ficha. <br>
+            
+            Para crear una variable es necesario la siguiente información: <br>
+            ●	Nombre <br>
+            ●	Descripción <br>
+
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.2.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "varNombre":"Disco duro",<br>
+                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                    "fkTipoFicha":"3"<br>
+                  }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R12.3.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.3.1</span> Crear detalles</span>
+          <span class="descripcion_requerimiento">
+            El administrador e instructor podrán añadir los detalles. Los detalles son el valor que se le asigna a cada variable creada. 
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.3.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "detFkFicha":11,<br>
+                    "detFkVariable":19,<br>
+                    "detValor":"2Tera"<br>
+                    }
+                    
+
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se registro conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se registro correctamente" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R13  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R13</span> Listar información de la máquina junto con su respectivo historial de mantenimiento</span>
+          <span class="descripcion_requerimiento">  
+             En este apartado se podra observar la informacion mas relevante de la ficha tecnica de la maquina, ademas de esto, por medio de una tabla se generara un  listado con todos los mantenimientos registrados a esa maquina mostrando la informacion mas relevante.
+             <br>
+             Estara disponible para descargar la ficha tecnica y cada una de las fichas de mantenimiento. 
+
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 13</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/listarInfoEspecifica/1</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{<br>
+                  {<br>
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo redondo",<br>
+                    "fi_estado": "operacion",<br>
+                    "tipoEquipo": "portatil APLE",<br>
+                    "mantenimientos": [<br>
+                      {<br>
+                        "idMantenimiento": 6,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      },<br>
+                      {<br>
+                        "idMantenimiento": 4,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      }]<br>
+                  }
+                }<br>
+                <br>
+                incorrecto: {
+                  { "message": "No se encontro ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      
+      <!-- R13.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R13.1</span> Listar ficha tecnica</span>
+          <span class="descripcion_requerimiento">
+            Todos los usuarios podrán observar la ficha técnica de dicha máquina. <br>
+            En ella se encontrarán todas las variables con su descripción y detalles registrados por un instructor o administrador. Esta ficha se podrá descargar en diferentes formatos, ya sea Word, pdf o exel.
+            Nos traera la informacion basica de la ficha y cada una de sus varaibles con su respectiva descripcion y valor.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 13.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/listarUnica/9</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{<br>
+                  {<br>
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo plano",<br>
+                    "fi_estado": "operacion",<br>
+                    "ubicacion": "biblioteca",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }
+                    ],<br>
+                    "variables": [<br>
+                      {<br>
+                        "var_nombre": "estado equipo",<br>
+                        "var_descripcion": "asldfkñasdf ",<br>
+                        "det_valor": "memoria con capacidad de una tera"<br>
+                      }]<br>
+                  }
+                }
+                <br>
+                <br><br>
+                incorrecto: {
+                  { "message": "No se encontro ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>      
+
+      <!-- requerimiento 14-->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R14</span>Registrar ficha de mantenimiento.</span>
+          <span class="descripcion_requerimiento">
+            Una vez estemos en la información general de una máquina en específico, habrá una un botón de agregar nueva ficha de mantenimiento, el cual al dar clic, se abrirá una plantilla tipo ficha de técnica el cual tendrá toda la información para rellenar sobre el mantenimiento que se le hizo a dicha máquina, una vez toda la información requerida sea registrada, en la parte inferior aparecerán dos botones, uno cual será para guardar la información y el otro para descargar la ficha técnica generada, en varios formatos (pdf, Excel, word)
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF014</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn post">POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/registrar</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                  {
+                    "mant_codigo_mantenimiento": "23",<br>
+                    "mant_fecha_realizacion": "2024-12-23",<br>
+                    "mant_fecha_proxima": "2025-01-23",<br>
+                    "mant_fk_fichas": "1",<br>
+                    "fk_tipo_mantenimiento": "1",<br>
+                    "mant_descripcion": "no se encontro nada"<br>
+                  }
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje": "Se registró con éxito"}
+                }
+                <br>
+                incorrecto: {
+                  {"mensaje": "No se registró con éxito el mantenimiento"}
+                } <br>
+                error : {
+                  {"mensaje": "Error: " + e.message}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R15  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15</span> Actualizar ficha técnica de máquinas. </span>
+          <span class="descripcion_requerimiento">
+            Al querer editar una ficha se desplegará la plantilla de ficha técnica, con toda la información de la máquina o equipo. Cuando entremos en este apartado encontraremos información básica de las máquinas como: <br>
+            
+            ●	Nombre <br>
+            ●	Ambiente en el que se encuentra<br>
+            ●	Estado<br>
+            ●	Referencia<br>
+            ●	Informacion Especifica (en donde estará la información más detallada de la máquina, toda la informacion de las variables registradas, su descripcion y el valor del detalle. )<br>
+
+            Cuando el administrador o instructor añadan o editen dicha información, estos datos serán guardados en la base de datos y se actualizará, de forma automática
+
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/ficha/actualizar/9</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                  "fiFecha": "2024-08-08",<br>
+                  "placaSena": "RRRR222",<br>
+                  "serial": "3333333333333333333",<br>
+                  "fechaAdquisicion": "2022-01-01",<br>
+                  "fechaInicioGarantia": "2022-01-01",<br>
+                  "fechaFinGarantia": "2023-01-01",<br>
+                  "descipcionGarantia": "descripcion garantia",<br>
+                  "fiImagen": "imagen.png",<br>
+                  "fiEstado": "operacion",<br>
+                  "fk_sitio": 4,<br>
+                  "fk_tipo_ficha": 7<br>
+                }<br>
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo correctamente la ficha"}
+                }
+                <br>
+      
+                incorrecto: {
+                  { "message": "Error al actualizar la ficha" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>         
+      
+      <!-- R15.1.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.1.1</span> Actualizar variables</span>
+          <span class="descripcion_requerimiento">
+            Los administradores e instructores podrán editar variables que ya estén dentro de una ficha.  Se podrá actualizar su nombre y su descripción
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.1.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/actualizar/19</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "varNombre":"Disco de estado solido",<br>
+                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                    "fkTipoFicha":"3"<br>
+                  }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- R15.1.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.1.2</span> Eliminar variables</span>
+          <span class="descripcion_requerimiento">  
+            Los administradores e instructores podrán eliminar variables que ya estén dentro de una ficha. Se eliminarán por completo de la ficha en la que se encuentran listadas.
+            Tener en cuenta que para eliminar una variable primero de debe eliminar su respectivo detalle si lo tiene. 
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.1.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/variable/eliminar/12</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R15.2.1  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.2.1</span> Actualizar detalles</span>
+          <span class="descripcion_requerimiento">
+            El administrador e instructor podrán editar los detalles. Añadiéndoles un nuevo valor a su respectiva variable dentro de la ficha.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.2.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/actualizar/16</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {
+                  {<br>
+                    "detFkFicha":11,<br>
+                    "detFkVariable":19,<br>
+                    "detValor":"5Tera"<br>
+                    }
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se actualizo conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se actualizo correctamente" }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <!-- R15.2.2  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R15.2.2</span> Eliminar detalles</span>
+          <span class="descripcion_requerimiento">  
+            El administrador e instructor podrán eliminar los detalles.  Una vez eliminado, las variables dentro de la ficha no tendrán algún valor, simplemente su nombre y descripción.  
+         </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 15.2.2</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn delete">DELETE</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/detalle/eliminar/</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  {"mensaje":"Se elimino conrrectamente"}
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se elimino " }
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- requrimiento 16 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R16 </span>Generar informe de mantenimiento</span>
+          <span class="descripcion_requerimiento">
+            Se generará un informe de mantenimiento descargable, de todas las máquinas que se encuentren en un rango determinado de fechas y que pertenecen a un área en específica.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF016</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/mantenimiento/listarRequerimiento17/fecha_realizacion</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores o encargados</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>    
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                    'muestra los datos'
+                }
+                <br>
+                incorrecto: {
+                  { "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." }
+                } <br>
+                error : {
+                  { "message": "Error en el controlador listarRequerimiento17: " + err.message }
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
     </div>
   </div>
 </body>
