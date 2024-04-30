@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { listarSede, registrarSede, eliminarSede, editarSede } from "../controllers/sedesController.js"
-import { verificarSede } from "../../../validar/sedesValidation.js"
+import { verificarSede } from "../../validar/sedesValidation.js"
 import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaSede = Router()

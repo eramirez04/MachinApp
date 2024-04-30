@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { listarTipoSitio, registrarTipoSitio, editarTipoSitio, eliminarTipoSitio } from "../controllers/tipo_sitioController.js"
-import { verificarTipoSitio } from "../../../validar/tipositioValidation.js"
+import { verificarTipoSitio } from "../../validar/tipositioValidation.js"
 import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaTipoSitio = Router()
