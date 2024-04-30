@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { registrarCentro, listarCentro, eliminarCentro, editarCentro } from "../controllers/centrosController.js"
-import { verificarCentro } from "../../../validar/centrosValidation.js"
+import { verificarCentro } from "../../validar/centrosValidation.js"
 import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaCentro = Router()

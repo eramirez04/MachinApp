@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { listarArea, registrarArea, editarArea, eliminarArea } from "../controllers/areasController.js"
-import { verificarArea } from "../../../validar/areasValidation.js"
+import { verificarArea } from "../../validar/areasValidation.js"
 import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaArea = Router()
