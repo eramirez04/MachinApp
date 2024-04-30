@@ -1,4 +1,5 @@
 import { conexion } from "../database/database.js"
+import { validationResult } from "express-validator"
 
 export const listarArea = async (req, res) => {
     try {
@@ -23,6 +24,11 @@ export const listarArea = async (req, res) => {
 
 export const registrarArea = async (req, res) => {
     try {
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json(error)
+        }
+
         let {area_nombre, area_fk_sedes} = req.body
 
         let sql = `insert into areas (area_nombre, area_fk_sedes)
@@ -64,6 +70,11 @@ export const eliminarArea = async (req, res) => {
 
 export const editarArea = async (req, res) => {
     try {
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json(error)
+        }
+        
         let {area_nombre} = req.body
 
         let id = req.params.id_area

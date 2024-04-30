@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Documentacion</title>
+  <title>Documentacion MachinApp</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 
@@ -76,11 +76,11 @@
                 "apellidos" : "Ramirzez Ruiz", <br>
                 "correo" : "eramirez@soy.sena.edu.co", <br>
                 "numero_documento" : "43123241", <br>
-                "tipo_documento" : "CC", <br>
-                "contrasenia" : "123", <br>
+                "tipo_documento" : "cedula ciudadania", <br>
+                "contrasenia" : "12345678", <br>
                 "especialidad" : "", <br>
                 "empresa" : "", <br>
-                "rol": 150 <br>
+                "rol": 98 <br>
                 } <br>
                 }
               </td>
@@ -117,14 +117,12 @@
         <div class="requerimiento_funcional">
           <span class="titulo_requerimiento"> <span>R1.1 </span>Listar Información de usuarios</span>
           <span class="descripcion_requerimiento">
-            El sistema debe proporcionar que se puede visualizar la información personal registrada
+            El sistema debe permitir la visualización de la información personal registrada.
             El usuario al seleccionar la opción de apartado de usuarios, el sistema recuperara toda la información del
             usuario atreves de su ID asignada internamente el en sistema que esta almacenada en la base de datos.
             En el apartado seleccionado por el usuario, se presentará la información del usuario en una interfaz clara y
             organizada, brindando al usuario un panorama completo de los datos que el sistema ha almacenado.
-            La información presentada en este apartado es (nombre, correo tipo de documento, imagen del usuario,
-            contraseña en forma cifrada y el número de documento)
-
+            La información presentada en este apartado incluirá el nombre, correo electrónico, tipo de documento, imagen del usuario, contraseña cifrada y número de documento.
           </span>
         </div>
         <table>
@@ -145,7 +143,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL </td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario </th>
@@ -230,7 +228,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -311,7 +309,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th> Usuario</th>
@@ -400,12 +398,12 @@
             <tr>
               <th> URL </th>
               <td>
-                <span class="btn url">http://localhost:3000/user/actulizar/56</>
+                <span class="btn url">http://localhost:3000/user/actualizar/1</>
               </td>
             </tr>
             <tr>
               <th> Header</th>
-              <td> NULL </td>
+              <td> token </td>
             </tr>
             <tr>
               <th>Usuario </th>
@@ -415,16 +413,19 @@
               <th> Peticion Body </th>
               <td>
                 json : <br>
-                {
-                "nombre": "Emersson", <br>
-                "apellidos": "Ramirez Ruiz", <br>
-                "correo": "eramirez@soy.sena.edu.co", <br>
-                "numero_documento": "CC", <br>
-                "tipo_documento": "43123241", <br>
-                "contrasenia": "123", <br>
-                "especialidad" : "Mecanico en pantallas", <br>
-                "empresa" : "Sena Empresa", <br>
-                "rol" : 150 <br> }
+                <pre>
+                  {
+                    "nombre": "Emersson",
+                    "apellidos": "Ramirez Ruiz",
+                    "correo": "eramirez@soy.sena.edu.co",
+                    "numero_documento": "242342343424",
+                    "contrasenia": "123",
+                    "especialidad": "Mecanico en pantallas",
+                    "empresa": "Sena Empresa",
+                    "rol": 98
+                  }
+                </pre>
+                
               </td>
             </tr>
             <tr>
@@ -487,7 +488,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+              <td><span class="btn url">http://localhost:3000/login</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -500,26 +501,44 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json : <br>
-                { <br>
-
-                }
+                json : <pre>
+                  {
+                    "correo" : "emerssonramirez11@gmail.com",
+                    "contrasenia" : "123456"
+                  }
+                </pre>
+                
               </td>
             </tr>
 
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{
+                <pre>
+                  correcto :{
+                    {
+                      "Mensaje": "Usuario autorizado",
+                      "usuario": [
+                        {
+                          "idUsuarios": 48,
+                          "us_nombre": "Emersson",
+                          "us_especialidad": "",
+                          "fk_roles": 76
+                        }
+                      ],
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXN1YXJpb3MiOjQ4LCJ1c19ub21icmUiOiJFbWVyc3NvbiIsInVzX2VzcGVjaWFsaWRhZCI6IiIsImZrX3JvbGVzIjo3Nn0sImlhdCI6MTcxNDQ0MjUzNiwiZXhwIjoxNzE0NTI4OTM2fQ.fEu64kmRLau1FqZ9ogh-KlcucQltCtcY-jMqdBdRJ7s"
+                    }
+                  }
+                </pre>
+               <pre>
+               incorrecto: { mensaje: "Contraseña o correo incorrectos" }
+               </pre>
+               <pre>
+                error {
+                  Mensaje: "Error en el servidor"
+              }
+               </pre>
 
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
               </td>
             </tr>
           </tbody>
@@ -528,78 +547,9 @@
 
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R2.1</span>Cerrar sesión </span>
+          <span class="titulo_requerimiento"> <span>R3</span>Recuperacion de contraseña</span>
           <span class="descripcion_requerimiento">
-            Se le debe permitir a los usuarios registrados poder cerrar su sesión de manera segura, de manera de poder
-            garantizar que los datos.
-            El token generado al momento de ingresar las credenciales válidas, se debe destruir,
-            En la barra de navegación en la parte inferior, en forma de botón el usuario podrá hacer clic, de esta forma
-            la sesión se destruirá y será dirigido a la página de bienvenida de la aplicación.
-          </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th> ID de requerimiento</th>
-              <td>RF01</td>
-            </tr>
-            <tr>
-              <th>verbo HTTP</th>
-              <td><span class="btn post"> POST</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>Usuarios</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json : <br>
-                { <br>
-
-                }
-              </td>
-            </tr>
-
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                correcto :{
-
-                }
-                <br>
-                incorrecto: {
-
-                } <br>
-                error : {
-
-                } <br>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R3</span>Recperacion de contraseña</span>
-          <span class="descripcion_requerimiento">
-            En el caso tal que el usuario no recuerde o haya perdido su contraseña, se brinda a los usuarios una
-            solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en
-            el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún
-            administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de
-            recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web. <br>
-            Datos para recuperación de contraseña <br>
-            ● correo <br>
-            ● código de que proporciona el software <br>
-            Cuando el usuario ingrese el código e ingrese su contraseña, accede al inicio de la página
+            En el caso de que el usuario no recuerde su contraseña, se brinda a los usuarios una solución practico, podrá optar por la opción de recuperar contraseña, el usuario puede iniciar un proceso en el cual le permita recuperar o restablecer el acceso a su cuenta sin necesidad de contactar a algún administrador. Al ingresar el corroe en el campo correspondiente el software enviará un código de recuperación al correo con el cual podrá obtener su contraseña y entrar al inicio de la página web
           </span>
         </div>
         <table>
@@ -618,7 +568,7 @@
             </tr>
             <tr>
               <th>Header</th>
-              <td>NULL</td>
+              <td>token</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -891,12 +841,13 @@
               <td>
                 correcto :{
                   {
-                    "idActividades": 1,
-                    "acti_nombre": "Renovación de DISCO",
-                    "acti_descripcion": "cambio de disco",
-                    "acti_fecha_realizacion": "2024-03-19",
-                    "acti_estado": "realizado ",
-                    "fk_mantenimiento":1
+                    "us_nombre": "Emersson",<br>
+                    "rol_nombre":"tecnico",<br>
+                    "acti_nombre": "Renovación de DISCO",<br>
+                    "acti_descripcion": "cambio de disco",<br>
+                    "acti_fecha_realizacion": "2024-03-19",<br>
+                    "acti_estado": "realizado ",<br>
+                    "fk_mantenimiento":1<br>
                   }
                 }
                 <br>
@@ -1705,32 +1656,35 @@
               <th>Respuesta json</th>
               <td>
                 correcto :{<br>
-                    "maquinas": [
-                    {<br>
-                      "maquina": {
-                        "fi_serial": "22222222",<br>
-                        "variables": [<br>
-                          {
-                            "var_nombre": "nombre equipo",
-                            "var_descripcion": "Equipo DELL N-11",
-                            "det_valor": "DELL N-11"
-                          },<br>
-                          {
-                            "var_nombre": "imagen equipo",
-                            "var_descripcion": "Imagen equipo DELL",
-                            "det_valor": "dell-n11.png"
-                          },<br>
-                          {
-                            "var_nombre": "estado equipo",
-                            "var_descripcion": "estado de la maquina DELL n-11",
-                            "det_valor": "Activo"
-                          }<br>
-                        ]
+                [<br>
+                  {<br>
+                    "idFicha": 1,<br>
+                    "placa_sena": "292922RR",<br>
+                    "serial": "222223",<br>
+                    "imagen": "equipo plano",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
                       }
-                    }
-                  ]
-                }
-                <br>
+                    ]
+                  },<br>
+                  {<br>
+                    "idFicha": 2,<br>
+                    "placa_sena": "sena _123",<br>
+                    "serial": "12345678",<br>
+                    "imagen": "no contiene",<br>
+                    "estado": "operacion",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }<br>
+                    ]
+                  }
+                ]
+                }<br>
                 <br>
                 incorrecto: {
                   { "message": "No se encontraron maquinas pertenecinete a este ambiente en la base de datos." }
@@ -1792,18 +1746,19 @@
               <td>
                 json :<br>
                 {<br>
-                
-                    "fiFecha": "2024-03-02", <br>
-                    "placaSena": "292922RR", <br>
-                    "serial":"222223", <br>
-                    "fechaAdquisicion": "2023-03-08", <br>
-                    "fechaInicioGarantia": "2023-03-08", <br>
-                    "fechaFinGarantia":"2024-03-08",<br>
-                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
-                    "equipoPlano":"equipo plano",<br>
-                    "fk_sitio":"2", <br>
-                    "fk_tipo_ficha":"12"<br>
-                }
+                  
+                    "fiFecha": "2024-08-08",<br>
+                    "placaSena": "RRRR222",<br>
+                    "serial": "333",<br>
+                    "fechaAdquisicion": "2022-01-01",<br>
+                    "fechaInicioGarantia": "2022-01-01",<br>
+                    "fechaFinGarantia": "2023-01-01",<br>
+                    "descipcionGarantia": "descripcion garantia",<br>
+                    "fiImagen": "imagen.png",<br>
+                    "fiEstado": "operacion",<br>
+                    "fk_sitio": 4,<br>
+                    "fk_tipo_ficha": 7<br>
+                }<br>
               </td>
             </tr>
             <tr>
@@ -2142,9 +2097,12 @@
       <!-- R13  -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R13</span> Listar información detallada de la máquina junto con su respectivo historial de mantenimiento</span>
+          <span class="titulo_requerimiento"> <span>R13</span> Listar información de la máquina junto con su respectivo historial de mantenimiento</span>
           <span class="descripcion_requerimiento">  
-             
+             En este apartado se podra observar la informacion mas relevante de la ficha tecnica de la maquina, ademas de esto, por medio de una tabla se generara un  listado con todos los mantenimientos registrados a esa maquina mostrando la informacion mas relevante.
+             <br>
+             Estara disponible para descargar la ficha tecnica y cada una de las fichas de mantenimiento. 
+
          </span>
         </div>
         <table>
@@ -2159,7 +2117,7 @@
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url"></span></td>
+              <td><span class="btn url">http://localhost:3000/ficha/listarInfoEspecifica/1</span></td>
             </tr>
             <tr>
               <th>Header</th>
@@ -2180,12 +2138,36 @@
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{
-                  {"mensaje":""}
-                }
+                correcto :{<br>
+                  {<br>
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo redondo",<br>
+                    "fi_estado": "operacion",<br>
+                    "tipoEquipo": "portatil APLE",<br>
+                    "mantenimientos": [<br>
+                      {<br>
+                        "idMantenimiento": 6,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      },<br>
+                      {<br>
+                        "idMantenimiento": 4,<br>
+                        "mant_codigo_mantenimiento": "23",<br>
+                        "mant_fecha_realizacion": "2024-12-23T05:00:00.000Z",<br>
+                        "tipo_mantenimiento": "mantenimiento-preventivo"<br>
+                      }]<br>
+                  }
+                }<br>
                 <br>
                 incorrecto: {
-                  { "message": "" }
+                  { "message": "No se encontro ficha" }
                 } <br>
                 error : {
                   {"message":"Error en el servidor"}
@@ -2240,35 +2222,31 @@
             <tr>
               <th>Respuesta json</th>
               <td>
-                correcto :{[<br>
+                correcto :{<br>
                   {<br>
-                    "fi_fecha": "2024-03-30T05:00:00.000Z",<br>
-                    "fi_placa_sena": "dell-n11-placa33",<br>
-                    "fi_serial": "22222222",<br>
-                    "fi_fecha_adquisicion": "2024-03-01T05:00:00.000Z",<br>
-                    "fi_fecha_inicio_garantia": "2024-03-04T05:00:00.000Z",<br>
-                    "fi_fecha_fin_garantia": "2024-03-25T05:00:00.000Z",<br>
-                    "fi_descripcion_garantia": "no cubre el portatul DELL N-11",<br>
-                    "fi_equipo_plano": "(equipo plano)",<br>
-                    "ti_fi_nombre": "ficha tecnica"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "nombre equipo",<br>
-                    "var_descripcion": "Equipo DELL N-11",<br>
-                    "det_valor": "DELL N-11"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "imagen equipo",<br>
-                    "var_descripcion": "Imagen equipo DELL",<br>
-                    "det_valor": "dell-n11.png"<br>
-                  },<br>
-                  {<br>
-                    "var_nombre": "estado equipo",<br>
-                    "var_descripcion": "estado de la maquina DELL n-11",<br>
-                    "det_valor": "Activo"<br>
-                  }<br>
-                ]
-                  
+                    "idFichas": 1,<br>
+                    "fi_placa_sena": "292922RR",<br>
+                    "fi_serial": "222223",<br>
+                    "fi_fecha_adquisicion": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_inicio_garantia": "2023-03-08T05:00:00.000Z",<br>
+                    "fi_fecha_fin_garantia": "2024-03-08T05:00:00.000Z",<br>
+                    "fi_descripcion_garantia": " Cubre defectos de fabrica",<br>
+                    "fi_imagen": "equipo plano",<br>
+                    "fi_estado": "operacion",<br>
+                    "ubicacion": "biblioteca",<br>
+                    "tipoEquipo": [<br>
+                      {<br>
+                        "idTipo_ficha": 12,<br>
+                        "ti_fi_nombre": "portatil APLE"<br>
+                      }
+                    ],<br>
+                    "variables": [<br>
+                      {<br>
+                        "var_nombre": "estado equipo",<br>
+                        "var_descripcion": "asldfkñasdf ",<br>
+                        "det_valor": "memoria con capacidad de una tera"<br>
+                      }]<br>
+                  }
                 }
                 <br>
                 <br><br>
@@ -2395,18 +2373,18 @@
               <td>
                 json :<br>
                 {<br>
-                
-                    "fiFecha": "2024-03-02", <br>
-                    "placaSena": "292922RR", <br>
-                    "serial":"222223", <br>
-                    "fechaAdquisicion": "2023-03-08", <br>
-                    "fechaInicioGarantia": "2023-03-08", <br>
-                    "fechaFinGarantia":"2024-03-08",<br>
-                    "descipcionGarantia":" Cubre defectos de fabrica", <br>
-                    "equipoPlano":"equipo plano",<br>
-                    "fk_sitio":"2", <br>
-                    "fk_tipo_ficha":"12"<br>
-                }
+                  "fiFecha": "2024-08-08",<br>
+                  "placaSena": "RRRR222",<br>
+                  "serial": "3333333333333333333",<br>
+                  "fechaAdquisicion": "2022-01-01",<br>
+                  "fechaInicioGarantia": "2022-01-01",<br>
+                  "fechaFinGarantia": "2023-01-01",<br>
+                  "descipcionGarantia": "descripcion garantia",<br>
+                  "fiImagen": "imagen.png",<br>
+                  "fiEstado": "operacion",<br>
+                  "fk_sitio": 4,<br>
+                  "fk_tipo_ficha": 7<br>
+                }<br>
               </td>
             </tr>
             <tr>
@@ -2716,7 +2694,7 @@
                 }
                 <br>
                 incorrecto: {
-                  { "message": "No se encontraron la fecha de realizacion deese mantenimiento en la base de datos" }
+                  { "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." }
                 } <br>
                 error : {
                   { "message": "Error en el controlador listarRequerimiento17: " + err.message }
