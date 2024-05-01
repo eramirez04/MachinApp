@@ -1,4 +1,5 @@
 import { conexion } from '../database/database.js';
+import {validationResult} from 'express-validator'
 
 /* 5 listo funcional */
 export const listarRequerimiento5 = async (req, res) => {
@@ -43,6 +44,10 @@ export const listarMantenimientoPorId = async (req, res) => {
 /* 14 */
 export const registrarMantenimiento = async (req, res) => {
     try {
+        const error = validationResult(req);
+        if (!error.isEmpty()){
+            return res.status(400).json(error);
+        }
         let {
             mant_codigo_mantenimiento,
             mant_fecha_realizacion,

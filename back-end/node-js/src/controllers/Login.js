@@ -1,6 +1,6 @@
 import Jwt from "jsonwebtoken";
 import { conexion } from "../database/database.js"
-
+import { compare } from "../config/bcryptjs.js";
 
 
 export const Login = async (req, res) => {
@@ -11,20 +11,23 @@ export const Login = async (req, res) => {
             return res.status(400).json({ mensaje: "Correo y Contraseña son requeridos" });
         }
 
-        let sql = `SELECT idUsuarios,us_nombre, us_especialidad, fk_roles FROM usuarios WHERE us_correo = '${correo}' AND us_contrasenia = '${contrasenia}'`
+        let sql = `SELECT idUsuarios,us_nombre, us_especialidad, fk_roles, us_contrasenia FROM usuarios WHERE us_correo = '${correo}'`
         const [resultado] = await conexion.query(sql)
+
         let usuario = {}
         usuario = resultado[0]
+        // comparando contraseña
+        const checkContra = await compare(contrasenia, usuario.us_contrasenia)
 
-        if (resultado.length === 0) {
-            return res.status(400).json({ mensaje: "Contraseña o correo incorrectos" })
-        } else {
+        if (checkContra) {
             const token = Jwt.sign({ user: usuario }, process.env.AUTH_SECRET, { expiresIn: process.env.TIME })
             return res.status(200).json({
                 "Mensaje": "Usuario autorizado",
                 usuario: resultado,
                 token: token
             })
+        } else {
+            return res.status(400).json({ mensaje: "Contraseña o correo incorrectos" })
         }
     } catch (error) {
         return res.status(500).json({

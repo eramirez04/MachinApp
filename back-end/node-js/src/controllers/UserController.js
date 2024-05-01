@@ -1,6 +1,6 @@
 import { conexion } from "../database/database.js"
 import { body, validationResult } from "express-validator"
-
+import { encriptarContra } from "../config/bcryptjs.js"
 
 export const Store = async (req, res) => {
   try {
@@ -11,11 +11,15 @@ export const Store = async (req, res) => {
     }
 
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+    // contaseña para encriptar
+    const passwordCrypt = await encriptarContra(contrasenia)
+
+
     let sql = `
     INSERT INTO usuarios
      (fk_roles, us_nombre, us_apellidos, us_correo, us_numero_documento, us_tipo_documento, us_contrasenia, us_especialidad, us_empresa)
       VALUES 
-     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${contrasenia}','${especialidad}','${empresa}'
+     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${passwordCrypt}','${especialidad}','${empresa}'
      )
     `
     const [resultadoUser] = await conexion.query(sql)
