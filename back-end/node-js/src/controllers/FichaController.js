@@ -2,9 +2,18 @@
 import { response } from 'express'
 import { conexion } from '../database/database.js'
 
+
+import { validationResult } from 'express-validator'
+
+
 export const registrarFicha = async(req, res)=>{
 
     try{
+
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
 
         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
 
@@ -47,6 +56,12 @@ export const listarFicha = async(req, res)=>{
 
 export const actualizarFicha = async(req, res)=>{
     try{
+        
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+    
 
         let idFicha = req.params.idFicha
 

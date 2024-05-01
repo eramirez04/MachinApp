@@ -1,12 +1,35 @@
+// conexion a base de datos
 import { conexion } from "../database/database.js"
+
+// captura erroes de las validaciones
+import { validationResult } from "express-validator"
+
+//encriptacion de contraseña, registro de usuarios
+import { encriptarContra } from "../config/bcryptjs.js"
+
+// transporte que contiene la configuracion de envio de correos 
+import { transporter } from "../config/email.js"
+import { generarRandom } from "../config/passwordRamdom.js"
+
+// registro de usuarios
 export const Store = async (req, res) => {
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
+
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+    // contaseña para encriptar
+    const passwordCrypt = await encriptarContra(contrasenia)
+
+
     let sql = `
     INSERT INTO usuarios
      (fk_roles, us_nombre, us_apellidos, us_correo, us_numero_documento, us_tipo_documento, us_contrasenia, us_especialidad, us_empresa)
       VALUES 
-     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${contrasenia}','${especialidad}','${empresa}'
+     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${passwordCrypt}','${especialidad}','${empresa}'
      )
     `
     const [resultadoUser] = await conexion.query(sql)
@@ -22,7 +45,7 @@ export const Store = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      "Mensaje": "n", error
+      "Mensaje": "Error en el servidor", error
     })
   }
 }
@@ -46,12 +69,18 @@ export const ListarUsuarios = async (req, res) => {
       )
     }
   } catch (error) {
-    return res.status(500).json({"Mensaje"  : "Error en el servidor", error})
+    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
   }
 }
 
 export const actualizarUsuario = async (req, res) => {
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
+
     let id = req.params.id
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
     let sql = `
@@ -74,7 +103,7 @@ export const actualizarUsuario = async (req, res) => {
       })
     }
   } catch (error) {
-    return res.status(500).json({"Mensaje": "Error en el servidor"})
+    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
   }
 }
 
@@ -96,7 +125,7 @@ export const EliminarUsuario = async (req, res) => {
       })
     }
   } catch (error) {
-    return res.status(500).json({"Mensaje": "Error en el servidor", error})
+    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
   }
 }
 
@@ -109,12 +138,12 @@ export const ListarUsuarioId = async (req, res) => {
     if (resultado.length > 0) {
       res.status(200).json(resultado)
     } else {
-      return res.status(200).json({
+      return res.status(404).json({
         "Mensaje": "Usuario no encontrado"
       })
     }
   } catch (error) {
-    return res.status(500).json({"Mensaje":"Error en el servidor",error})
+    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
   }
 }
 
@@ -131,6 +160,46 @@ export const ListarTecnicos = async (req, res) => {
       return res.status(404).json({
         "Mensaje": "Usuario no encontrado"
       })
+    }
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+//plantilla html de correos electronicos
+import { emailHtml } from "../config/emailhtml.js"
+
+// funcion que envia correos para recuperar contraseña
+export const recuperaraContra = async (req, res) => {
+  try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
+    const { numero_identificacion } = req.body
+
+    let sql = `select * from usuarios where us_numero_documento = ${numero_identificacion}`
+
+    const [usuario] = await conexion.query(sql)
+
+    if (usuario.length === 0) {
+      return res.status(404).json({ estado: false, mensaje: "no se encontro usuario" })
+    } else {
+      let newPassword = generarRandom()
+
+      const result = await transporter.sendMail({
+        from: '"MachinApp" <machinappsena@gmail.com>', // sender address
+        to: usuario[0].us_correo, // list of receivers
+        subject: "Recuperacion de contraseña", // Subject line
+        html: emailHtml(usuario[0].us_nombre, newPassword)
+      });
+      // encriptar contraseña
+      const newPasswordCrypt = await encriptarContra(newPassword)
+
+      let sqlActualizarContra = `update usuarios set us_contrasenia= '${newPasswordCrypt}' where idUsuarios = ${usuario[0].idUsuarios}`
+      const [resu] = await conexion.query(sqlActualizarContra)
+      res.status(200).json({ "mensage": "contraseña recuperada", 'estado': true, result })
     }
   } catch (error) {
     return res.status(500).json(error)

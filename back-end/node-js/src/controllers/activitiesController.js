@@ -1,10 +1,12 @@
 import {conexion} from "../database/database.js"   // importamos lo que tenemos en conexion. 
 
+import { validationResult } from "express-validator"
 
 
 export const listarActividades= async (req,res)=>{     
     
     try{
+
        
         let sql = "select us_nombre,rol_nombre,acti_nombre,acti_descripcion,acti_fecha_realizacion,acti_estado,fk_mantenimiento from actividades INNER JOIN tecnicos_has_actividades ON fk_actividades=idActividades INNER JOIN usuarios ON idUsuarios=fk_usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'tecnico'"
 
@@ -23,6 +25,12 @@ export const listarActividades= async (req,res)=>{
 
 export const registrarActividades= async (req,res)=>{
     try {
+
+        const error=validationResult(req)
+
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
         let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento,}=req.body
 
         let sql =`insert into actividades(acti_nombre,acti_descripcion,acti_fecha_realizacion, acti_estado, fk_mantenimiento)values('${acti_nombre}','${acti_descripcion}','${acti_fecha_realizacion}','${acti_estado}','${fk_mantenimiento}')`;
