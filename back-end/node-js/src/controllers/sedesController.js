@@ -3,11 +3,6 @@ import { validationResult } from "express-validator"
 
 export const listarSede = async (req, res) => {
     try {
-        const error = validationResult(req)
-        if (!error.isEmpty()) {
-            return res.status(400).json(error)
-        }
-
       let sql = "SELECT idSede, cen_nombre, sede_nombre, sede_descripcion, sede_direccion FROM sedes INNER JOIN centros ON sede_fk_centros = idCentros"
       const [resultadoSede] = await conexion.query(sql)
   
@@ -30,6 +25,11 @@ export const listarSede = async (req, res) => {
 
 export const registrarSede = async (req, res) => {
     try {
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json(error)
+        }
+        
         let {sede_nombre, sede_descripcion, sede_direccion, sede_fk_centros} = req.body
 
         let sql = `insert into sedes (sede_nombre, sede_descripcion, sede_direccion, sede_fk_centros)
