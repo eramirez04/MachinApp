@@ -1,19 +1,18 @@
-//const nodemailer = require("nodemailer");
-
-//import nodemailer from "nodemailer"
-
 import nodemailer from "nodemailer"
 
 export const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  secure: false, // Use `true` for port 465, `false` for all other ports
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // Use `true` for port 465, `false` for all other ports
   auth: {
-    user: "machinappsena@gmail.com",
-    pass: "1940",
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PWD,
   },
-    tls: {
-        ciphers:'SSLv3'
-    }
+  tls: {
+    ciphers: 'SSLv3'
+  }
 });
 
+transporter.verify().then(() => {
+  console.log("listo para enviar correos")
+})
