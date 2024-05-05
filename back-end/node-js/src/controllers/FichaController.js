@@ -2,9 +2,10 @@
 import { response } from 'express'
 import { conexion } from '../database/database.js'
 
+import QRCode from 'qrcode'
+import fs from 'fs/promises'
 
 import { validationResult } from 'express-validator'
-
 
 export const registrarFicha = async(req, res)=>{
 
@@ -24,14 +25,33 @@ export const registrarFicha = async(req, res)=>{
 
 
         if(respuesta.affectedRows>0){
+
+            const qrCodePath = './codigo_qr.png'
+            QRCode.toFile(qrCodePath, JSON.stringify(req.body), async function (err) {
+
+                if (err) {
+                    console.error('Error al generar el código QR:', err);
+                    return res.status(500).json({"mensaje": "Error al generar el código QR"})
+                }
+                console.log('Código QR generado correctamente!')
+
+                const qrCodeImage = await fs.readFile(qrCodePath)
+
+                const qrCodeBase64 = await qrCodeImage.toString('base64')
+                const updateSql = `UPDATE fichas SET CodigoQR = ? WHERE idFichas = ?`
+                await conexion.query(updateSql, [qrCodeBase64, respuesta.insertId])
+                await fs.unlink(qrCodePath)
+
+
             return res.status(200).json({"mensaje":"Se registro correctamente"})
+            })
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
         }
         
     }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor"})
+        return res.status(500).json({"mensaje":"Error del servidor"+error})
     }
 }
 
@@ -104,7 +124,6 @@ export const eliminarFicha = async(req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"})
     }
 }
-
 
 export const listarFichaPorAmbiente = async(req, res)=>{
 

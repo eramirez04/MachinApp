@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import { registrarFicha, eliminarFicha, actualizarFicha, listarFicha, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica} from '../controllers/FichaController.js'
 
-import {validar_ficha} from '../../validar/validationFicha.js'
+import {validar_ficha} from '../../validar/fichas/validationFicha.js'
 
 import { verificar } from '../middlewares/LoginMidleware.js'
 
@@ -20,8 +20,6 @@ rutaFicha.get('/listarPorAmbiente/:idAmbiente', verificar, listarFichaPorAmbient
 
 
 rutaFicha.get('/listarInfoEspecifica/:idFicha', verificar, listarInfoEspecifica )
-
-
 
 
 

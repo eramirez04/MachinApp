@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import{registrarVariable, actualizarVariable, listarVariable, eliminarVariable} from '../controllers/VariableController.js'
+import{registrarVariable, actualizarVariable, listarVariable, eliminarVariable, registrarVariasVariables} from '../controllers/VariableController.js'
 
-import {validar_variable} from '../../validar/validationVariable.js'
+import {validar_variable, validar_varias_variables} from '../../validar/fichas/validationVariable.js'
 
 import { verificar } from "../middlewares/LoginMidleware.js";
 
@@ -15,5 +15,6 @@ rutaVariable.get('/listar', verificar, listarVariable)
 rutaVariable.put('/actualizar/:idVariable', verificar, validar_variable,actualizarVariable)
 rutaVariable.delete('/eliminar/:idVariable', verificar, eliminarVariable)
 
+rutaVariable.get('/registrarConjuntoVar', verificar, validar_varias_variables, registrarVariasVariables )
 
 export default rutaVariable
