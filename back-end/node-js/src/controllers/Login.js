@@ -16,6 +16,10 @@ export const Login = async (req, res) => {
         let sql = `SELECT idUsuarios,us_nombre, us_especialidad, fk_roles, us_contrasenia FROM usuarios WHERE us_correo = '${correo}'`
         const [resultado] = await conexion.query(sql)
 
+        if(resultado.length === 0){
+            return res.status(400).json({ mensaje : "Correo es incorrecto"})
+        }
+
         let usuario = {}
         usuario = resultado[0]
         // comparando contraseña
@@ -29,7 +33,7 @@ export const Login = async (req, res) => {
                 token: token
             })
         } else {
-            return res.status(400).json({ mensaje: "Contraseña o correo incorrectos" })
+            return res.status(400).json({ mensaje: "Contraseña es incorrecta" })
         }
     } catch (error) {
         return res.status(500).json({
