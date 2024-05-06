@@ -14,5 +14,4 @@ rutaDetalle.get('/listar', verificar, listarDetalle)
 rutaDetalle.put('/actualizar/:idDetalle',verificar, validar_detalle,  actualizarDetalle)
 rutaDetalle.delete('/eliminar/:idDetalle',verificar, eliminarDetalle)
 
-
 export default rutaDetalle

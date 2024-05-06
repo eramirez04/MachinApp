@@ -1974,6 +1974,8 @@
             ●	Nombre <br>
             ●	Descripción <br>
 
+            En este apartado se pueden ingresar varias variables si se desea. <br>
+            
           </span>
         </div>
         <table>
@@ -2001,14 +2003,18 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json :<br>
-                {
-                  {<br>
-                    "varNombre":"Disco duro",<br>
-                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
-                    "fkTipoFicha":"3"<br>
-                  }
-                }
+                [<br>
+                {<br>
+                  "varNombre":"Disco duro",<br>
+                  "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                  "fkTipoFicha":"3"<br>
+                },<br>
+                {<br>
+                  "varNombre":"memoria RAM",<br>
+                  "varDescripcion":"Ram marca llslffd",<br>
+                  "fkTipoFicha":"3"<br>
+                }<br>
+                ]<br>
               </td>
             </tr>
             <tr>
@@ -2019,7 +2025,7 @@
                 }
                 <br>
                 incorrecto: {
-                  { "message": "No se registro " }
+                  { "message": "Error al registrar variables" }
                 } <br>
                 error : {
                   {"message":"Error en el servidor"}
