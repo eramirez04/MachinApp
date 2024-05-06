@@ -1,8 +1,14 @@
 import { conexion } from "../database/database.js"
+import { validationResult } from "express-validator"
 
 export const RegistraRol = async (req, res) => {
 
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
     const { nombre, descripcion } = req.body
     if (nombre !== '' && descripcion !== '') {
       let sqlRol = `insert into roles (rol_nombre,rol_descripcion) values('${nombre}','${descripcion}')`
