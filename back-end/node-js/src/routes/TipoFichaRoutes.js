@@ -1,6 +1,6 @@
 import { Router } from "express"
 import {registrarTipoFicha, listarTipoFicha, actualizarTipoFicha, eliminarTipoFicha} from "../controllers/TipoFichaController.js"
-import {validar_tipoFicha} from "../../validar/validationTipoFicha.js"
+import {validar_tipoFicha} from "../../validar/fichas/validationTipoFicha.js"
 
 import { verificar } from "../middlewares/LoginMidleware.js"
 
