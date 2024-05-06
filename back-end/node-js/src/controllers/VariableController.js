@@ -101,3 +101,35 @@ export const eliminarVariable = async (req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"})
     }
 }
+
+export const registrarVariasVariables = async (req, res)=>{
+    try{
+
+        let variblesFicha = req.body
+
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
+
+        for(let i = 0 ;variblesFicha.length>i; i++){
+
+            let sql = `insert into variable (var_nombre, var_descripcion, var_fk_tipo_ficha) 
+            values ('${variblesFicha[i].varNombre}', '${variblesFicha[i].varDescripcion}', ${variblesFicha[i].fkTipoFicha})`
+            
+            const [respuesta] = await  conexion.query(sql)
+
+            if (respuesta.affectedRows == 0){   
+                return res.status(404).json({"message":"Error al registrar variables."})
+            }
+        }
+
+        return res.status(200).json({"message":"Se registraron correctamente las variables"})
+
+
+    }catch(error){
+
+        return res.status(500).json({"message":"Error en el servidor: "+error})
+    }
+}
