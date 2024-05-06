@@ -14,6 +14,6 @@ rutaTipoFicha.put('/actualizar/:idTipoFicha',verificar,validar_tipoFicha, actual
 rutaTipoFicha.delete('/eliminar/:idTipoFicha',verificar,  eliminarTipoFicha)
 
 
-rutaTipoFicha.get('/buscarFicha/:idTipoFicha', /* verificar, */ buscarTipoFicha )
+rutaTipoFicha.get('/buscarFicha/:idTipoFicha', verificar, buscarTipoFicha )
 
 export default rutaTipoFicha
