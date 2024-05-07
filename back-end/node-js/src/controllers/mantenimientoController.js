@@ -21,6 +21,54 @@ export const listarRequerimiento5 = async (req, res) => {
     }
 }; 
 
+/* 5.1 Generar alertas de mantenimiento de a través de correo electrónico */
+import { mantenimiento_correo } from "../config/mantenimiento_email/email_mantenimineto.js";
+import { emailHtml_mantenimiento } from "../config/mantenimiento_email/emailhtml_mantenimiento.js";
+
+/* función para verificar y enviar correos electrónicos de mantenimiento automáticamente */
+export const verificarEnvioCorreosMantenimiento = async () => {
+    try {
+        let sql = `
+        SELECT usuarios.*, mantenimiento.*, actividades.*, tipo_mantenimiento.*, fichas.fi_placa_sena AS referencia_maquina
+        FROM usuarios
+        JOIN tecnicos_has_actividades ON usuarios.idUsuarios = tecnicos_has_actividades.fk_usuarios
+        JOIN actividades ON tecnicos_has_actividades.fk_actividades = actividades.idActividades
+        JOIN mantenimiento ON actividades.fk_mantenimiento = mantenimiento.idMantenimiento
+        JOIN tipo_mantenimiento ON mantenimiento.fk_tipo_mantenimiento = tipo_mantenimiento.idTipo_mantenimiento
+        JOIN fichas ON mantenimiento.mant_fk_fichas = fichas.idFichas
+        WHERE DATEDIFF(mantenimiento.mant_fecha_proxima, CURDATE()) <= 7
+        `;
+
+        const [mantenimientos] = await conexion.query(sql);
+
+        /* Si no hay mantenimientos a 7 días o menos, no hacemos nada */
+        if (mantenimientos.length === 0) {
+            console.log("No hay mantenimientos programados en 7 días o menos.");
+            return;
+        }
+
+        /* Envío de correos electrónicos para cada mantenimiento encontrado */
+        for (const mantenimiento of mantenimientos) {
+            const html = emailHtml_mantenimiento(mantenimiento);
+            await mantenimiento_correo.sendMail({
+                from: '"MachinApp" <machinappsena@gmail.com>',
+                to: mantenimiento.us_correo,
+                subject: "Recordatorio de Mantenimiento",
+                html: html
+            });
+        }
+
+        console.log("Todos los correos electrónicos enviados correctamente.");
+    } catch (error) {
+        console.error("Error al enviar correos electrónicos:s", error);
+    }
+};
+
+/* ejecuta el codigo para verificar cada dia */
+setInterval(verificarEnvioCorreosMantenimiento, 24 * 60 * 60 * 1000); 
+/* setInterval(verificarEnvioCorreosMantenimiento, 10 * 1000); */
+
+
 /* 5.2 busqueda por id de mantenimiento y que aparesca todas las actividades */
 export const listarMantenimientoPorId = async (req, res) => {
     try {

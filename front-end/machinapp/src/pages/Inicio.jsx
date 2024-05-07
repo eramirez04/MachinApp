@@ -1,6 +1,9 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom'
+
+//componentes
+import BottonC from '../components/BottonC.jsx'
+import Footer from '../components/Footer.jsx'
 
 import Nav from '../components/Nav'
 
