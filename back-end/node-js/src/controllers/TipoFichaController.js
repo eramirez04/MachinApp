@@ -101,3 +101,45 @@ export const eliminarTipoFicha = async(req, res)=>{
     }
 
 }
+
+export const buscarTipoFicha = async(req, res)=>{
+
+    try{
+        let idTipoFicha = req.params.idTipoFicha
+
+        let sql = `
+        SELECT
+        ti_fi_nombre
+        FROM tipo_equipo
+        WHERE idTipo_Ficha= ${idTipoFicha}`
+    
+        const[respuesta] = await conexion.query(sql)
+        
+        if(respuesta.length>0){
+
+            let sqlVar = `
+            SELECT
+            var_nombre,
+            var_descripcion
+            FROM variable
+            WHERE var_fk_tipo_ficha = ${idTipoFicha}`
+            
+            const[varFicha] = await conexion.query(sqlVar)
+    
+            let infoTipoFicha ={
+                ficha: respuesta ,
+                varFicha: varFicha
+            }
+
+            return res.status(200).json(infoTipoFicha)
+        }
+        else{
+            return res.status(404).json({"message":"No se encontro ficha"})
+        }
+    
+    }
+    catch(error){
+        return res.status(500).json({"message":"Error en el servidor"})
+    }
+}
+
