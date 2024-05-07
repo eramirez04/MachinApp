@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {registrarTipoFicha, listarTipoFicha, actualizarTipoFicha, eliminarTipoFicha} from "../controllers/TipoFichaController.js"
+import {registrarTipoFicha, listarTipoFicha, actualizarTipoFicha, eliminarTipoFicha, buscarTipoFicha} from "../controllers/TipoFichaController.js"
 import {validar_tipoFicha} from "../../validar/fichas/validationTipoFicha.js"
 
 import { verificar } from "../middlewares/LoginMidleware.js"
@@ -13,5 +13,7 @@ rutaTipoFicha.get('/listar', verificar, listarTipoFicha )
 rutaTipoFicha.put('/actualizar/:idTipoFicha',verificar,validar_tipoFicha, actualizarTipoFicha)
 rutaTipoFicha.delete('/eliminar/:idTipoFicha',verificar,  eliminarTipoFicha)
 
+
+rutaTipoFicha.get('/buscarFicha/:idTipoFicha', verificar, buscarTipoFicha )
 
 export default rutaTipoFicha

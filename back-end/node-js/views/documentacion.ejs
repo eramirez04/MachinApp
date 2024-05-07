@@ -1962,6 +1962,85 @@
         </table>
       </section>
 
+
+      <!-- R12.1.4  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.4</span>Buscar tipo ficha</span>
+          <span class="descripcion_requerimiento">
+
+            Al ingresar a este aprtado por medio del id del tipo de ficha se listara informacion como su nombre y todas las variables que an sido
+            registradas a ese tipo de ficha. <br>
+
+            Estara disponible para todos los usuarios. 
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.4</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/buscarFicha/5</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto:
+                <pre>
+                {
+                  "ficha": [
+                    {
+                      "ti_fi_nombre": "portatil APLE"
+                    }
+                  ],
+                  "varFicha": [
+                    {
+                      "var_nombre": "RAM ",
+                      "var_descripcion": "memoria ram del equipo"
+                    },
+                    {
+                      "var_nombre": "Calidad pantalla",
+                      "var_descripcion": "Calidad de la pantalla del portatil "
+                    }
+                  ]
+                }</pre>
+                <br>
+                incorrecto: {
+                  {"message":"No se encontro ficha"}
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
         <!-- R12.2-->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
