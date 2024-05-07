@@ -6,13 +6,16 @@ import Historial from "./pages/Historial";
 import Maquinas from "./pages/Maquinas";
 import Sitios from "./pages/Sitios";
 import PanelControl from "./pages/PaneldeControl";
-import Nav from './components/Nav'
+
+
+//borrar
+import RegistroUsuarios from "./components/Auth/RegistroUsuarios.jsx";
 
 const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Inicio />} />
+        <Route path="/" element={<RegistroUsuarios />} />
         <Route path="/FIchas" element={<FIchas />} />
         <Route path="/Historial" element={<Historial />} />
         <Route path="/Maquinas" element={<Maquinas />} />
