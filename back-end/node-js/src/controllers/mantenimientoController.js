@@ -41,10 +41,6 @@ export const verificarEnvioCorreosMantenimiento = async () => {
 
         const [mantenimientos] = await conexion.query(sql);
 
-        /* Imprimir los resultados de la consulta */
-        console.log("Mantenimientos encontrados:");
-        console.log(mantenimientos);
-
         /* Si no hay mantenimientos a 7 días o menos, no hacemos nada */
         if (mantenimientos.length === 0) {
             console.log("No hay mantenimientos programados en 7 días o menos.");
@@ -60,7 +56,6 @@ export const verificarEnvioCorreosMantenimiento = async () => {
                 subject: "Recordatorio de Mantenimiento",
                 html: html
             });
-            console.log(`Correo electrónico enviado a ${mantenimiento.us_correo}`);
         }
 
         console.log("Todos los correos electrónicos enviados correctamente.");
