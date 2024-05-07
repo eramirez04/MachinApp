@@ -3,7 +3,7 @@ import { Router } from "express";
 import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, listarRequerimiento17, mantenimientoDeMaquinas } from "../controllers/mantenimientoController.js";
 const mantenimiento= Router();
 
-import {VerificarMantenimiento} from '../../validar/mantenimiento/mantenimiento_validar'
+import {VerificarMantenimiento} from '../../validar/mantenimiento/mantenimiento_validar.js'
 import {verificar} from '../middlewares/LoginMidleware.js'
 
 /* requerimiento 5 */
