@@ -13,7 +13,12 @@ export const Login = async (req, res) => {
         }
         const { correo, contrasenia } = req.body
 
-        let sql = `SELECT idUsuarios,us_nombre, us_especialidad, fk_roles, us_contrasenia FROM usuarios WHERE us_correo = '${correo}'`
+        let sql = `
+        SELECT idUsuarios,us_nombre, us_especialidad, us_contrasenia, roles.rol_nombre
+        FROM usuarios 
+        INNER JOIN roles ON roles.idRoles = usuarios.fk_roles
+        WHERE us_correo = 
+        '${correo}'`
         const [resultado] = await conexion.query(sql)
 
         if(resultado.length === 0){
