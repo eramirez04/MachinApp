@@ -661,6 +661,66 @@
           </tbody>
         </table>
       </section>
+      <!-- kevin 5.1 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R5</span>Generar alertas de mantenimiento de a través de correo electrónico</span>
+          <span class="descripcion_requerimiento">
+            cuando falte 7 dias o menos para un mantenimiento se enviara un correo al administrador on los siguientes datos: Código de Mantenimiento, Descripción, Fecha de Realización etc.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF5.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get"></span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url"></span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Todos los correos electrónicos enviados correctamente."
+                }
+                <br>
+                incorrecto: {
+                  "No hay mantenimientos programados en 7 días o menos."
+                } <br>
+                error : {
+                  "Error al enviar correos electrónicos:s"
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
       <!-- jose luis R6 -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
