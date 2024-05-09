@@ -1,7 +1,7 @@
 import { check } from "express-validator";
 
 export const VerificarMantenimiento =[
-        check('mant_codigo_mantenimiento','El codigo de mantenimiento es obligatorio u incorrecto').not().isEmpty().isLength({max:250,min:5}),
+        check('mant_codigo_mantenimiento','El codigo de mantenimiento es obligatorio u incorrecto').not().isEmpty().isLength({max:250,min:1}),
 
         check('mant_fecha_realizacion', 'La fecha de realizacion es obligatoria y debe ser válida').not().isEmpty(),
 

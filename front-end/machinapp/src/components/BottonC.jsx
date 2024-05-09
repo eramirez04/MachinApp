@@ -1,11 +1,13 @@
-
 import React from 'react';
 
-const ButtonC=() =>{
-  return (
-<button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-11 rounded-full" >
-    Agregar
-</button>
-  );
+const ButtonC = (props) => {
+    let bgColor = props.bgColor
+    let name = props.name
+    let click = props.onClick
+    return (
+        <button className={`${bgColor} font-bold py-2 px-11 rounded-full transition shadow-lg `} onClick={click}>
+            {name}
+        </button>
+    );
 }
 export default ButtonC
