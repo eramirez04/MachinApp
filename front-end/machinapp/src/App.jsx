@@ -6,7 +6,8 @@ import Historial from "./pages/Historial";
 import Maquinas from "./pages/Maquinas";
 import Sitios from "./pages/Sitios";
 import PanelControl from "./pages/PaneldeControl";
-
+import Home from "./pages/auth/Home"
+import Perfil from "./pages/auth/Perfil"
 
 //borrar
 import RegistroUsuarios from "./components/Auth/RegistroUsuarios.jsx";
@@ -15,7 +16,9 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<RegistroUsuarios />} />
+        <Route path="/" element={<Inicio />} />
+        <Route path="/home" element={<Home/>} />
+        <Route path="/perfil/" element={<Perfil/>} />
         <Route path="/FIchas" element={<FIchas />} />
         <Route path="/Historial" element={<Historial />} />
         <Route path="/Maquinas" element={<Maquinas />} />
