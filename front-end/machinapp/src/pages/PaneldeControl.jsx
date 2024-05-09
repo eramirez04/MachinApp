@@ -1,94 +1,44 @@
 import React,{useEffect, useState} from 'react'
 
-import api from '../components/Api'
-
-import { Link, useNavigate } from 'react-router-dom'
-
-import Nav from '../components/Nav'
-import Header from '../components/Header'
-
-import ButtonU from '../components/BottonU'
-import ButtonD from '../components/BottonD'
-import ButtonC from '../components/BottonC'
-
-const ListarUsuarios = () =>{
-
-    const [usuarios, setUsuarios] = useState([])
-    const navigate = useNavigate()
-
-    useEffect(()=>{
-        const buscarUsuarios = async ()=>{
-            try{
-                const response = await api.get('/user/listar')
-                setUsuarios(response.data.resultadoUser)
-
-                
-            } catch(error){
-                console.error('Error listando usuarios:', error)
-            }
-        }
-
-        buscarUsuarios() 
-    }, [])
+import LayoutPanelControl from "./Layout/LayoutPanelControl.jsx"
+import RegistrarActividades from "../components/Actividades/RegistroActividades.jsx"
 
 
-    const borrarUsuario = async() =>{
 
-        try{
-            await api.delete(`/eliminar/${usuarios.idUsuarios}`,{
 
-            }).finally(()=>{
-                navigate("/listar")
-            })
 
-        }catch(error){
-            console.error('Error eliminando el usuario')
-        }
-    }
+const PaneldeControlUsuarios = () =>{
+
 
 
     return (
         <>
-            <div className=' bg-yellow-50'>
-                <Header/>
-                <Nav/>    
+            <header className="py-2 bg-[#52BD8F] sm:py-2 shadow-2xl">
+                <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-4">
+                    <div className="flex items-center justify-between">
+                        <div className="">
+                            <span className='text-white font-bold'>MachinApp</span>
+                        </div>
+                        <div className="relative hidden md:items-center md:justify-center md:inline-flex group ">
+                                    <button className="btn" onClick={()=>document.getElementById('my_modal_2').showModal()}>Registro</button>
+                                    <dialog id="my_modal_2" className="modal">
+                                    <div className="modal-box">
+                                        <RegistrarActividades/>
+                                    </div>
+                                    <form method="dialog" className="modal-backdrop">
+                                        <button>close</button>
+                                    </form>
+                                    </dialog>
+                        </div>
 
-                <div className='m-3 p-96 flex flex-row'>
-                    <p className='font-bold'>
-                        <Link to="/registrar"><ButtonC/></Link>
-                    </p>
-
-                    <table className='table bg-white'>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Eliminar</th>
-                                <th>Editar</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            {
-                                usuarios.map((usuario)=>(
-                                    <tr  key={usuario.idUsuarios}>
-                                        <td className='p-3'>{usuario.idUsuarios} </td>
-                                        <td className='p-4'>{usuario.us_nombre}</td>
-                                        <td className='p-5'>{usuario.us_correo}</td>
-                                        <td className='p-3'><button onClick={borrarUsuario} ></button><ButtonD/></td>
-                                        <td ><Link to={`/actualizar/${usuario.idUsuarios}`}><ButtonU/></Link></td>
-                                    </tr>
-                                ))
-                            }
-
-                        </tbody>
-                    </table>
-                        
+                    </div>
                 </div>
-                </div>
+            </header>
+            
+        <LayoutPanelControl/>
 
         </>
     )
 }
 
-export default ListarUsuarios
+export default PaneldeControlUsuarios

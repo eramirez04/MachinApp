@@ -1,7 +1,9 @@
 import React,{useState} from "react"
 import api from "../Api"
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
 import ButtonRegistroActividades from './ButtonRegistroActividades';
+import Alert from "../Alert.jsx";
 
 const RegistrarActividades=()=>{
 
@@ -10,6 +12,10 @@ const RegistrarActividades=()=>{
     const [acti_fecha_realizacion,setFecha]=useState('');
     const [acti_estado,setEstado]=useState('');
     const [fk_mantenimiento,setMantenimiento]=useState('');
+
+    const {register, formState: {errors}, handleSubmit} = useForm()
+
+
     const navigate=useNavigate()
 
     const handleCreateTask=async(e)=>{
@@ -43,44 +49,96 @@ const RegistrarActividades=()=>{
 
     return (
       <>
-  
-            <div className="hero-content flex-col lg:flex-row-reverse">
-              <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                <form className="card-body">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Nombre</span>
-                    </label>
-                    <input type="text" value={acti_nombre}  onChange={(e)=>setFecha(e.target.value)}/>
+      <div className="max-w-md mx-auto pt-3">
+              <form onSubmit={handleSubmit(handleCreateTask)}>
+                  <div className="relative z-0 w-full mb-5 group">
+                      <input type="text" name="floating_email" id="floating_email"
+                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                             placeholder=" "
+                             value={acti_nombre}
+                             {...register("nombres", {required: true})}
+                             onChange={(e) => setNombre(e.target.value)}
+
+                      />
+                      <label htmlFor="floating_email"
+                             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                          Nombres
+                      </label>
+                      {
+                          errors.nombres?.type === "required" && (
+                              <Alert descripcion="Nombre requirido"/>
+                          )
+                      }
                   </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Estado</span>
-                      <input type="email" placeholder="email" className="input input-bordered" value={acti_estado} />
-                    </label>
-                    
+
+                  <div className="relative z-0 w-full mb-5 group">
+                      <input type="text" name="floating_email" id="floating_email"
+                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                             placeholder=" "
+                             value={acti_descripcion}
+                             {...register("apellido", {required: true, minLength: 4})}
+                             onChange={(e) => setDescripcion(e.target.value)}
+
+                      />
+                      <label htmlFor="floating_email"
+                             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                          descripcion
+                      </label>
+                      {
+                          errors.apellido?.type === "required" && (
+                              <Alert descripcion="Apellidos requiridos"/>
+                          )
+                      }
                   </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Descripcion</span>
-                      
-                    </label>
-                    <textarea className="textarea textarea-bordered" value={acti_descripcion} required />
+
+                  <div className="relative z-0 w-full mb-5 group">
+                      <input type="email" name="floating_email" id="floating_email"
+                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                             placeholder=" "
+                             {...register("correo", {required: true,})}
+                             value={acti_fecha_realizacion}
+                             onChange={(e) => setFecha(e.target.value)}
+                      />
+                      <label htmlFor="floating_email"
+                             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                          fecha
+                      </label>
                   </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Mantenimiento</span>
-                      
-                    </label>
-                    <input type="email" className="input input-bordered" value={fk_mantenimiento} required />
+                  <div className="relative z-0 w-full mb-5 group">
+                      <input type="number" name="floating_email" id="floating_email"
+                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                             placeholder=" "
+                             {...register("numero", {required: true,})}
+                             value={acti_estado}
+                             onChange={(e) => setEstado(e.target.value)}
+                      />
+                      <label htmlFor="floating_email"
+                             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                          estado
+                      </label>
+                      {
+                          errors.numero?.type === "required" && (
+                              <Alert descripcion="Numero de documento requirido"/>
+                          )
+                      }
                   </div>
-                  <div onClick={handleCreateTask}>
-                    <ButtonRegistroActividades/>
+
+                  <div className="relative z-0 w-full mb-5 group">
+                      <input type="text" name="floating_email" id="floating_email"
+                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                             placeholder=" "
+                             {...register("password", {required: true,})}
+                             value={fk_mantenimiento}
+                             onChange={(e) => setMantenimiento(e.target.value)}
+                      />
+                      <label htmlFor="floating_email"
+                             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                          mantenimiento
+                      </label>
                   </div>
-                    
-                </form>
-              </div>
-            </div>
+                  <ButtonRegistroActividades value="Registrarse"/>
+              </form>
+          </div>
       </>
     );
 }

@@ -15,7 +15,7 @@ import { decodeToken, adminAndInstructor } from "../middlewares/isAdministrador.
 const RutaUsuario = Router()
 
 RutaUsuario.post('/registrar', cargarImagen,middlewareUsuario, Store)
-RutaUsuario.get('/listar', verificar, decodeToken,ListarUsuarios)
+RutaUsuario.get('/listar',ListarUsuarios)
 RutaUsuario.put('/actualizar/:id', middlewareUsuarioActualizar, verificar, actualizarUsuario)
 RutaUsuario.delete('/eliminar/:id', verificar, EliminarUsuario)
 RutaUsuario.get('/listar/:id', verificar, ListarUsuarioId)
