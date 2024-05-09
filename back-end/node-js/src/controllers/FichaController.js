@@ -1,4 +1,3 @@
-
 import { response } from 'express'
 import { conexion } from '../database/database.js'
 
@@ -6,6 +5,19 @@ import QRCode from 'qrcode'
 import fs from 'fs/promises'
 
 import { validationResult } from 'express-validator'
+
+
+import multer from 'multer'
+
+const storage = multer.diskStorage({
+    destination: function(req, img, cb){cb(null, "public/imagenes/ficha")}, 
+    filename: function(req, img, cb){cb(null, img.originalname)}
+})
+
+const upload = multer({storage:storage})
+
+export const cargarImagenFicha = upload.single('fiImagen')
+
 
 export const registrarFicha = async(req, res)=>{
 
@@ -16,7 +28,9 @@ export const registrarFicha = async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+        
+        let fiImagen = req.file.originalname
 
         let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha ) 
         values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha})`
