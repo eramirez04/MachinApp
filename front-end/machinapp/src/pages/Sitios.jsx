@@ -28,7 +28,7 @@ const Sitios=()=>  {
       </div>
         <div className='flex flex-row mt-10 items-center'>
           <div className='bg-blue-600 w-40 h-40 mb-10'>p</div>
-          <p className='text-black ml-10 mb-12'>Esta cede se encuentra en el corregimiento de Yamboro. En esta sede se encuentra la Escuela Nacional de la Calidad del Café.</p>
+          <p className='text-black ml-10 mb-12'>Esta sede se encuentra en el corregimiento de Yamboro. En esta sede se encuentra la Escuela Nacional de la Calidad del Café.</p>
           <Link to={'/Sedes'}><ButtonSitios /></Link>
         </div>
       </div>
