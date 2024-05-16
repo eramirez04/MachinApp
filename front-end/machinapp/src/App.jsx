@@ -12,6 +12,10 @@ import Perfil from "./pages/auth/Perfil"
 //borrar
 import RegistroUsuarios from "./components/Auth/RegistroUsuarios.jsx";
 
+import ListarFichasMa from "./components/FichasMaquina/ListarFichasMa.jsx"
+
+import ListarInfoMaquinas from "./components/FichasMaquina/ListarInfoMaquina.jsx"
+
 const App = () => {
   return (
     <div>
@@ -24,6 +28,11 @@ const App = () => {
         <Route path="/Maquinas" element={<Maquinas />} />
         <Route path="/Sitios" element={<Sitios />} />
         <Route path="/Panelcontrol" element={<PanelControl />} />
+
+        <Route path="/maquinas/:idAmbiente" element={<ListarFichasMa />} />
+
+        <Route path="/maquinaInfo/:idFicha" element={<ListarInfoMaquinas />} />
+
       </Routes>
     </div>
   );

@@ -71,7 +71,15 @@ export const registrarFicha = async(req, res)=>{
 
 export const listarFicha = async(req, res)=>{
     try{
-        let sql = `SELECT * FROM fichas `
+        let sql = `
+        SELECT
+        idFichas,
+        fi_placa_sena,
+        fi_serial,
+        fi_estado,
+        sit_nombre
+        FROM fichas 
+        INNER JOIN sitios ON fi_fk_sitios = idAmbientes`
 
         let  [respuesta] = await conexion.query(sql)
 
