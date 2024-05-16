@@ -7,6 +7,7 @@ import { middlewareUsuario, middlewareUsuarioActualizar, middelwareActualizarCon
 // validar token 
 import { verificar } from "../middlewares/LoginMidleware.js";
 
+import { cargarImagen } from "../config/storageArchivos.js";
 
 import { recuperaraContra } from "../controllers/UserController.js";
 import { decodeToken, adminAndInstructor } from "../middlewares/isAdministrador.js";
@@ -15,7 +16,7 @@ const RutaUsuario = Router()
 
 RutaUsuario.post('/registrar', middlewareUsuario, Store)
 RutaUsuario.get('/listar', verificar, decodeToken,ListarUsuarios)
-RutaUsuario.put('/actualizar/:id', middlewareUsuarioActualizar, verificar, actualizarUsuario)
+RutaUsuario.put('/actualizar/:id',cargarImagen, middlewareUsuarioActualizar, verificar,actualizarUsuario)
 RutaUsuario.delete('/eliminar/:id', verificar, EliminarUsuario)
 RutaUsuario.get('/listar/:id', verificar, ListarUsuarioId)
 RutaUsuario.get('/tecnico', verificar, ListarTecnicos)

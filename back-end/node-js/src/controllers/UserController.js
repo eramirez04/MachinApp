@@ -21,6 +21,7 @@ export const Store = async (req, res) => {
     }
 
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+
     // contaseña para encriptar
     const passwordCrypt = await encriptarContra(contrasenia)
 
@@ -45,11 +46,10 @@ export const Store = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      "Mensaje": "Error en el servidor", error
+      "Mensaje": "Error en el servidor"+ error
     })
   }
 }
-
 
 export const ListarUsuarios = async (req, res) => {
   try {
@@ -83,17 +83,29 @@ export const actualizarUsuario = async (req, res) => {
 
     let id = req.params.id
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+    // captura la imagen que venga por el cuerpo de la solicitud
+    let img = req.file
+
+    // para captura si una imagen fue enviada desde el formaulario y le asigna el nombre
+    //ofiginal 
+    const ifImg = img ? img.originalname : null
+
+    // encriptar contraseña 
+    const byContra  = await encriptarContra(contrasenia)
+
+    // consulta sql que actualiza un registro de usuarios en BD
     let sql = `
     update usuarios set
     fk_roles = '${rol}', us_nombre = '${nombre}', us_apellidos= '${apellidos}', us_correo= '${correo}',
-    us_numero_documento= '${numero_documento}', us_tipo_documento= '${tipo_documento}', us_contrasenia= '${contrasenia}',
-    us_especialidad= '${especialidad}', us_empresa = '${empresa}' where idUsuarios = '${id}' 
+    us_numero_documento= '${numero_documento}', us_tipo_documento= '${tipo_documento}', us_contrasenia= '${byContra}' ,
+    us_especialidad= '${especialidad}', us_empresa = '${empresa}', us_imagen = '${ifImg}' where idUsuarios = '${id}' 
     `
     const [reActualizar] = await conexion.query(sql)
 
     if (reActualizar.affectedRows > 0) {
       res.status(200).json({
         "Mensaje": "Usuario Actualizado",
+        estado : 200,
         reActualizar
       })
     }
@@ -151,7 +163,7 @@ export const ListarUsuarioId = async (req, res) => {
 export const ListarTecnicos = async (req, res) => {
   try {
     let sqlListarIdT = `
-    SELECT idUsuarios,us_nombre, rol_nombre FROM usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'tecnico'`
+    SELECT idUsuarios,us_nombre, rol_nombre FROM usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'Tecnico'`
 
     const [resultado] = await conexion.query(sqlListarIdT)
     if (resultado.length > 0) {
