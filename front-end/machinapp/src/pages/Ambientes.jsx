@@ -29,7 +29,7 @@ const Ambientes=()=>  {
         </div>
         <div className='flex flex-row mt-10 items-center'>
           <div className='bg-blue-600 w-40 h-40 mb-10'>p</div>
-          <p className='text-black ml-10 mb-12'>Esta máquina es utilizada para trillar y moler el café, el cual luego se dejará secar para poder tostarlo</p>
+          <p className='text-black ml-10 mb-12'>Esta máquina es utilizada para trillar y moler el café, el cual luego se dejará secar para poder tostarlo.</p>
           <Link to={'/Maquinas'}><ButtonSitios /></Link>
         </div>
       </div>
