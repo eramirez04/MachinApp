@@ -1,32 +1,30 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-//componente 
-import Nav from "../../components/Nav"
+//componente
+import Nav from "../../components/Nav";
+
+
 
 const user = {
-  name: 'Emersson ramirez Ruiz',
-  email: 'emerssonramirez510@gmail.com',
-  imageUrl:
-    '56&q=80',
-}
-const navigation = [
-  { name: 'Machinapp', href: '/home', current: true },
-]
+  name: "Emersson ramirez Ruiz",
+  email: "emerssonramirez510@gmail.com",
+  imageUrl: "56&q=80",
+};
+const navigation = [{ name: "Machinapp", href: "/home", current: true }];
 const userNavigation = [
-  { name: 'Tu perfil', href: '/perfil' },
-  { name: 'Configuraciones', href: '#' },
-  { name: 'Cerrar Sesion', href: '/' },
-]
+  { name: "Tu perfil", href: "/perfil" },
+  { name: "Configuraciones", href: "#" },
+  { name: "Cerrar Sesion", href: "/" },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-const Layout = (props) =>{
-
-  let contenido = props.contenido
+const Layout = (props) => {
+  let contenido = props.contenido;
 
   return (
     <>
@@ -38,11 +36,7 @@ const Layout = (props) =>{
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img
-                        className="h-8 w-8"
-                        src="machin.jpeg"
-                        alt="Your Company"
-                      />
+                      <img className="h-8 w-8" src="machin.jpeg" />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -52,11 +46,11 @@ const Layout = (props) =>{
                             href={item.href}
                             className={classNames(
                               item.current
-                                ? 'bg-white text-black'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium'
+                                ? "bg-white text-black"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
                             )}
-                            aria-current={item.current ? 'page' : undefined}
+                            aria-current={item.current ? "page" : undefined}
                           >
                             {item.name}
                           </a>
@@ -81,7 +75,11 @@ const Layout = (props) =>{
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={user.imageUrl}
+                              alt=""
+                            />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -100,8 +98,8 @@ const Layout = (props) =>{
                                   <a
                                     href={item.href}
                                     className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-black'
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-black"
                                     )}
                                   >
                                     {item.name}
@@ -120,9 +118,15 @@ const Layout = (props) =>{
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Open main menu</span>
                       {open ? (
-                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                        <XMarkIcon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                        <Bars3Icon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
                       )}
                     </Disclosure.Button>
                   </div>
@@ -137,10 +141,12 @@ const Layout = (props) =>{
                       as="a"
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium'
+                        item.current
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "block rounded-md px-3 py-2 text-base font-medium"
                       )}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -149,11 +155,19 @@ const Layout = (props) =>{
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={user.imageUrl}
+                        alt=""
+                      />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                      <div className="text-sm font-medium leading-none text-black0">{user.email}</div>
+                      <div className="text-base font-medium leading-none text-white">
+                        {user.name}
+                      </div>
+                      <div className="text-sm font-medium leading-none text-black0">
+                        {user.email}
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -181,8 +195,6 @@ const Layout = (props) =>{
             </>
           )}
         </Disclosure>
-
-        // contenido aqui
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {contenido}
@@ -190,7 +202,7 @@ const Layout = (props) =>{
         </main>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
