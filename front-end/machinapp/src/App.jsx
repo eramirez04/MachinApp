@@ -1,38 +1,27 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Inicio from "./pages/Inicio";
-import FIchas from "./pages/Fichas";
-import Historial from "./pages/Historial";
-import Maquinas from "./pages/Maquinas";
-import Sitios from "./pages/Sitios";
-import PanelControl from "./pages/PaneldeControl";
-import Home from "./pages/auth/Home"
-import Perfil from "./pages/auth/Perfil"
 
-//borrar
-import RegistroUsuarios from "./components/Auth/RegistroUsuarios.jsx";
-
-import ListarFichasMa from "./components/FichasMaquina/ListarFichasMa.jsx"
-
-import ListarInfoMaquinas from "./components/FichasMaquina/ListarInfoMaquina.jsx"
+const Inicio = lazy(() => import("./pages/Inicio"));
+const Home = lazy(() => import("./pages/auth/Home"));
+const Perfil = lazy(() => import("./pages/auth/Perfil.jsx"));
+const FIchas = lazy(() => import("./pages/Fichas"));
+const Historial = lazy(() => import("./pages/Historial"));
+const Maquinas = lazy(() => import("./pages/Maquinas"));
+const Sitios = lazy(() => import("./pages/Sitios"));
+const PanelControl = lazy(() => import("./pages/PaneldeControl"));
 
 const App = () => {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Inicio />} />
-        <Route path="/home" element={<Home/>} />
-        <Route path="/perfil/" element={<Perfil/>} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/perfil/" element={<Perfil />} />
         <Route path="/FIchas" element={<FIchas />} />
         <Route path="/Historial" element={<Historial />} />
         <Route path="/Maquinas" element={<Maquinas />} />
         <Route path="/Sitios" element={<Sitios />} />
         <Route path="/Panelcontrol" element={<PanelControl />} />
-
-        <Route path="/maquinas/:idAmbiente" element={<ListarFichasMa />} />
-
-        <Route path="/maquinaInfo/:idFicha" element={<ListarInfoMaquinas />} />
-
       </Routes>
     </div>
   );
