@@ -48,13 +48,12 @@ const Login = () => {
       }
     } catch (error) {
       // captura de errores
-      console.log(error.response.data);
+      /* console.log(error.response.data); */
       setError(error.response.data.mensaje);
     }
   };
 
   return (
-    // componente de login
     <>
       <div className="max-w-md mx-auto pt-3">
         <form onSubmit={handleSubmit(makeLogin)}>

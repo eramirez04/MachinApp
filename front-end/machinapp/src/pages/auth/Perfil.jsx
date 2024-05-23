@@ -1,19 +1,19 @@
-import React,{useState, useEffect} from "react";
-
+import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import Api from "../../components/Api";
 
-// layout 
-import Layout from "../Layout/Layout.jsx"
-import BuscarUsuario from "../../components/Auth/ListarUsuario.jsx";
+// layout
+const Layout = lazy(() => import("../Layout/Layout.jsx"));
+const BuscarUsuario = lazy(() =>
+  import("../../components/Auth/ListarUsuario.jsx")
+);
 
-const Pefil = () =>{
-    
-    return (
-        <>
-        <Layout contenido={<BuscarUsuario/>}/>
-        </>
-    )
-}
+const Pefil = () => {
+  return (
+    <>
+      <Layout contenido={<BuscarUsuario />} />
+    </>
+  );
+};
 
-export default Pefil
+export default Pefil;
