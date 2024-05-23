@@ -19,19 +19,17 @@ const RegistrarActividades=()=>{
     const navigate=useNavigate()
 
     const handleCreateTask=async(e)=>{
-        e.preventDefault()
-        if((acti_nombre==='')||(acti_descripcion==='')||(acti_fecha_realizacion==='')||(acti_estado==='')||(fk_mantenimiento==='')){
-            alert('llenar todos los campos campos')
-        }else{
+       
+
             try {
-                const result=await api.post('/registrar',{
+                const result=await api.post('actividades/registrar',{
                     acti_nombre:acti_nombre,
                     acti_descripcion:acti_descripcion,
                     acti_fecha_realizacion:acti_fecha_realizacion,
                     acti_estado:acti_estado,
                     fk_mantenimiento:fk_mantenimiento,
                 }).finally(()=>{
-                    navigate("/")
+                    navigate("/Home")
                 })
                 console.log('Tarea creada',result.data)
                 setNombre('')
@@ -42,15 +40,17 @@ const RegistrarActividades=()=>{
             } catch (error) {
                 console.error('error al crear la actividad',error)
             }
-        }
+        
 
         
     }
 
     return (
       <>
-      <div className="max-w-md mx-auto pt-3">
+      <div className="max-w-md mx-auto">
+
               <form onSubmit={handleSubmit(handleCreateTask)}>
+                    <h1 className=" text-2xl pb-3">Registro</h1>
                   <div className="relative z-0 w-full mb-5 group">
                       <input type="text" name="floating_email" id="floating_email"
                              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -76,7 +76,7 @@ const RegistrarActividades=()=>{
                              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                              placeholder=" "
                              value={acti_descripcion}
-                             {...register("apellido", {required: true, minLength: 4})}
+                             {...register("descripcion", {required: true})}
                              onChange={(e) => setDescripcion(e.target.value)}
 
                       />
@@ -85,14 +85,14 @@ const RegistrarActividades=()=>{
                           descripcion
                       </label>
                       {
-                          errors.apellido?.type === "required" && (
-                              <Alert descripcion="Apellidos requiridos"/>
+                          errors.descripcion?.type === "required" && (
+                              <Alert descripcion="descripcion requiridos"/>
                           )
                       }
                   </div>
 
                   <div className="relative z-0 w-full mb-5 group">
-                      <input type="email" name="floating_email" id="floating_email"
+                      <input type="date" name="floating_email" id="floating_email"
                              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                              placeholder=" "
                              {...register("correo", {required: true,})}
@@ -103,9 +103,14 @@ const RegistrarActividades=()=>{
                              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                           fecha
                       </label>
+                      {
+                          errors.numero?.type === "required" && (
+                              <Alert descripcion="fecha requirida"/>
+                          )
+                      }
                   </div>
                   <div className="relative z-0 w-full mb-5 group">
-                      <input type="number" name="floating_email" id="floating_email"
+                      <input type="text" name="floating_email" id="floating_email"
                              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                              placeholder=" "
                              {...register("numero", {required: true,})}
@@ -118,13 +123,13 @@ const RegistrarActividades=()=>{
                       </label>
                       {
                           errors.numero?.type === "required" && (
-                              <Alert descripcion="Numero de documento requirido"/>
+                              <Alert descripcion="estado requirido"/>
                           )
                       }
                   </div>
 
                   <div className="relative z-0 w-full mb-5 group">
-                      <input type="text" name="floating_email" id="floating_email"
+                      <input type="number" name="floating_email" id="floating_email"
                              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                              placeholder=" "
                              {...register("password", {required: true,})}
@@ -135,6 +140,11 @@ const RegistrarActividades=()=>{
                              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                           mantenimiento
                       </label>
+                      {
+                          errors.numero?.type === "required" && (
+                              <Alert descripcion="mantenimiento requirido"/>
+                          )
+                      }
                   </div>
                   <ButtonRegistroActividades value="Registrarse"/>
               </form>

@@ -9,7 +9,7 @@ import {verificar} from "../middlewares/LoginMidleware.js";
 const ActivitiesRoutes = Router()
 
 
-ActivitiesRoutes.get('/listar',verificar, listarActividades )
+ActivitiesRoutes.get('/listar/:idMantenimiento',verificar, listarActividades )
 
 ActivitiesRoutes.post('/registrar',verificar,validar_actividad, registrarActividades)
 

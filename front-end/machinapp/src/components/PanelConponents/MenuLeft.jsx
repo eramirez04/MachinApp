@@ -11,13 +11,14 @@ import { Link } from "react-router-dom";
 
 const MenuLeft = () => {
   const menus = [
-    { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
-    { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
-    { name: "Maquinas", link: "/Maquinas", icon: GiGears},
+    { name: "PaneldeControl", link: "/PanelControl", icon: FaUserGear },
+    { name: "PanelControlAreas", link: "/PanelControlAreas", icon: FaFileUpload },
+    { name: "PanelControlSedes", link: "/PanelControlSedes", icon: GiGears},
+    { name: "PanelControlSitios", link: "/PanelControlSitios", icon: FaHistory},
   ];
   const [open, ] = useState(true);
   return (
-    <section className="flex gap-6 justify-end">
+    <section className="flex gap-6  justify-end">
       <div
         className={`bg-[white]   "w-16"
         }  text-black px-4`}

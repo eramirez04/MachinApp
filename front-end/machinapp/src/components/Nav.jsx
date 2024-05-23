@@ -40,14 +40,11 @@ const Nav = () => {
               key={i}
               className={` ${
                 menu?.margin && "mt-96"
-              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
+              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:text-white hover:bg-gray-800 rounded-md`}
             >
               <div>{React.createElement(menu?.icon, { size: "20" })}</div>
               <h2
-                style={{
-                  transitionDelay: `${i + 3}00ms`,
-                }}
-                className={`whitespace-pre duration-500 ${
+                className={`whitespace-pre ${
                   !open && "opacity-0 translate-x-28 overflow-hidden"
                 }`}
               >

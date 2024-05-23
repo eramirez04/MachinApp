@@ -5,7 +5,7 @@ import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaSitio = Router()
 
-rutaSitio.get('/listarsitio', verificar, listarSitio)
+rutaSitio.get('/listarsitio',verificar, listarSitio)
 rutaSitio.post('/registrarsitio', verificar, verificarSitio, registrarSitio)
 rutaSitio.delete('/eliminarsitio/:id_sitio', verificar, eliminarSitio)
 rutaSitio.put('/editarsitio/:id_sitio', verificar, verificarSitio, editarSitio)

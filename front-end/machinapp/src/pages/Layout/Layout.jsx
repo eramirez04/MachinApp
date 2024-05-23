@@ -30,6 +30,7 @@ const Layout = (props) =>{
 
   return (
     <>
+    
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-[#52BD8F]">
           {({ open }) => (
@@ -181,13 +182,6 @@ const Layout = (props) =>{
             </>
           )}
         </Disclosure>
-
-        // contenido aqui
-        <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            {contenido}
-          </div>
-        </main>
       </div>
     </>
   )

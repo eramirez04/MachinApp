@@ -1,0 +1,12 @@
+App.jsx
+	import PanelcontrolSedes from "./pages/PaneldeControlSedes.jsx"
+	import PanelcontrolSitios from "./pages/PaneldeControlSitios.jsx"
+	import PanelcontrolAreas from "./pages/PaneldeControlAreas.jsx"
+	
+
+        <Route path="/PanelcontrolSedes" element={<PanelcontrolSedes />} />
+        <Route path="/PanelcontrolSitios" element={<PanelcontrolSitios />} />
+        <Route path="/PanelcontrolAreas" element={<PanelcontrolAreas />} />
+
+
+no esta sirviendo lo de registrar actividades y para listar en el panel de control y en el inicio toca quitar lo de validar 

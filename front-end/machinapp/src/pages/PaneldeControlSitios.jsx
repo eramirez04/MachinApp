@@ -1,13 +1,13 @@
 import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControl from "./Layout/LayoutPanelControl.jsx"
-import RegistrarActividades from "../components/Actividades/RegistroActividades.jsx"
+import LayoutPanelControlSitios from "./Layout/LayoutPanelControlSitios.jsx"
 
 
 
 
 
-const PaneldeControlUsuarios = () =>{
+
+const PaneldeControlSitios = () =>{
 
 
 
@@ -24,10 +24,10 @@ const PaneldeControlUsuarios = () =>{
                 </div>
             </header>
             
-        <LayoutPanelControl/>
+        <LayoutPanelControlSitios/>
 
         </>
     )
 }
 
-export default PaneldeControlUsuarios
+export default PaneldeControlSitios

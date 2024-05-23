@@ -5,20 +5,20 @@ import api from '../../Api'
 import { Link, useNavigate } from 'react-router-dom'
 
 import Nav from '../../Nav'
-
-
 import MenuLeft from '../MenuLeft'
 
-const ListarSitios = () =>{
 
-    const [Sitios, setSitios] = useState([])
+
+const ListarAreas = () =>{
+
+    const [areas, setAreas] = useState([])
     const navigate = useNavigate()
 
     useEffect(()=>{
-        const buscarSitios = async ()=>{
+        const buscarAreas = async ()=>{
             try{
-                const response = await api.get("/sitio/listarsitio")
-                setSitios(response.data.resultadoSitio)
+                const response = await api.get('/area/listararea')
+                setAreas(response.data.resultadoArea)
 
                 
             } catch(error){
@@ -26,7 +26,7 @@ const ListarSitios = () =>{
             }
         }
 
-        buscarSitios() 
+        buscarAreas() 
     }, [])
 
 
@@ -45,18 +45,16 @@ const ListarSitios = () =>{
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>centro</th>
-                                <th>descripcion CC</th>
+                                <th>Sede</th>
                             </tr>
                         </thead>
                         <tbody >
                             {
-                                Sitios.map((Sitio)=>(
-                                    <tr  key={Sitio.idAmbientes}>
-                                        <td className='p-3'>{Sitio.idAmbientes} </td>
-                                        <td className='p-4'>{Sitio.sit_nombre}</td>
-                                        <td className='p-5'>{Sitio.tipo_sitio}</td>
-                                        <td className='p-3'>{Sitio.area_nombre} </td>
+                                areas.map((area)=>(
+                                    <tr  key={area.idArea}>
+                                        <td className='p-3'>{area.idArea} </td>
+                                        <td className='p-4'>{area.area_nombre}</td>
+                                        <td className='p-5'>{area.sede_nombre}</td>
                                         
                                     </tr>
                                 ))
@@ -72,4 +70,4 @@ const ListarSitios = () =>{
     )
 }
 
-export default ListarSitios
+export default ListarAreas

@@ -9,6 +9,7 @@ import PanelControl from "./pages/PaneldeControl";
 import Home from "./pages/auth/Home"
 import Perfil from "./pages/auth/Perfil"
 
+
 //borrar
 import RegistroUsuarios from "./components/Auth/RegistroUsuarios.jsx";
 
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/Maquinas" element={<Maquinas />} />
         <Route path="/Sitios" element={<Sitios />} />
         <Route path="/Panelcontrol" element={<PanelControl />} />
+
       </Routes>
     </div>
   );

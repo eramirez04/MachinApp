@@ -5,10 +5,13 @@ import MenuLeft from '../../components/PanelConponents/MenuLeft.jsx'
 
 function LayoutPanelControl() {
   return (
-    <>
-        
-        <ListarUsuarios/>
-        <MenuLeft/>
+    <> 
+            <div>
+                
+                <ListarUsuarios/>
+            </div>
+
+
     </>
 
   )
