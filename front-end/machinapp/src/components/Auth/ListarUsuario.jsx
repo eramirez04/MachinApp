@@ -21,26 +21,20 @@ let usuarioLocal = localStorage.getItem("token");
 
 const BuscarUsuario = () => {
   // const {id} = useParams()
-  let id = 25;
-  const [usuario, setUsuario] = useState({});
 
-  const [userAct, setUserAct] = useState({
-    nombre: "",
-    apellidos: "",
-    correo: "",
+  let id = 2;
+
+  const [usuario, setUsuario] = useState({
+    us_nombre: "",
+    us_apellidos: "",
+    us_correo: "",
   });
-
-  const navegacion = useNavigate();
 
   useEffect(() => {
     const buscar = async () => {
       try {
         const response = await api.get(`user/listar/${id}`);
-
-        let user = {};
-        user = response.data.user[0];
-        console.log(user.us_nombre);
-        setUsuario(user);
+        setUsuario(...response.data.user);
       } catch (error) {
         /*  navegacion('/') */
       }
@@ -54,26 +48,17 @@ const BuscarUsuario = () => {
     handleSubmit,
   } = useForm();
 
-  const ActualizarUser = async (e) => {
-    e.preventDefault();
+  const ActualizarUser = async () => {
     try {
-      const response = await api.put(`user/actualizar/${id}`, userAct);
-
-      console.log(response);
+      const response = await api.put(`user/actualizar/${id}`, usuario);
+      console.log(response.data)
     } catch (error) {
       console.error(error.response.data);
     }
   };
+
   return (
     <>
-      <ActualizarUsuario />
-
-      {/*  <div>
-        <input type="email" value={usuario.us_correo}
-        onChange={(e)=> setUsuario({...usuario, name: e.target.value})}
-        />
-      </div>
- */}
       <div className="min-h-full">
         <section className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -88,6 +73,7 @@ const BuscarUsuario = () => {
             <div className=" p-4 sm:p-6 lg:p-8 rounded-lg shadow-md">
               <div className=" text-base sm:text-lg lg:text-xl">
                 <form
+                  onSubmit={handleSubmit(ActualizarUser)}
                   action=""
                   className="space-y-8  md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
                 >
@@ -96,7 +82,7 @@ const BuscarUsuario = () => {
                       <img src="" alt="" />
                     </div>
                     <div className="flex">
-                      <button onClick={ActualizarUser}> actualizar</button>
+                      <button> actualizar</button>
                     </div>
                   </div>
                   <div className="w-full">
@@ -110,28 +96,34 @@ const BuscarUsuario = () => {
                         </div>
                         <ul className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">
                           <li className="flex gap-x-4">
-                            <UserIcon className="h-6 w-6" aria-hidden="true" />{" "}
+                            <UserIcon className="h-6 w-6" aria-hidden="true" />
+
                             <input
                               type="text"
+                              value={usuario.us_nombre}
                               onChange={(e) =>
-                                setUserAct({
-                                  nombre: e.target.value,
+                                setUsuario({
+                                  ...usuario,
+                                  us_nombre: e.target.value,
                                 })
                               }
-                              defaultValue={usuario.us_nombre}
+                              className="border-b appearance-none 
+                              text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
                           <li className="flex gap-x-3">
                             <UserIcon className="h-6 w-6" aria-hidden="true" />
                             <input
                               type="text"
-                              defaultValue={usuario.us_apellidos}
+                              value={usuario.us_apellidos}
                               onChange={(e) =>
-                                setUserAct({
-                                  ...userAct,
-                                  apellidos: e.target.value,
+                                setUsuario({
+                                  ...usuario,
+                                  us_apellidos: e.target.value,
                                 })
                               }
+                              className="border-b appearance-none 
+                              text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
                           <li className="flex gap-x-3">
@@ -141,13 +133,15 @@ const BuscarUsuario = () => {
                             />
                             <input
                               type="email"
-                              defaultValue={usuario.us_correo}
+                              value={usuario.us_correo}
                               onChange={(e) =>
-                                setUserAct({
-                                  ...userAct,
-                                  correo: e.target.value,
+                                setUsuario({
+                                  ...usuario,
+                                  us_correo: e.target.value,
                                 })
                               }
+                              className="border-b appearance-none 
+                              text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
                           <li className="flex gap-x-3">

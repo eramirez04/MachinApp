@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import api from "../Api";
-import Alert from "../Alert.jsx";
-import InputSubmit from "../InputSubmit.jsx";
+const Alert = lazy(() => import("../Alert.jsx"));
+const InputSubmit = lazy(() => import("../InputSubmit.jsx"));
 
 const RegistroUsuarios = () => {
   const [nombre, setNombre] = useState("");
@@ -31,9 +31,7 @@ const RegistroUsuarios = () => {
         numero_documento: numero_doc,
         tipo_documento: tipoDocumento,
         contrasenia: contrasenia,
-        especialidad: null,
-        empresa: null,
-        rol: 4,
+        rol: "4",
         img: undefined,
       });
       if (response.data.Mensaje === "Registro de usuario exitoso") {
@@ -48,7 +46,7 @@ const RegistroUsuarios = () => {
         alert("usuario creado");
       }
     } catch (e) {
-      console.error(e.response.data.Mensaje);
+      console.error(e.response.data);
     }
   };
 
@@ -74,7 +72,7 @@ const RegistroUsuarios = () => {
               Nombres
             </label>
             {errors.nombres?.type === "required" && (
-              <Alert descripcion="Nombre requirido" />
+              <Alert descripcion="Nombre requerido" />
             )}
           </div>
 
@@ -96,7 +94,7 @@ const RegistroUsuarios = () => {
               Apellidos
             </label>
             {errors.apellido?.type === "required" && (
-              <Alert descripcion="Apellidos requiridos" />
+              <Alert descripcion="Apellidos requeridos" />
             )}
           </div>
           <div className="relative z-0 w-full mb-5 group">
@@ -117,7 +115,7 @@ const RegistroUsuarios = () => {
               Correo
             </label>
             {errors.correo?.type === "required" && (
-              <Alert descripcion="Correo requirido" />
+              <Alert descripcion="Correo requerido" />
             )}
           </div>
           <div className="relative z-0 w-full mb-5 group">
@@ -138,7 +136,7 @@ const RegistroUsuarios = () => {
               Numero de documento
             </label>
             {errors.numero?.type === "required" && (
-              <Alert descripcion="Numero de documento requirido" />
+              <Alert descripcion="Numero de documento requerido" />
             )}
           </div>
           <div className="relative z-0 w-full mb-5 group">
@@ -179,7 +177,7 @@ const RegistroUsuarios = () => {
               Contraseña
             </label>
             {errors.password?.type === "required" && (
-              <Alert descripcion="Contraseña requirido" />
+              <Alert descripcion="Contraseña requerida" />
             )}
           </div>
           <InputSubmit value="Registrarse" />

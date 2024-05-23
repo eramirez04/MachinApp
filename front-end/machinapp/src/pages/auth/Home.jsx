@@ -1,11 +1,14 @@
-import React from "react";
-import Layout from "../Layout/Layout"
-const Home = () =>{
-    return (
-        <>
-        <Layout contenido={""}/>
-        </>
-    )
-}
+import React, { lazy } from "react";
+import Layout from "../Layout/Layout";
 
-export default Home
+const Nav = lazy(() => import("../../components/Nav"));
+
+const Home = () => {
+  return (
+    <>
+      <Layout contenido={""} />
+    </>
+  );
+};
+
+export default Home;
