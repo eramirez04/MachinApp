@@ -1,9 +1,22 @@
-
 import { response } from 'express'
 import { conexion } from '../database/database.js'
 
+import QRCode from 'qrcode'
+import fs from 'fs/promises'
 
 import { validationResult } from 'express-validator'
+
+
+import multer from 'multer'
+
+const storage = multer.diskStorage({
+    destination: function(req, img, cb){cb(null, "public/imagenes/ficha")}, 
+    filename: function(req, img, cb){cb(null, img.originalname)}
+})
+
+const upload = multer({storage:storage})
+
+export const cargarImagenFicha = upload.single('fiImagen')
 
 
 export const registrarFicha = async(req, res)=>{
@@ -15,7 +28,9 @@ export const registrarFicha = async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+        
+        let fiImagen = req.file.originalname
 
         let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha ) 
         values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha})`
@@ -24,14 +39,33 @@ export const registrarFicha = async(req, res)=>{
 
 
         if(respuesta.affectedRows>0){
+
+            const qrCodePath = './codigo_qr.png'
+            QRCode.toFile(qrCodePath, JSON.stringify(req.body), async function (err) {
+
+                if (err) {
+                    console.error('Error al generar el código QR:', err);
+                    return res.status(500).json({"mensaje": "Error al generar el código QR"})
+                }
+                console.log('Código QR generado correctamente!')
+
+                const qrCodeImage = await fs.readFile(qrCodePath)
+
+                const qrCodeBase64 = await qrCodeImage.toString('base64')
+                const updateSql = `UPDATE fichas SET CodigoQR = ? WHERE idFichas = ?`
+                await conexion.query(updateSql, [qrCodeBase64, respuesta.insertId])
+                await fs.unlink(qrCodePath)
+
+
             return res.status(200).json({"mensaje":"Se registro correctamente"})
+            })
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
         }
         
     }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor"})
+        return res.status(500).json({"mensaje":"Error del servidor"+error})
     }
 }
 
@@ -104,7 +138,6 @@ export const eliminarFicha = async(req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"})
     }
 }
-
 
 export const listarFichaPorAmbiente = async(req, res)=>{
 

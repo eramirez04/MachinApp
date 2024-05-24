@@ -7,8 +7,8 @@ export const validar_ficha = [
     check('fechaAdquisicion','Es obligatorio ingresar la fecha de adquisicion').not().isEmpty(),
     check('fechaInicioGarantia','Es obligatorio ingresar la fehca de inicio de garantia').not().isEmpty(),
     check('fechaFinGarantia','Es obligatorio ingresar la fehca fin de garantia').not().isEmpty(),
-    check('descipcionGarantia','').not().isEmpty().isLength({min:3, max:50}),
-    check('fiImagen','Es obligatorio ingresar la imagen').not().isEmpty().isLength({min:3, max:255}),
+    check('descipcionGarantia','La descripcion de la garantia es obligatoria').not().isEmpty().isLength({min:3}),
+    /* check('fiImagen','Es obligatorio ingresar la imagen').not().isEmpty(), */
     check('fiEstado','Es obligatorio ingresar el estado').isIn(['operacion', 'fuera_de_servicio', 'en_reparacion']),
     check('fk_sitio','Es obligatorio indicarle el sitio').not().isEmpty().isInt(),
     check('fk_tipo_ficha','Es obligatorio indicarle el tipo de ficha').not().isEmpty().isInt(),

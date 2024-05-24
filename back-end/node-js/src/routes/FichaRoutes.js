@@ -1,7 +1,7 @@
 import {Router} from 'express'
-import { registrarFicha, eliminarFicha, actualizarFicha, listarFicha, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica} from '../controllers/FichaController.js'
+import { registrarFicha, eliminarFicha, actualizarFicha, listarFicha, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha} from '../controllers/FichaController.js'
 
-import {validar_ficha} from '../../validar/validationFicha.js'
+import {validar_ficha} from '../../validar/fichas/validationFicha.js'
 
 import { verificar } from '../middlewares/LoginMidleware.js'
 
@@ -9,7 +9,7 @@ import { verificar } from '../middlewares/LoginMidleware.js'
 const rutaFicha = Router()
 
 
-rutaFicha.post('/registrar', verificar, validar_ficha, registrarFicha)
+rutaFicha.post('/registrar', verificar,  cargarImagenFicha, validar_ficha, registrarFicha)
 rutaFicha.get('/listar', verificar, listarFicha)
 
 rutaFicha.delete('/eliminar/:idFicha', verificar, eliminarFicha)
@@ -20,8 +20,6 @@ rutaFicha.get('/listarPorAmbiente/:idAmbiente', verificar, listarFichaPorAmbient
 
 
 rutaFicha.get('/listarInfoEspecifica/:idFicha', verificar, listarInfoEspecifica )
-
-
 
 
 

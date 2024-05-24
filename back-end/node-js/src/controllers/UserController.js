@@ -21,15 +21,19 @@ export const Store = async (req, res) => {
     }
 
     const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+
+    // captura la imagen que venga por el cuerpo de la solicitud
+    let img = req.file.originalname
+    
     // contaseña para encriptar
     const passwordCrypt = await encriptarContra(contrasenia)
 
 
     let sql = `
     INSERT INTO usuarios
-     (fk_roles, us_nombre, us_apellidos, us_correo, us_numero_documento, us_tipo_documento, us_contrasenia, us_especialidad, us_empresa)
+     (fk_roles, us_nombre, us_apellidos, us_correo, us_numero_documento, us_tipo_documento, us_contrasenia, us_especialidad, us_empresa, us_imagen)
       VALUES 
-     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${passwordCrypt}','${especialidad}','${empresa}'
+     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${passwordCrypt}','${especialidad}','${empresa}', '${img}'
      )
     `
     const [resultadoUser] = await conexion.query(sql)
@@ -49,7 +53,6 @@ export const Store = async (req, res) => {
     })
   }
 }
-
 
 export const ListarUsuarios = async (req, res) => {
   try {

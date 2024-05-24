@@ -70,19 +70,19 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json : { <br>
-                { <br>
-                "nombre": "Emersson", <br>
-                "apellidos" : "Ramirzez Ruiz", <br>
-                "correo" : "eramirez@soy.sena.edu.co", <br>
-                "numero_documento" : "43123241", <br>
-                "tipo_documento" : "cedula ciudadania", <br>
-                "contrasenia" : "12345678", <br>
-                "especialidad" : "", <br>
-                "empresa" : "", <br>
-                "rol": 98 <br>
-                } <br>
-                }
+                json : <pre>
+                  {
+                    "nombre": "Emersson",
+                    "apellidos": "Ramirzez Ruiz",
+                    "correo": "eramirez@soy.sena.edu.co",
+                    "numero_documento": "43123241",
+                    "tipo_documento": "cedula de ciudadania",
+                    "contrasenia": "12345678",
+                    "especialidad": "",
+                    "empresa": "",
+                    "rol": 4
+                  }
+                </pre>
               </td>
             </tr>
             <tr>
@@ -108,6 +108,96 @@
                 error : {
                 "Mensaje": "Error en el servidor"
                 } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R2 </span> Realizar inicio de sesión</span>
+          <span class="descripcion_requerimiento">
+            <p>Una vez que el usuario se ha registrado y vuelva a entrar en la plataforma se le pedirá el ingresar datos
+              específicos del mismo, cuando la plataforma realice la autenticación de estos datos se la dará el pase a
+              el
+              inicio de la plataforma.</p>
+            <ul style="margin-left: 20px;">
+              Datos específicos del usuario:
+              <li>tipo de documento</li>
+              <li> documento</li>
+              <li>contraseña</li>
+            </ul>
+            <p>El sistema autenticará la cuenta con un token especia, y de la dará el permiso de ingresar a las
+              diferentes
+              ventanas (pantallas) que necesitan de cuenta autenticada.</p>
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th>ID de requerimiento</th>
+              <td>RF02</td>
+            </tr>
+            <tr>
+              <th> verbo HTTP</th>
+              <td> <span class="btn post"> POST</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/login</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <pre>
+                  {
+                    "correo" : "emerssonramirez11@gmail.com",
+                    "contrasenia" : "y2sMs6d8ZT"
+                  }
+                </pre>
+                
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                <pre>
+                  {
+                    "Mensaje": "Usuario autorizado",
+                    "usuario": [
+                      {
+                        "idUsuarios": 4,
+                        "us_nombre": "Emersson",
+                        "us_especialidad": "undefined",
+                        "us_contrasenia": "$2a$10$WP5p4N5Jpy4g6MV5aIx5AOlCGX1akZzy6pMniahhZbf8XNbruCA5W",
+                        "rol_nombre": "Invitado"
+                      }
+                    ],
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+                    eyJ1c2VyIjp7ImlkVXN1YXJpb3MiOjQsInVzX25vbWJyZSI6IkVtZXJzc29uIiwidXNfZXNwZWNpYWxpZGFkIjoidW5kZWZpbmVkIiwidXNfY29udHJhc2VuaWEiOiIkMmEkMTAkV1A1cDRONUpweTRnNk1WNWFJeDVBT2xDR1gxYWtaenk2cE1uaWFoaFpiZjhYTmJydUNBNVciLCJyb2xfbm9tYnJlIjoiSW52aXRhZG8ifSwiaWF0IjoxNzE1MDU0OTQyLCJleHAiOjE3MTUxNDEzNDJ9.1OdqJD9CsSTnAXWJsJx7yUXn4yM3vgoTL8UEOWL5M5Y"
+                  }
+                </pre>
+               <pre>
+               incorrecto: { 
+                { mensaje : "Correo es incorrecto"},
+               { mensaje: "Contraseña es incorrecta" }
+               }
+               </pre>
+               <pre>
+                error {
+                  Mensaje: "Error en el servidor"
+              }
+               </pre>
+
               </td>
             </tr>
           </tbody>
@@ -249,21 +339,12 @@
               <th>Respuesta json</th>
               <td>
                 correcto :{
-                {
-                "mensaje": {
-                "fieldCount": 0,
-                "affectedRows": 1,
-                "insertId": 152,
-                "info": "",
-                "serverStatus": 2,
-                "warningStatus": 0,
-                "changedRows": 0}
-                }
+                  "mensaje": "Rol Registrado con exito"
                 }
                 <br>
                 incorrecto: {
                 {
-                "Mensaje": "No se encontro usuario para actulizar"
+                "Mensaje": "'Mensaje': error.menssage "
                 }
                 } <br>
                 error : {
@@ -417,12 +498,13 @@
                   {
                     "nombre": "Emersson",
                     "apellidos": "Ramirez Ruiz",
-                    "correo": "eramirez@soy.sena.edu.co",
-                    "numero_documento": "242342343424",
-                    "contrasenia": "123",
+                    "correo": "emerssonramirez510@gmail.com",
+                    "tipo_documento" : "cedula de ciudadania",
+                    "numero_documento": "1084330529",
+                    "contrasenia": "12345678",
                     "especialidad": "Mecanico en pantallas",
                     "empresa": "Sena Empresa",
-                    "rol": 98
+                    "rol":1
                   }
                 </pre>
                 
@@ -457,93 +539,7 @@
           </tbody>
         </table>
       </section>
-      <section class="contenido-requerimientos">
-        <div class="requerimiento_funcional">
-          <span class="titulo_requerimiento"> <span>R2 </span> Realizar inicio de sesión</span>
-          <span class="descripcion_requerimiento">
-            <p>Una vez que el usuario se ha registrado y vuelva a entrar en la plataforma se le pedirá el ingresar datos
-              específicos del mismo, cuando la plataforma realice la autenticación de estos datos se la dará el pase a
-              el
-              inicio de la plataforma.</p>
-            <ul style="margin-left: 20px;">
-              Datos específicos del usuario:
-              <li>tipo de documento</li>
-              <li> documento</li>
-              <li>contraseña</li>
-            </ul>
-            <p>El sistema autenticará la cuenta con un token especia, y de la dará el permiso de ingresar a las
-              diferentes
-              ventanas (pantallas) que necesitan de cuenta autenticada.</p>
-          </span>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th>ID de requerimiento</th>
-              <td>RF02</td>
-            </tr>
-            <tr>
-              <th> verbo HTTP</th>
-              <td> <span class="btn post"> POST</span></td>
-            </tr>
-            <tr>
-              <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/login</span></td>
-            </tr>
-            <tr>
-              <th>Header</th>
-              <td>NULL</td>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <td>usuarios</td>
-            </tr>
-            <tr>
-              <th>Peticion Body</th>
-              <td>
-                json : <pre>
-                  {
-                    "correo" : "emerssonramirez11@gmail.com",
-                    "contrasenia" : "123456"
-                  }
-                </pre>
-                
-              </td>
-            </tr>
-
-            <tr>
-              <th>Respuesta json</th>
-              <td>
-                <pre>
-                  correcto :{
-                    {
-                      "Mensaje": "Usuario autorizado",
-                      "usuario": [
-                        {
-                          "idUsuarios": 48,
-                          "us_nombre": "Emersson",
-                          "us_especialidad": "",
-                          "fk_roles": 76
-                        }
-                      ],
-                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXN1YXJpb3MiOjQ4LCJ1c19ub21icmUiOiJFbWVyc3NvbiIsInVzX2VzcGVjaWFsaWRhZCI6IiIsImZrX3JvbGVzIjo3Nn0sImlhdCI6MTcxNDQ0MjUzNiwiZXhwIjoxNzE0NTI4OTM2fQ.fEu64kmRLau1FqZ9ogh-KlcucQltCtcY-jMqdBdRJ7s"
-                    }
-                  }
-                </pre>
-               <pre>
-               incorrecto: { mensaje: "Contraseña o correo incorrectos" }
-               </pre>
-               <pre>
-                error {
-                  Mensaje: "Error en el servidor"
-              }
-               </pre>
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+     
 
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -560,15 +556,15 @@
             </tr>
             <tr>
               <th>verbo HTTP</th>
-              <td><span class="btn put">PUT</span></td>
+              <td><span class="btn post">POST</span></td>
             </tr>
             <tr>
               <th>URL</th>
-              <td><span class="btn url">http://localhost:3000/user/registrar</span></td>
+              <td><span class="btn url">http://localhost:3000/user/recuperar</span></td>
             </tr>
             <tr>
               <th>Header</th>
-              <td>token</td>
+              <td>Null</td>
             </tr>
             <tr>
               <th>Usuario</th>
@@ -577,10 +573,11 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json : <br>
-                { <br>
-
-                }
+                <pre>
+                  {
+                    "numero_identificacion": "1084330529"
+                  }
+                </pre>
               </td>
             </tr>
 
@@ -588,14 +585,106 @@
               <th>Respuesta json</th>
               <td>
                 correcto :{
-
+                  <pre>
+                    "mensage": "contraseña recuperada",
+                    "estado": true,
+                    "result": {
+                      "accepted": [
+                        "emerssonramirez510@gmail.com"
+                      ]}
+                  }
+                  </pre>
+                incorrecto: {
+                  <pre>
+                    { estado: false, mensaje: "no se encontro usuario" }
+                  </pre>
+                } 
+                error : {
+                  <pre>
+                    error
+                  </pre>
+                } 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R4 </span> Actualización de datos personales en el sistema </span>
+          <span class="descripcion_requerimiento">
+            sus datos personales registrados en el sistema  
+            Dentro de la plataforma en la esquina superior derecha los usuarios encontrarán un apartado, en donde podrán ingresar y en esta ventana van a poder editar su información personal, de manera sencilla. Esta ventana permitirá actualizar su nombre, apellidos con solo hacer clic en los campos correspondientes y guardar cambios Datos que podrá actualizar 
+            Nombre, Apellidos, Correo,Contraseña 
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th>ID de requerimiento</th>
+              <td>RF1.4</td>
+            </tr>
+            <tr>
+              <th> verbo HTTP </th>
+              <td><span class="btn put">PUT</span></td>
+            </tr>
+            <tr>
+              <th> URL </th>
+              <td>
+                <span class="btn url">http://localhost:3000/user/actualizar/1</>
+              </td>
+            </tr>
+            <tr>
+              <th> Header</th>
+              <td> token </td>
+            </tr>
+            <tr>
+              <th>Usuario </th>
+              <td> Usuarios </td>
+            </tr>
+            <tr>
+              <th> Peticion Body </th>
+              <td>
+                json : <br>
+                <pre>
+                  {
+                    "nombre": "Emersson",
+                    "apellidos": "Ramirez Ruiz",
+                    "correo": "emerssonramirez510@gmail.com",
+                    "tipo_documento" : "cedula de ciudadania",
+                    "numero_documento": "1084330529",
+                    "contrasenia": "12345678",
+                    "especialidad": "Mecanico en pantallas",
+                    "empresa": "Sena Empresa",
+                    "rol":1
+                  }
+                </pre>
+                
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                {
+                "Mensaje": "Usuario Actualizado",
+                "reActualizar": {
+                "fieldCount": 0,
+                "affectedRows": 1,
+                "insertId": 0,
+                "info": "Rows matched: 1 Changed: 1 Warnings: 0",
+                "serverStatus": 2,
+                "warningStatus": 0,
+                "changedRows": 1
+                }
+                }
                 }
                 <br>
                 incorrecto: {
-
+                "Mensaje": "No se encontro usuario para actulizar"
                 } <br>
                 error : {
-
+                "Mensaje": "Error en el servidor"
                 } <br>
               </td>
             </tr>
@@ -661,6 +750,66 @@
           </tbody>
         </table>
       </section>
+      <!-- kevin 5.1 -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R5</span>Generar alertas de mantenimiento de a través de correo electrónico</span>
+          <span class="descripcion_requerimiento">
+            cuando falte 7 dias o menos para un mantenimiento se enviara un correo al administrador on los siguientes datos: Código de Mantenimiento, Descripción, Fecha de Realización etc.
+            
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF5.1</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get"></span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url"></span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>Administrador, instructores</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json : <br>
+                { <br>
+                        
+                }
+              </td>
+            </tr>
+
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto :{
+                  "Todos los correos electrónicos enviados correctamente."
+                }
+                <br>
+                incorrecto: {
+                  "No hay mantenimientos programados en 7 días o menos."
+                } <br>
+                error : {
+                  "Error al enviar correos electrónicos:s"
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
       <!-- jose luis R6 -->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -1281,7 +1430,6 @@
                 json :<br>
                 {<br>
                 "area_nombre":"Barismo",<br>
-                "area_descripcion":"En este area se encuentra la Escuela Nacional de la Calidad del Cafe",<br>
                 "area_fk_sedes":1<br>
                 }
               </td>
@@ -1962,6 +2110,85 @@
         </table>
       </section>
 
+
+      <!-- R12.1.4  -->
+      <section class="contenido-requerimientos">
+        <div class="requerimiento_funcional">
+          <span class="titulo_requerimiento"> <span>R12.1.4</span>Buscar tipo ficha</span>
+          <span class="descripcion_requerimiento">
+
+            Al ingresar a este aprtado por medio del id del tipo de ficha se listara informacion como su nombre y todas las variables que an sido
+            registradas a ese tipo de ficha. <br>
+
+            Estara disponible para todos los usuarios. 
+          </span>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th> ID de requerimiento</th>
+              <td>RF 12.1.4</td>
+            </tr>
+            <tr>
+              <th>verbo HTTP</th>
+              <td><span class="btn get">GET</span></td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td><span class="btn url">http://localhost:3000/tipoFicha/buscarFicha/5</span></td>
+            </tr>
+            <tr>
+              <th>Header</th>
+              <td>NULL</td>
+            </tr>
+            <tr>
+              <th>Usuario</th>
+              <td>usuarios</td>
+            </tr>
+            <tr>
+              <th>Peticion Body</th>
+              <td>
+                json :<br>
+                {<br>
+                }
+              </td>
+            </tr>
+            <tr>
+              <th>Respuesta json</th>
+              <td>
+                correcto:
+                <pre>
+                {
+                  "ficha": [
+                    {
+                      "ti_fi_nombre": "portatil APLE"
+                    }
+                  ],
+                  "varFicha": [
+                    {
+                      "var_nombre": "RAM ",
+                      "var_descripcion": "memoria ram del equipo"
+                    },
+                    {
+                      "var_nombre": "Calidad pantalla",
+                      "var_descripcion": "Calidad de la pantalla del portatil "
+                    }
+                  ]
+                }</pre>
+                <br>
+                incorrecto: {
+                  {"message":"No se encontro ficha"}
+                } <br>
+                error : {
+                  {"message":"Error en el servidor"}
+                } <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
         <!-- R12.2-->
       <section class="contenido-requerimientos">
         <div class="requerimiento_funcional">
@@ -1974,6 +2201,8 @@
             ●	Nombre <br>
             ●	Descripción <br>
 
+            En este apartado se pueden ingresar varias variables si se desea. <br>
+            
           </span>
         </div>
         <table>
@@ -2001,14 +2230,18 @@
             <tr>
               <th>Peticion Body</th>
               <td>
-                json :<br>
-                {
-                  {<br>
-                    "varNombre":"Disco duro",<br>
-                    "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
-                    "fkTipoFicha":"3"<br>
-                  }
-                }
+                [<br>
+                {<br>
+                  "varNombre":"Disco duro",<br>
+                  "varDescripcion":" Disco duro de almacenamiento marca samsumg",<br>
+                  "fkTipoFicha":"3"<br>
+                },<br>
+                {<br>
+                  "varNombre":"memoria RAM",<br>
+                  "varDescripcion":"Ram marca llslffd",<br>
+                  "fkTipoFicha":"3"<br>
+                }<br>
+                ]<br>
               </td>
             </tr>
             <tr>
@@ -2019,7 +2252,7 @@
                 }
                 <br>
                 incorrecto: {
-                  { "message": "No se registro " }
+                  { "message": "Error al registrar variables" }
                 } <br>
                 error : {
                   {"message":"Error en el servidor"}
