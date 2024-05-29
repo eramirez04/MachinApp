@@ -1,18 +1,22 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Inicio from "./pages/Inicio";
-import FIchas from "./pages/Fichas";
-import Historial from "./pages/Historial";
-import Maquinas from "./pages/Maquinas";
-import Sitios from "./pages/Sitios";
-import PanelControl from "./pages/PaneldeControl";
-import Nav from './components/Nav'
+
+const Inicio = lazy(() => import("./pages/Inicio"));
+const Home = lazy(() => import("./pages/auth/Home"));
+const Perfil = lazy(() => import("./pages/auth/Perfil.jsx"));
+const FIchas = lazy(() => import("./pages/Fichas"));
+const Historial = lazy(() => import("./pages/Historial"));
+const Maquinas = lazy(() => import("./pages/Maquinas"));
+const Sitios = lazy(() => import("./pages/Sitios"));
+const PanelControl = lazy(() => import("./pages/PaneldeControl"));
 
 const App = () => {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Inicio />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/perfil/" element={<Perfil />} />
         <Route path="/FIchas" element={<FIchas />} />
         <Route path="/Historial" element={<Historial />} />
         <Route path="/Maquinas" element={<Maquinas />} />

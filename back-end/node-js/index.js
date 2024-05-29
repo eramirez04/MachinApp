@@ -14,7 +14,7 @@ import rutaSede from "./src/routes/sedesRouter.js"
 import rutaCentro from "./src/routes/centrosRouter.js"
 import rutaArea from "./src/routes/areasRouter.js"
 import rutaTipoSitio from "./src/routes/tipo_sitioRouter.js"
-
+import LoginRouter from "./src/routes/LoginRoutes.js"
 const serve = Express()
 const port = 3000
 
@@ -44,7 +44,7 @@ serve.use('/sitio',rutaSitio)
 serve.use('/sede', rutaSede)
 serve.use('/centro', rutaCentro)
 serve.use('/area', rutaArea)
-
+serve.use(LoginRouter)
 serve.use('/documents',(req,res)=>{
   res.render('documentacion.ejs')
 })
@@ -52,4 +52,6 @@ serve.use('/documents',(req,res)=>{
 serve.listen(port,()=>{
   console.log(`servidor escuchando en el http://localhost:${port}`)
 })
+
+
 

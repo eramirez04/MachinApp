@@ -2,10 +2,20 @@
 import { conexion } from "../database/database.js"
 
 
+import { validationResult } from 'express-validator'
+
+
+
 export const registrarDetalle = async(req, res)=>{
 
 
     try{
+        
+        const error = validationResult(req)
+        if(!error.isEmpty()){
+            return res.status(400).json(error)
+        }
+
 
         let{detFkFicha, detFkVariable, detValor}= req.body
 
@@ -30,6 +40,7 @@ export const registrarDetalle = async(req, res)=>{
 export const listarDetalle = async(req, res)=>{
     try{
 
+        
         let sql = `SELECT * FROM detalle`
 
         let [respuesta]= await conexion.query(sql)
@@ -48,6 +59,12 @@ export const listarDetalle = async(req, res)=>{
 
 export const actualizarDetalle = async(req, res)=>{
 
+
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json(error)
+    }
+    
 
     try{
         let idDetalle = req.params.idDetalle

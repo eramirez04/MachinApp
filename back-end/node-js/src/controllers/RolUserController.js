@@ -1,21 +1,30 @@
 import { conexion } from "../database/database.js"
+import { validationResult } from "express-validator"
 
 export const RegistraRol = async (req, res) => {
 
   try {
+    const error = validationResult(req)
+
+    if (!error.isEmpty()) {
+      return res.status(400).json(error)
+    }
     const { nombre, descripcion } = req.body
+    if (nombre !== '' && descripcion !== '') {
+      let sqlRol = `insert into roles (rol_nombre,rol_descripcion) values('${nombre}','${descripcion}')`
+      const [resultado] = await conexion.query(sqlRol)
 
-    let sqlRol = `insert into roles (rol_nombre,rol_descripcion) values('${nombre}','${descripcion}')`
-    const [resultado] = await conexion.query(sqlRol)
-
-    if (resultado.affectedRows > 0) {
-      res.status(200).json({ 'mensaje': resultado })
+      if (resultado.affectedRows > 0) {
+        res.status(200).json({ 'mensaje': "Rol Registrado con exito" })
+      } else {
+        res.status(404).json({ 'Mensaje': 'Usuario no registrado' })
+      }
     } else {
       res.status = 404
-      res.json({ 'Mensaje': 'Rol no registrado' })
+      res.json({ 'Mensaje': 'Usuario no registrado' })
     }
   } catch (error) {
-    return res.status(500).json({ 'Mensaje' : 'Error en en servidor' , error })
+    return res.status(500).json({ 'Mensaje': error.menssage })
   }
 }
 

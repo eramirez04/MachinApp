@@ -1,13 +1,26 @@
 import { Router } from "express";
 import { EliminarUsuario, ListarTecnicos, ListarUsuarioId, ListarUsuarios, Store, actualizarUsuario } from "../controllers/UserController.js";
 
+// verificacion de campos
+import { middlewareUsuario, middlewareUsuarioActualizar, middelwareActualizarContra } from "../../validar/middlewareUsuarios/UsuariosMiddleware.js";
+
+// validar token 
+import { verificar } from "../middlewares/LoginMidleware.js";
+
+import { cargarImagen } from "../config/storageArchivos.js";
+
+import { recuperaraContra } from "../controllers/UserController.js";
+import { decodeToken, adminAndInstructor } from "../middlewares/isAdministrador.js";
+
 const RutaUsuario = Router()
 
-RutaUsuario.post('/registrar', Store)
-RutaUsuario.get('/listar', ListarUsuarios)
-RutaUsuario.put('/actualizar/:id', actualizarUsuario)
-RutaUsuario.delete('/eliminar/:id', EliminarUsuario)
-RutaUsuario.get('/listar/:id', ListarUsuarioId)
-RutaUsuario.get('/tecnico', ListarTecnicos)
+RutaUsuario.post('/registrar', middlewareUsuario, Store)
+RutaUsuario.get('/listar', verificar, decodeToken,ListarUsuarios)
+RutaUsuario.put('/actualizar/:id',cargarImagen, middlewareUsuarioActualizar, verificar,actualizarUsuario)
+RutaUsuario.delete('/eliminar/:id', verificar, EliminarUsuario)
+RutaUsuario.get('/listar/:id', verificar, ListarUsuarioId)
+RutaUsuario.get('/tecnico', verificar, ListarTecnicos)
+
+RutaUsuario.post('/recuperar', middelwareActualizarContra, recuperaraContra)
 
 export default RutaUsuario
