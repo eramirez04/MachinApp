@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Nav from '../components/Nav'
-import ButtonSitios from '../components/sitios/ButtonSitios'
-import ButtonAnadir from '../components/sitios/ButtonAnadir'
+import Nav from '../../components/Nav'
+import ButtonSitios from '../../components/sitios/ButtonSitios'
+import ButtonAnadir from '../../components/sitios/ButtonAnadir'
 
 const Sedes=()=>  {
   return (
