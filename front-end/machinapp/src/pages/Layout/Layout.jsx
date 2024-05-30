@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 //componente
-import Nav from "../../components/Nav";
+const Nav = lazy(() => import("../../components/Nav"));
 import { Outlet } from "react-router-dom";
 import { RiH1 } from "react-icons/ri";
 
@@ -36,7 +36,7 @@ const Layout = (props) => {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img className="h-8 w-8" src="logoSenaNaranja.png" />
+                      <img className="h-8 w-8"  alt="logo-sena" src="logoSenaNaranja.png" />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -63,7 +63,8 @@ const Layout = (props) => {
                       <button
                         type="button"
                         className="relative rounded-full bg-white p-1 text-black hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
+                        name="button"
+                      >hola
                         <span className="absolute -inset-1.5" />
 
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -195,6 +196,9 @@ const Layout = (props) => {
           )}
         </Disclosure>
         <main>
+          <div>
+            <Nav />
+          </div>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <Suspense fallback={<h1>Cargando</h1>}>
               {contenido}

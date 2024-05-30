@@ -8,7 +8,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const navigation = [];
 
 //componentes
-import Footer from "../components/Footer.jsx";
+const Footer = lazy(() => import("../components/Footer.jsx"));
 
 // registro de usuarios componente
 const RegistroUsuarios = lazy(() =>
@@ -35,6 +35,7 @@ const Inicio = () => {
                   src="logoSenaNaranja.png"
                   className="w-[85px] cursor-pointer bg-white"
                   effect="opacity"
+                  alt="logo-sena"
                 />
               </figure>
               <div className="flex justify-center items-center ml-2">
@@ -136,7 +137,11 @@ const Inicio = () => {
                             />
                           </div>
                           <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
-                            {/*  <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                            {/*  <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class=""> */}
+                            <LazyLoadImage
+                              src="escuela.jpg"
+                              className="h-full w-full object-cover object-center"
+                            />
                           </div>
                         </div>
                         <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
@@ -152,10 +157,18 @@ const Inicio = () => {
                         </div>
                         <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                           <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
-                            {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                            {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class=""> */}
+                            <LazyLoadImage
+                              src="escuela2.jpeg"
+                              className="h-full w-full object-cover object-center"
+                            />
                           </div>
                           <div className="h-64 w-44 overflow-hidden rounded-lg">
-                            {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                            <LazyLoadImage
+                              src="maquina.jpeg"
+                              className="h-full w-full object-cover object-center"
+                              effect="blur"
+                            />
                           </div>
                         </div>
                       </div>
@@ -172,7 +185,7 @@ const Inicio = () => {
                         document.getElementById("my_modal_3").showModal()
                       }
                     >
-                     Login
+                      Login
                     </button>
                     <dialog id="my_modal_3" className="modal">
                       <div className="modal-box">
@@ -182,7 +195,7 @@ const Inicio = () => {
                             ✕
                           </button>
                         </form>
-                        <h3 className="font-bold text-lg">Iniciar Sesion</h3>
+                        <span className="font-bold text-lg">Iniciar Sesion</span>
                         <Login />
                       </div>
                     </dialog>

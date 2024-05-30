@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import InputSubmit from "../InputSubmit";
+const InputSubmit = lazy(() => import("../InputSubmit"));
 
-import ActualizarUsuario from "./ActualizarUsuario";
+const ActualizarUsuario = lazy(() => import("./ActualizarUsuario"));
 
 import {
   UserIcon,
@@ -51,7 +51,7 @@ const BuscarUsuario = () => {
   const ActualizarUser = async () => {
     try {
       const response = await api.put(`user/actualizar/${id}`, usuario);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error(error.response.data);
     }
@@ -62,10 +62,10 @@ const BuscarUsuario = () => {
       <div className="min-h-full">
         <section className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl flex font-bold tracking-tight text-gray-900">
+            <span className="text-3xl flex font-bold tracking-tight text-gray-900">
               <UserIcon className="h-10 w-10" aria-hidden="true" />
               Perfíl de usuario
-            </h1>
+            </span>
           </div>
         </section>
         <main>
@@ -89,9 +89,9 @@ const BuscarUsuario = () => {
                     <div>
                       <div className="p-3 sm:p-1 lg:flex-auto">
                         <div className="mt-10 flex items-center gap-x-1">
-                          <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">
+                          <span className="flex-none text-sm font-semibold leading-6 text-indigo-600">
                             Informacion personal
-                          </h4>
+                          </span>
                           <div className="h-px flex-auto bg-gray-100"></div>
                         </div>
                         <ul className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">
@@ -158,9 +158,9 @@ const BuscarUsuario = () => {
                       </div>
 
                       <div className="mt-10 flex items-center gap-x-4">
-                        <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">
+                        <span className="flex-none text-sm font-semibold leading-6 text-indigo-600">
                           Más info
-                        </h4>
+                        </span>
                         <div className="h-px flex-auto bg-gray-100"></div>
                       </div>
                       <ul className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">

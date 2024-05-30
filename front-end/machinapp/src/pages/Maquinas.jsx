@@ -10,7 +10,7 @@ const Maquinas=()=>  {
     <>
       <Nav/>
       <h1 className='center ' >Maquinas</h1>
-    </>
+    </>l
   )
 }
 
