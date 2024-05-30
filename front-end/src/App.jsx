@@ -9,6 +9,7 @@ const Historial = lazy(() => import("./pages/Historial"));
 const Maquinas = lazy(() => import("./pages/Maquinas"));
 const Sitios = lazy(() => import("./pages/Sitios"));
 const PanelControl = lazy(() => import("./pages/PaneldeControl"));
+import Mantenimiento from "./pages/Mantenimiento.jsx"
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/perfil/" element={<Perfil />} />
         <Route path="/FIchas" element={<FIchas />} />
+        <Route path="/Mantenimiento" element={<Mantenimiento />} />
         <Route path="/Historial" element={<Historial />} />
         <Route path="/Maquinas" element={<Maquinas />} />
         <Route path="/Sitios" element={<Sitios />} />
