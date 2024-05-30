@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom'
 
 import Nav from '../components/molecules/Nav.jsx'
 
-const Fichas=()=>  {
+const Sitios=()=>  {
 
   return (
     <>
       <Nav/>
-      <h1 className='center ' >Fichas</h1>
+      <h1 className='center ' >Sitios</h1>
     </>
   )
 }
 
-export default Fichas
+export default Sitios
