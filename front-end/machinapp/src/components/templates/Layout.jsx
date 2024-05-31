@@ -1,34 +1,48 @@
-import { Fragment, Suspense, lazy } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+// eslint-disable-next-line no-unused-vars
+import React, {Fragment, Suspense, lazy} from "react";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-//componente
-const Nav = lazy(() => import("../../components/Nav"));
-import { Outlet } from "react-router-dom";
-import { RiH1 } from "react-icons/ri";
+//componentes
+import {Outlet} from "react-router-dom";
+const Header = lazy(() => import("../organisms/Header.jsx"));
+const Banner = lazy(() => import("../molecules/Banner.jsx"));
+const Nav = lazy(() => import("../molecules/Nav.jsx"));
 
-const user = {
-  name: "Emersson ramirez Ruiz",
-  email: "emerssonramirez510@gmail.com",
-  imageUrl: "56&q=80",
+// contexto Banner
+import {BannerContext} from "../atoms/context/BannerContext.jsx";
+
+const Layout = ({contenido , titlePage}) => {
+    return (
+        <>
+            <div className="">
+                <Header color={'bg-white'}/>
+                <BannerContext.Provider value={{ titleBanner: titlePage}}>
+                    <Banner  />
+                </BannerContext.Provider>
+
+                <div className="flex">
+                    <section className="flex flex-col w-1/12 max-lg:hidden">
+                        <Nav/>
+                    </section>
+                    <div className="w-11/12">
+                        <Suspense fallback={<h1>Cargando</h1>}>
+                            {contenido}
+                            <Outlet/>
+                        </Suspense>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
-const navigation = [{ name: "Machinapp", href: "/home", current: true }];
-const userNavigation = [
-  { name: "Tu perfil", href: "/perfil" },
-  { name: "Configuraciones", href: "#" },
-  { name: "Cerrar Sesion", href: "/" },
-];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+export default Layout;
 
-const Layout = (props) => {
-  let contenido = props.contenido;
 
-  return (
-    <>
-      <div className="min-h-full">
+/*
+
+  <div className="min-h-full">
         <Disclosure as="nav" className="bg-[#39A900]">
           {({ open }) => (
             <>
@@ -64,13 +78,13 @@ const Layout = (props) => {
                         type="button"
                         className="relative rounded-full bg-white p-1 text-black hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         name="button"
-                      >hola
+                      >
                         <span className="absolute -inset-1.5" />
 
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
 
-                      {/* Profile dropdown */}
+
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -113,7 +127,7 @@ const Layout = (props) => {
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
-                    {/* Mobile menu button */}
+
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-black hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-0.5" />
 
@@ -207,8 +221,4 @@ const Layout = (props) => {
           </div>
         </main>
       </div>
-    </>
-  );
-};
-
-export default Layout;
+* */

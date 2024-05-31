@@ -1,9 +1,9 @@
 import React, { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import api from "../Api";
-const Alert = lazy(() => import("../Alert.jsx"));
-const InputSubmit = lazy(() => import("../InputSubmit.jsx"));
+import api from "../atoms/api/Api.jsx";
+const Alert = lazy(() => import("../atoms/Alert.jsx"));
+const InputSubmit = lazy(() => import("../atoms/InputSubmit.jsx"));
 
 const RegistroUsuarios = () => {
   const [nombre, setNombre] = useState("");

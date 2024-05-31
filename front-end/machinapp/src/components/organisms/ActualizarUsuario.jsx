@@ -1,9 +1,9 @@
 import React, { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
-import api from "../Api";
+import api from "../atoms/api/Api.jsx";
 
-const Alert = lazy(() => import("../Alert"));
-import InputSubmit from "../InputSubmit";
+const Alert = lazy(() => import("../atoms/Alert.jsx"));
+import InputSubmit from "../atoms/InputSubmit.jsx";
 
 const ActualizarUsuario = () => {
   //  para registrar la informacion de el usuario

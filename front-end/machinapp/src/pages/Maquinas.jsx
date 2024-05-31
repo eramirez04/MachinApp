@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Nav from '../components/Nav'
+import Nav from '../components/molecules/Nav.jsx'
 
 const Maquinas=()=>  {
 
@@ -10,7 +10,7 @@ const Maquinas=()=>  {
     <>
       <Nav/>
       <h1 className='center ' >Maquinas</h1>
-    </>l
+    </>
   )
 }
 

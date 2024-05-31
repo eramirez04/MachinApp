@@ -2,9 +2,9 @@ import React, { lazy, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-const InputSubmit = lazy(() => import("../InputSubmit"));
+const InputSubmit = lazy(() => import("../atoms/InputSubmit.jsx"));
 
-const ActualizarUsuario = lazy(() => import("./ActualizarUsuario"));
+const ActualizarUsuario = lazy(() => import("./ActualizarUsuario.jsx"));
 
 import {
   UserIcon,
@@ -15,7 +15,7 @@ import {
   TruckIcon,
 } from "@heroicons/react/24/outline";
 
-import api from "../Api";
+import api from "../atoms/api/Api.jsx";
 
 let usuarioLocal = localStorage.getItem("token");
 
@@ -60,14 +60,7 @@ const BuscarUsuario = () => {
   return (
     <>
       <div className="min-h-full">
-        <section className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <span className="text-3xl flex font-bold tracking-tight text-gray-900">
-              <UserIcon className="h-10 w-10" aria-hidden="true" />
-              Perfíl de usuario
-            </span>
-          </div>
-        </section>
+
         <main>
           <div className="mx-auto max-w-7xl py-3 sm:px-3 lg:px-5">
             <div className=" p-4 sm:p-6 lg:p-8 rounded-lg shadow-md">
@@ -107,7 +100,7 @@ const BuscarUsuario = () => {
                                   us_nombre: e.target.value,
                                 })
                               }
-                              className="border-b appearance-none 
+                              className="border-b appearance-none
                               text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
@@ -122,7 +115,7 @@ const BuscarUsuario = () => {
                                   us_apellidos: e.target.value,
                                 })
                               }
-                              className="border-b appearance-none 
+                              className="border-b appearance-none
                               text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
@@ -140,7 +133,7 @@ const BuscarUsuario = () => {
                                   us_correo: e.target.value,
                                 })
                               }
-                              className="border-b appearance-none 
+                              className="border-b appearance-none
                               text-gray-700 focus:outline-none focus:shadow-outline"
                             />
                           </li>
