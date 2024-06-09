@@ -16,7 +16,7 @@ export const Login = async (req, res) => {
     const { correo, contrasenia } = req.body;
 
     let sql = `
-        SELECT idUsuarios,us_nombre, us_especialidad, us_contrasenia, roles.rol_nombre
+        SELECT idUsuarios,us_contrasenia, roles.rol_nombre
         FROM usuarios 
         INNER JOIN roles ON roles.idRoles = usuarios.fk_roles
         WHERE us_correo = 

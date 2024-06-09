@@ -10,13 +10,12 @@ export class UsuarioModel {
   };
 
   async getId(id) {
-    const Id = id.toLowerCase();
     return await conexion.query(
       `SELECT 
       idUsuarios, us_nombre,us_apellidos,us_correo, us_imagen,us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre 
       FROM usuarios 
       INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ? ;`,
-      [Id]
+      [id]
     );
   }
 

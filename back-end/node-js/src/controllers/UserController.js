@@ -1,6 +1,9 @@
 // conexion a base de datos
 import { conexion } from "../database/database.js";
 
+// jwt
+import Jwt from "jsonwebtoken";
+
 // captura errores de las validaciones
 import { validationResult } from "express-validator";
 
@@ -73,7 +76,6 @@ export const actualizarUsuario = async (req, res) => {
     if (req.body.us_imagen) {
       // imagen cuando se actulizan los demas datos pero conserva la imagen
       imagen = req.body.us_imagen;
-
     } else {
       // variable que recibe la imagen que se desa actualizar
       let img = req.file;
@@ -119,14 +121,18 @@ export const EliminarUsuario = async (req, res) => {
 
 export const ListarUsuarioId = async (req, res) => {
   try {
+    const header = req.header("Authorization") || "";
+    const token = header.split(" ")[1];
+    const paylod = Jwt.verify(token, process.env.AUTH_SECRET);
+
     const user = new UsuarioModel();
-    let id = req.params.id;
-    const [resultado] = await user.getId(id);
+
+    const [resultado] = await user.getId(paylod.user.idUsuarios);
     if (resultado.length === 0)
       return res.status(404).json({ Mensaje: "Usuario no encontrado" });
     return res.status(200).json(resultado);
   } catch (error) {
-    return res.status(500).json({ Mensaje: "Error en el servidor", error });
+    return res.status(500).json({ Mensaje: "Error en el servidor" + error });
   }
 };
 
