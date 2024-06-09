@@ -24,7 +24,7 @@ RutaUsuario.post("/registrar", Store);
 RutaUsuario.get("/listar", verificar, isAdmin, ListarUsuarios);
 RutaUsuario.put("/actualizar/:id", verificar, cargarImagen, actualizarUsuario);
 RutaUsuario.delete("/eliminar/:id", verificar, EliminarUsuario);
-RutaUsuario.get("/listar/:id", verificar, ListarUsuarioId);
+RutaUsuario.get("/listar/me", verificar, ListarUsuarioId);
 RutaUsuario.get("/tecnico", verificar, ListarTecnicos);
 
 RutaUsuario.post("/recuperar", recuperaraContra);

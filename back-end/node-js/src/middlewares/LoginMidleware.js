@@ -12,6 +12,7 @@ export const verificar = (req, res, next) => {
   }
   try {
     const paylod = Jwt.verify(token, process.env.AUTH_SECRET);
+    
     req.user = paylod.user;
     next();
   } catch (error) {

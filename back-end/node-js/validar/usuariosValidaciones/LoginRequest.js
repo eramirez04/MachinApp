@@ -4,7 +4,6 @@ const requestLoginZod = zod.object({
   contrasenia: zod
     .string({
       required_error: "La contraseña es requerida",
-      invalid_type_error: "no",
     })
     .min(8, { message: "contraseña debe de ser minimo de 8 caracteres" }),
 });
