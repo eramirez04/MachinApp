@@ -15,7 +15,10 @@ import { generarRandom } from "../config/passwordRamdom.js";
 import { UsuarioModel } from "../database/model/usuario.js";
 
 // validaciones de campos con la libreria zod
-import { validarUsuarios } from "../../validar/usuariosValidaciones/usuariosRequest.js";
+import {
+  validarUsuarios,
+  validarUsuariosActualizar,
+} from "../../validar/usuariosValidaciones/usuariosRequest.js";
 
 // registro de usuarios
 export const Store = async (req, res) => {
@@ -60,23 +63,28 @@ export const ListarUsuarios = async (req, res) => {
 
 export const actualizarUsuario = async (req, res) => {
   try {
-    const error = validationResult(req);
+    const error = validarUsuariosActualizar(req.body);
 
-    if (!error.isEmpty()) {
-      return res.status(400).json(error);
-    }
+    if (error.error) return res.status(400).json({ error: error.error.errors });
+
     let id = req.params.id;
 
-    // captura la imagen que venga por el cuerpo de la solicitud
-    let img = req.file;
-    // para captura si una imagen fue enviada desde el formaulario y le asigna el nombre
-    //ofiginal
-    const ifImg = img ? img.originalname : null;
+    let imagen = "";
+    if (req.body.us_imagen) {
+      // imagen cuando se actulizan los demas datos pero conserva la imagen
+      imagen = req.body.us_imagen;
+
+    } else {
+      // variable que recibe la imagen que se desa actualizar
+      let img = req.file;
+
+      imagen = img ? img.originalname : null;
+    }
 
     const [reActualizar] = await UsuarioModel.actualizarUser(
       req.body,
       id,
-      ifImg
+      imagen
     );
 
     if (reActualizar.affectedRows === 0)

@@ -12,7 +12,10 @@ export class UsuarioModel {
   async getId(id) {
     const Id = id.toLowerCase();
     return await conexion.query(
-      `SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ? ;`,
+      `SELECT 
+      idUsuarios, us_nombre,us_apellidos,us_correo, us_imagen,us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre 
+      FROM usuarios 
+      INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ? ;`,
       [Id]
     );
   }
@@ -53,7 +56,15 @@ export class UsuarioModel {
   }
 
   static async actualizarUser(dataUser, idUser, file) {
-    const { us_nombre, us_apellidos, us_correo } = dataUser;
+    const {
+      us_nombre,
+      us_apellidos,
+      us_correo,
+      us_numero_documento,
+      us_tipo_documento,
+      us_empresa,
+      us_especialidad,
+    } = dataUser;
 
     /* console.log(us_nombre, us_apellidos, us_correo, file); */
 
@@ -61,8 +72,23 @@ export class UsuarioModel {
 
     const response = await conexion.query(
       `
-      update usuarios set us_nombre = '${us_nombre}',us_apellidos= '${us_apellidos}',us_correo= '${us_correo}'where idUsuarios = ? ;`,
-      [Id]
+      update usuarios
+      set
+      us_nombre = ?,us_apellidos= ?,us_correo= ? , us_numero_documento = ?,  us_tipo_documento = ?,
+      us_empresa= ?,
+      us_especialidad = ?,
+      us_imagen = '${file}'
+      where idUsuarios = ? ;`,
+      [
+        us_nombre,
+        us_apellidos,
+        us_correo,
+        us_numero_documento,
+        us_tipo_documento,
+        us_empresa,
+        us_especialidad,
+        Id,
+      ]
     );
     return response;
   }
