@@ -1,12 +1,11 @@
 import React, { lazy } from "react";
-import Layout from "../Layout/Layout";
+import Layout from "../../components/templates/Layout.jsx";
 
-const Nav = lazy(() => import("../../components/Nav"));
 
 const Home = () => {
   return (
     <>
-      <Layout contenido={""} />
+      <Layout contenido={""}  titlePage={"Home"}/>
     </>
   );
 };

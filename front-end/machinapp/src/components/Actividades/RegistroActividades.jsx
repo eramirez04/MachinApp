@@ -1,5 +1,5 @@
 import React,{useState} from "react"
-import api from "../Api"
+import api from "../atoms/api/Api.jsx"
 import { useNavigate } from "react-router-dom"
 import ButtonRegistroActividades from './ButtonRegistroActividades';
 
