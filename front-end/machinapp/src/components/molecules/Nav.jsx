@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { ImHome } from "react-icons/im";
 import { MdHomeWork } from "react-icons/md";
@@ -14,11 +13,21 @@ const Nav = () => {
     { name: "Inicio", link: "/", icon: ImHome },
     { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
     { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
-    { name: "Maquinas", link: "/Maquinas", icon: GiGears},
+    { name: "Maquinas", link: "/Maquinas", icon: GiGears },
     { name: "Historial", link: "/Historial", icon: FaHistory },
-    { name: "Panel de control", link: "/Panelcontrol", icon: FaUserGear, margin: true },
+    {
+      name: "Panel de control",
+      link: "/Panelcontrol",
+      icon: FaUserGear,
+      margin: true,
+    },
   ];
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setOpen(false);
+  }, []);
+
   return (
     <section className="flex gap-6 fixed">
       <div

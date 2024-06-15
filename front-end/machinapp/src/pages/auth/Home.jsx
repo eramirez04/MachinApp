@@ -1,11 +1,13 @@
-import React from "react";
-import Layout from "../Layout/Layout"
-const Home = () =>{
-    return (
-        <>
-        <Layout contenido={""}/>
-        </>
-    )
-}
+import React, { lazy } from "react";
+import Layout from "../../components/templates/Layout.jsx";
 
-export default Home
+
+const Home = () => {
+  return (
+    <>
+      <Layout contenido={""}  titlePage={"Home"}/>
+    </>
+  );
+};
+
+export default Home;

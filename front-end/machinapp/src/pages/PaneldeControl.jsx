@@ -1,15 +1,15 @@
 import React,{useEffect, useState} from 'react'
 
-import api from '../components/Api'
+import api from '../components/atoms/api/Api.jsx'
 
 import { Link, useNavigate } from 'react-router-dom'
 
-import Nav from '../components/Nav'
-import Header from '../components/Header'
+import Nav from '../components/molecules/Nav.jsx'
+import Header from '../components/organisms/Header.jsx'
 
-import ButtonU from '../components/BottonU'
-import ButtonD from '../components/BottonD'
-import ButtonC from '../components/BottonC'
+import ButtonU from '../components/atoms/buttons/BottonU.jsx'
+import ButtonD from '../components/atoms/buttons/BottonD.jsx'
+import ButtonC from '../components/atoms/buttons/BottonC.jsx'
 
 const ListarUsuarios = () =>{
 
