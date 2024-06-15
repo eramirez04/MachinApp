@@ -1,48 +1,56 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+// eslint-disable-next-line no-unused-vars
+import React, {Fragment, Suspense, lazy} from "react";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-//componente 
-import Nav from "../../components/Nav"
+//componentes
+import {Outlet} from "react-router-dom";
+const Header = lazy(() => import("../organisms/Header.jsx"));
+const Banner = lazy(() => import("../molecules/Banner.jsx"));
+const Nav = lazy(() => import("../molecules/Nav.jsx"));
 
-const user = {
-  name: 'Emersson ramirez Ruiz',
-  email: 'emerssonramirez510@gmail.com',
-  imageUrl:
-    '56&q=80',
-}
-const navigation = [
-  { name: 'Machinapp', href: '/home', current: true },
-]
-const userNavigation = [
-  { name: 'Tu perfil', href: '/perfil' },
-  { name: 'Configuraciones', href: '#' },
-  { name: 'Cerrar Sesion', href: '/' },
-]
+// contexto Banner
+import {BannerContext} from "../atoms/context/BannerContext.jsx";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+const Layout = ({contenido , titlePage}) => {
+    return (
+        <>
+            <div className="">
+                <Header color={'bg-white'}/>
+                <BannerContext.Provider value={{ titleBanner: titlePage}}>
+                    <Banner  />
+                </BannerContext.Provider>
 
-const Layout = (props) =>{
+                <div className="flex">
+                    <section className="flex flex-col w-1/12 max-lg:hidden">
+                        <Nav/>
+                    </section>
+                    <div className="w-11/12">
+                        <Suspense fallback={<h1>Cargando</h1>}>
+                            {contenido}
+                            <Outlet/>
+                        </Suspense>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
 
-  let contenido = props.contenido
+export default Layout;
 
-  return (
-    <>
-      <div className="min-h-full">
-        <Disclosure as="nav" className="bg-[#52BD8F]">
+
+/*
+
+  <div className="min-h-full">
+        <Disclosure as="nav" className="bg-[#39A900]">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img
-                        className="h-8 w-8"
-                        src="machin.jpeg"
-                        alt="Your Company"
-                      />
+                      <img className="h-8 w-8"  alt="logo-sena" src="logoSenaNaranja.png" />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -52,11 +60,11 @@ const Layout = (props) =>{
                             href={item.href}
                             className={classNames(
                               item.current
-                                ? 'bg-white text-black'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium'
+                                ? "bg-white text-black"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
                             )}
-                            aria-current={item.current ? 'page' : undefined}
+                            aria-current={item.current ? "page" : undefined}
                           >
                             {item.name}
                           </a>
@@ -69,19 +77,23 @@ const Layout = (props) =>{
                       <button
                         type="button"
                         className="relative rounded-full bg-white p-1 text-black hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        name="button"
                       >
                         <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
+
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
 
-                      {/* Profile dropdown */}
+
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={user.imageUrl}
+                              alt=""
+                            />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -100,8 +112,8 @@ const Layout = (props) =>{
                                   <a
                                     href={item.href}
                                     className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-black'
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-black"
                                     )}
                                   >
                                     {item.name}
@@ -115,14 +127,20 @@ const Layout = (props) =>{
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
-                    {/* Mobile menu button */}
+
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-black hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Open main menu</span>
+
                       {open ? (
-                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                        <XMarkIcon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                        <Bars3Icon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
                       )}
                     </Disclosure.Button>
                   </div>
@@ -137,10 +155,12 @@ const Layout = (props) =>{
                       as="a"
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium'
+                        item.current
+                          ? "bg-white text-gray-200"
+                          : "text-gray-300 hover:bg-gray-400 hover:text-gray-200",
+                        "block rounded-md px-3 py-2 text-base font-medium"
                       )}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -149,18 +169,26 @@ const Layout = (props) =>{
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={user.imageUrl}
+                        alt=""
+                      />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                      <div className="text-sm font-medium leading-none text-black0">{user.email}</div>
+                      <div className="text-base font-medium leading-none text-white">
+                        {user.name}
+                      </div>
+                      <div className="text-sm font-medium leading-none text-black0">
+                        {user.email}
+                      </div>
                     </div>
                     <button
                       type="button"
                       className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
                       <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
+
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
@@ -170,7 +198,7 @@ const Layout = (props) =>{
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-gray-700 hover:text-white"
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
                       </Disclosure.Button>
@@ -181,16 +209,16 @@ const Layout = (props) =>{
             </>
           )}
         </Disclosure>
-
-        // contenido aqui
         <main>
+          <div>
+            <Nav />
+          </div>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            {contenido}
+            <Suspense fallback={<h1>Cargando</h1>}>
+              {contenido}
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>
-    </>
-  )
-}
-
-export default Layout
+* */

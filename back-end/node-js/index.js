@@ -23,7 +23,7 @@ import cors from 'cors'
 serve.use(cors())
 
 serve.use(bodyParser.json())
-serve.use(bodyParser.urlencoded({extended : false}))
+serve.use(bodyParser.urlencoded({extended : true}))
 serve.set('view engine','ejs')
 serve.set('views','./views')
 serve.use(Express.static('./public'))

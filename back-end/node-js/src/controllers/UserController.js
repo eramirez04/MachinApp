@@ -1,219 +1,199 @@
 // conexion a base de datos
-import { conexion } from "../database/database.js"
+import { conexion } from "../database/database.js";
 
-// captura erroes de las validaciones
-import { validationResult } from "express-validator"
+// jwt
+import Jwt from "jsonwebtoken";
+
+// captura errores de las validaciones
+import { validationResult } from "express-validator";
 
 //encriptacion de contraseña, registro de usuarios
-import { encriptarContra } from "../config/bcryptjs.js"
+import { encriptarContra } from "../config/bcryptjs.js";
 
-// transporte que contiene la configuracion de envio de correos 
-import { transporter } from "../config/email.js"
-import { generarRandom } from "../config/passwordRamdom.js"
+// transporte que contiene la configuracion de envio de correos
+import { transporter } from "../config/email.js";
+import { generarRandom } from "../config/passwordRamdom.js";
+
+// importacion del modelo que hace consultas a la base de datos
+import { UsuarioModel } from "../database/model/usuario.js";
+
+// validaciones de campos con la libreria zod
+import {
+  validarUsuarios,
+  validarUsuariosActualizar,
+} from "../../validar/usuariosValidaciones/usuariosRequest.js";
 
 // registro de usuarios
 export const Store = async (req, res) => {
   try {
-    const error = validationResult(req)
+    // validacion de datos del usuario
+    const result = validarUsuarios(req.body);
 
-    if (!error.isEmpty()) {
-      return res.status(400).json(error)
-    }
+    // en caso de se ecuentre un error retornar estado 400
+    if (result.error)
+      return res.status(400).json({ error: result.error.errors });
 
-    const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
+    // se asigna los datos que lleguen por el cuerpo de la solicitud
+    // y se agregan a la variable
+    const data = req.body;
 
-    // contaseña para encriptar
-    const passwordCrypt = await encriptarContra(contrasenia)
+    // conexion con el modelo
+    const [resultadoUser] = await UsuarioModel.registroUsuario(data);
 
-
-    let sql = `
-    INSERT INTO usuarios
-     (fk_roles, us_nombre, us_apellidos, us_correo, us_numero_documento, us_tipo_documento, us_contrasenia, us_especialidad, us_empresa)
-      VALUES 
-     ( '${rol}','${nombre}','${apellidos}','${correo}','${numero_documento}','${tipo_documento}','${passwordCrypt}','${especialidad}','${empresa}'
-     )
-    `
-    const [resultadoUser] = await conexion.query(sql)
-
-    if (resultadoUser.affectedRows > 0) {
-      res.status(200).json({
-        "Mensaje": "Registro de usuario exitoso"
-      })
-    } else {
-      return res.status(404).json({
-        "Mensaje": "No se pudo registrar usuario"
-      })
-    }
+    // si se registra con exito, se devuelve un estado 200
+    if (resultadoUser.affectedRows > 0)
+      res.status(200).json({ Mensaje: "Registro de usuario exitoso" });
   } catch (error) {
+    // si ocurre algun error, se captura y se devuelve un estado 500
     return res.status(500).json({
-      "Mensaje": "Error en el servidor"+ error
-    })
+      Mensaje: "Error en el servidor" + error,
+    });
   }
-}
+};
 
 export const ListarUsuarios = async (req, res) => {
   try {
-    let sql = "SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles"
-
-    const [resultadoUser] = await conexion.query(sql)
-
-    if (resultadoUser.length > 0) {
-      res.status(200).json({
-        "Mensaje": "Usuarios encontrado",
-        resultadoUser
-      })
-    }
-    else {
-      return res.status(404).json(
-        { "Mensaje": "No se encontraron usuarios" }
-      )
-    }
+    // instacia de la clase UsuarioModel, que interactua como modelo
+    const user = new UsuarioModel();
+    const [resultadoUser] = await user.getAll();
+    if (resultadoUser.length === 0)
+      return res.status(404).json({ Mensaje: "No se encontraron usuarios" });
+    return res.status(200).json(resultadoUser);
   } catch (error) {
-    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
+    return res.status(500).json({ Mensaje: "Error en el servidor" + error });
   }
-}
+};
 
 export const actualizarUsuario = async (req, res) => {
   try {
-    const error = validationResult(req)
+    const error = validarUsuariosActualizar(req.body);
 
-    if (!error.isEmpty()) {
-      return res.status(400).json(error)
+    if (error.error) return res.status(400).json({ error: error.error.errors });
+
+    let id = req.params.id;
+
+    let imagen = "";
+    if (req.body.us_imagen) {
+      // imagen cuando se actulizan los demas datos pero conserva la imagen
+      imagen = req.body.us_imagen;
+    } else {
+      // variable que recibe la imagen que se desa actualizar
+      let img = req.file;
+
+      imagen = img ? img.originalname : null;
     }
 
-    let id = req.params.id
-    const { nombre, apellidos, correo, numero_documento, tipo_documento, contrasenia, especialidad, empresa, rol } = req.body
-    // captura la imagen que venga por el cuerpo de la solicitud
-    let img = req.file
+    const [reActualizar] = await UsuarioModel.actualizarUser(
+      req.body,
+      id,
+      imagen
+    );
 
-    // para captura si una imagen fue enviada desde el formaulario y le asigna el nombre
-    //ofiginal 
-    const ifImg = img ? img.originalname : null
+    if (reActualizar.affectedRows === 0)
+      return res
+        .status(404)
+        .json({ Mensaje: "No se encontro usuario para actulizar" });
 
-    // encriptar contraseña 
-    const byContra  = await encriptarContra(contrasenia)
-
-    // consulta sql que actualiza un registro de usuarios en BD
-    let sql = `
-    update usuarios set
-    fk_roles = '${rol}', us_nombre = '${nombre}', us_apellidos= '${apellidos}', us_correo= '${correo}',
-    us_numero_documento= '${numero_documento}', us_tipo_documento= '${tipo_documento}', us_contrasenia= '${byContra}' ,
-    us_especialidad= '${especialidad}', us_empresa = '${empresa}', us_imagen = '${ifImg}' where idUsuarios = '${id}' 
-    `
-    const [reActualizar] = await conexion.query(sql)
-
-    if (reActualizar.affectedRows > 0) {
-      res.status(200).json({
-        "Mensaje": "Usuario Actualizado",
-        estado : 200,
-        reActualizar
-      })
-    }
-    else {
-      return res.status(404).json({
-        "Mensaje": "No se encontro usuario para actulizar"
-      })
-    }
+    return res.status(200).json({ Mensaje: "Usuario Actualizado" });
   } catch (error) {
-    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
+    return res.status(500).json({ Mensaje: "Error en el servidor" + error });
   }
-}
+};
 
 export const EliminarUsuario = async (req, res) => {
   try {
-    let id = req.params.id
-    let sqlDelete = `delete from usuarios where idUsuarios = ${id}`
-    console.log(sqlDelete)
-
-    const [eliminarUs] = await conexion.query(sqlDelete)
+    let id = req.params.id;
+    let sqlDelete = `delete from usuarios where idUsuarios = ${id}`;
+    const [eliminarUs] = await conexion.query(sqlDelete);
     if (eliminarUs.affectedRows > 0) {
       res.status(200).json({
-        "Mensaje": "Usuario Eliminado",
-        eliminarUs
-      })
+        Mensaje: "Usuario Eliminado",
+      });
     } else {
       return res.status(404).json({
-        "Mensaje": "Usuarios no Econtrado"
-      })
+        Mensaje: "Usuarios no Econtrado",
+      });
     }
   } catch (error) {
-    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
+    return res.status(500).json({ Mensaje: "Error en el servidor", error });
   }
-}
+};
 
 export const ListarUsuarioId = async (req, res) => {
   try {
-    let id = req.params.id
-    let sqlListarId = `SELECT idUsuarios, us_nombre,us_apellidos,us_correo, us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre FROM usuarios INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ${id} `
+    const header = req.header("Authorization") || "";
+    const token = header.split(" ")[1];
+    const paylod = Jwt.verify(token, process.env.AUTH_SECRET);
 
-    const [resultado] = await conexion.query(sqlListarId)
-    if (resultado.length > 0) {
-      res.status(200).json(resultado)
-    } else {
-      return res.status(404).json({
-        "Mensaje": "Usuario no encontrado"
-      })
-    }
+    const user = new UsuarioModel();
+
+    const [resultado] = await user.getId(paylod.user.idUsuarios);
+    if (resultado.length === 0)
+      return res.status(404).json({ Mensaje: "Usuario no encontrado" });
+    return res.status(200).json(resultado);
   } catch (error) {
-    return res.status(500).json({ "Mensaje": "Error en el servidor", error })
+    return res.status(500).json({ Mensaje: "Error en el servidor" + error });
   }
-}
-
+};
 
 export const ListarTecnicos = async (req, res) => {
   try {
     let sqlListarIdT = `
-    SELECT idUsuarios,us_nombre, rol_nombre FROM usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'Tecnico'`
+    SELECT idUsuarios,us_nombre, rol_nombre FROM usuarios JOIN roles ON idRoles = fk_roles WHERE rol_nombre = 'Tecnico'`;
 
-    const [resultado] = await conexion.query(sqlListarIdT)
+    const [resultado] = await conexion.query(sqlListarIdT);
     if (resultado.length > 0) {
-      res.status(200).json(resultado)
+      res.status(200).json(resultado);
     } else {
       return res.status(404).json({
-        "Mensaje": "Usuario no encontrado"
-      })
+        Mensaje: "Usuario no encontrado",
+      });
     }
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).json(error);
   }
-}
+};
 
-//plantilla html de correos electronicos
-import { emailHtml } from "../config/emailhtml.js"
+//plantilla html de correos electronico
+import { emailHtml } from "../config/emailhtml.js";
 
 // funcion que envia correos para recuperar contraseña
 export const recuperaraContra = async (req, res) => {
   try {
-    const error = validationResult(req)
+    const error = validationResult(req);
 
     if (!error.isEmpty()) {
-      return res.status(400).json(error)
+      return res.status(400).json(error);
     }
-    const { numero_identificacion } = req.body
+    const { numero_identificacion } = req.body;
 
-    let sql = `select * from usuarios where us_numero_documento = ${numero_identificacion}`
+    let sql = `select * from usuarios where us_numero_documento = ${numero_identificacion}`;
 
-    const [usuario] = await conexion.query(sql)
+    const [usuario] = await conexion.query(sql);
 
     if (usuario.length === 0) {
-      return res.status(404).json({ estado: false, mensaje: "no se encontro usuario" })
+      return res
+        .status(404)
+        .json({ estado: false, mensaje: "no se encontro usuario" });
     } else {
-      let newPassword = generarRandom()
+      let newPassword = generarRandom();
 
       const result = await transporter.sendMail({
         from: '"MachinApp" <machinappsena@gmail.com>', // sender address
         to: usuario[0].us_correo, // list of receivers
         subject: "Recuperacion de contraseña", // Subject line
-        html: emailHtml(usuario[0].us_nombre, newPassword)
+        html: emailHtml(usuario[0].us_nombre, newPassword),
       });
       // encriptar contraseña
-      const newPasswordCrypt = await encriptarContra(newPassword)
+      const newPasswordCrypt = await encriptarContra(newPassword);
 
-      let sqlActualizarContra = `update usuarios set us_contrasenia= '${newPasswordCrypt}' where idUsuarios = ${usuario[0].idUsuarios}`
-      const [resu] = await conexion.query(sqlActualizarContra)
-      res.status(200).json({ "mensage": "contraseña recuperada", 'estado': true, result })
+      let sqlActualizarContra = `update usuarios set us_contrasenia= '${newPasswordCrypt}' where idUsuarios = ${usuario[0].idUsuarios}`;
+      const [resu] = await conexion.query(sqlActualizarContra);
+      res
+        .status(200)
+        .json({ mensage: "contraseña recuperada", estado: true, result });
     }
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).json(error);
   }
-}
+};
