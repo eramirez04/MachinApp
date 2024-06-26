@@ -9,7 +9,7 @@ import { verificar } from '../middlewares/LoginMidleware.js'
 const rutaFicha = Router()
 
 
-rutaFicha.post('/registrar', verificar,  cargarImagenFicha, validar_ficha, registrarFicha)
+rutaFicha.post('/registrar',verificar, cargarImagenFicha, validar_ficha, registrarFicha)
 rutaFicha.get('/listar', verificar, listarFicha)
 
 rutaFicha.delete('/eliminar/:idFicha', verificar, eliminarFicha)

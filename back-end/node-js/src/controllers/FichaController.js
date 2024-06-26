@@ -10,14 +10,26 @@ import { validationResult } from 'express-validator'
 import multer from 'multer'
 
 const storage = multer.diskStorage({
-    destination: function(req, img, cb){cb(null, "public/imagenes/ficha")}, 
-    filename: function(req, img, cb){cb(null, img.originalname)}
+    destination: function(req, file, cb) {
+        let destinationPath = 'public/imagenes/ficha'; 
+        if (file.fieldname === 'fiImagen') {
+            destinationPath = 'public/imagenes/ficha';
+        } else if (file.fieldname === 'fiTecnica') {
+            destinationPath = 'public/fichasTecnicas';
+        }
+        cb(null, destinationPath);
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`);   //le podemos fecha, en caso de que se repita el nombre del documento. 
+    }
 })
 
 const upload = multer({storage:storage})
 
-export const cargarImagenFicha = upload.single('fiImagen')
-
+export const cargarImagenFicha = upload.fields([
+    {name:'fiImagen'},
+    {name:'fiTecnica'}
+])
 
 export const registrarFicha = async(req, res)=>{
 
@@ -30,35 +42,54 @@ export const registrarFicha = async(req, res)=>{
 
         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
         
-        let fiImagen = req.file.originalname
+        let fiImagen = req.files.fiImagen[0].filename
+        let fiTecnica = req.files.fiTecnica[0].filename
 
-        let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha ) 
-        values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha})`
+        let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, ficha_respaldo ) 
+        values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '${fiTecnica}')`
     
         let [respuesta] = await conexion.query(sql)
 
 
         if(respuesta.affectedRows>0){
 
-            const qrCodePath = './codigo_qr.png'
-            QRCode.toFile(qrCodePath, JSON.stringify(req.body), async function (err) {
 
-                if (err) {
-                    console.error('Error al generar el código QR:', err);
-                    return res.status(500).json({"mensaje": "Error al generar el código QR"})
-                }
-                console.log('Código QR generado correctamente!')
+            // Traemos el id de la ficha que acabamos de registrar para asi mismo redireccionarla en la URL. 
 
-                const qrCodeImage = await fs.readFile(qrCodePath)
+            let idSql = `SELECT idFichas FROM fichas where fi_placa_sena = '${placaSena}'`
+            
+            const [resultadoID] = await conexion.query(idSql)
+            
+            if(resultadoID.length>0){
 
-                const qrCodeBase64 = await qrCodeImage.toString('base64')
-                const updateSql = `UPDATE fichas SET CodigoQR = ? WHERE idFichas = ?`
-                await conexion.query(updateSql, [qrCodeBase64, respuesta.insertId])
-                await fs.unlink(qrCodePath)
+                let id = resultadoID[0].idFichas
 
+                let data = `http://192.168.1.108:5173/maquinaInfo/${id}`   //poner la url que queramos.
 
-            return res.status(200).json({"mensaje":"Se registro correctamente"})
-            })
+                let folderPath = 'public/QRs imagenes'; //ruta de donde se va a guardar
+                let filePath = `${folderPath}/${id}-qr.png`;     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
+
+                
+                QRCode.toFile(filePath,data,{
+                        color:{
+                            dark:'#000000',
+                            light: '#FFFFFF'
+                        },
+                        width:300
+
+                    }, function(err){
+                        if (err) throw err 
+                        |   console.log('Código QR generado y guardado como qrcode.png');
+                    }
+                )
+
+                res.status(200).json({"mensaje":"Se registro correctamente. "})
+
+            }
+            else{
+                res.status(404).json({"mensaje":"No se encontro id de la ficha"})
+            }
+
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
