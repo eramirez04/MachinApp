@@ -1,13 +1,14 @@
-import { response } from 'express'
+import { query, response } from 'express'
 import { conexion } from '../database/database.js'
 
-import QRCode from 'qrcode'
+import QRCode  from 'qrcode'
 import fs from 'fs/promises'
 
 import { validationResult } from 'express-validator'
 
 
 import multer from 'multer'
+
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -30,6 +31,7 @@ export const cargarImagenFicha = upload.fields([
     {name:'fiImagen'},
     {name:'fiTecnica'}
 ])
+
 
 export const registrarFicha = async(req, res)=>{
 
