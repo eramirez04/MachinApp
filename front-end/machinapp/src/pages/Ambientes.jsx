@@ -1,5 +1,5 @@
 import React from 'react'
-import BuscarMaquinas from '../components/sitios/ListarMaquinas'
+import BuscarMaquinas from '../components/organisms/ListarMaquinas'
 
 const Ambientes=()=>  {
   return (

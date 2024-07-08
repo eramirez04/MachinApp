@@ -1,5 +1,5 @@
 import React from 'react'
-import BuscarSedes from '../components/sitios/ListarSedes'
+import BuscarSedes from '../components/organisms/ListarSedes'
 
 const Sitios=()=>  {
   return (

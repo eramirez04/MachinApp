@@ -1,5 +1,5 @@
 import React from 'react'
-import BuscarAmbientes from '../components/sitios/ListarAmbientes'
+import BuscarAmbientes from '../components/organisms/ListarAmbientes'
 
 const Areas=()=>  {
   return (
