@@ -199,7 +199,6 @@ export const listarRequerimiento16 = async (req, res) => {
     }
 };
 
-
 /* busca el mantenimiento por id de la ficha  */
 export const mantenimientoDeMaquinas = async (req, res) => {
     try {

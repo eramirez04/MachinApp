@@ -4,6 +4,7 @@ import ListadoMantenimientos from '../components/organisms/ListadoMantenimientos
 
 import Layout from "../components/templates/Layout.jsx"
 
+import Nav from '../components/Nav'
 
 const Fichas = () => {
     return (
