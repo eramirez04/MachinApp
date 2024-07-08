@@ -1,19 +1,18 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-
-import Api from "../../components/Api";
+// eslint-disable-next-line no-unused-vars
+import React, {lazy} from "react";
 
 // layout
-const Layout = lazy(() => import("../Layout/Layout.jsx"));
+const Layout = lazy(() => import("../../components/templates/Layout.jsx"));
 const BuscarUsuario = lazy(() =>
-  import("../../components/Auth/ListarUsuario.jsx")
+    import("../../components/organisms/ListarUsuario.jsx")
 );
 
 const Pefil = () => {
-  return (
-    <>
-      <Layout contenido={<BuscarUsuario />} />
-    </>
-  );
+    return (
+        <>
+            <Layout contenido={<BuscarUsuario/>} titlePage={"Perfil de Usuario"}/>
+        </>
+    );
 };
 
 export default Pefil;
