@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Nav from '../Nav'
-import ButtonSitios from './ButtonSitios'
-import api from '../Api'
+import Nav from '../molecules/Nav'
+import ButtonSitios from '../atoms/buttons/ButtonSitios'
+import api from '../atoms/api/Api'
 
 const BuscarMaquinas=()=>  {
 
