@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import api from "../../Api.jsx";
+import api from "../atoms/api/Api.jsx";
 import Alerta from "../atoms/Alerta.jsx";
 import Boton from "../atoms/Boton.jsx";
 import CampoTexto from "../atoms/CampoTexto.jsx";
