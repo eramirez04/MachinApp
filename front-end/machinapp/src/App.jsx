@@ -3,9 +3,6 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 
-import MaquinasAmbiente from "./pages/MaquinasAmbiente.jsx"
-import InfoMaquina from "./pages/InfoMaquina.jsx"
-
 const Inicio = lazy(() => import("./pages/Inicio"));
 const Home = lazy(() => import("./pages/auth/Home"));
 const Perfil = lazy(() => import("./pages/auth/Perfil.jsx"));
@@ -38,8 +35,6 @@ const App = () => {
         <Route path="/recuperar" element={<PanelControl />} />
 
         
-        <Route path="Maquinas/maquinasAmb/:idAmbiente" element={<MaquinasAmbiente/>}/>
-        <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina/>} />
 
 
       </Routes>
