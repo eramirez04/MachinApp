@@ -121,13 +121,17 @@ export const registrarMantenimiento = async (req, res) => {
 }
 
 /* 16 generar ficha de mantenimiento */
-export const listarRequerimiento17 = async (req, res) => {
+export const listarRequerimiento16 = async (req, res) => {
     try {
         const { fecha_realizacion } = req.params;
+
+        // Verificar la fecha que se recibe
+        /* console.log("Fecha recibida:", fecha_realizacion); */
 
         const sql = `
             SELECT
                 fichas.fi_placa_sena AS referencia_maquina,
+                mantenimiento.idMantenimiento,
                 mantenimiento.mant_codigo_mantenimiento,
                 mantenimiento.mant_descripcion,
                 mantenimiento.mant_fecha_realizacion,
@@ -148,10 +152,14 @@ export const listarRequerimiento17 = async (req, res) => {
             LEFT JOIN
                 tipo_mantenimiento ON mantenimiento.fk_tipo_mantenimiento = tipo_mantenimiento.idTipo_mantenimiento
             WHERE 
-                mantenimiento.mant_fecha_realizacion = ?
+                DATE(mantenimiento.mant_fecha_realizacion) >= ?
+                
         `;
 
         const [result] = await conexion.query(sql, [fecha_realizacion]);
+
+        // Verificar el resultado de la consulta
+        /* console.log("Resultado de la consulta:", result); */
 
         if (result.length > 0) {
             const requerimientos = [];
@@ -160,9 +168,10 @@ export const listarRequerimiento17 = async (req, res) => {
             for (let i = 0; i < result.length; i++) {
                 const row = result[i];
                 
-                /* evitar la repetición de datos */
+                // Evitar la repetición de datos
                 if (!idsProcesados.has(row.idActividades)) {
                     const requerimiento = {
+                        idMantenimiento: row.idMantenimiento,
                         referencia_maquina: row.referencia_maquina,
                         codigo_mantenimiento: row.mant_codigo_mantenimiento,
                         descripcion_mantenimiento: row.mant_descripcion,
@@ -186,7 +195,7 @@ export const listarRequerimiento17 = async (req, res) => {
             res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." });
         }
     } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarRequerimiento17: " + err.message });
+        res.status(500).json({ "message": "Error en el controlador listarRequerimiento16: " + err.message });
     }
 };
 
@@ -210,3 +219,129 @@ export const mantenimientoDeMaquinas = async (req, res) => {
         res.status(500).json({ "message": "Error en el controlador mantenimientoDeMaquinas: " + err });
     }
 };
+
+
+/* front-end */
+/* listar mantenimientos */
+export const listartodosmantenimientos = async (req, res) => {
+    try {
+        let sql = `
+        SELECT
+        mantenimiento.idMantenimiento,
+        mantenimiento.mant_codigo_mantenimiento,
+        mantenimiento.mant_fecha_realizacion,
+        mantenimiento.mant_fecha_proxima,
+        mantenimiento.mant_descripcion,
+        mantenimiento.mant_ficha_soporte,
+        fichas.fi_placa_sena AS referencia_maquina,
+        tipo_mantenimiento.tipo_mantenimiento
+    FROM
+        mantenimiento
+    LEFT JOIN
+        fichas ON mantenimiento.mant_fk_fichas = fichas.idFichas
+    LEFT JOIN
+        tipo_mantenimiento ON mantenimiento.fk_tipo_mantenimiento = tipo_mantenimiento.idTipo_mantenimiento;
+    
+            
+        `;
+        const [result] = await conexion.query(sql);
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ "menssage": "No se encontraron requerimientos de mantenimiento completos en la base de datos." });
+        }
+    }
+    catch (err) {
+        res.status(500).json({ "menssage": "Error en el controlador listarRequerimiento5: " + err });
+    }
+}; 
+
+
+export const listarMantenimientoPorFicha = async (req, res) => {
+    try {
+        const { mant_ficha_soporte } = req.params;
+        let sql = `SELECT idActividades, acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_estado, fk_mantenimiento 
+                    FROM mantenimiento AS m
+                    JOIN actividades AS a ON m.idMantenimiento = a.fk_mantenimiento
+                    WHERE m.mant_ficha_soporte = ${mant_ficha_soporte}`;
+        const [result] = await conexion.query(sql);
+
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ "message": "No se encontró actividades con el ID especificado" });
+        }
+    } catch (err) {
+        res.status(500).json({ "message": "Error en el controlador mantenimientoController.js: " + err });
+    }
+};
+
+
+
+
+export const listarMantenimientoPorId_mantenimiento = async (req, res) => {
+    try {
+        const { mant_codigo_mantenimiento } = req.params;
+
+        let sql = `SELECT idMantenimiento, mant_codigo_mantenimiento, mant_fecha_realizacion, mant_fecha_proxima, mant_descripcion,             mant_ficha_soporte, mant_fk_fichas, fk_tipo_mantenimiento
+                    FROM mantenimiento 
+                    WHERE mant_codigo_mantenimiento = ?`;
+
+        const [result] = await conexion.query(sql, [mant_codigo_mantenimiento]);
+
+        
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ message: "No se encontró actividad con el ID especificado" });
+        }
+    } catch (err) {
+        res.status(500).json({ message: "Error en el controlador listarMantenimientoPorId_mantenimiento: " + err.message });
+    }
+};
+
+
+/* eliminar mantenimiento */
+export const eliminarMantenimiento = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        let sql = 'DELETE FROM mantenimiento WHERE idMantenimiento = ?';
+
+        const [result] = await conexion.query(sql, [id]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ "menssage": "Mantenimiento eliminado exitosamente." });
+        } else {
+            res.status(404).json({ "menssage": "No se encontró el mantenimiento con el ID especificado." });
+        }
+    } catch (err) {
+        res.status(500).json({ "menssage": "Error en el controlador eliminarMantenimiento: " + err });
+    }
+};
+
+/* actualizar */
+export const actualizarMantenimiento = async (req, res) => {
+    try {
+        let {  mant_codigo_mantenimiento, mant_fecha_realizacion, mant_fecha_proxima, mant_descripcion, mant_fk_fichas, fk_tipo_mantenimiento } = req.body;
+        let id = req.params.id ;
+
+        let sql = `UPDATE mantenimiento 
+        SET mant_codigo_mantenimiento = '${mant_codigo_mantenimiento}', 
+            mant_fecha_realizacion = '${mant_fecha_realizacion}', 
+            mant_fecha_proxima = '${mant_fecha_proxima}', 
+            mant_descripcion = '${mant_descripcion}', 
+            mant_fk_fichas  = ${mant_fk_fichas }, 
+            fk_tipo_mantenimiento = ${fk_tipo_mantenimiento }
+        WHERE idMantenimiento  = ${id}`;
+
+        const [respuesta] = await conexion.query(sql);
+        if (respuesta.affectedRows > 0) {
+            return res.status(200).json({ "message": "Se actualizó con éxito" });
+        } else {
+            return res.status(404).json({ "message": "No se encontró el mantenimiento para actualizar" });
+        }
+    } catch (e) {
+        return res.status(500).json({ "message": "Error: " + e });
+    }
+}

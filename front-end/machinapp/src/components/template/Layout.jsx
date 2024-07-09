@@ -15,17 +15,17 @@ import {BannerContext} from "../atoms/context/BannerContext.jsx";
 const Layout = ({contenido , titlePage}) => {
     return (
         <>
-            <div className="">
+            <div className="bg-gray-100">
                 <Header color={'bg-white'}/>
                 <BannerContext.Provider value={{ titleBanner: titlePage}}>
                     <Banner  />
                 </BannerContext.Provider>
 
                 <div className="flex">
-                    <section className="flex flex-col w-1/12 max-lg:hidden">
+                    <section className="flex flex-col w-2/12 max-lg:hidden">
                         <Nav/>
                     </section>
-                    <div className="w-11/12">
+                    <div className="w-5/6 flex flex-col gap-4 rounded-box bg-white">
                         <Suspense fallback={<h1>Cargando</h1>}>
                             {contenido}
                             <Outlet/>

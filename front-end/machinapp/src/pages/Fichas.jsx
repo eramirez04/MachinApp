@@ -1,17 +1,23 @@
-import React from 'react'
+import React from 'react';
+import Nav from '../components/molecules/Nav.jsx';
+import ListadoMantenimientos from '../components/organisms/ListadoMantenimientos.jsx';
 
-import { Link } from 'react-router-dom'
+import Layout from "../components/template/Layout.jsx"
 
-import Nav from '../components/molecules/Nav.jsx'
 
-const Fichas=()=>  {
 
-  return (
-    <>
-      <Nav/>
-      <h1 className='center ' >Fichas</h1>
-    </>
-  )
-}
 
-export default Fichas
+
+const Fichas = () => {
+    return (
+        <div className="bg-gray-300">
+            <Layout/>
+            <Nav/>
+            <div>
+                <ListadoMantenimientos/>
+            </div>
+        </div>
+    );
+};
+
+export default Fichas;
