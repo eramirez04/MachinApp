@@ -3,7 +3,7 @@ import api from "../components/atoms/api/Api.jsx"
 import TablaMantenimientosMa from "../components/organisms/TablaMantenimientosMa.jsx"
 import { useParams, Link } from "react-router-dom"
 import { useState } from "react"
-import Layout from "../components/templates/Layout.jsx"
+import Layout from "../components/template/Layout.jsx"
 
 
 import InfoBasicaMaquina from "../components/molecules/InfoBasicaMaquina.jsx"

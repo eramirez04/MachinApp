@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Layout from '../components/templates/Layout.jsx'
+import Layout from '../components/template/Layout.jsx'
 import TablaMaquinas from "../components/organisms/TablaMaquinas.jsx"
 
 const Maquinas=()=>  {

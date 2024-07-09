@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import ListarMaquinasAmb from '../components/organisms/ListarMaquinasAmb.jsx'
-import Layout from '../components/templates/Layout.jsx'
+import Layout from '../components/template/Layout.jsx'
 import { useParams } from "react-router-dom"
 import Api from "../components/atoms/api/Api.jsx"
 
