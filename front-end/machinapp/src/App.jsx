@@ -2,6 +2,7 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
+
 const Inicio = lazy(() => import("./pages/Inicio"));
 const Home = lazy(() => import("./pages/auth/Home"));
 const Perfil = lazy(() => import("./pages/auth/Perfil.jsx"));
@@ -32,6 +33,10 @@ const App = () => {
         <Route path="/Ambientes" element={<Ambientes />} />
 
         <Route path="/recuperar" element={<PanelControl />} />
+
+        
+
+
       </Routes>
     </Suspense>
   );
