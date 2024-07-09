@@ -32,6 +32,8 @@ const App = () => {
         <Route path="/Ambientes" element={<Ambientes />} />
 
         <Route path="/recuperar" element={<PanelControl />} />
+
+
       </Routes>
     </Suspense>
   );
