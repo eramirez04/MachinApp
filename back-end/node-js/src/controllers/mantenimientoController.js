@@ -125,9 +125,13 @@ export const listarRequerimiento16 = async (req, res) => {
     try {
         const { fecha_realizacion } = req.params;
 
+        // Verificar la fecha que se recibe
+        /* console.log("Fecha recibida:", fecha_realizacion); */
+
         const sql = `
             SELECT
                 fichas.fi_placa_sena AS referencia_maquina,
+                mantenimiento.idMantenimiento,
                 mantenimiento.mant_codigo_mantenimiento,
                 mantenimiento.mant_descripcion,
                 mantenimiento.mant_fecha_realizacion,
@@ -148,10 +152,14 @@ export const listarRequerimiento16 = async (req, res) => {
             LEFT JOIN
                 tipo_mantenimiento ON mantenimiento.fk_tipo_mantenimiento = tipo_mantenimiento.idTipo_mantenimiento
             WHERE 
-                mantenimiento.mant_fecha_realizacion = ?
+                DATE(mantenimiento.mant_fecha_realizacion) >= ?
+                
         `;
 
         const [result] = await conexion.query(sql, [fecha_realizacion]);
+
+        // Verificar el resultado de la consulta
+        /* console.log("Resultado de la consulta:", result); */
 
         if (result.length > 0) {
             const requerimientos = [];
@@ -160,9 +168,10 @@ export const listarRequerimiento16 = async (req, res) => {
             for (let i = 0; i < result.length; i++) {
                 const row = result[i];
                 
-                /* evitar la repetición de datos */
+                // Evitar la repetición de datos
                 if (!idsProcesados.has(row.idActividades)) {
                     const requerimiento = {
+                        idMantenimiento: row.idMantenimiento,
                         referencia_maquina: row.referencia_maquina,
                         codigo_mantenimiento: row.mant_codigo_mantenimiento,
                         descripcion_mantenimiento: row.mant_descripcion,
@@ -186,7 +195,7 @@ export const listarRequerimiento16 = async (req, res) => {
             res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." });
         }
     } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarRequerimiento17: " + err.message });
+        res.status(500).json({ "message": "Error en el controlador listarRequerimiento16: " + err.message });
     }
 };
 
