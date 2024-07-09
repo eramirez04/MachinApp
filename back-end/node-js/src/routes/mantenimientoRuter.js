@@ -1,7 +1,7 @@
 /* routeusuario */
 import { Router } from "express";
 
-import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, listarRequerimiento16, mantenimientoDeMaquinas, listartodosmantenimientos, listarMantenimientoPorId_mantenimiento, registrarMantenimiento, listarMantenimientoPorFicha, eliminarMantenimiento, actualizarMantenimiento  } from "../controllers/mantenimientoController.js";
+import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, listarRequerimiento16, mantenimientoDeMaquinas, listartodosmantenimientos, listarMantenimientoPorId_mantenimiento, listarMantenimientoPorFicha, eliminarMantenimiento, actualizarMantenimiento  } from "../controllers/mantenimientoController.js";
 
 const mantenimiento= Router();
 
