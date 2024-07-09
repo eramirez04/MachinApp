@@ -34,8 +34,8 @@ const Layout = ({contenido , titlePage}) => {
                 </div>
             </div>
         </>
-    );
-};
+    )
+}
 
 export default Layout;
 

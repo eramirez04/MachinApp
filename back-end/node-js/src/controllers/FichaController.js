@@ -68,7 +68,7 @@ export const registrarFicha = async(req, res)=>{
 
                 let data = `http://192.168.1.108:5173/maquinaInfo/${id}`   //poner la url que queramos.
 
-                let folderPath = 'public/QRs imagenes'; //ruta de donde se va a guardar
+                let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
                 let filePath = `${folderPath}/${id}-qr.png`;     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
 
                 
@@ -104,7 +104,15 @@ export const registrarFicha = async(req, res)=>{
 
 export const listarFicha = async(req, res)=>{
     try{
-        let sql = `SELECT * FROM fichas `
+        let sql = `SELECT
+        idFichas,
+        fi_placa_sena,
+        fi_serial,
+        fi_estado,
+        sit_nombre
+        FROM fichas
+        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+        `
 
         let  [respuesta] = await conexion.query(sql)
 
