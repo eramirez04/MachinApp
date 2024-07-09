@@ -4,6 +4,10 @@ import ListadoMantenimientos from '../components/organisms/ListadoMantenimientos
 
 import Layout from "../components/templates/Layout.jsx"
 
+<<<<<<< HEAD
+import Nav from '../components/molecules/Nav.jsx'
+=======
+>>>>>>> 43dd569fd7a778ada6f3d083fcdcae26d661fc43
 
 const Fichas = () => {
     return (

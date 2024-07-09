@@ -23,6 +23,7 @@ const App = () => {
                 <Route path="/Maquinas" element={<Maquinas/>}/>
                 <Route path="/Sitios" element={<Sitios/>}/>
                 <Route path="/Panelcontrol" element={<PanelControl/>}/>
+
                 <Route path="/recuperar" element={<PanelControl/>}/>
             </Routes>
         </div>

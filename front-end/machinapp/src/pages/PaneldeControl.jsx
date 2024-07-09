@@ -1,5 +1,8 @@
 import React,{useEffect, useState} from 'react'
 
+<<<<<<< HEAD
+import LayoutPanelControl from "../components/templates/LayoutPanelControl.jsx"
+=======
 import api from '../components/atoms/api/Api.jsx'
 
 import { Link, useNavigate } from 'react-router-dom'
@@ -30,65 +33,34 @@ const ListarUsuarios = () =>{
 
         buscarUsuarios() 
     }, [])
+>>>>>>> 43dd569fd7a778ada6f3d083fcdcae26d661fc43
 
 
-    const borrarUsuario = async() =>{
 
-        try{
-            await api.delete(`/eliminar/${usuarios.idUsuarios}`,{
 
-            }).finally(()=>{
-                navigate("/listar")
-            })
 
-        }catch(error){
-            console.error('Error eliminando el usuario')
-        }
-    }
+
+const PaneldeControlUsuarios = () =>{
+
 
 
     return (
         <>
-            <div className=' bg-yellow-50'>
-                <Header/>
-                <Nav/>    
+            <header className="py-2 bg-[#52BD8F] sm:py-2 shadow-2xl">
+                <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-4">
+                    <div className="flex items-center justify-between">
+                        <div className="">
+                            <span className='text-white font-bold'>MachinApp</span>
+                        </div>
 
-                <div className='m-3 p-96 flex flex-row'>
-                    <p className='font-bold'>
-                        <Link to="/registrar"><ButtonC/></Link>
-                    </p>
-
-                    <table className='table bg-white'>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Eliminar</th>
-                                <th>Editar</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            {
-                                usuarios.map((usuario)=>(
-                                    <tr  key={usuario.idUsuarios}>
-                                        <td className='p-3'>{usuario.idUsuarios} </td>
-                                        <td className='p-4'>{usuario.us_nombre}</td>
-                                        <td className='p-5'>{usuario.us_correo}</td>
-                                        <td className='p-3'><button onClick={borrarUsuario} ></button><ButtonD/></td>
-                                        <td ><Link to={`/actualizar/${usuario.idUsuarios}`}><ButtonU/></Link></td>
-                                    </tr>
-                                ))
-                            }
-
-                        </tbody>
-                    </table>
-                        
+                    </div>
                 </div>
-                </div>
+            </header>
+            
+        <LayoutPanelControl/>
 
         </>
     )
 }
 
-export default ListarUsuarios
+export default PaneldeControlUsuarios
