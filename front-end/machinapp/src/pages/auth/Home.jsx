@@ -1,19 +1,15 @@
-import React from "react";
-import Layout from "../Layout/Layout"
+import React, { lazy } from "react";
+import Layout from "../../components/templates/Layout.jsx";
+import Artboard from "../../components/organisms/Paginacentrar.jsx"
 
-import Artboard from "../../components/Inicio/Paginacentrar.jsx"
-import Nav from "../../components/Nav"
 
-const Home = () =>{
-    return (
-        <>
-            
-            <Layout contenido={""}/>
-            <Nav/>
-            <Artboard/>
-            
-        </>
-    )
-}
+const Home = () => {
+  return (
+    <>
+      <Layout contenido={""}  titlePage={"Home"}/>
+      <Artboard/>
+    </>
+  );
+};
 
-export default Home
+export default Home;

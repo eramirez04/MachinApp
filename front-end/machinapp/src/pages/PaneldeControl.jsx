@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControl from "./Layout/LayoutPanelControl.jsx"
-import RegistrarActividades from "../components/Actividades/RegistroActividades.jsx"
+import LayoutPanelControl from "../components/templates/LayoutPanelControl.jsx"
+
 
 
 

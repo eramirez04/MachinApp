@@ -2,14 +2,13 @@ import {conexion} from "../database/database.js"   // importamos lo que tenemos 
 
 import { validationResult } from "express-validator"
 
-
 export const listarActividades= async (req,res)=>{     
     
     try{
         
-        let idMantenimiento = req.params.idMantenimiento
+
        
-        let sql = `select us_nombre,rol_nombre,acti_nombre,acti_descripcion,acti_fecha_realizacion,acti_estado,fk_mantenimiento from actividades INNER JOIN tecnicos_has_actividades ON fk_actividades=idActividades INNER JOIN usuarios ON idUsuarios=fk_usuarios JOIN roles ON idRoles = fk_roles WHERE fk_mantenimiento = ${idMantenimiento}`
+        let sql = `select us_nombre,rol_nombre,acti_nombre,acti_descripcion,acti_fecha_realizacion,acti_estado,fk_mantenimiento from actividades INNER JOIN tecnicos_has_actividades ON fk_actividades=idActividades INNER JOIN usuarios ON idUsuarios=fk_usuarios JOIN roles ON idRoles = fk_roles`
 
         const [resultadoActividad] = await conexion.query(sql)
 
@@ -31,7 +30,6 @@ export const listarActividades= async (req,res)=>{
     }
 
 }
-
 
 export const registrarActividades= async (req,res)=>{
     try {

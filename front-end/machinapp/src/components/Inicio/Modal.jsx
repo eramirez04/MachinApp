@@ -20,12 +20,7 @@ const Modal = () =>{
                         </div>
                         <div>
                             <RegistrarActividades/> 
-                        </div>
-                        
-                            
-                            
-
-                
+                        </div>    
             </div>
         </>
 

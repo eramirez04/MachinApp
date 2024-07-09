@@ -1,16 +1,9 @@
 import React from 'react'
-
-import { Link } from 'react-router-dom'
-
-import Nav from '../components/Nav'
+import BuscarSedes from '../components/organisms/ListarSedes'
 
 const Sitios=()=>  {
-
   return (
-    <>
-      <Nav/>
-      <h1 className='center ' >Sitios</h1>
-    </>
+    <BuscarSedes/>
   )
 }
 

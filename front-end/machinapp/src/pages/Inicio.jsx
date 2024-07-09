@@ -1,65 +1,111 @@
-import React from 'react'
-
+// eslint-disable-next-line no-unused-vars
+import React, {lazy} from "react";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 //componentes
-import Footer from '../components/Footer.jsx'
-import RegistroUsuarios from '../components/Auth/RegistroUsuarios.jsx'
+const Header = lazy(() => import("../components/organisms/Header.jsx"));
+
+
+// registro de usuarios componente
+const RegistroUsuarios = lazy(() =>
+    import("../components/organisms/RegistroUsuarios.jsx")
+);
+// modal
+const Modal = lazy(() => import("../components/molecules/Modal.jsx"));
 
 // login
-import Login from '../components/Auth/Login.jsx'
+const Login = lazy(() => import("../components/organisms/Login.jsx"));
 
-const Inicio=()=>  {
+const Inicio = () => {
+    return (
+        <>
+            <div className="">
+                <Header color={"bg-white"}/>
+                <div className="relative overflow-hidden bg-gray-50">
+                    <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
+                        <div className=" mx-auto max-w-7xl  px-4 sm:static sm:px-6 lg:px-8">
+                            <div className="sm:max-w-lg ">
+                                <h1 className="text-4xl font-bold tracking-tight text-custom-green sm:text-6xl">
+                                    Mantenimiento, Seguridad y Alerta
+                                </h1>
+                                <p className="mt-4 text-xl text-custom-blue">
+                                    Aquí, cada archivo es una pieza clave para mantener nuestras
+                                    máquinas en su máximo esplendor. Descubre la organización
+                                    estructurada que preserva la calidad de cada servicio.
+                                    ¡Explora, registra y eleva el estándar de tus máquinas y
+                                    equipos con nosotros!
+                                </p>
+                            </div>
+                            <div>
+                                <div className="mt-10">
+                                    {/*  <!-- Decorative image grid --> */}
+                                    <div
+                                        aria-hidden="true"
+                                        className="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl"
+                                    >
+                                        <div
+                                            className="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                                            <div className="flex items-center space-x-6 lg:space-x-8 ">
+                                                <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8 ">
+                                                    <div
+                                                        className="h-64 w-44 overflow-hidden  rounded-lg sm:opacity-0 lg:opacity-100 bg-black">
+                                                        <LazyLoadImage
+                                                            src="cafe.webp"
+                                                            className="h-full w-full object-cover z-20 object-center"
+                                                            effect="blur"
+                                                        />
+                                                    </div>
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
 
-  return (
-      <>
-        <div className="selection:-order-none">
-            <header className="py-2 bg-[#52BD8F] sm:py-2 shadow-2xl">
-                <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-4">
-                    <div className="flex items-center justify-between">
-                        <div className="">
-                            <span className='text-white font-bold'>MachinApp</span>
-                        </div>
-                        <div className="relative hidden md:items-center md:justify-center md:inline-flex group ">
-                                    <button className="btn" onClick={()=>document.getElementById('my_modal_2').showModal()}>Registro</button>
-                                    <dialog id="my_modal_2" className="modal">
-                                    <div className="modal-box">
-                                        <RegistroUsuarios/>
+                                                        <LazyLoadImage
+                                                            src="escuela.jpg"
+                                                            className="h-full w-full object-cover object-center"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
+                                                        {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                                                    </div>
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
+                                                        {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                                                    </div>
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
+                                                        {/* <img src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg" alt="" class="h-full w-full object-cover object-center"> */}
+                                                    </div>
+                                                </div>
+                                                <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
+                                                        <LazyLoadImage
+                                                            src="escuela2.jpeg"
+                                                            className="h-full w-full object-cover object-center"
+                                                        />
+                                                    </div>
+                                                    <div className="h-64 w-44 overflow-hidden rounded-lg">
+                                                        <LazyLoadImage
+                                                            src="maquina.jpeg"
+                                                            className="h-full w-full object-cover object-center"
+                                                            effect="blur"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <form method="dialog" className="modal-backdrop">
-                                        <button>close</button>
-                                    </form>
-                                    </dialog>
-                        </div>
-
-                    </div>
-                </div>
-            </header>
-            <div className="md:flex md:justify-center md:gap-14 md:items-center">
-                <div className="md:w-1/2 relative sm:px-6 lg:px-8 max-w-7xl pt-24 shadow-2xl">
-                    <div className="mb-5 grid items-center  lg:grid-cols-2 ">
-                        <div>
-                            <h1 className="text-3xl sm:text-3xl lg:text-3xl xl:text-6xl font-bold">Mantenimiento,
-                                Seguridad y Alerta</h1>
-                            <p className="mt-4 text-lg font-normal text-gray-400 sm:mt-8">
-                            Aquí, cada archivo es una pieza clave para mantener nuestras máquinas en su máximo esplendor.
-                            Descubre la organización estructurada que preserva la calidad de cada servicio.
-                            ¡Explora, registra y eleva el estándar de tus máquinas y equipos con nosotros!
-                            </p>
+                                    <Modal buttonModal={"Login"} tittleModal={"Iniciar Sesion"}
+                                           componente={<Login/>}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="md:w-4/12">
-                    <div className=" bg-white p-6 rounded-lg shadow-2xl ">
-                    <Login/>
-                    
-                    </div>
-                </div>
-
             </div>
-        </div>
-        <Footer/>
-    </>
-  )
-}
+            {/*  <Footer /> */}
+        </>
+    );
+};
 
-export default Inicio
+export default Inicio;

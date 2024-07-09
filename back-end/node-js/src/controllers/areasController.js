@@ -1,5 +1,14 @@
 import { conexion } from "../database/database.js"
 import { validationResult } from "express-validator"
+import multer from "multer"
+
+const storage = multer.diskStorage({
+    destination: function(req, img, cb) {cb(null, "public/imagenes")}, 
+    filename: function(req, img, cb) {cb(null, img.originalname)}
+})
+
+const upload = multer({storage: storage})
+export const cargarImagenArea = upload.single('img')
 
 export const listarArea = async (req, res) => {
     try {
@@ -31,8 +40,10 @@ export const registrarArea = async (req, res) => {
 
         let {area_nombre, area_fk_sedes} = req.body
 
-        let sql = `insert into areas (area_nombre, area_fk_sedes)
-        values ('${area_nombre}', '${area_fk_sedes}')`
+        let img_area = req.file.originalname
+
+        let sql = `insert into areas (area_nombre, img_area, area_fk_sedes)
+        values ('${area_nombre}', '${img_area}', '${area_fk_sedes}')`
 
         const [respuesta] = await conexion.query(sql)
 

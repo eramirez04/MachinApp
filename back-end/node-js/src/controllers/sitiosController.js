@@ -1,5 +1,14 @@
 import { conexion } from "../database/database.js"
 import { validationResult } from "express-validator"
+import multer from "multer"
+
+const storage = multer.diskStorage({
+    destination: function(req, img, cb) {cb(null, "public/imagenes")}, 
+    filename: function(req, img, cb) {cb(null, img.originalname)}
+})
+
+const upload = multer({storage: storage})
+export const cargarImagenSitio = upload.single('img')
 
 export const listarSitio = async (req, res) => {
     try {
@@ -32,8 +41,10 @@ export const registrarSitio = async (req, res) => {
 
         let {sit_nombre, sit_fk_areas, sit_fk_tipo_sitio} = req.body
 
-        let sql = `insert into sitios (sit_nombre, sit_fk_areas, sit_fk_tipo_sitio)
-        values ('${sit_nombre}', '${sit_fk_areas}', '${sit_fk_tipo_sitio}')`
+        let img_sitio = req.file.originalname
+
+        let sql = `insert into sitios (sit_nombre, img_sitio, sit_fk_areas, sit_fk_tipo_sitio)
+        values ('${sit_nombre}', '${img_sitio}', '${sit_fk_areas}', '${sit_fk_tipo_sitio}')`
 
         const [respuesta] = await conexion.query(sql)
 
@@ -93,5 +104,33 @@ export const editarSitio = async (req, res) => {
     }
     catch (error) {
         return res.status(500).json({ "message" : "Error", error })
+    }
+}
+
+export const listarSitioPorId = async (req, res) => {
+    try {
+        let idAmbientes = req.params.id_sitio;
+
+        if (!idAmbientes) {
+            return res.status(400).json({ "Mensaje": "ID de sitio no proporcionado" });
+        }
+
+        let sql = `select idAmbientes,sit_nombre,tipo_sitio,area_nombre from sitios 
+                    INNER JOIN tipo_sitio ON sit_fk_tipo_sitio = idTipo_sitio 
+                    INNER JOIN areas ON sit_fk_areas = idArea 
+                    where idAmbientes = ?`;
+
+        const [resultadoSitio] = await conexion.query(sql, [idAmbientes]);
+
+        if (resultadoSitio.length > 0) {
+          res.status(200).json({
+            "Mensaje": "Sitio encontrado",
+            resultadoSitio
+          });
+        } else {
+          return res.status(404).json({ "Mensaje": "No se encontró el Sitio" });
+        }
+    } catch (error) {
+        return res.status(500).json({ "Mensaje": "Error en el servidor", error });
     }
 }
