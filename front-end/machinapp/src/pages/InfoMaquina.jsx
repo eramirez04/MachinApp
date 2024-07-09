@@ -10,6 +10,9 @@ import InfoBasicaMaquina from "../components/molecules/InfoBasicaMaquina.jsx"
 import ImgMaquinas from "../components/atoms/ImgMaquinas.jsx"
 
 
+import DescargarDocs from "../components/atoms/DescargarDocs.jsx"
+
+
 const InfoMaquina = ()=> {
 
   const [maquina, setInfoMaquina ] = useState([])
@@ -26,6 +29,7 @@ const InfoMaquina = ()=> {
             const response = await api.get(`ficha/listarInfoEspecifica/${idMaquina}`)
 
             setInfoMaquina(response.data)
+            console.log(response.data)
             setMantenimientosMaquina(response.data.mantenimientos)
 
         }catch(error){
@@ -58,8 +62,10 @@ const InfoMaquina = ()=> {
                         />      
 
                         <div className="w-full grid justify-items-end mt-5">
-                            <button className="btn btn-link"> FichaTecnica respaldo</button>
-                            <button className="btn btn-active">CodigoQR</button>
+
+                            <DescargarDocs contenido={<button className="btn btn-link">Descargar ficha respaldo</button>} ruta="fichasTecnicas" nombreDocumento={"1.pdf"} />
+                            <DescargarDocs contenido={<button className="btn btn-active">Codigo QR</button>} ruta="QRimagenes" nombreDocumento={`${maquina.idFichas}-qr.png`} />
+                                
                         </div>
 
 
@@ -67,12 +73,11 @@ const InfoMaquina = ()=> {
 
                     
                     <div className="inline-block ml-20 ">
-
                         <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
                     </div>
                 </div>
             }
-            titlePage="Maquina"        
+            titlePage={`Maquina -- ${maquina.tipoEquipo}`}        
         />
     </>
   )
