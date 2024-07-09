@@ -1,8 +1,7 @@
 import React,{useEffect, useState} from 'react'
 
-<<<<<<< HEAD
-import LayoutPanelControl from "../components/templates/LayoutPanelControl.jsx"
-=======
+import LayoutPanelControl from "../components/template/LayoutPanelControl.jsx"
+
 import api from '../components/atoms/api/Api.jsx'
 
 import { Link, useNavigate } from 'react-router-dom'
@@ -33,9 +32,9 @@ const ListarUsuarios = () =>{
 
         buscarUsuarios() 
     }, [])
->>>>>>> 43dd569fd7a778ada6f3d083fcdcae26d661fc43
 
 
+}
 
 
 
