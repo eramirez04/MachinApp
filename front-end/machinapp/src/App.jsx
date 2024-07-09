@@ -11,6 +11,7 @@ const Maquinas = lazy(() => import("./pages/Maquinas"));
 const Sitios = lazy(() => import("./pages/Sitios"));
 const PanelControl = lazy(() => import("./pages/PaneldeControl"));
 
+
 const App = () => {
     return (
         <div>
@@ -24,6 +25,7 @@ const App = () => {
                 <Route path="/Sitios" element={<Sitios/>}/>
                 <Route path="/Panelcontrol" element={<PanelControl/>}/>
                 <Route path="/recuperar" element={<PanelControl/>}/>
+
             </Routes>
         </div>
     );
