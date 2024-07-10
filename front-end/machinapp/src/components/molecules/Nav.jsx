@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Nav = () => {
   const menus = [
-    { name: "Inicio", link: "/", icon: ImHome },
+    { name: "Inicio", link: "/home", icon: ImHome },
     { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
     { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
     { name: "Maquinas", link: "/Maquinas", icon: GiGears },
