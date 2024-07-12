@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import BtnIrMaquina from '../atoms/buttons/BtnIrMaquina'
 
 
 const  FilasTablaMaquinas = ({id, placa, serial, estado, sitNombre})=> {
@@ -14,7 +13,7 @@ const  FilasTablaMaquinas = ({id, placa, serial, estado, sitNombre})=> {
       <td>{serial}</td>
       <td>{estado}</td>
       <td>{sitNombre}</td>
-      <td><Link to= {`/infoMaquina/${id}`} className='bg-slate-900' ><BtnIrMaquina/></Link></td>
+      <td><Link to= {`/infoMaquina/${id}`} className='bg-slate-900' >Ir</Link></td>
     </>
   )
 }

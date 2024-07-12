@@ -6,12 +6,7 @@ import { useState } from "react"
 import Layout from "../components/template/Layout.jsx"
 
 
-import InfoBasicaMaquina from "../components/molecules/InfoBasicaMaquina.jsx"
 import ImgMaquinas from "../components/atoms/ImgMaquinas.jsx"
-
-
-import DescargarDocs from "../components/atoms/DescargarDocs.jsx"
-
 
 const InfoMaquina = ()=> {
 
@@ -44,7 +39,7 @@ const InfoMaquina = ()=> {
   return (
     <>
         <Layout
-            contenido={
+            children={
                 <div className=" flex pt-20 ">
 
                     <div className="text-gray-500 inline-block w-96 p-5 ml-20 bg-zinc-100 rounded h-fit">
@@ -52,19 +47,19 @@ const InfoMaquina = ()=> {
                             <ImgMaquinas  img={maquina.fi_imagen}/>
                         </div>
                         
-                        <InfoBasicaMaquina 
+{/*                         <InfoBasicaMaquina 
                             id ={maquina.idFichas}
                             serial ={maquina.fi_serial}
                             placa ={maquina.fi_placa_sena}
                             feAdquisicion ={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()}
                             feInicioGarantia ={new Date(maquina.fi_fecha_inicio_garantia).toLocaleDateString()}
                             feFinGrantia ={new Date(maquina.fi_fecha_fin_garantia).toLocaleDateString()}
-                        />      
+                        />   */}    
 
                         <div className="w-full grid justify-items-end mt-5">
 
-                            <DescargarDocs contenido={<button className="btn btn-link">Descargar ficha respaldo</button>} ruta="fichasTecnicas" nombreDocumento={"1.pdf"} />
-                            <DescargarDocs contenido={<button className="btn btn-active">Codigo QR</button>} ruta="QRimagenes" nombreDocumento={`${maquina.idFichas}-qr.png`} />
+                            {/* <DescargarDocs contenido={<button className="btn btn-link">Descargar ficha respaldo</button>} ruta="fichasTecnicas" nombreDocumento={"1.pdf"} />
+                            <DescargarDocs contenido={<button className="btn btn-active">Codigo QR</button>} ruta="QRimagenes" nombreDocumento={`${maquina.idFichas}-qr.png`} /> */}
                                 
                         </div>
 

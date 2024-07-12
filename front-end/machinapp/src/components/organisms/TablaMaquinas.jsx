@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Api from "../atoms/api/Api.jsx"
 
-import BtnIrMaquina from "../atoms/buttons/BtnIrMaquina.jsx"
 import FilasTablaMaquinas from "../molecules/FilasTablaMaquinas.jsx"
 
 const   TablaMaquinas=() =>{
