@@ -1,9 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import Api from "../atoms/api/Api.jsx"
-
 import FilasTablaMaquinas from "../molecules/FilasTablaMaquinas.jsx"
+import {axiosCliente} from "../../service/api/axios.js"
 
 const   TablaMaquinas=() =>{
 
@@ -14,7 +11,7 @@ const   TablaMaquinas=() =>{
         const buscarInfo = async ()=>{
 
             try{
-                const response = await Api.get('ficha/listar')
+                const response = await axiosCliente.get('ficha/listar')
                 setMaquinas(response.data)
     
             }catch(error){

@@ -1,8 +1,7 @@
-import React from "react"
 import { useState } from "react"
 import { useEffect } from "react"
 import CardMaquinas from "../molecules/CardMaquinas.jsx"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import api from "../atoms/api/Api.jsx"
 
 const ListarMaquinasAmb = ({idAmbiente}) => {
