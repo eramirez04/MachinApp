@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ListarMaquinasAmb from '../components/organisms/ListarMaquinasAmb.jsx'
 import Layout from '../components/template/Layout.jsx'
 import { useParams } from "react-router-dom"
-import Api from "../components/atoms/api/Api.jsx"
+
+import {axiosCliente} from "../service/api/axios.js"
 
 
 const MaquinasAmbiente=()=>{
@@ -18,7 +19,7 @@ const MaquinasAmbiente=()=>{
 
         const buscarAmbiente = async ()=>{
             try{
-                const response = await Api.get(`sitio/listarsitioporid/${idAmbiente}`)
+                const response = await axiosCliente.get(`sitio/listarsitioporid/${idAmbiente}`)
                 setAmbienteNombre(response.data.resultadoSitio[0].sit_nombre)
             
             }catch(error){
@@ -28,22 +29,17 @@ const MaquinasAmbiente=()=>{
         buscarAmbiente()
     }, [idAmbiente])
 
-
-
     return (
       <>
-        <Layout
-            children={
-                <div className='mx-12'>
-                    <div className='mt-20 flex justify-end '>
-{/*                         <BtnAdd className="mx-1"/>
-                        <BtnOutService className="mx-1" /> */}
-                    </div>
-                    <ListarMaquinasAmb idAmbiente={idAmbiente}/>
-                </div>
-            } 
-            titlePage = { `${Nombreambiente}`}
-        />
+        <Layout titlePage = { `${Nombreambiente}`}>
+            <div className='mx-12'>
+                        <div className='mt-20 flex justify-end '>
+    {/*                         <BtnAdd className="mx-1"/>
+                            <BtnOutService className="mx-1" /> */}
+                        </div>
+                        <ListarMaquinasAmb idAmbiente={idAmbiente}/>
+            </div>
+        </Layout>
       </>
     )
 }
