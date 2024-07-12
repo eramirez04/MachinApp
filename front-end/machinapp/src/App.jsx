@@ -2,7 +2,6 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
-
 const Inicio = lazy(() => import("./pages/Inicio"));
 const Home = lazy(() => import("./pages/auth/Home"));
 const Perfil = lazy(() => import("./pages/auth/Perfil.jsx"));
@@ -15,6 +14,15 @@ const Sedes = lazy(() => import("./pages/Sedes"));
 const Areas = lazy(() => import("./pages/Areas"));
 const Ambientes = lazy(() => import("./pages/Ambientes"));
 
+const PaneldeControlAreas = lazy(() =>
+  import("./pages/PaneldeControlAreas.jsx")
+);
+const PanelControlSitios = lazy(() =>
+  import("./pages/PaneldeControlSitios.jsx")
+);
+const PanelControlSedes = lazy(() => import("./pages/PaneldeControlSedes.jsx"));
+import MaquinasAmbiente from "./pages/MaquinasAmbiente.jsx";
+import InfoMaquina from "./pages/InfoMaquina.jsx";
 const App = () => {
   return (
     <Suspense>
@@ -34,9 +42,14 @@ const App = () => {
 
         <Route path="/recuperar" element={<PanelControl />} />
 
-        
-
-
+        <Route path="/PanelControlAreas" element={<PaneldeControlAreas />} />
+        <Route path="/PanelControlSitios" element={<PanelControlSitios />} />
+        <Route path="/PanelControlSedes" element={<PanelControlSedes />} />
+        <Route
+          path="Maquinas/maquinasAmb/:idAmbiente"
+          element={<MaquinasAmbiente />}
+        />
+        <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
       </Routes>
     </Suspense>
   );
