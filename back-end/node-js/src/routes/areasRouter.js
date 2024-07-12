@@ -5,9 +5,12 @@ import { verificar } from "../middlewares/LoginMidleware.js"
 
 const rutaArea = Router()
 
+rutaArea.get('/listararea', listarArea)
+
 rutaArea.get('/listararea', verificar, listarArea)
+
 rutaArea.post('/registrararea', verificar, verificarArea, cargarImagenArea, registrarArea)
 rutaArea.delete('/eliminararea/:id_area', verificar, eliminarArea)
-rutaArea.put('/editararea/:id_area', verificar, verificarArea, editarArea)
+rutaArea.put('/editararea/:id_area', verificar, verificarArea, cargarImagenArea, editarArea)
 
 export default rutaArea

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { ImHome } from "react-icons/im";
 import { MdHomeWork } from "react-icons/md";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Nav = () => {
   const menus = [
-    { name: "Inicio", link: "/", icon: ImHome },
+    { name: "Inicio", link: "/home", icon: ImHome },
     { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
     { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
     { name: "Maquinas", link: "/Maquinas", icon: GiGears },
@@ -24,15 +24,11 @@ const Nav = () => {
   ];
   const [open, setOpen] = useState(true);
 
-  useEffect(() => {
-    setOpen(false);
-  }, []);
-
   return (
-    <section className="flex gap-6 fixed">
+    <section className="flex gap-6">
       <div
-        className={`bg-[white] min-h-screen ${
-          open ? "w-72" : "w-16"
+        className={`bg-[white] min-h-screen border border-x-slate-400 rounded-e-lg ${
+          open ? "w-72" : "w-20"
         } duration-500 text-black px-4`}
       >
         <div className="py-3 flex justify-end">
@@ -49,7 +45,7 @@ const Nav = () => {
               key={i}
               className={` ${
                 menu?.margin && "mt-96"
-              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
+              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-100 rounded-md`}
             >
               <div>{React.createElement(menu?.icon, { size: "20" })}</div>
               <h2

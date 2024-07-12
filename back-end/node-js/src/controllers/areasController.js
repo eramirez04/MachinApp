@@ -87,10 +87,10 @@ export const editarArea = async (req, res) => {
         }
         
         let {area_nombre} = req.body
-
+        let img_area = req.file.originalname
         let id = req.params.id_area
 
-        let sql = `update areas set area_nombre = '${area_nombre}' where idArea = ${id}`
+        let sql = `update areas set area_nombre = '${area_nombre}', img_area = '${img_area}' where idArea = ${id}`
 
         const [respuesta] = await conexion.query(sql)
 

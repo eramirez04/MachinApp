@@ -1,0 +1,12 @@
+App.jsx
+const PaneldeControlAreas = lazy(() => import("./pages/PaneldeControlAreas.jsx"));
+const PanelControlSitios = lazy(() => import("./pages/PaneldeControlSitios.jsx"));
+const PanelControlSedes = lazy(() => import("./pages/PaneldeControlSedes.jsx"));
+	
+
+                <Route path="/PanelControlAreas" element={<PaneldeControlAreas />} />
+                <Route path="/PanelControlSitios" element={<PanelControlSitios />} />
+                <Route path="/PanelControlSedes" element={<PanelControlSedes />} />
+
+
+no esta sirviendo lo de registrar actividades y para listar en el panel de control y en el inicio toca quitar lo de validar 

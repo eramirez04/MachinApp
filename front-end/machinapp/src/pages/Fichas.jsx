@@ -1,17 +1,25 @@
-import React from 'react'
+import { CardStyle } from "../components/molecules/CardStyle.jsx";
+import Layout from "../components/template/Layout.jsx";
 
-import { Link } from 'react-router-dom'
-
-import Nav from '../components/molecules/Nav.jsx'
-
-const Fichas=()=>  {
-
+const Fichas = () => {
+  const titulos = [
+    { name: "Fichas de Maquinas", url: "/crearfichaequipos" },
+    { name: "Fichas de Mantenimiento" },
+  ];
   return (
-    <>
-      <Nav/>
-      <h1 className='center ' >Fichas</h1>
-    </>
-  )
-}
+    <Layout titlePage="crear">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-4 sm:m-6 md:m-8 lg:m-10">
+        {titulos.map((ficha) => (
+          <CardStyle
+            key={ficha.name}
+            titleCard={ficha.name}
+            link={ficha.url}
+            nameLink={"Crear Ficha Tecnina"}
+          />
+        ))}
+      </div>
+    </Layout>
+  );
+};
 
-export default Fichas
+export default Fichas;

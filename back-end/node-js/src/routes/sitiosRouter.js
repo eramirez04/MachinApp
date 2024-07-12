@@ -9,6 +9,6 @@ rutaSitio.get('/listarsitio', verificar, listarSitio)
 rutaSitio.get('/listarsitioporid/:id_sitio', verificar, listarSitioPorId)
 rutaSitio.post('/registrarsitio', verificar, verificarSitio, cargarImagenSitio, registrarSitio)
 rutaSitio.delete('/eliminarsitio/:id_sitio', verificar, eliminarSitio)
-rutaSitio.put('/editarsitio/:id_sitio', verificar, verificarSitio, editarSitio)
+rutaSitio.put('/editarsitio/:id_sitio', verificar, verificarSitio, cargarImagenSitio, editarSitio)
 
 export default rutaSitio

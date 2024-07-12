@@ -1,0 +1,7 @@
+en este directorio iria todo lo de retroalimentacion
+
+como podria ser : 
+cargas
+Spinner.js
+ProgressBar.js
+alertas.js
