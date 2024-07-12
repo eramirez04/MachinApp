@@ -2,7 +2,7 @@ import React,{useState} from "react"
 import api from "../atoms/api/Api.jsx"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
-import ButtonRegistroActividades from '../atoms/InputSubmit.jsx';
+import ButtonRegistroActividades from '../atoms/Inputs/InputSubmit.jsx';
 import Alert from "../atoms/Alert.jsx";
 
 const RegistrarActividades=()=>{
