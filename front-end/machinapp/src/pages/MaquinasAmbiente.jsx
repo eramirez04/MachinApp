@@ -5,8 +5,6 @@ import Layout from '../components/template/Layout.jsx'
 import { useParams } from "react-router-dom"
 import Api from "../components/atoms/api/Api.jsx"
 
-import BtnAdd from "../components/atoms/buttons/BtnAdd.jsx"
-import BtnOutService from "../components/atoms/buttons/BtnOutService.jsx"
 
 const MaquinasAmbiente=()=>{
 
@@ -35,16 +33,16 @@ const MaquinasAmbiente=()=>{
     return (
       <>
         <Layout
-            contenido={
+            children={
                 <div className='mx-12'>
                     <div className='mt-20 flex justify-end '>
-                        <BtnAdd className="mx-1"/>
-                        <BtnOutService className="mx-1" />
+{/*                         <BtnAdd className="mx-1"/>
+                        <BtnOutService className="mx-1" /> */}
                     </div>
                     <ListarMaquinasAmb idAmbiente={idAmbiente}/>
                 </div>
             } 
-            titlePage={Nombreambiente}
+            titlePage = { `${Nombreambiente}`}
         />
       </>
     )

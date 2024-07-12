@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { useState } from "react"
 
-import BtnDescargar from "../atoms/buttons/BtnDescargar.jsx"
 
 import FilasTablaMantenimientosMa from "../molecules/FilasTablaMantenimientosMa.jsx"
 
