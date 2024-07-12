@@ -12,7 +12,7 @@ export const cargarImagenSede = upload.single('img')
 
 export const listarSede = async (req, res) => {
     try {
-      let sql = "SELECT idSede, cen_nombre, sede_nombre, sede_descripcion, sede_direccion FROM sedes INNER JOIN centros ON sede_fk_centros = idCentros"
+      let sql = "SELECT idSede, cen_nombre, sede_nombre, sede_descripcion, sede_direccion, img_sede FROM sedes INNER JOIN centros ON sede_fk_centros = idCentros"
       const [resultadoSede] = await conexion.query(sql)
   
       if (resultadoSede.length > 0) {
@@ -34,7 +34,7 @@ export const listarSede = async (req, res) => {
 
 export const registrarSede = async (req, res) => {
     try {
-        const error = validationResult(req)
+        const error = validationResult(req.body)
         if (!error.isEmpty()) {
             return res.status(400).json(error)
         }
@@ -82,16 +82,16 @@ export const eliminarSede = async (req, res) => {
 
 export const editarSede = async (req, res) => {
     try {
-        const error = validationResult(req)
+        const error = validationResult(req.body)
         if (!error.isEmpty()) {
             return res.status(400).json(error)
         }
         
         let {sede_nombre, sede_descripcion, sede_direccion, sede_fk_centros} = req.body
-
+        let img_sede = req.file.originalname
         let id = req.params.id_sede
 
-        let sql = `update sedes set sede_nombre = '${sede_nombre}', sede_descripcion = '${sede_descripcion}', sede_direccion = '${sede_direccion}', sede_fk_centros = '${sede_fk_centros}' where idSede = ${id}`
+        let sql = `update sedes set sede_nombre = '${sede_nombre}', sede_descripcion = '${sede_descripcion}', sede_direccion = '${sede_direccion}', img_sede = '${img_sede}', sede_fk_centros = '${sede_fk_centros}' where idSede = ${id}`
 
         const [respuesta] = await conexion.query(sql)
 
