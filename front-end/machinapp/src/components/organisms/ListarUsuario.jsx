@@ -2,7 +2,7 @@ import React, { lazy, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-const InputSubmit = lazy(() => import("../atoms/InputSubmit.jsx"));
+const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
 
 const ActualizarUsuario = lazy(() => import("./ActualizarUsuario.jsx"));
 

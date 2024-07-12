@@ -1,7 +1,6 @@
 import React from "react"
 
 import ImgMaquinas from '../atoms/ImgMaquinas.jsx'
-import InfoCard from "../molecules/InfoCard.jsx"
 
 const CardMaquinas = ({placa, serial, tipoEquipo, estado, img}) => {
     return (
@@ -13,7 +12,8 @@ const CardMaquinas = ({placa, serial, tipoEquipo, estado, img}) => {
           </div>
 
           <div className="p-5 grid items-center h-48">
-            <InfoCard placa={placa} serial={serial} tipoEquipo={tipoEquipo} estado={estado}/>
+            aaa
+           {/*  <InfoCard placa={placa} serial={serial} tipoEquipo={tipoEquipo} estado={estado}/> */}
           </div>
 
         </div>
