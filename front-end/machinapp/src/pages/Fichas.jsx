@@ -1,20 +1,25 @@
-import React from 'react';
-import Nav from '../components/molecules/Nav.jsx';
-import ListadoMantenimientos from '../components/organisms/ListadoMantenimientos.jsx';
-
-import Layout from "../components/templates/Layout.jsx"
-
+import { CardStyle } from "../components/molecules/CardStyle.jsx";
+import Layout from "../components/template/Layout.jsx";
 
 const Fichas = () => {
-    return (
-        <div className="bg-gray-300">
-            <Layout/>
-            <Nav/>
-            <div>
-                <ListadoMantenimientos/>
-            </div>
-        </div>
-    );
+  const titulos = [
+    { name: "Fichas de Maquinas", url: "/crearfichaequipos" },
+    { name: "Fichas de Mantenimiento" },
+  ];
+  return (
+    <Layout titlePage="crear">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-4 sm:m-6 md:m-8 lg:m-10">
+        {titulos.map((ficha) => (
+          <CardStyle
+            key={ficha.name}
+            titleCard={ficha.name}
+            link={ficha.url}
+            nameLink={"Crear Ficha Tecnina"}
+          />
+        ))}
+      </div>
+    </Layout>
+  );
 };
 
 export default Fichas;
