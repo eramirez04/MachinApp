@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import Api from "../atoms/api/Api.jsx";
 
 // importacion de componentes
-const InputSubmit = lazy(() => import("../atoms/InputSubmit.jsx"));
+const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
 const Alert = lazy(() => import("../atoms/Alert.jsx"));
 
 const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
