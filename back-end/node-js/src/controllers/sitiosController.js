@@ -88,10 +88,10 @@ export const editarSitio = async (req, res) => {
         }
         
         let {sit_nombre, sit_fk_areas, sit_fk_tipo_sitio} = req.body
-
+        let img_sitio = req.file.originalname
         let id = req.params.id_sitio
 
-        let sql = `update sitios set sit_nombre = '${sit_nombre}', sit_fk_areas = '${sit_fk_areas}', sit_fk_tipo_sitio = '${sit_fk_tipo_sitio}' where idAmbientes = ${id}`
+        let sql = `update sitios set sit_nombre = '${sit_nombre}', sit_fk_areas = '${sit_fk_areas}', sit_fk_tipo_sitio = '${sit_fk_tipo_sitio}', img_sitio = '${img_sitio}' where idAmbientes = ${id}`
 
         const [respuesta] = await conexion.query(sql)
 
