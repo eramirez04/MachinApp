@@ -42,8 +42,9 @@ const InfoMaquina = ()=> {
         <Layout titlePage={`Maquina -- ${maquina.tipoEquipo}`} >
             <div className=" flex pt-20 ">
 
-                <div className="text-gray-500 inline-block w-96 p-5 ml-20 bg-zinc-100 rounded h-fit">
-                    <div className="mb-8 w-[344px] ">
+                <div className="text-gray-500 inline-block  p-5 ml-20 bg-zinc-100 rounded h-fit">
+
+                    <div className="mb-8 w-[300px] ">
                         <ImgMaquinas  img={maquina.fi_imagen}/>
                     </div>
                     
@@ -67,7 +68,7 @@ const InfoMaquina = ()=> {
                 </div>
 
 
-                <div className="inline-block ml-20 ">
+                <div className="inline-block mx-10 mb-14 ">
                     <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
                 </div>
             </div>
