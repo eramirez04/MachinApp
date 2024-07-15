@@ -10,15 +10,16 @@ import { Outlet } from "react-router-dom";
 const Header = lazy(() => import("../organisms/Header.jsx"));
 const Banner = lazy(() => import("../molecules/Banner.jsx"));
 const Nav = lazy(() => import("../molecules/Nav.jsx"));
+import { AvatarCom } from "../molecules/Avatar.jsx";
 
 // contexto Banner
-import { BannerContext } from "../atoms/context/BannerContext.jsx";
+import { BannerContext } from "../../contexts/BannerContext.jsx";
 
 const Layout = ({ children, titlePage }) => {
   return (
     <>
       <div className="bg-gray-100">
-        <Header color={"bg-white"} />
+        <Header color={"bg-white"} contenido={<AvatarCom />} />
         <BannerContext.Provider value={{ titleBanner: titlePage }}>
           <Banner />
         </BannerContext.Provider>
