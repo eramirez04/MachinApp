@@ -5,8 +5,10 @@ import { axiosCliente } from "../../service/api/axios.js";
 
 // importacion de componentes
 const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
-const Alert = lazy(() => import("../atoms/Alert.jsx")); 
-
+const Alert = lazy(() => import("../atoms/feedback/Alert.jsx")) 
+/* 
+ const Alert = lazy(() => import("../atoms/Alert.jsx")); 
+ */
 const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
 
 const Login = () => {
