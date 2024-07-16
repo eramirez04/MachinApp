@@ -1,24 +1,28 @@
-  import React from "react"
+import PropTypes from 'prop-types'
+
+const ImgMaquinas = ({img}) => {
 
 
-  const ImgMaquinas = ({img}) => {
+    
+  let direccionImg
 
+    if(img == ""){
+        direccionImg = "http://localhost:3000/imagenes/ficha/noEncontrada.png"
+    }
+    else{
+        direccionImg =  `http://localhost:3000/imagenes/ficha/${img}`
+    }
+    //const imageUrl = process.env.PUBLIC_URL + `/imagenes/ficha/${img}`
+    return (
+      <>
+        <img  className="w-full" src={direccionImg} alt="maquina" />
+      </>
+    )
+}
 
-      let direccionImg
+ImgMaquinas.propTypes = {
+  img: PropTypes.string.isRequired
+    
+}
 
-      if(img == ""){
-          direccionImg = "http://localhost:3000/imagenes/ficha/noEncontrada.png"
-      }
-      else{
-          direccionImg =  `http://localhost:3000/imagenes/ficha/${img}`
-      }
-
-      //const imageUrl = process.env.PUBLIC_URL + `/imagenes/ficha/${img}`
-
-      return (
-        <>
-          <img  className="w-full" src={direccionImg} alt="maquina" />
-        </>
-      )
-  }
-  export default ImgMaquinas
+export default ImgMaquinas
