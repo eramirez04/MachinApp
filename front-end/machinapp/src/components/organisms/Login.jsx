@@ -5,14 +5,12 @@ import { axiosCliente } from "../../service/api/axios.js";
 
 // importacion de componentes
 const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
-const Alert = lazy(() => import("../atoms/Alert.jsx")); 
+import Alert from "../atoms/feedback/Alert.jsx";
 
 const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
 
 const Login = () => {
   // iniciando variables de estado
-  const [correo, setCorreo] = useState("");
-  const [contrasenia, setContrasenia] = useState("");
 
   //error captura de errores
   const [error, setError] = useState("");
@@ -37,10 +35,11 @@ const Login = () => {
   // funcion para validar las credenciales del usuario
   const makeLogin = async (data) => {
     try {
+      console.log(data);
       // peticion http post a api para poder obtener un token
       const response = await axiosCliente.post("/login", {
-        correo: correo,
-        contrasenia: contrasenia,
+        correo: data.Correo,
+        contrasenia: data.Contraseña,
       });
 
       // si la respuesta es exitosa, redirecciona a la pantalla home, y guarda token en localstorage
@@ -51,15 +50,30 @@ const Login = () => {
     } catch (error) {
       // captura de errores
 
-      setError(error.response.data.mensaje);
+      if (error.response.data.mensaje) {
+        setError((prevErros) => ({
+          ...prevErros,
+          invalido: error.response.data.mensaje,
+        }));
+      }
 
-      switch (error.response.data.errors) {
-        case "Formato de correo no valido":
-          setError(error.response.data.errors[0].msg);
-          break;
+      if (error.response.data.error) {
+        let errores = error.response.data.error;
 
-        default:
-          break;
+        errores.forEach((element) => {
+          switch (element.path[0]) {
+            case "contrasenia":
+              setError((prevErros) => ({
+                ...prevErros,
+                contrasenia: element.message,
+              }));
+              break;
+
+            default:
+              console.log("error");
+              break;
+          }
+        });
       }
     }
   };
@@ -67,27 +81,27 @@ const Login = () => {
   return (
     <>
       <div className="max-w-md mx-auto pt-3">
-        <form onSubmit={handleSubmit(makeLogin)}>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit(makeLogin)}
+        >
           <InputforForm
             errors={errors}
             register={register}
             tipo={"email"}
             name={"Correo"}
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
           />
           <InputforForm
             errors={errors}
             register={register}
             tipo={"password"}
-            name={"password"}
-            value={contrasenia}
-            onChange={(e) => setContrasenia(e.target.value)}
+            name={"Contraseña"}
           />
+          {error.contrasenia && <Alert descripcion={error.contrasenia} />}
           <InputSubmit valorInput="Login" />
         </form>
         <div>
-          <Alert descripcion={error} />
+          <Alert descripcion={error.invalido && error.invalido} />
         </div>
         ¿Olvidades tu contraseña?
       </div>
