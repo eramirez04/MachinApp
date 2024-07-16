@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../template/Layout'
 import ButtonSitios from '../atoms/buttons/ButtonSitios'
-import api from '../atoms/api/Api'
+import { axiosCliente } from '../../service/api/axios'
 
 const BuscarAreas = () => {
   const [areas, setAreas] = useState([])
@@ -11,7 +11,7 @@ const BuscarAreas = () => {
   useEffect(() => {
     const listarArea = async () => {
       try {
-        const response = await api.get('/area/listararea')
+        const response = await axiosCliente.get('/area/listararea')
         setAreas(response.data.resultadoArea)
       } catch (error) {
         console.error(error)
@@ -23,8 +23,8 @@ const BuscarAreas = () => {
 
   return (
     <Layout titlePage='Sede'>
-    <div className='bg-white min-h-screen'>
-      <header className='bg-gradient-to-b from-gray-100 via-white to-white py-16 shadow-md top-0 z-10'>
+    <div className='bg-gray-200 min-h-screen'>
+      <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
         <h1 className='text-5xl font-extrabold text-center text-gray-800'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
         <p className='text-center text-gray-700 mt-6 mx-4 md:mx-0'>
           Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.
