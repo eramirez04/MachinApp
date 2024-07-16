@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Layout from '../template/Layout'
 import ButtonSitios from '../atoms/buttons/ButtonSitios'
 import { axiosCliente } from '../../service/api/axios'
 
 const BuscarSedes = () => {
   const [sedes, setSedes] = useState([])
-  const navigate = useNavigate()
 
   useEffect(() => {
     const listarSede = async () => {
@@ -23,7 +22,7 @@ const BuscarSedes = () => {
 
   return (
     <Layout titlePage='Centro'>
-    <div className='bg-gray-200 min-h-screen overflow-y-auto'>
+    <div className='bg-gray-200 h-screen overflow-y-auto'>
       <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
         <h1 className='text-4xl font-extrabold text-center text-white'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
         <p className='text-center text-white mt-6 mx-4 md:mx-0'>
