@@ -1,13 +1,12 @@
-import React,{useState} from "react"
-<<<<<<< HEAD
-import api from "../Api"
+import {useState} from "react"
+
 import { useForm } from "react-hook-form";
-=======
+
 import api from "../atoms/api/Api.jsx"
->>>>>>> 43dd569fd7a778ada6f3d083fcdcae26d661fc43
+
 import { useNavigate } from "react-router-dom"
 import ButtonRegistroActividades from './ButtonRegistroActividades';
-import Alert from "../Alert.jsx";
+import Alert from "../atoms/feedback/Alert.jsx";
 
 const RegistrarActividades=()=>{
 

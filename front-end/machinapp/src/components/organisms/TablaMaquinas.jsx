@@ -1,7 +1,22 @@
 import { useEffect, useState } from 'react'
-import FilasTablaMaquinas from "../molecules/FilasTablaMaquinas.jsx"
+/* import FilasTablaMaquinas from "../molecules/FilasTablaMaquinas.jsx" */
 import {axiosCliente} from "../../service/api/axios.js"
+import {Chip,Tooltip} from "@nextui-org/react"
+import { FaEye } from "react-icons/fa"
+import { Link } from 'react-router-dom'
 
+
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+
+
+
+
+const statusColorMap = {
+    operacion: "success",
+    fuera_de_servicio: "danger",
+    en_reparacion: "warning",
+} 
+  
 const   TablaMaquinas=() =>{
 
     const [maquinas, setMaquinas] = useState([])
@@ -19,40 +34,53 @@ const   TablaMaquinas=() =>{
             }
         }
         buscarInfo()
+        
 
     }, [])
 
 
     return (
         <>
-            <table className="table ">
-                <thead>
-                <tr className=" bg-green-600 text-white text-sm">
-                    <th>ID</th>
-                    <th>Placa Sena</th>
-                    <th>Serial</th>
-                    <th>Estado</th>
-                    <th>Ubicacion</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
+            <Table aria-label="Tabla de maquinas">
+
+                <TableHeader >
+                    <TableColumn className='bg-green-600 text-white text-sm' >ID</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Placa Sena</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Serial</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Estado</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Ubicacion</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'></TableColumn>
+                </TableHeader>
+
+                <TableBody>
                     {
                         maquinas.map((maquina)=>(
-                            <tr key = {maquina.idFichas} className='hover:bg-base-300'>
-
-                                <FilasTablaMaquinas 
-                                    id={maquina.idFichas} 
-                                    placa={maquina.fi_placa_sena} 
-                                    serial={maquina.fi_serial} 
-                                    estado={maquina.fi_estado} 
-                                    sitNombre={maquina.sit_nombre}
-                                />
-                            </tr>    
+                            <TableRow key = {maquina.idFichas} className='hover:bg-base-300'>
+                                <TableCell><b>{maquina.idFichas}</b></TableCell>
+                                
+                                <TableCell>{maquina.fi_placa_sena} </TableCell>
+                                <TableCell>{maquina.fi_serial} </TableCell>
+                                <TableCell>          
+                                    <Chip className="capitalize" color={statusColorMap[maquina.fi_estado]} size="sm" variant="flat">
+                                        {maquina.fi_estado}
+                                    </Chip>
+                                </TableCell>
+                                <TableCell>{maquina.sit_nombre}</TableCell>
+                                <TableCell>
+                                    <Link to= {`/infoMaquina/${maquina.idFichas}`} className='bg-slate-900'>
+                                        <Tooltip content="Details">
+                                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                                <FaEye />
+                                            </span>
+                                        </Tooltip>
+                                    </Link>
+                                </TableCell>
+                                
+                            </TableRow>                        
                         ))
                     }
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </>
     )
   }
