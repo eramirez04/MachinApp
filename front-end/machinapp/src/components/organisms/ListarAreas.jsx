@@ -1,54 +1,57 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Nav from '../molecules/Nav'
+import { Link } from 'react-router-dom'
+import Layout from '../template/Layout'
 import ButtonSitios from '../atoms/buttons/ButtonSitios'
-import api from '../atoms/api/Api'
+import { axiosCliente } from '../../service/api/axios'
 
-const BuscarAreas=()=>  {
+const BuscarAreas = () => {
+  const [areas, setAreas] = useState([])
 
-    const [areas, setAreas] = useState([])
-    const navigate = useNavigate()
-  
-    useEffect(()=>{
-        const listarArea = async ()=>{
-            try{
-                const response = await api.get('/area/listararea')
-                setAreas(response.data.resultadoArea)
-  
-                
-            } catch(error){
-                console.error(error)
-            }
-        }
-  
-        listarArea() 
-    }, [])
+  useEffect(() => {
+    const listarArea = async () => {
+      try {
+        const response = await axiosCliente.get('/area/listararea')
+        setAreas(response.data.resultadoArea)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    listarArea()
+  }, [])
 
   return (
-    <div className='bg-yellow-50 w-full h-full'>
-      <Nav/>
-      <div className='bg-white w-full h-96'>
-        <button className='btn btn-success'>Añadir nuevo</button>
-      </div>
-      <div className='bg-gray-100 items-center justify-center text-center h-40'>
-        <h1 className='center text-black p-5 font-bold'>CGDSS Sede Yamboro</h1>
-        <h3 className='text-black mt-10'>También llamada Tecnoparque Yamboro, esta sede cuenta con distintas áreas y ambientes distribuidos en todo el territorio.</h3>
-      </div>
-      {
-        areas.map((area) => (
-            <div className='flex bg-gray-300 mt-32 text-center justify-center items-center flex-col' key={area.idArea}>
-            <div className='bg-yellow-50 w-full h-14'>
-              <h2 className='text-black font-semibold'>{area.area_nombre}</h2>
-            </div>
-            <div className='flex flex-row mt-10 items-center'>
-              <div className='bg-blue-600 w-40 h-40 mb-10'>p</div>
-              <p className='text-black ml-10 mb-12'>Aquí se encuentran los titulados en catación y barismo. En esta área también se encuentra la Escuela Nacional de la Calidad del Café (ENCC).</p>
-              <Link to={'/Areas'}><ButtonSitios /></Link>
+    <Layout titlePage='Sede'>
+    <div className='bg-gray-200 h-screen overflow-y-auto'>
+      <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
+        <h1 className='text-5xl font-extrabold text-center text-gray-800'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
+        <p className='text-center text-gray-700 mt-6 mx-4 md:mx-0'>
+          Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.
+        </p>
+      </header>
+      <div className='flex flex-col items-center space-y-8 py-10'>
+        {areas.map((area) => (
+          <div className='bg-white shadow-lg rounded-lg overflow-hidden w-full md:w-3/4 lg:w-2/3 transform transition-all hover:scale-105 hover:shadow-2xl' key={area.idSede}>
+            <img
+              src={`http://localhost:3000/imagenes/${area.img_area}`}
+              alt={area.area_nombre}
+              className='w-full h-64 object-cover'
+            />
+            <div className='p-6'>
+              <h2 className='text-2xl font-bold text-gray-800'>{area.area_nombre}</h2>
+              <p className='text-gray-600 mt-2'>{area.area_direccion}</p>
+              <p className='text-gray-700 mt-4'>{area.area_descripcion}</p>
+              <div className='mt-4 flex justify-end'>
+                <Link to={'/Areas'}>
+                  <ButtonSitios />
+                </Link>
+              </div>
             </div>
           </div>
-        ))
-      }
+        ))}
+      </div>
     </div>
+    </Layout>
   )
 }
 
