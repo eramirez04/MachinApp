@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import {axiosCliente} from "../../service/api/axios.js"
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GenerarPdf from './FichasGenerarPDF.jsx';
 import MantenimientoGeneral from './MantenimientoGeneral.jsx';
-import Modal from '../molecules/ModalMant.jsx';
-import FormularioMantenimiento from '../molecules/FormularioMantenimiento.jsx';
-import Boton from '../atoms/Boton.jsx';
+import Modal from '../molecules/Modal.jsx';
+/* import FormularioMantenimiento from '../molecules/FormularioMantenimiento.jsx'; */
+import ButtonNext from '../atoms/buttons/ButtonNext.jsx';
 
 const ListadoMantenimientos = () => {
     const [mantenimientos, setMantenimientos] = useState([]);
 
     const fetchMantenimientos = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/mantenimiento/listar');
+            const response = await axiosCliente.get('mantenimiento/listar');
             setMantenimientos(response.data); 
         } catch (error) {
             console.error('Error obteniendo los mantenimientos:', error);
@@ -34,24 +34,20 @@ const ListadoMantenimientos = () => {
                     <div className="bg-green-500 h-32"></div>
                     <div className="p-4">
                         <div className="flex">
-                            <Boton 
-                                texto="Crear ficha de mantenimiento"
-                                className="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-3 inline-block ml-2"
-                                onClick={() => document.getElementById('my_modal_1').showModal()}
-                            />
-                            <span style={{ margin: '0 10px' }}></span>
-                            <Modal id="my_modal_1" titulo="Crear Ficha de Mantenimiento">
-                                <FormularioMantenimiento />
-                            </Modal>
-                        </div>
-                        <div className="flex">
-                            <Boton 
-                                texto="Mantenimiento general"
+                            <ButtonNext 
+                                text="Mantenimiento general"
                                 onClick={() => document.getElementById('my_modal_2').showModal()}
                                 className="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-3 inline-block ml-2"
+                                type="submit"  
+                                color="green"
+                                c='custom-class'
                             />
                             <span style={{ margin: '0 10px' }}></span>
-                            <Modal id="my_modal_2" titulo="Mantenimiento General" className="modal-box" >
+                            <Modal 
+                                buttonModal={"Mantenimiento General"}
+                                tittleModal={"Mantenimiento General"}
+                                componente={<ListadoMantenimientos/>}
+                            >
                                 <MantenimientoGeneral />
                             </Modal>
                         </div>
