@@ -1,46 +1,51 @@
-import React, { useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
-import { useState } from "react"
 
+import PropTypes from 'prop-types'
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip,} from "@nextui-org/react"
+import { CiSaveDown1 } from "react-icons/ci";
 
-import FilasTablaMantenimientosMa from "../molecules/FilasTablaMantenimientosMa.jsx"
 
 
 const TablaMantenimientosMa = ({ mantenimientos})=> {
 
   return (
     <>
-        <div className="w-72">
-        <h4 className="text-2xl mb-4  text-gray-600 font-semibold">Mantenimientos </h4>
-            <table className="table ">
-                <thead className="bg-gray-200">
-                    <tr className=" bg-green-600 text-white text-sm">
-                        <th>ID </th>
-                        <th>Codigo </th>
-                        <th>Fecha Realizacion</th>
-                        <th>Tipo Mantenimiento</th>
-                        <th>Descargar PDF</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        mantenimientos.map((mantenimiento)=>(
-                            <tr key={mantenimiento.idMantenimiento} className='hover:bg-base-300'>
-                                <FilasTablaMantenimientosMa 
-                                idMantenimiento={mantenimiento.idMantenimiento}
-                                codigoMantenimiento={mantenimiento.mant_codigo_mantenimiento}
-                                fechaMantenimiento={mantenimiento.mant_fecha_realizacion}
-                                tipoMantenimiento={mantenimiento.tipo_mantenimiento}
-                                />
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table> 
-        </div>
+        <Table  aria-label="Tabla de mantenimientos">
+            <TableHeader >
+                    <TableColumn className='bg-green-600 text-white text-[12px]' >ID </TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-[12px]'>Codigo </TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-[12px]'>Fecha Realizacion</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-[12px]'>Tipo Mantenimiento</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-[12px]'> PDF</TableColumn>
+            </TableHeader>
+            <TableBody>
+                {
+                    mantenimientos.map((mantenimiento)=>(
+                        <TableRow key={mantenimiento.idMantenimiento} className='hover:bg-base-300 '>
+                            <TableCell className="py-4 px-5"><b>{mantenimiento.idMantenimiento}</b></TableCell>
+                            <TableCell className="py-4 px-5">{mantenimiento.mant_codigo_mantenimiento}</TableCell>
+                            <TableCell className="py-4 px-5" >{ new Date(mantenimiento.mant_fecha_realizacion ).toLocaleDateString()}</TableCell>
+                            <TableCell className="py-4 px-5" >{ mantenimiento.tipo_mantenimiento }</TableCell>
+                            <TableCell className="py-4 px-5">
+                                <a href={`http://localhost:3000/fichasTecnicas/1.pdf`} target="_blank" download>  {/* Cambiar esto, debe mandar a la ruta exacta donde se almacenan los mantenimientos */}
+                                    <Tooltip content="Download" >
+                                        <span className="text-xl cursor-pointer active:opacity-50  text-green-600">
+                                            <CiSaveDown1 />
+                                        </span>
+                                    </Tooltip>
+                                </a>
+                            </TableCell>
+                        </TableRow>
+                    ))
+                }
+            </TableBody>
+        </Table> 
     </>
   )
 }
+
+TablaMantenimientosMa.propTypes = {
+    mantenimientos: PropTypes.array.isRequired
+  };
 export default TablaMantenimientosMa
 
 

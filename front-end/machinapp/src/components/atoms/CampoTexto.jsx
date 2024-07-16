@@ -11,3 +11,4 @@ const CampoTexto = ({ id, tipo = 'text', valor, onChange, clase }) => (
 );
 
 export default CampoTexto;
+
