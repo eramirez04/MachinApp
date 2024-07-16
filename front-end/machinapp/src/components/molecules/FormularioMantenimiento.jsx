@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import api from "../atoms/api/Api.jsx";
-import Alerta from "../atoms/Alerta.jsx";
-import Boton from "../atoms/Boton.jsx";
-import CampoTexto from "../atoms/CampoTexto.jsx";
+import {axiosCliente} from "../../service/api/axios.js";
+import Alert from "../atoms/feedback/Alert.jsx";
+import ButtonNext from "../atoms/buttons/ButtonNext.jsx";
+import CampoTexto from "../atoms/CampoTexto";
 import Etiqueta from "../atoms/Etiqueta.jsx";
 import Fecha from "../atoms/Fecha.jsx";
 
@@ -22,7 +22,7 @@ const FormularioMantenimiento = () => {
 
     const handleRegistroMantenimiento = async () => {
         try {
-            await api.post('http://localhost:3000/mantenimiento/Registrar_Mantenimiento', {
+            await axios.post('mantenimiento/Registrar_Mantenimiento', {
                 mant_codigo_mantenimiento: mantCodigoMantenimiento,
                 mant_fecha_realizacion: mantFechaRealizacion,
                 mant_fecha_proxima: mantFechaProxima,
@@ -40,7 +40,7 @@ const FormularioMantenimiento = () => {
 
     return (
         <div className="max-w-md mx-auto pt-3">
-            {mensaje && <Alerta descripcion={mensaje} />}
+            {mensaje && <Alert descripcion={mensaje} />}
             <form onSubmit={handleSubmit(handleRegistroMantenimiento)}>
                 <div className="mb-4">
                     <Etiqueta htmlFor="mantCodigoMantenimiento" texto="Código de Mantenimiento" clase="block text-sm font-medium text-gray-700" />
@@ -50,7 +50,7 @@ const FormularioMantenimiento = () => {
                         onChange={(e) => setMantCodigoMantenimiento(e.target.value)} 
                         clase="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
-                    {errors.mantCodigoMantenimiento && <Alerta descripcion="Código de Mantenimiento requerido" />}
+                    {errors.mantCodigoMantenimiento && <Alert descripcion="Código de Mantenimiento requerido" />}
                 </div>
 
                 <div className="mb-4">
@@ -61,7 +61,7 @@ const FormularioMantenimiento = () => {
                         onChange={(e) => setMantFechaRealizacion(e.target.value)} 
                         clase="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
-                    {errors.mantFechaRealizacion && <Alerta descripcion="Fecha de Realización requerida" />}
+                    {errors.mantFechaRealizacion && <Alert descripcion="Fecha de Realización requerida" />}
                 </div>
 
                 <div className="mb-4">
@@ -72,7 +72,7 @@ const FormularioMantenimiento = () => {
                         onChange={(e) => setMantFechaProxima(e.target.value)} 
                         clase="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
-                    {errors.mantFechaProxima && <Alerta descripcion="Fecha Próxima requerida" />}
+                    {errors.mantFechaProxima && <Alert descripcion="Fecha Próxima requerida" />}
                 </div>
 
                 <div className="mb-4">
@@ -83,7 +83,7 @@ const FormularioMantenimiento = () => {
                         className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
                         onChange={(e) => setMantDescripcion(e.target.value)}
                     ></textarea>
-                    {errors.mantDescripcion && <Alerta descripcion="Descripción requerida" />}
+                    {errors.mantDescripcion && <Alert descripcion="Descripción requerida" />}
                 </div>
 
                 <div className="mb-4">
@@ -95,7 +95,7 @@ const FormularioMantenimiento = () => {
                         onChange={(e) => setMantFkFichas(e.target.value)} 
                         clase="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
-                    {errors.mantFkFichas && <Alerta descripcion="ID de Fichas requerido" />}
+                    {errors.mantFkFichas && <Alert descripcion="ID de Fichas requerido" />}
                 </div>
 
                 <div className="mb-4">
@@ -107,12 +107,12 @@ const FormularioMantenimiento = () => {
                         onChange={(e) => setFkTipoMantenimiento(e.target.value)} 
                         clase="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
-                    {errors.fkTipoMantenimiento && <Alerta descripcion="ID del Tipo de Mantenimiento requerido" />}
+                    {errors.fkTipoMantenimiento && <Alert descripcion="ID del Tipo de Mantenimiento requerido" />}
                 </div>
 
-                <Boton 
-                    texto="Registrar Mantenimiento" 
-                    tipo="submit" 
+                <ButtonNext 
+                    text="Registrar Mantenimiento" 
+                    type="submit" 
                     className="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mt-3 inline-block w-full"
                 />
             </form>

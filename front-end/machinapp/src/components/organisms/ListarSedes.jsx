@@ -1,52 +1,57 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Nav from '../molecules/Nav'
+import { Link } from 'react-router-dom'
+import Layout from '../template/Layout'
 import ButtonSitios from '../atoms/buttons/ButtonSitios'
-import api from '../atoms/api/Api'
+import { axiosCliente } from '../../service/api/axios'
 
-const BuscarSedes=()=>  {
+const BuscarSedes = () => {
+  const [sedes, setSedes] = useState([])
 
-    const [sedes, setSedes] = useState([])
-    const navigate = useNavigate()
+  useEffect(() => {
+    const listarSede = async () => {
+      try {
+        const response = await axiosCliente.get('/sede/listarsede')
+        setSedes(response.data.resultadoSede)
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
-    useEffect(()=>{
-        const listarSede = async ()=>{
-            try{
-                const response = await api.get('/sede/listarsede')
-                setSedes(response.data.resultadoSede)
-
-                
-            } catch(error){
-                console.error(error)
-            }
-        }
-
-        listarSede() 
-    }, [])
+    listarSede()
+  }, [])
 
   return (
-    <div className='bg-yellow-50 w-full h-full'>
-      <Nav/>
-      <div className='bg-white w-full h-96'></div>
-      <div className='bg-gray-100 items-center justify-center text-center h-40'>
-        <h1 className='center text-black p-5 font-bold'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
-        <h3 className='text-black mt-10'>Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.</h3>
-      </div>
-      {
-        sedes.map((sede) => (
-            <div className='flex bg-gray-300 mt-32 text-center justify-center items-center flex-col' key={sede.idSede}>
-              <div className='bg-yellow-50 w-full h-14'>
-                <h2 className='text-black font-semibold'>{sede.sede_nombre}, {sede.sede_direccion}</h2>
-              </div>
-              <div className='flex flex-row mt-10 items-center'>
-                <div className='bg-blue-600 w-40 h-40 mb-10'>p</div>
-                <p className='text-black ml-10 mb-12'>{sede.sede_descripcion}</p>
-                <Link to={'/Sedes'}><ButtonSitios /></Link>
+    <Layout titlePage='Centro'>
+    <div className='bg-gray-200 h-screen overflow-y-auto'>
+      <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
+        <h1 className='text-4xl font-extrabold text-center text-white'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
+        <p className='text-center text-white mt-6 mx-4 md:mx-0'>
+          Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.
+        </p>
+      </header>
+      <div className='flex flex-col items-center space-y-8 py-10'>
+        {sedes.map((sede) => (
+          <div className='bg-white shadow-lg rounded-lg overflow-hidden w-full md:w-3/4 lg:w-2/3 transform transition-all hover:scale-105 hover:shadow-2xl' key={sede.idSede}>
+            <img
+              src={`http://localhost:3000/imagenes/${sede.img_sede}`}
+              alt={sede.sede_nombre}
+              className='w-full h-64 object-cover'
+            />
+            <div className='p-6'>
+              <h2 className='text-2xl font-bold text-gray-800'>{sede.sede_nombre}</h2>
+              <p className='text-gray-600 mt-2'>{sede.sede_direccion}</p>
+              <p className='text-gray-700 mt-4'>{sede.sede_descripcion}</p>
+              <div className='mt-4 flex justify-end'>
+                <Link to={'/Sedes'}>
+                  <ButtonSitios />
+                </Link>
               </div>
             </div>
-        ))
-      }
+          </div>
+        ))}
+      </div>
     </div>
+    </Layout>
   )
 }
 
