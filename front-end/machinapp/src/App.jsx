@@ -41,8 +41,8 @@ const App = () => {
           <Route path="/Sitios" element={<Sitios />} />
           <Route path="/Panelcontrol" element={<PanelControl />} />
 
-          <Route path="/Sedes" element={<Sedes />} />
-          <Route path="/Areas" element={<Areas />} />
+          <Route path="/Sedes/:idSede" element={<Sedes />} />
+          <Route path="/Areas/:idArea" element={<Areas />} />
           <Route path="/Ambientes" element={<Ambientes />} />
           <Route path="/crearfichaequipos" element={<ViewFormFichaTecnica />} />
 

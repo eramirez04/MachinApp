@@ -1,9 +1,11 @@
-import React from 'react'
 import BuscarSedes from '../components/organisms/ListarSedes'
+import Layout from '../components/template/Layout'
 
 const Sitios=()=>  {
   return (
-    <BuscarSedes/>
+    <Layout titlePage='Centro'>
+      <BuscarSedes/>
+    </Layout>
   )
 }
 
