@@ -106,3 +106,28 @@ export const editarSede = async (req, res) => {
         return res.status(500).json({ "message" : "Error", error })
     }
 }
+
+export const listarSedePorId = async (req, res) => {
+    try {
+        let idSedes = req.params.id_sede;
+        let sql = "SELECT idSede, cen_nombre, sede_nombre, sede_descripcion, sede_direccion, img_sede FROM sedes INNER JOIN centros ON sede_fk_centros = idCentros WHERE idSede = ?"
+        
+        const [resultadoSede] = await conexion.query(sql, [idSedes]);
+        
+        if (resultadoSede.length > 0) {
+            res.status(200).json({
+                "Mensaje": "Sede encontrada",
+                resultadoSede
+            });
+        } else {
+            return res.status(404).json({
+                "Mensaje": "No se encontró la sede"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            "Mensaje": "Error en el servidor",
+            error
+        })
+    }
+}
