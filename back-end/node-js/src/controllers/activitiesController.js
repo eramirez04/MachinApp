@@ -8,7 +8,7 @@ export const listarActividades= async (req,res)=>{
         
 
        
-        let sql = `select us_nombre,rol_nombre,acti_nombre,acti_descripcion,acti_fecha_realizacion,acti_estado,fk_mantenimiento from actividades INNER JOIN tecnicos_has_actividades ON fk_actividades=idActividades INNER JOIN usuarios ON idUsuarios=fk_usuarios JOIN roles ON idRoles = fk_roles`
+        let sql = `SELECT * FROM actividades`
 
         const [resultadoActividad] = await conexion.query(sql)
 
@@ -39,9 +39,9 @@ export const registrarActividades= async (req,res)=>{
         if(!error.isEmpty()){
             return res.status(400).json(error)
         }
-        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento,}=req.body
+        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,acti_fk_solicitud,}=req.body
 
-        let sql =`insert into actividades(acti_nombre,acti_descripcion,acti_fecha_realizacion, acti_estado, fk_mantenimiento)values('${acti_nombre}','${acti_descripcion}','${acti_fecha_realizacion}','${acti_estado}','${fk_mantenimiento}')`;
+        let sql =`insert into actividades(acti_nombre,acti_descripcion,acti_fecha_realizacion, acti_estado,acti_fk_solicitud)values('${acti_nombre}','${acti_descripcion}','${acti_fecha_realizacion}','${acti_estado}','${acti_fk_solicitud}')`;
     
         const[respuesta]=await conexion.query(sql);
     
@@ -84,11 +84,11 @@ export const actualizarActividades= async (req,res)=>{
             return res.status(400).json(error)
         }
         
-        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,fk_mantenimiento}=req.body
+        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,acti_fk_solicitud}=req.body
 
         let id=req.params.id_actividades
 
-        let sql =`update actividades set acti_nombre='${acti_nombre}', acti_descripcion='${acti_descripcion}',acti_fecha_realizacion='${acti_fecha_realizacion}', acti_estado='${acti_estado}', fk_mantenimiento='${fk_mantenimiento}' where idActividades=${id}`;
+        let sql =`update actividades set acti_nombre='${acti_nombre}', acti_descripcion='${acti_descripcion}',acti_fecha_realizacion='${acti_fecha_realizacion}', acti_estado='${acti_estado}', acti_fk_solicitud='${acti_fk_solicitud}' where idActividades=${id}`;
     
         const[respuesta]=await conexion.query(sql);
     

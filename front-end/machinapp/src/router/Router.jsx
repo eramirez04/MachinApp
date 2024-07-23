@@ -17,7 +17,7 @@ import Sitios from "../pages/Sitios";
 import Sedes from "../pages/Sedes";
 import Areas from "../pages/Areas";
 import Ambientes from "../pages/Ambientes";
-
+import PaneldeControlUsuarios from "../pages/PaneldeControl";
 import PaneldeControlAreas from "../pages/PaneldeControlAreas";
 import PaneldeControlSitios from "../pages/PaneldeControlSitios";
 import PaneldeControlSedes from "../pages/PaneldeControlSedes";
@@ -46,6 +46,11 @@ export const AppRouter = () => {
             <Route
               path="/crearfichaequipos"
               element={<ViewFormFichaTecnica />}
+            />
+
+            <Route
+              path="/Panelcontrol" 
+              element={<PaneldeControlUsuarios />} 
             />
 
             <Route
