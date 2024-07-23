@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControlSitios from "../components/templates/LayoutPanelControlSitios.jsx"
+import LayoutPanelControlSitios from "../components/template/LayoutPanelControlSitios.jsx"
 
 
 
