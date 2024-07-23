@@ -375,6 +375,7 @@ export const listarInfoEspecifica = async(req, res)=>{
         fi_descripcion_garantia,
         fi_imagen,
         fi_estado,
+        ficha_respaldo,
         ti_fi_nombre as tipoEquipo
         FROM fichas
         INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
@@ -412,7 +413,8 @@ export const listarInfoEspecifica = async(req, res)=>{
                 fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
-                tipoEquipo: respuesta[0].tipoEquipo, 
+                tipoEquipo: respuesta[0].tipoEquipo,
+                ficha_respaldo: respuesta[0].ficha_respaldo,
                 mantenimientos
             }
     

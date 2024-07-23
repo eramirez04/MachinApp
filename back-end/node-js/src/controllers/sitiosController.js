@@ -134,3 +134,34 @@ export const listarSitioPorId = async (req, res) => {
         return res.status(500).json({ "Mensaje": "Error en el servidor", error });
     }
 }
+
+export const listarSitiosPorArea = async (req, res) => {
+    try {
+        let idArea = req.params.id_area;
+        let sql = `
+        SELECT sitios.idAmbientes, sitios.sit_nombre, sitios.img_sitio, tipo_sitio.tipo_sitio, areas.area_nombre
+        FROM sitios
+        INNER JOIN tipo_sitio ON sitios.sit_fk_tipo_sitio = tipo_sitio.idTipo_sitio
+        INNER JOIN areas ON sitios.sit_fk_areas = areas.idArea
+        WHERE areas.idArea = ?
+        `;
+
+        const [resultadoSitios] = await conexion.query(sql, [idArea]);
+
+        if (resultadoSitios.length > 0) {
+            res.status(200).json({
+                "Mensaje": "Sitios encontrados",
+                resultadoSitios
+            });
+        } else {
+            return res.status(404).json({
+                "Mensaje": "No se encontraron sitios para el área especificada"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            "Mensaje": "Error en el servidor",
+            error
+        });
+    }
+}

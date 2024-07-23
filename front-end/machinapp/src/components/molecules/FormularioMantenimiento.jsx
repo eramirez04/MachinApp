@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "../../service/api/axios.js";
+import {axiosCliente} from "../../service/api/axios.js";
 import Alert from "../atoms/feedback/Alert.jsx";
 import ButtonNext from "../atoms/buttons/ButtonNext.jsx";
-import CampoTexto from "../atoms/CampoTexto.jsx";
+import CampoTexto from "../atoms/CampoTexto";
 import Etiqueta from "../atoms/Etiqueta.jsx";
 import Fecha from "../atoms/Fecha.jsx";
 

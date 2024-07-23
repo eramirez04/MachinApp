@@ -1,17 +1,12 @@
-import React from 'react'
+import Layout from "../components/template/Layout.jsx";
+import MantenimientoGeneral from "../components/organisms/MantenimientoGeneral.jsx"
 
-import { Link } from 'react-router-dom'
-
-import Nav from '../components/molecules/Nav.jsx'
-
-const Historial=()=>  {
-
+const Fichas = () => {
   return (
-    <>
-      <Nav/>
-      <h1 className='center ' >Historial</h1>
-    </>
-  )
-}
+    <Layout titlePage="Historial">
+      <MantenimientoGeneral/>
+    </Layout>
+  );
+};
 
-export default Historial
+export default Fichas;

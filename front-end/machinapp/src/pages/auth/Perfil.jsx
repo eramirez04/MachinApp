@@ -7,7 +7,7 @@ const BuscarUsuario = lazy(() =>
   import("../../components/organisms/ListarUsuario.jsx")
 );
 
-const Pefil = () => {
+const Perfil = () => {
   return (
     <>
       <Layout titlePage={"Perfil de Usuario"}>
@@ -17,4 +17,4 @@ const Pefil = () => {
   );
 };
 
-export default Pefil;
+export default Perfil;

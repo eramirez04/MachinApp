@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControlSedes from "../components/templates/LayoutPanelControlSedes.jsx"
+import LayoutPanelControlSedes from "../components/template/LayoutPanelControlSedes"
 
 
 
