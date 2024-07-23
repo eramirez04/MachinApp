@@ -6,6 +6,9 @@ import api from "../atoms/api/Api.jsx"
 import { CardStyle } from "../molecules/CardStyle.jsx"
 
 
+import {axiosCliente} from "../../service/api/axios.js"
+
+
 const ListarMaquinasAmb = ({idAmbiente}) => {
 
     const [maquinas, setMaquinas] = useState([])
@@ -13,7 +16,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
     useEffect(()=>{
         const buscarMaquinas = async () =>{
             try{
-                const response = await api.get(`ficha/listarPorAmbiente/${idAmbiente}`)
+                const response = await axiosCliente.get(`ficha/listarPorAmbiente/${idAmbiente}`)
                 setMaquinas(response.data)
                 
             }
