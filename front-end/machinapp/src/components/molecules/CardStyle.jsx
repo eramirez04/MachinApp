@@ -30,7 +30,7 @@ export const CardStyle = ({
             <Image
               alt="Card background"
               className="object-cover bg-red-300 w-full h-48 rounded-lg"
-              src={`http://127.0.0.1:8000/${imagen}`}
+              src={`http://localhost:3000/${imagen}`}
               width={270}
               height={210}
             />
@@ -43,7 +43,7 @@ export const CardStyle = ({
             </div>
           )}
         </CardBody>
-        <CardFooter className="px-5 py-3 flex justify-between items-center">
+        <CardFooter className="px-5 py-3 flex justify-between items-center ">
           <Link to={link}>{nameLink}</Link>
         </CardFooter>
       </Card>
