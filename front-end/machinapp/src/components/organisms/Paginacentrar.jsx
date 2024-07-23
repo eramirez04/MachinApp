@@ -12,11 +12,8 @@ const Artboard = () => {
   };
 
   return (
-    <div className="App">
-      <h1>Calendario con Actividades</h1>
-      <div className="calendar-container">
+    <div >
         <Example onDateClick={handleDateClick} />
-      </div>
       {selectedDate && <ListarActividades date={selectedDate} />}
     </div>
   );
