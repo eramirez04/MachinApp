@@ -28,9 +28,11 @@ const Layout = ({ children, titlePage }) => {
           <section className="flex flex-col w-2/12 max-lg:hidden">
             <Nav />
           </section>
-          <div className="w-5/6 flex flex-col gap-4 rounded-box bg-white">
+          <div className="w-5/6 flex flex-col gap-4 rounded-md  p-5 ">
             <Suspense fallback={<h1>Cargando</h1>}>
-              {children}
+              <main className="bg-white radio-error rounded-lg shadow-lg h-full">
+                {children}
+              </main>
               <Outlet />
             </Suspense>
           </div>

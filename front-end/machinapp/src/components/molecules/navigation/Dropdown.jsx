@@ -1,16 +1,10 @@
 import PropTypes from "prop-types";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownSection,
-} from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
 
 export const DropDown = ({ children, DropdownTriggerElement }) => {
   return (
     <>
       <Dropdown
-        showArrow
         radius="sm"
         classNames={{
           base: "before:bg-default-200",
@@ -22,6 +16,7 @@ export const DropDown = ({ children, DropdownTriggerElement }) => {
           aria-label="Custom item styles"
           disabledKeys={["profile"]}
           className="p-3 w-56"
+          variant="flat"
           itemClasses={{
             base: [
               "rounded-md",
@@ -36,12 +31,7 @@ export const DropDown = ({ children, DropdownTriggerElement }) => {
             ],
           }}
         >
-          <DropdownSection
-            className="flex flex-col"
-            aria-label="Profile & Actions"
-          >
-            {children}
-          </DropdownSection>
+          {children}
         </DropdownMenu>
       </Dropdown>
     </>
@@ -49,6 +39,7 @@ export const DropDown = ({ children, DropdownTriggerElement }) => {
 };
 
 DropDown.propTypes = {
-  children: PropTypes.element,
-  DropdownTriggerElement: PropTypes.element.isRequired,
+  children: PropTypes.any,
+  DropdownTriggerElement: PropTypes.any.isRequired,
 };
+
