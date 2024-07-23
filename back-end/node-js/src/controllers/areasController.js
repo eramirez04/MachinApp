@@ -105,3 +105,58 @@ export const editarArea = async (req, res) => {
         return res.status(500).json({ "message" : "Error", error })
     }
 }
+
+export const listarAreaPorId = async (req, res) => {
+    try {
+        let idArea = req.params.id_area;
+        let sql = "SELECT idArea, sede_nombre, area_nombre FROM areas INNER JOIN sedes ON area_fk_sedes = idSede WHERE idArea = ?";
+
+        const [resultadoArea] = await conexion.query(sql, [idArea]);
+
+        if (resultadoArea.length > 0) {
+            res.status(200).json({
+                "Mensaje": "Área encontrada",
+                resultadoArea
+            });
+        } else {
+            return res.status(404).json({
+                "Mensaje": "No se encontró el área"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            "Mensaje": "Error en el servidor",
+            error
+        });
+    }
+}
+
+export const listarAreasPorSede = async (req, res) => {
+    try {
+        let idSede = req.params.id_sede;
+        let sql = `
+        SELECT areas.idArea, areas.area_nombre, areas.img_area, sedes.sede_nombre
+        FROM areas
+        INNER JOIN sedes ON areas.area_fk_sedes = sedes.idSede
+        WHERE sedes.idSede = ?
+        `;
+
+        const [resultadoAreas] = await conexion.query(sql, [idSede]);
+
+        if (resultadoAreas.length > 0) {
+            res.status(200).json({
+                "Mensaje": "Áreas encontradas",
+                resultadoAreas
+            });
+        } else {
+            return res.status(404).json({
+                "Mensaje": "No se encontraron áreas para la sede especificada"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            "Mensaje": "Error en el servidor",
+            error
+        });
+    }
+}
