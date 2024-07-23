@@ -459,13 +459,16 @@ export const listarInfoEspecifica = async(req, res)=>{
     
             let objInfoEspecifica = {
                 idFichas: respuesta[0].idFichas,
-                fi_fecha: respuesta[0].id_fecha,
                 fi_placa_sena: respuesta[0].fi_placa_sena, 
                 fi_serial: respuesta[0].fi_serial,
                 fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
                 fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
                 fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
+                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
+                fi_descripcion:respuesta[0].fi_descripcion,
+                fi_marca:respuesta[0].fi_marca,
+                fi_modelo:respuesta[0].fi_modelo,
+                CodigoQR:respuesta[0].CodigoQR,
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
                 tipoEquipo: respuesta[0].tipoEquipo,

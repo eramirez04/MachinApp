@@ -24,6 +24,7 @@ import PaneldeControlSedes from "../pages/PaneldeControlSedes";
 import MaquinasAmbiente from "../pages/MaquinasAmbiente";
 import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
+import { ViewFormFicha_De_mantenimiento} from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento"
 
 export const AppRouter = () => {
   return (
@@ -46,6 +47,10 @@ export const AppRouter = () => {
             <Route
               path="/crearfichaequipos"
               element={<ViewFormFichaTecnica />}
+            />
+            <Route
+              path="/crear_ficha_mantenimiento"
+              element={<ViewFormFicha_De_mantenimiento />}
             />
 
             <Route

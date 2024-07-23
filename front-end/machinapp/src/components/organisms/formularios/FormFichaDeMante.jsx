@@ -20,8 +20,8 @@ export const FormFichaDeMantenimiento = () => {
     defaultValues: {
       date: '',
       regional: '',
-      trainingCenter: '',
-      productiveUnit: '',
+      sede_de_formacion : '',
+      Unidad_productiva: '',
       maintenanceType: '',
       priority: '',
       description: '',
@@ -53,23 +53,29 @@ export const FormFichaDeMantenimiento = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-4 gap-4 mb-4">
         <InputforForm
           register={register}
           errors={errors}
-          name="regional"
+          name="Regional"
           tipo="text"
         />
         <InputforForm
           register={register}
           errors={errors}
-          name="trainingCenter"
+          name="Sede de formacion "
           tipo="text"
         />
         <InputforForm
           register={register}
           errors={errors}
-          name="productiveUnit"
+          name="Unidades productivas"
+          tipo="text"
+        />
+        <InputforForm
+          register={register}
+          errors={errors}
+          name="Aula o taller"
           tipo="text"
         />
       </div>

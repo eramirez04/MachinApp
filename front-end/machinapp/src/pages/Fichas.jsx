@@ -23,3 +23,4 @@ const Fichas = () => {
 };
 
 export default Fichas;
+
