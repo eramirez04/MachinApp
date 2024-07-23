@@ -455,9 +455,6 @@ export const listarInfoEspecifica = async(req, res)=>{
             WHERE idFichas = ${idFicha}
             `
 
-
-
-
             const[mantenimientos] = await conexion.query(sqlMantenimientos)
     
             let objInfoEspecifica = {
