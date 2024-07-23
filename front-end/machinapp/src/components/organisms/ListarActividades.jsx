@@ -1,15 +1,14 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import api from '../atoms/api/Api.jsx';
 
-import { Link, useNavigate } from 'react-router-dom'
 
 
 
 const ListarActividades = () =>{
 
     const [actividades, setActividades] = useState([])
-    const navigate = useNavigate()
+
 
     useEffect(()=>{
         const buscarActividades = async ()=>{

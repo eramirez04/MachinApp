@@ -15,7 +15,7 @@ rutaFicha.delete('/eliminar/:idFicha',  verificar, eliminarFicha)
 rutaFicha.put('/actualizar/:idFicha',  verificar, validar_ficha, actualizarFicha)
 rutaFicha.get('/listarUnica/:idFicha',  verificar, listarFichaUnica)
 rutaFicha.get('/listarPorAmbiente/:idAmbiente',  verificar, listarFichaPorAmbiente)
-rutaFicha.get('/listarInfoEspecifica/:idFicha',  verificar, listarInfoEspecifica )
+rutaFicha.get('/listarInfoEspecifica/:idFicha',  /* verificar, */ listarInfoEspecifica )
 
 
 export default rutaFicha
