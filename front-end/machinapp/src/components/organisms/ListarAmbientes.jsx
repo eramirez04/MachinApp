@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Layout from '../template/Layout'
+import ButtonSitios from '../atoms/buttons/ButtonSitios'
+import { axiosCliente } from '../../service/api/axios'
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { axiosCliente } from '../../service/api/axios'
@@ -10,8 +18,13 @@ const BuscarAmbientes=({idArea})=>  {
     useEffect(()=>{
         const listarSitio = async ()=>{
             try{
+<<<<<<< HEAD
                 const response = await axiosCliente.get(`/sitio/listarporarea/${idArea}`)
                 setAmbientes(response.data.resultadoSitios)
+=======
+                const response = await axiosCliente.get('/sitio/listarsitio')
+                setAmbientes(response.data.resultadoSitio)
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
 
                 
             } catch(error){
@@ -23,7 +36,12 @@ const BuscarAmbientes=({idArea})=>  {
     }, [idArea])
 
   return (
+<<<<<<< HEAD
     <div className='bg-gray-200 min-h-screen'>
+=======
+    <Layout titlePage='Sede'>
+    <div className='bg-gray-200 h-screen overflow-y-auto'>
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
       <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
         <h1 className='text-5xl font-extrabold text-center text-gray-800'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
         <p className='text-center text-gray-700 mt-6 mx-4 md:mx-0'>
@@ -43,7 +61,11 @@ const BuscarAmbientes=({idArea})=>  {
               <p className='text-gray-700 mt-4'>{ambiente.area_descripcion}</p>
               <div className='mt-4 flex justify-end'>
                 <Link to={'/Ambientes'}>
+<<<<<<< HEAD
                   <ButtonC bgColor="bg-green-400 hover:bg-green-600 text-white" name="Ingresar"/>
+=======
+                  <ButtonSitios />
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
                 </Link>
               </div>
             </div>
@@ -51,6 +73,7 @@ const BuscarAmbientes=({idArea})=>  {
         ))}
       </div>
     </div>
+    </Layout>
   )
 }
 

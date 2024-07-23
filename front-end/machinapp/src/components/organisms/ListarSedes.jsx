@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { axiosCliente } from '../../service/api/axios'
 import ButtonC from '../atoms/buttons/BottonC'
+=======
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Layout from '../template/Layout'
+import ButtonSitios from '../atoms/buttons/ButtonSitios'
+import { axiosCliente } from '../../service/api/axios'
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
 
 const BuscarSedes = () => {
   const [sedes, setSedes] = useState([])
@@ -20,6 +28,10 @@ const BuscarSedes = () => {
   }, [])
 
   return (
+<<<<<<< HEAD
+=======
+    <Layout titlePage='Centro'>
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
     <div className='bg-gray-200 h-screen overflow-y-auto'>
       <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
         <h1 className='text-4xl font-extrabold text-center text-white'>Centro de Gestión y Desarrollo Sostenible Surcolombiano</h1>
@@ -40,8 +52,13 @@ const BuscarSedes = () => {
               <p className='text-gray-600 mt-2'>{sede.sede_direccion}</p>
               <p className='text-gray-700 mt-4'>{sede.sede_descripcion}</p>
               <div className='mt-4 flex justify-end'>
+<<<<<<< HEAD
                 <Link to={`/Sedes/${sede.idSede}`}>
                   <ButtonC bgColor="bg-green-400 hover:bg-green-600 text-white" name="Ingresar"/>
+=======
+                <Link to={'/Sedes'}>
+                  <ButtonSitios />
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
                 </Link>
               </div>
             </div>
@@ -49,6 +66,7 @@ const BuscarSedes = () => {
         ))}
       </div>
     </div>
+    </Layout>
   )
 }
 

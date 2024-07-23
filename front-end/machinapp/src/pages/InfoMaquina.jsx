@@ -43,6 +43,7 @@ const InfoMaquina = ()=> {
         <Layout titlePage={`${maquina.tipoEquipo}`} >
             <div className=" flex pt-20 mb-20 ">
 
+<<<<<<< HEAD
                 <div className="mx-10">
                     <CardStyle 
                         titleCard = {`Plca: ${maquina.fi_placa_sena}`}
@@ -55,6 +56,27 @@ const InfoMaquina = ()=> {
                             <div className="mt-8 mb-11" >
                                 <p>Descripcion del equipo: </p>
                             </div>
+=======
+                <div className="text-gray-500 inline-block  p-5 ml-20 bg-zinc-100 rounded h-fit">
+
+                    <div className="mb-8 w-[300px] ">
+                        <ImgMaquinas  img={maquina.fi_imagen}/>
+                    </div>
+                    
+                {/*                         <InfoBasicaMaquina 
+                        id ={maquina.idFichas}
+                        serial ={maquina.fi_serial}
+                        placa ={maquina.fi_placa_sena}
+                        feAdquisicion ={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()}
+                        feInicioGarantia ={new Date(maquina.fi_fecha_inicio_garantia).toLocaleDateString()}
+                        feFinGrantia ={new Date(maquina.fi_fecha_fin_garantia).toLocaleDateString()}
+                    />   */}    
+
+                    <div className="w-full grid justify-items-end mt-5">
+
+                        {/* <DescargarDocs contenido={<button className="btn btn-link">Descargar ficha respaldo</button>} ruta="fichasTecnicas" nombreDocumento={"1.pdf"} />
+                        <DescargarDocs contenido={<button className="btn btn-active">Codigo QR</button>} ruta="QRimagenes" nombreDocumento={`${maquina.idFichas}-qr.png`} /> */}
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
                             
 
                         </div>
@@ -101,8 +123,13 @@ const InfoMaquina = ()=> {
 
                 </div>
 
+<<<<<<< HEAD
                 <div className="inline-block mx-10 mb-14 ">
                     <h3 className="text-2xl font-medium mb-7 border-b-2 border-b-green-600 pb-2" >Mantenimientos</h3>
+=======
+
+                <div className="inline-block mx-10 mb-14 ">
+>>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
                     <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
                 </div>
             </div>
