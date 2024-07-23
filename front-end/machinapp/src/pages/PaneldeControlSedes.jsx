@@ -1,7 +1,7 @@
-import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControlSedes from "../components/template/LayoutPanelControlSedes"
 
+import Layout from "../components/template/Layout.jsx";
+import ListarSedes from "../components/organisms/PanelConponents/PDCAcciones/ListarSedes.jsx"
 
 
 
@@ -13,18 +13,14 @@ const PaneldeControlSedes = () =>{
 
     return (
         <>
-            <header className="py-2 bg-[#52BD8F] sm:py-2 shadow-2xl">
-                <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-4">
-                    <div className="flex items-center justify-between">
-                        <div className="">
-                            <span className='text-white font-bold'>MachinApp</span>
-                        </div>
 
-                    </div>
+            <Layout titlePage={"Panel de control de sedes"}>
+                <div className="min-h-screen bg-gray-200">
+                    <ListarSedes/> 
                 </div>
-            </header>
-            
-        <LayoutPanelControlSedes/>
+                
+            </Layout>
+
 
         </>
     )
