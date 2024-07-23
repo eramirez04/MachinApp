@@ -11,10 +11,10 @@ export const registrarVariable= async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let{varNombre, varDescripcion, fkTipoFicha}= req.body
+        let{varNombre, varDescripcion}= req.body
 
-        let sql = `insert into variable (var_nombre, var_descripcion, var_fk_tipo_ficha) 
-        values ('${varNombre}', '${varDescripcion}', ${fkTipoFicha})`
+        let sql = `insert into variable (var_nombre, var_descripcion) 
+        values ('${varNombre}', '${varDescripcion}')`
 
         let [respuesta]= await conexion.query(sql)
 
@@ -60,9 +60,9 @@ export const actualizarVariable = async (req, res)=>{
 
         
         let idVariable = req.params.idVariable
-        let{varNombre, varDescripcion, fkTipoFicha}= req.body
+        let{varNombre, varDescripcion }= req.body
     
-        let sql = `update variable set var_nombre='${varNombre}', var_descripcion='${varDescripcion}', var_fk_tipo_ficha = ${fkTipoFicha} where idVariable=${idVariable} `
+        let sql = `update variable set var_nombre='${varNombre}', var_descripcion='${varDescripcion}' where idVariable=${idVariable} `
     
         let [respuesta] = await conexion.query(sql)
     
