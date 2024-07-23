@@ -66,7 +66,7 @@ export const AppRouter = () => {
               element={<PaneldeControlSedes />}
             />
             <Route
-              path="Maquinas/maquinasAmb/:idAmbiente"
+              path="/MaquinasAmb/:idAmbiente"
               element={<MaquinasAmbiente />}
             />
             <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
