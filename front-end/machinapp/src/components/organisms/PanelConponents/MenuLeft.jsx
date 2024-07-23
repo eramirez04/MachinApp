@@ -1,8 +1,5 @@
 
 import React, { useState } from "react";
-import { HiMenuAlt3 } from "react-icons/hi";
-import { ImHome } from "react-icons/im";
-import { MdHomeWork } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import { GiGears } from "react-icons/gi";
 import { FaHistory } from "react-icons/fa";

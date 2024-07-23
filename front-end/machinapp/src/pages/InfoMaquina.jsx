@@ -40,51 +40,30 @@ const InfoMaquina = ()=> {
 
   return (
     <>
-        <Layout titlePage={`${maquina.tipoEquipo}`} >
-            <div className=" flex pt-20 mb-20 ">
+        <Layout titlePage={`${maquina.tipoEquipo}`} > 
+            <div className=" flex justify-center pt-20 mb-20  ">
 
-<<<<<<< HEAD
-                <div className="mx-10">
-                    <CardStyle 
-                        titleCard = {`Plca: ${maquina.fi_placa_sena}`}
-                        subtitle = {maquina.tipoEquipo} 
-                    >
-                        <div className="w-[400px]">
-                            <figure className="w-full grid justify-items-center bg-white ">
-                                <Imagenes  rutaImg = {`imagenes/ficha/${maquina.fi_imagen}`}/>
-                            </figure>
-                            <div className="mt-8 mb-11" >
-                                <p>Descripcion del equipo: </p>
+                <div className="mx-5 w-[400px] ">
+    
+                    <div className=" flex justify-center  w-[400px] ">
+                        <CardStyle
+                            titleCard = {`Plca: ${maquina.fi_placa_sena}`}
+                            subtitle = {maquina.tipoEquipo} 
+                        >
+                            <div >
+                                <figure className="w-full grid justify-items-center bg-white   ">
+                                    <Imagenes  rutaImg = {`imagenes/ficha/${maquina.fi_imagen}` } />
+                                </figure>
+                                <div className="mt-8 mb-11" >
+                                    <p>Descripcion del equipo:  </p>
+                                </div>
                             </div>
-=======
-                <div className="text-gray-500 inline-block  p-5 ml-20 bg-zinc-100 rounded h-fit">
-
-                    <div className="mb-8 w-[300px] ">
-                        <ImgMaquinas  img={maquina.fi_imagen}/>
+                        </CardStyle>
                     </div>
+
                     
-                {/*                         <InfoBasicaMaquina 
-                        id ={maquina.idFichas}
-                        serial ={maquina.fi_serial}
-                        placa ={maquina.fi_placa_sena}
-                        feAdquisicion ={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()}
-                        feInicioGarantia ={new Date(maquina.fi_fecha_inicio_garantia).toLocaleDateString()}
-                        feFinGrantia ={new Date(maquina.fi_fecha_fin_garantia).toLocaleDateString()}
-                    />   */}    
-
-                    <div className="w-full grid justify-items-end mt-5">
-
-                        {/* <DescargarDocs contenido={<button className="btn btn-link">Descargar ficha respaldo</button>} ruta="fichasTecnicas" nombreDocumento={"1.pdf"} />
-                        <DescargarDocs contenido={<button className="btn btn-active">Codigo QR</button>} ruta="QRimagenes" nombreDocumento={`${maquina.idFichas}-qr.png`} /> */}
->>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
-                            
-
-                        </div>
-                    </CardStyle>
 
                     <div className=" p-3 my-7  w-full border-b-2 border-b-green-600 flex justify-end  text-3xl gap-4">
-                        
-                        
 
                         <a href={`http://localhost:3000/QRimagenes/${maquina.idFichas}-qr.png`} target="_blank" download>
                             <Tooltip content="CodigoQR" >
@@ -123,13 +102,8 @@ const InfoMaquina = ()=> {
 
                 </div>
 
-<<<<<<< HEAD
-                <div className="inline-block mx-10 mb-14 ">
+                <div className="inline-block mx-5 mb-14 w-[520px] ">
                     <h3 className="text-2xl font-medium mb-7 border-b-2 border-b-green-600 pb-2" >Mantenimientos</h3>
-=======
-
-                <div className="inline-block mx-10 mb-14 ">
->>>>>>> 7fadc2fdb18ccfe846845258cbbb466140a6790b
                     <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
                 </div>
             </div>

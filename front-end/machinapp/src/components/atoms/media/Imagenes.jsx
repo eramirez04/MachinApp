@@ -32,7 +32,7 @@ const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la carpeta pu
     return (
         <>
             {
-                estadoImg ? (<img className='w-full'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/ficha/noEncontrada.png" alt="Imagen" />)
+                estadoImg ? (<img className='w-full rounded-md'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/ficha/noEncontrada.png" alt="Imagen" />)
             }
         </>
     )

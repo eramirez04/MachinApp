@@ -1,7 +1,7 @@
 import Layout from "../components/template/Layout.jsx";
 import MantenimientoGeneral from "../components/organisms/MantenimientoGeneral.jsx"
 
-const Fichas = () => {
+const Historial = () => {
   return (
     <Layout titlePage="Historial">
       <MantenimientoGeneral/>
@@ -9,4 +9,4 @@ const Fichas = () => {
   );
 };
 
-export default Fichas;
+export default Historial;

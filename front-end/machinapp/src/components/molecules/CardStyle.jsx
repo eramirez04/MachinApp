@@ -25,7 +25,7 @@ export const CardStyle = ({
             {titleCard}
           </span>
         </CardHeader>
-        <CardBody className="px-5 py-3 flex">
+        <CardBody className="px-5 py-3 flex justify-center ">
           {imagen && (
             <Image
               alt="Card background"

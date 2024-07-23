@@ -19,7 +19,7 @@ export const registrarDetalle = async(req, res)=>{
 
         let{detFkFicha, detFkVariable, detValor}= req.body
 
-        let sql = `insert into detalle (det_fk_fichas, det_fk_variable, det_valor) 
+        let sql = `insert into detalles_fichas (det_fk_fichas, det_fk_variable, det_valor) 
         values(${detFkFicha}, ${detFkVariable},'${detValor}')`
 
         let [respuesta] = await conexion.query(sql)
@@ -32,7 +32,7 @@ export const registrarDetalle = async(req, res)=>{
         }
 
     }catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor",error })
     }
 
 }
@@ -41,7 +41,7 @@ export const listarDetalle = async(req, res)=>{
     try{
 
         
-        let sql = `SELECT * FROM detalle`
+        let sql = `SELECT * FROM detalles_fichas`
 
         let [respuesta]= await conexion.query(sql)
 
@@ -70,7 +70,7 @@ export const actualizarDetalle = async(req, res)=>{
         let idDetalle = req.params.idDetalle
         let{detFkFicha, detFkVariable, detValor}= req.body
 
-        let sql = `update detalle set det_fk_fichas=${detFkFicha} , det_fk_variable=${detFkVariable}, det_valor='${detValor}' where idDetalle= ${idDetalle}`
+        let sql = `update detalles_fichas set det_fk_fichas=${detFkFicha} , det_fk_variable=${detFkVariable}, det_valor='${detValor}' where idDetalle= ${idDetalle}`
 
         let [respuesta] = await conexion.query(sql)
 
@@ -91,7 +91,7 @@ export const eliminarDetalle = async(req, res)=>{
     try{
         let idDetalle = req.params.idDetalle
 
-        let sql= `delete from detalle where idDetalle= ${idDetalle}`
+        let sql= `delete from detalles_fichas where idDetalle= ${idDetalle}`
 
         let [respuesta] = await conexion.query(sql)
 

@@ -11,10 +11,10 @@ import mantenimiento from "./src/routes/mantenimientoRuter.js";
 import tipoMantRoutes from "./src/routes/tipoMantRoutes.js";
 import rutaSitio from "./src/routes/sitiosRouter.js"
 import rutaSede from "./src/routes/sedesRouter.js"
-import rutaCentro from "./src/routes/centrosRouter.js"
+/* import rutaCentro from "./src/routes/centrosRouter.js" */
 import rutaArea from "./src/routes/areasRouter.js"
 import rutaTipoSitio from "./src/routes/tipo_sitioRouter.js"
-import LoginRouter from "./src/routes/LoginRoutes.js"
+import LoginRouter from "./src/routes/LoginRoutes.js" 
 const serve = Express()
 const port = 3000
 
@@ -42,7 +42,7 @@ serve.use('/tipomantenimiento',tipoMantRoutes)
 serve.use('/tipositio',rutaTipoSitio)
 serve.use('/sitio',rutaSitio)
 serve.use('/sede', rutaSede)
-serve.use('/centro', rutaCentro)
+/* serve.use('/centro', rutaCentro) */
 serve.use('/area', rutaArea)
 serve.use(LoginRouter)
 serve.use('/documents',(req,res)=>{

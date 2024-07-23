@@ -1,17 +1,17 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import api from '../../../atoms/api/Api.jsx'
 
-import { Link, useNavigate } from 'react-router-dom'
-
-import Nav from '../../../molecules/Nav.jsx'
 import MenuLeft from '../../../molecules/Menuleft.jsx'
 
+import {SearchComponent} from "../../../atoms/Inputs/InputSearch.jsx"
+
+import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"
 
 const ListarSedes = () =>{
 
     const [sedes, setSedes] = useState([])
-    const navigate = useNavigate()
+
 
     useEffect(()=>{
         const buscarSedes = async ()=>{
@@ -33,14 +33,20 @@ const ListarSedes = () =>{
 
     return (
         <>
-            <div className=' bg-yellow-50'>
-                
-                <Nav/> 
+            <div className='bg-gray-200'>
                 <MenuLeft/>
-                <div className='m-3 p-96 flex flex-row'>
+                <div className='flex justify-center items-center'>
+                    <SearchComponent/>
+                    <div className='pl-5 w-60'>
+                        <InputSubmit    />
+
+                    </div>
+                    
+                </div>
+                <div className='m-3 px-96 flex flex-row'>
 
                     <table className='table bg-white'>
-                        <thead>
+                        <thead className=' text-white bg-green-600'>
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>

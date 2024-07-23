@@ -4,7 +4,7 @@ import Layout from "../components/template/Layout.jsx";
 const Fichas = () => {
   const titulos = [
     { name: "Fichas de Maquinas", url: "/crearfichaequipos" },
-    { name: "Fichas de Mantenimiento" },
+    { name: "Fichas de Mantenimiento", url: "/crear_ficha_mantenimiento"},
   ];
   return (
     <Layout titlePage="crear">
@@ -14,7 +14,7 @@ const Fichas = () => {
             key={ficha.name}
             titleCard={ficha.name}
             link={ficha.url}
-            nameLink={"Crear Ficha Tecnina"}
+            nameLink={"Crear Ficha"}
           />
         ))}
       </div>
