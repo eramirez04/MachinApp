@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import api from "../atoms/api/Api.jsx";
 
 const Alert = lazy(() => import("../atoms/Alert.jsx"));
-import InputSubmit from "../atoms/InputSubmit.jsx";
+import InputSubmit from "../atoms/Inputs/InputSubmit.jsx";
 
 const ActualizarUsuario = () => {
   //  para registrar la informacion de el usuario

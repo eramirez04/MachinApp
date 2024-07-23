@@ -1,84 +1,112 @@
-import React, {lazy, useState} from "react";
-import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
-import Api from "../atoms/api/Api.jsx";
+import { lazy, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { axiosCliente } from "../../service/api/axios.js";
 
 // importacion de componentes
-const InputSubmit = lazy(() => import("../atoms/InputSubmit.jsx"));
-const Alert = lazy(() => import("../atoms/Alert.jsx"));
+const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
+import Alert from "../atoms/feedback/Alert.jsx";
 
 const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
 
 const Login = () => {
-    // iniciando variables de estado
-    const [correo, setCorreo] = useState("");
-    const [contrasenia, setContrasenia] = useState("");
+  // iniciando variables de estado
 
-    //error captura de errores
-    const [error, setError] = useState("");
-    const {register, formState: {errors}, handleSubmit, watch} = useForm();
-    //const watchFieldsEmail = watch(['Correo']);
-    //const watchFieldsPass = watch(['password'])
+  //error captura de errores
+  const [error, setError] = useState("");
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-    // uso de navegacion si se retorna un token
-    const navegacion = useNavigate();
+  // uso de navegacion si se retorna un token
+  const navegacion = useNavigate();
 
-    // funcion para gurdar token en local6storage
-    const setLocalStorage = (token) => {
-        try {
-            window.localStorage.setItem("token", token);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  // funcion para gurdar token en local6storage
+  const setLocalStorage = (token) => {
+    try {
+      window.localStorage.setItem("token", token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    // funcion para validar las credenciales del usuario
-    const makeLogin = async (data) => {
-        try {
-            // peticion http post a api para poder obtener un token
-            const response = await Api.post("/login", {
-                correo: correo,
-                contrasenia: contrasenia,
-            });
+  // funcion para validar las credenciales del usuario
+  const makeLogin = async (data) => {
+    try {
+      console.log(data);
+      // peticion http post a api para poder obtener un token
+      const response = await axiosCliente.post("/login", {
+        correo: data.Correo,
+        contrasenia: data.Contraseña,
+      });
 
-            // si la respuesta es exitosa, redirecciona a la pantalla home, y guarda token en localstorage
-            if (response) {
-                navegacion("/home");
-                setLocalStorage(response.data.token);
-            }
-        } catch (error) {
-            // captura de errores
-            /*  console.log(error.response.data.errors[0].msg); */
-            setError(error.response.data.mensaje);
+      // si la respuesta es exitosa, redirecciona a la pantalla home, y guarda token en localstorage
+      if (response) {
+        navegacion("/home");
+        setLocalStorage(response.data.token);
+      }
+    } catch (error) {
+      // captura de errores
 
-            switch (error.response.data.errors) {
-                case "Formato de correo no valido":
-                    setError(error.response.data.errors[0].msg);
-                    break;
+      if (error.response.data.mensaje) {
+        setError((prevErros) => ({
+          ...prevErros,
+          invalido: error.response.data.mensaje,
+        }));
+      }
 
-                default:
-                    break;
-            }
-        }
-    };
+      if (error.response.data.error) {
+        let errores = error.response.data.error;
 
-    return (
-        <>
-            <div className="max-w-md mx-auto pt-3">
-                <form onSubmit={handleSubmit(makeLogin)}>
-                    <InputforForm errors={errors} register={register} tipo={"email"} name={"Correo"}
-                                  value={correo} onChange={(e) => setCorreo(e.target.value)}/>
-                    <InputforForm errors={errors} register={register} tipo={"password"} name={"password"}
-                                  value={contrasenia} onChange={(e) => setContrasenia(e.target.value)}/>
-                    <InputSubmit valorInput="Login"/>
-                </form>
-                <div>
-                    <Alert descripcion={error}/>
-                </div>
-                ¿Olvidades tu contraseña?
-            </div>
-        </>
-    );
+        errores.forEach((element) => {
+          switch (element.path[0]) {
+            case "contrasenia":
+              setError((prevErros) => ({
+                ...prevErros,
+                contrasenia: element.message,
+              }));
+              break;
+
+            default:
+              console.log("error");
+              break;
+          }
+        });
+      }
+    }
+  };
+
+  return (
+    <>
+      <div className="max-w-md mx-auto pt-3">
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit(makeLogin)}
+        >
+          <InputforForm
+            errors={errors}
+            register={register}
+            tipo={"email"}
+            name={"Correo"}
+          />
+          <InputforForm
+            errors={errors}
+            register={register}
+            tipo={"password"}
+            name={"Contraseña"}
+          />
+          {error.contrasenia && <Alert descripcion={error.contrasenia} />}
+          <InputSubmit valorInput="Login" />
+        </form>
+        <div>
+          <Alert descripcion={error.invalido && error.invalido} />
+        </div>
+        ¿Olvidades tu contraseña?
+      </div>
+    </>
+  );
 };
 
 export default Login;

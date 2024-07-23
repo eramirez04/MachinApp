@@ -1,0 +1,49 @@
+##########componentes que se deben de eliminar#######
+
+ruta: front-end/machinapp/src/components/atoms/buttons
+BottonC.jsx
+BottonD.jsx
+BottonU.jsx
+BtnAdd.jsx
+BtnCodigoQR.jsx
+BtnDescargar.jsx
+BtnIrMaquina.jsx
+BtnOutService.jsx
+ButtonSitios.jsx
+
+ruta: front-end/machinapp/src/components/atoms
+Alerta.jsx
+CampoText.jsx
+DescargarDocs.jsx
+Modal.jsx
+MostraInfoUnica.jsx
+
+ruta: front-end/machinapp/src/components/molecules
+ModalMant.jsx
+InfoCard.jsx
+InfoBasicaMaquina.jsx
+
+
+###########  mejorar componentes ##################{}
+ruta: front-end/machinapp/src/components/atoms
+Fecha.jsx
+ImgMaquinas.jsx
+Etiqueta.jsx
+Tabla.jsx
+TablaCelda.jsx
+TablaFila.jsx
+
+
+
+ruta: front-end/machinapp/src/components/molecules
+FormularioMantenimientosMa.jsx => se debe de utilizar los componentes de el directorio atoms
+Calendario.jsx
+
+###### remplazar componentes #####
+ruta: front-end/machinapp/src/components/molecules
+para mayor reutilizacion de componentes
+
+CardMaquinas.jsx => Card.jsx
+
+
+

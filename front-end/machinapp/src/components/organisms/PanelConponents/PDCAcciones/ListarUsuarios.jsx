@@ -1,19 +1,19 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import api from '../../../atoms/api/Api.jsx'
 
-import { Link, useNavigate } from 'react-router-dom'
 
-import Nav from '../../../molecules/Nav.jsx'
 import MenuLeft from '../../../molecules/Menuleft.jsx'
 
 
+import {SearchComponent} from "../../../atoms/Inputs/InputSearch.jsx"
 
+import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"
 
 const ListarUsuarios = () =>{
 
     const [usuarios, setUsuarios] = useState([])
-    const navigate = useNavigate()
+
 
     useEffect(()=>{
         const buscarUsuarios = async ()=>{
@@ -35,14 +35,20 @@ const ListarUsuarios = () =>{
 
     return (
         <>
-            <div className=' h-screen bg-yellow-50'>
-   
-                <Nav/> 
+            <div className=' h-screen bg-gray-200'>
                 <MenuLeft/>
-                <div className='m-3 pt-52 pl-96 pr-96 flex flex-row'>
+                <div className='flex justify-center items-center'>
+                    <SearchComponent/>
+                    <div className='pl-5 w-60'>
+                        <InputSubmit    />
 
-                    <table className='table  bg-white'>
-                        <thead>
+                    </div>
+                    
+                </div>
+                <div className='m-3 px-96 flex flex-row'>
+
+                    <table className='table bg-white'>
+                        <thead className=' text-white bg-green-600'>
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -55,7 +61,16 @@ const ListarUsuarios = () =>{
                             </tr>
                         </thead>
                         <tbody >
-                            {
+                                <td>1</td>
+                                <td>emer</td>
+                                <td>usuario</td>
+                                <td>1231435</td>
+                                <td>CC</td>
+                                <td>nada</td>
+                                <td>Sena</td>
+                                <td>paco@paco.com</td>
+
+{/*                             {
                                 usuarios.map((usuario)=>(
                                     <tr  key={usuario.idUsuarios}>
                                         <td className='p-3'>{usuario.idUsuarios} </td>
@@ -65,11 +80,10 @@ const ListarUsuarios = () =>{
                                         <td className='p-4'>{usuario.us_numero_documento}</td>
                                         <td className='p-3'>{usuario.us_especialidad} </td>
                                         <td className='p-4'>{usuario.rol_nombre}</td>
-                                        <td className='p-5'>{usuario.us_empresa}</td>
                                         
                                     </tr>
                                 ))
-                            }
+                            } */}
 
                         </tbody>
                     </table>

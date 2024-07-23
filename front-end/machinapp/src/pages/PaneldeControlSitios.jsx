@@ -1,7 +1,7 @@
-import React,{useEffect, useState} from 'react'
 
-import LayoutPanelControlSitios from "../components/templates/LayoutPanelControlSitios.jsx"
+import ListarSitios from "../components/organisms/PanelConponents/PDCAcciones/ListarSitios.jsx"
 
+import Layout from "../components/template/Layout.jsx";
 
 
 
@@ -13,18 +13,13 @@ const PaneldeControlSitios = () =>{
 
     return (
         <>
-            <header className="py-2 bg-[#52BD8F] sm:py-2 shadow-2xl">
-                <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-4">
-                    <div className="flex items-center justify-between">
-                        <div className="">
-                            <span className='text-white font-bold'>MachinApp</span>
-                        </div>
-
-                    </div>
+            <Layout titlePage={"Panel de control de sitios"}>
+                <div className="min-h-screen bg-gray-200">
+                    <ListarSitios/>
                 </div>
-            </header>
-            
-        <LayoutPanelControlSitios/>
+                
+            </Layout>
+
 
         </>
     )

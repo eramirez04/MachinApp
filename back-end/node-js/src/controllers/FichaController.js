@@ -12,16 +12,16 @@ import multer from 'multer'
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        let destinationPath = 'public/imagenes/ficha'; 
+        let destinationPath = 'public/imagenes/ficha'
         if (file.fieldname === 'fiImagen') {
-            destinationPath = 'public/imagenes/ficha';
+            destinationPath = 'public/imagenes/ficha'
         } else if (file.fieldname === 'fiTecnica') {
-            destinationPath = 'public/fichasTecnicas';
+            destinationPath = 'public/FichasTecnicas/FichasRespaldo'
         }
-        cb(null, destinationPath);
+        cb(null, destinationPath)
     },
     filename: function(req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);   //le podemos fecha, en caso de que se repita el nombre del documento. 
+        cb(null, `${Date.now()}-${file.originalname}`)   //le podemos fecha, en caso de que se repita el nombre del documento. 
     }
 })
 
@@ -33,6 +33,7 @@ export const cargarImagenFicha = upload.fields([
 ])
 
 
+/* Revisar  (configurar bien codigoQR) funciona mientras*/
 export const registrarFicha = async(req, res)=>{
 
     try{
@@ -42,13 +43,18 @@ export const registrarFicha = async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+        let { placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, descripcion, fiEstado, fk_sitio, fk_tipo_ficha, marca,  modelo  }= req.body
         
+        //Config documentos a cargar
         let fiImagen = req.files.fiImagen[0].filename
         let fiTecnica = req.files.fiTecnica[0].filename
 
-        let sql = `insert into fichas (fi_fecha, fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, ficha_respaldo ) 
-        values('${fiFecha}', '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '${fiTecnica}')`
+
+
+
+
+        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_descripcion,  fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, fi_marca, fi_modelo, ficha_respaldo ) 
+        values( '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${descripcion}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${marca}','${modelo}',  '${fiTecnica}')`
     
         let [respuesta] = await conexion.query(sql)
 
@@ -58,7 +64,7 @@ export const registrarFicha = async(req, res)=>{
 
             // Traemos el id de la ficha que acabamos de registrar para asi mismo redireccionarla en la URL. 
 
-            let idSql = `SELECT idFichas FROM fichas where fi_placa_sena = '${placaSena}'`
+            let idSql = `SELECT idFichas FROM fichas_maquinas_equipos where fi_placa_sena = '${placaSena}'`
             
             const [resultadoID] = await conexion.query(idSql)
             
@@ -66,12 +72,14 @@ export const registrarFicha = async(req, res)=>{
 
                 let id = resultadoID[0].idFichas
 
-                let data = `http://192.168.1.108:5173/maquinaInfo/${id}`   //poner la url que queramos.
+                let data = `http://192.168.1.108:5173/infoMaquinas/${id}`   //poner la url que queramos.
 
-                let folderPath = 'public/QRs imagenes'; //ruta de donde se va a guardar
-                let filePath = `${folderPath}/${id}-qr.png`;     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
+                let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
+                let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
 
                 
+                let nombreImgQR = `${id}-qr.png`
+
                 QRCode.toFile(filePath,data,{
                         color:{
                             dark:'#000000',
@@ -85,26 +93,46 @@ export const registrarFicha = async(req, res)=>{
                     }
                 )
 
-                res.status(200).json({"mensaje":"Se registro correctamente. "})
 
+                let guardarQR = `update fichas_maquinas_equipos set CodigoQR='${nombreImgQR}'  where idFichas=${id}`
+
+                let [respuestaQR] = await conexion.query(guardarQR)
+
+                if(respuestaQR.affectedRows>0){
+                    id = 0
+                    return res.status(200).json({"mensaje":"Se registro la ficha tecnica correctamente"})
+                }
+                else{
+                    return res.status(404).json({"mensaje":"Error no se genero la ficha tecnica."})
+                }
             }
             else{
                 res.status(404).json({"mensaje":"No se encontro id de la ficha"})
             }
-
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
         }
-        
     }catch(error){
         return res.status(500).json({"mensaje":"Error del servidor"+error})
     }
 }
 
+
+/* (correcto)*/
 export const listarFicha = async(req, res)=>{
     try{
-        let sql = `SELECT * FROM fichas `
+        let sql = `SELECT
+        idFichas,
+        fi_placa_sena,
+        fi_serial,
+        fi_marca,
+        fi_modelo,
+        fi_estado,
+        sit_nombre
+        FROM fichas_maquinas_equipos
+        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+        `
 
         let  [respuesta] = await conexion.query(sql)
 
@@ -121,6 +149,8 @@ export const listarFicha = async(req, res)=>{
     }
 }
 
+
+/* Falta por revisar */
 export const actualizarFicha = async(req, res)=>{
     try{
         
@@ -152,6 +182,8 @@ export const actualizarFicha = async(req, res)=>{
     }
 }
 
+
+/* Falta por revisar */
 export const eliminarFicha = async(req, res)=>{
     try{
         let idFicha = req.params.idFicha
@@ -172,6 +204,8 @@ export const eliminarFicha = async(req, res)=>{
     }
 }
 
+
+/* se realizaron correcciones, comprobar en el front end.  */
 export const listarFichaPorAmbiente = async(req, res)=>{
 
     try{
@@ -179,25 +213,39 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         let idAmbiente = req.params.idAmbiente
 
         let sql = `
-        SELECT fichas.idFichas, 
-        fichas.fi_placa_sena,
-        fichas.fi_serial,
-        fichas.fi_imagen,
-        fichas.fi_fk_tipo_ficha,
-        fichas.fi_estado
-        FROM fichas 
-        INNER JOIN sitios ON sitios.idAmbientes = fichas.fi_fk_sitios 
-        WHERE sitios.idAmbientes = ${idAmbiente}
+        SELECT 
+		idFichas, 
+        fi_placa_sena,
+        fi_serial,
+        fi_modelo,
+        fi_imagen,
+        fi_estado,
+        ti_fi_nombre
+        FROM sitios
+        INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
+        INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
+        WHERE idAmbientes = ${idAmbiente}
         `
         const [resuladoFichas] = await conexion.query(sql)
 
+        if(resuladoFichas.length>0){
+            res.status(200).json(resuladoFichas)
+        }
+        else{
+            res.status(404).json({"mensaje":"No se encontraron fichas en este ambiente"})
+        }
+
+
+/* 
         let Maquinas = []
 
         for (let i = 0; i < resuladoFichas.length; i++){
             let idFicha = resuladoFichas[i].idFichas
 
             let sqlTipoEquipo = `
-            SELECT tipo_equipo.idTipo_ficha, tipo_equipo.ti_fi_nombre
+            SELECT 
+            tipo_equipo.idTipo_ficha, 
+            tipo_equipo.ti_fi_nombre
             FROM tipo_equipo 
             INNER JOIN fichas ON fichas.fi_fk_tipo_ficha = tipo_equipo.idTipo_ficha 
             WHERE fichas.idFichas = ${idFicha};
@@ -222,7 +270,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
             })
         }
 
-        res.status(200).json(Maquinas)
+        res.status(200).json(Maquinas) */
 
     }
     catch(error){
@@ -231,6 +279,8 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 
 }
 
+
+/* Falta por revisar */
 export const listarFichaUnica=async (req, res)=>{
     
    try{
@@ -349,6 +399,7 @@ export const listarFichaUnica=async (req, res)=>{
    }
 }
 
+/* (correcto)*/
 export const listarInfoEspecifica = async(req, res)=>{
 
     try{
@@ -358,17 +409,21 @@ export const listarInfoEspecifica = async(req, res)=>{
         let sqlFicha = `
         SELECT 
         idFichas, 
-        fi_fecha,
         fi_placa_sena,
         fi_serial,
         fi_fecha_adquisicion, 
         fi_fecha_inicio_garantia,
         fi_fecha_fin_garantia, 
         fi_descripcion_garantia,
+        fi_descripcion,
+        fi_marca,
+        fi_modelo,
         fi_imagen,
         fi_estado,
+        CodigoQR,
+        ficha_respaldo,
         ti_fi_nombre as tipoEquipo
-        FROM fichas
+        FROM fichas_maquinas_equipos
         INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
         WHERE idFichas = ${idFicha}
         `
@@ -381,16 +436,25 @@ export const listarInfoEspecifica = async(req, res)=>{
     
             //buscamos los mantenimientos que se le an echo a esa ficha 
     
+            
             let sqlMantenimientos = `
+            
+
             SELECT
             idMantenimiento,
-            mant_codigo_mantenimiento,
-            mant_fecha_realizacion,
-            tipo_mantenimiento
-            FROM mantenimiento
+            mant_estado,
+            mant_costo_final,
+            mant_ficha_soporte,
+            tipo_mantenimiento, 
+            idSolicitud
+            FROM fichas_maquinas_equipos
+            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
+            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
+            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
             INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
-            WHERE mant_fk_fichas = ${idFicha}
+            WHERE idFichas = ${idFicha}
             `
+
             const[mantenimientos] = await conexion.query(sqlMantenimientos)
     
             let objInfoEspecifica = {
@@ -404,7 +468,8 @@ export const listarInfoEspecifica = async(req, res)=>{
                 fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
-                tipoEquipo: respuesta[0].tipoEquipo, 
+                tipoEquipo: respuesta[0].tipoEquipo,
+                ficha_respaldo: respuesta[0].ficha_respaldo,
                 mantenimientos
             }
     

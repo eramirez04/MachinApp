@@ -117,7 +117,7 @@ export const buscarTipoFicha = async(req, res)=>{
         
         if(respuesta.length>0){
 
-            let sqlVar = `
+/*             let sqlVar = `
             SELECT
             var_nombre,
             var_descripcion
@@ -129,9 +129,9 @@ export const buscarTipoFicha = async(req, res)=>{
             let infoTipoFicha ={
                 ficha: respuesta ,
                 varFicha: varFicha
-            }
+            } */
 
-            return res.status(200).json(infoTipoFicha)
+            return res.status(200).json(respuesta)
         }
         else{
             return res.status(404).json({"message":"No se encontro ficha"})
