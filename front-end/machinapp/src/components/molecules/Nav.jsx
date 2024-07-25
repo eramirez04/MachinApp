@@ -27,7 +27,7 @@ const Nav = () => {
   return (
     <section className="flex gap-6">
       <div
-        className={`bg-[white] min-h-screen border border-x-slate-400 rounded-e-lg ${
+        className={`bg-[white] min-h-screen border shadow-md  rounded-e-lg ${
           open ? "w-72" : "w-20"
         } duration-500 text-black px-4`}
       >
@@ -38,14 +38,14 @@ const Nav = () => {
             onClick={() => setOpen(!open)}
           />
         </div>
-        <div className="mt-4 flex flex-col gap-4 relative">
+        <div className="mt-9 flex flex-col gap-4 relative">
           {menus?.map((menu, i) => (
             <Link
               to={menu?.link}
               key={i}
               className={` ${
                 menu?.margin && "mt-96"
-              } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-100 rounded-md`}
+              } group flex items-center text-sm  gap-3.5 font-medium p-4 hover:shadow-md hover:bg-gray-100 rounded-md`}
             >
               <div>{React.createElement(menu?.icon, { size: "20" })}</div>
               <h2

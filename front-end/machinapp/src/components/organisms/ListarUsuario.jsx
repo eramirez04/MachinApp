@@ -1,10 +1,5 @@
-import React, { lazy, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
-const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
-
-const ActualizarUsuario = lazy(() => import("./ActualizarUsuario.jsx"));
 
 import {
   UserIcon,
@@ -15,13 +10,9 @@ import {
   TruckIcon,
 } from "@heroicons/react/24/outline";
 
-import api from "../atoms/api/Api.jsx";
-
-let usuarioLocal = localStorage.getItem("token");
+import { axiosCliente } from "../../service/api/axios.js";
 
 const BuscarUsuario = () => {
-  // const {id} = useParams()
-
   let id = 2;
 
   const [usuario, setUsuario] = useState({
@@ -33,24 +24,21 @@ const BuscarUsuario = () => {
   useEffect(() => {
     const buscar = async () => {
       try {
-        const response = await api.get(`user/listar/${id}`);
-        setUsuario(...response.data.user);
+        const response = await axiosCliente.get(`user/listar/me`);
+        setUsuario(response.data[0]);
       } catch (error) {
+        console.error(error);
         /*  navegacion('/') */
       }
     };
     buscar();
   }, [id]);
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   const ActualizarUser = async () => {
     try {
-      const response = await api.put(`user/actualizar/${id}`, usuario);
+      const response = await axiosCliente.put(`user/actualizar/${id}`, usuario);
       console.log(response.data);
     } catch (error) {
       console.error(error.response.data);
@@ -60,7 +48,6 @@ const BuscarUsuario = () => {
   return (
     <>
       <div className="min-h-full">
-
         <main>
           <div className="mx-auto max-w-7xl py-3 sm:px-3 lg:px-5">
             <div className=" p-4 sm:p-6 lg:p-8 rounded-lg shadow-md">

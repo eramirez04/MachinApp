@@ -47,6 +47,8 @@ const   TablaMaquinas=() =>{
                     <TableColumn className='bg-green-600 text-white text-sm' >ID</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Placa Sena</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Serial</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Marca</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Modelo</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Estado</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Ubicacion</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'></TableColumn>
@@ -60,6 +62,8 @@ const   TablaMaquinas=() =>{
                                 
                                 <TableCell>{maquina.fi_placa_sena} </TableCell>
                                 <TableCell>{maquina.fi_serial} </TableCell>
+                                <TableCell>{maquina.fi_marca} </TableCell>
+                                <TableCell>{maquina.fi_modelo} </TableCell>
                                 <TableCell>          
                                     <Chip className="capitalize" color={statusColorMap[maquina.fi_estado]} size="sm" variant="flat">
                                         {maquina.fi_estado}
