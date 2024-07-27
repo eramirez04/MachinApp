@@ -24,6 +24,10 @@ import PaneldeControlSedes from "../pages/PaneldeControlSedes";
 import MaquinasAmbiente from "../pages/MaquinasAmbiente";
 import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
+import { ViewFormFicha_De_mantenimiento} from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento"
+
+import InfoAmbiente from "../pages/InfoAmbiente";
+import InfoSede from "../pages/InfoSede";            
 
 export const AppRouter = () => {
   return (
@@ -70,6 +74,9 @@ export const AppRouter = () => {
               element={<MaquinasAmbiente />}
             />
             <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
+            <Route path="/Sedes/InfoSede/:idSede" element={<InfoSede />} />
+            <Route path="/Ambientes/InfoAmbiente/:idAmbientes" element={<InfoAmbiente />} />
+            <Route path="/crear_ficha_mantenimiento" element={<ViewFormFicha_De_mantenimiento />}/>
           </Route>
         </Routes>
       </Suspense>
