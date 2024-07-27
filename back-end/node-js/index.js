@@ -23,35 +23,32 @@ import cors from 'cors'
 serve.use(cors())
 
 serve.use(bodyParser.json())
-serve.use(bodyParser.urlencoded({extended : true}))
-serve.set('view engine','ejs')
-serve.set('views','./views')
+serve.use(bodyParser.urlencoded({ extended: true }))
+serve.set('view engine', 'ejs')
+serve.set('views', './views')
 serve.use(Express.static('./public'))
-serve.get('/', (req,res) =>{
-  res.status(200).json({"mensaje" : "Bienvenidos a MachinApp"})
+serve.get('/', (req, res) => {
+  res.status(200).json({ "mensaje": "Bienvenidos a MachinApp" })
 })
 serve.use('/tipoFicha', rutaTipoFicha)
 serve.use('/ficha', rutaFicha)
-serve.use('/variable',rutaVariable)
-serve.use('/detalle',rutaDetalle)
-serve.use('/user',RutaUsuario)
-serve.use('/rol',RutaRol)
-serve.use('/actividades',ActivitiesRoutes)
-serve.use('/mantenimiento',mantenimiento)
-serve.use('/tipomantenimiento',tipoMantRoutes)
-serve.use('/tipositio',rutaTipoSitio)
-serve.use('/sitio',rutaSitio)
+serve.use('/variable', rutaVariable)
+serve.use('/detalle', rutaDetalle)
+serve.use('/user', RutaUsuario)
+serve.use('/rol', RutaRol)
+serve.use('/actividades', ActivitiesRoutes)
+serve.use('/mantenimiento', mantenimiento)
+serve.use('/tipomantenimiento', tipoMantRoutes)
+serve.use('/tipositio', rutaTipoSitio)
+serve.use('/sitio', rutaSitio)
 serve.use('/sede', rutaSede)
 /* serve.use('/centro', rutaCentro) */
 serve.use('/area', rutaArea)
 serve.use(LoginRouter)
-serve.use('/documents',(req,res)=>{
+serve.use('/documents', (req, res) => {
   res.render('documentacion.ejs')
 })
 
-serve.listen(port,()=>{
+serve.listen(port, () => {
   console.log(`servidor escuchando en el http://localhost:${port}`)
 })
-
-
-
