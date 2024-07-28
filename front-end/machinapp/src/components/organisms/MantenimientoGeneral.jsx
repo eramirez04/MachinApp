@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
 import { axiosCliente } from "../../service/api/axios.js";
 import MantenimientoGeneralPDF from './MantenimientoGeneralPDF.jsx';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import Fecha from '../atoms/Fecha.jsx';
+import Fecha from '../atoms/Inputs/Fecha.jsx';
 
 const MantenimientoGeneral = () => {
     const [fechaBusqueda, setFechaBusqueda] = useState('');

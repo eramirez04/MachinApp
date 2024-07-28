@@ -4,7 +4,8 @@ import Layout from "../components/template/Layout.jsx";
 const Fichas = () => {
   const titulos = [
     { name: "Fichas de Maquinas", url: "/crearfichaequipos" },
-    { name: "Fichas de Mantenimiento", url: "/crear_ficha_mantenimiento"},
+    { name: "Fichas de Mantenimiento", url: "/crear_ficha_mantenimiento" },
+    { name: "Ficha de solicitud", url: "/crearsolicitud" },
   ];
   return (
     <Layout titlePage="crear">

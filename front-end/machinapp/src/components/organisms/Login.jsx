@@ -80,7 +80,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="max-w-md mx-auto pt-3">
+      <div className="pt-3">
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(makeLogin)}
@@ -100,9 +100,11 @@ const Login = () => {
           {error.contrasenia && <Alert descripcion={error.contrasenia} />}
           <InputSubmit valorInput="Login" />
         </form>
-        <div>
-          <Alert descripcion={error.invalido && error.invalido} />
-        </div>
+        {error && (
+          <div>
+            <Alert descripcion={error.invalido && error.invalido} />
+          </div>
+        )}
         ¿Olvidades tu contraseña?
       </div>
     </>
