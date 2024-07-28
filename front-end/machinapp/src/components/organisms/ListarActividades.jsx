@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import api from '../atoms/api/Api.jsx';
+import {axiosCliente } from "../../service/api/axios" 
 
 
 
@@ -13,7 +13,7 @@ const ListarActividades = () =>{
     useEffect(()=>{
         const buscarActividades = async ()=>{
             try{
-                const response = await api.get('/actividades/listar')
+                const response = await axiosCliente.get('/actividades/listar')
                 setActividades(response.data.resultadoActividad)
 
                 

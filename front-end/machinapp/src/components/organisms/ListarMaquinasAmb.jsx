@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
-import api from "../atoms/api/Api.jsx"
+
+
 
 import { CardStyle } from "../molecules/CardStyle.jsx"
 
