@@ -1,5 +1,5 @@
 import {useState} from "react"
-import api from "../atoms/api/Api.jsx"
+import { axiosCliente } from "../../service/api/axios.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
 import ButtonRegistroActividades from '../atoms/Inputs/InputSubmit.jsx';
@@ -22,7 +22,7 @@ const RegistrarActividades=()=>{
        
 
             try {
-                const result=await api.post('actividades/registrar',{
+                const result=await axiosCliente.post('actividades/registrar',{
                     acti_nombre:acti_nombre,
                     acti_descripcion:acti_descripcion,
                     acti_fecha_realizacion:acti_fecha_realizacion,

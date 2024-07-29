@@ -1,20 +1,15 @@
-import Alert from "../Alert";
-import { Textarea } from "@headlessui/react";
-
+import Alert from "../feedback/Alert";
+import { Textarea } from "@nextui-org/react";
+// eslint-disable-next-line react/prop-types
 export const TextAreaComponent = ({ register, errors, name }) => {
   return (
     <>
-      {" "}
       <Textarea
-        label="Descripcion"
-        variant="bordered"
-        placeholder="Descripcion..."
-        disableAnimation
-        disableAutosize
-        classNames={{
-          base: "max-w-xs",
-          input: "resize-y min-h-[40px]",
-        }}
+        variant="faded"
+        label="Description"
+        placeholder="Enter your description"
+        description="Enter a concise description of your project."
+        className=""
         {...register(name, {
           required: {
             value: true,
@@ -30,3 +25,4 @@ export const TextAreaComponent = ({ register, errors, name }) => {
     </>
   );
 };
+/*  */
