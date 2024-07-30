@@ -222,9 +222,7 @@ export const FormFichaSolicitud = () => {
               <Table aria-label="Example table with client async pagination">
                 <TableHeader>
                   <TableColumn key="name">Equipo</TableColumn>
-                  <TableColumn key="height" className="flex">
-                    Placa sena
-                  </TableColumn>
+                  <TableColumn key="height">Placa sena</TableColumn>
                   <TableColumn key="mass">Descripcion del daño</TableColumn>
                   <TableColumn key="birth_year">Actividad</TableColumn>
                   <TableColumn key={"accion"}>Accion</TableColumn>

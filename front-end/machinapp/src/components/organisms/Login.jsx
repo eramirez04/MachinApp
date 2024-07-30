@@ -2,6 +2,7 @@ import { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { axiosCliente } from "../../service/api/axios.js";
+import { Link } from "react-router-dom";
 
 // importacion de componentes
 const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
@@ -35,7 +36,6 @@ const Login = () => {
   // funcion para validar las credenciales del usuario
   const makeLogin = async (data) => {
     try {
-      console.log(data);
       // peticion http post a api para poder obtener un token
       const response = await axiosCliente.post("/login", {
         correo: data.Correo,
@@ -99,13 +99,13 @@ const Login = () => {
           />
           {error.contrasenia && <Alert descripcion={error.contrasenia} />}
           <InputSubmit valorInput="Login" />
+          <Link to="/recuperar"> ¿Olvidades tu contraseña?</Link>
         </form>
         {error && (
           <div>
             <Alert descripcion={error.invalido && error.invalido} />
           </div>
         )}
-        ¿Olvidades tu contraseña?
       </div>
     </>
   );
