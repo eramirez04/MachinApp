@@ -5,7 +5,7 @@ import { useAsyncList } from "@react-stately/data";
 import { axiosCliente } from "../../service/api/axios.js";
 import MantenimientoGeneralPDF from './MantenimientoGeneralPDF.jsx';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import Fecha from '../atoms/Fecha.jsx';
+import Fecha from '../atoms/Inputs/Fecha.jsx';
 
 const MantenimientoGeneral = () => {
     const [fechaBusqueda, setFechaBusqueda] = useState('');
@@ -13,14 +13,15 @@ const MantenimientoGeneral = () => {
 
     const list = useAsyncList({
         async load({ signal, cursor }) {
-            if (!fechaBusqueda) return { items: [] };
-
             try {
-                const url = cursor || `mantenimiento/listarRequerimiento16/${fechaBusqueda}`;
-                const response = await axiosCliente.get(url, { signal });
+                const url = cursor || `mantenimiento/listarRequerimiento16`;
+                const response = await axiosCliente.get(url, { 
+                    signal,
+                    params: { fecha_realizacion: fechaBusqueda }
+                });
                 
                 if (response.data.length === 0) {
-                    setMensajeError("No se encontraron requerimientos de mantenimiento para la fecha proporcionada.");
+                    setMensajeError("No se encontraron requerimientos de mantenimiento.");
                     return { items: [] };
                 }
 
@@ -28,13 +29,13 @@ const MantenimientoGeneral = () => {
                 const mantenimientosFormateados = response.data.map(mantenimiento => ({
                     ...mantenimiento,
                     fecha_realizacion: new Date(mantenimiento.fecha_realizacion).toLocaleDateString(),
-                    fi_fecha_inicio_garantia: new Date(mantenimiento.fi_fecha_inicio_garantia).toLocaleDateString(),
-                    fi_fecha_fin_garantia: new Date(mantenimiento.fi_fecha_fin_garantia).toLocaleDateString()
+                    fi_fecha_inicio_garantia: mantenimiento.fi_fecha_inicio_garantia ? new Date(mantenimiento.fi_fecha_inicio_garantia).toLocaleDateString() : 'N/A',
+                    fi_fecha_fin_garantia: mantenimiento.fi_fecha_fin_garantia ? new Date(mantenimiento.fi_fecha_fin_garantia).toLocaleDateString() : 'N/A'
                 }));
 
                 return {
                     items: mantenimientosFormateados,
-                    cursor: null // Ajusta esto si tu API soporta paginación
+                    cursor: null
                 };
             } catch (error) {
                 console.error('Error obteniendo los mantenimientos:', error);
@@ -45,14 +46,12 @@ const MantenimientoGeneral = () => {
     });
 
     const [loaderRef, scrollerRef] = useInfiniteScroll({
-        hasMore: false, // Cambia a true si implementas paginación en el backend
+        hasMore: false,
         onLoadMore: list.loadMore
     });
 
     useEffect(() => {
-        if (fechaBusqueda) {
-            list.reload();
-        }
+        list.reload();
     }, [fechaBusqueda]);
 
     const handleDateChange = (e) => {
@@ -61,10 +60,14 @@ const MantenimientoGeneral = () => {
 
     return (
         <div className="text-xl font-bold mb-4 text-center justify-center">
-            <h1 className="text-xl font-bold mb-4 text-black text-center justify-center">
-                Mantenimiento General
-                <Fecha value={fechaBusqueda} onChange={handleDateChange} className="ml-4 border border-gray-400 rounded px-2 py-1" />
-            </h1>
+            <div className="flex justify-between items-center">
+                <h1 className="text-xl font-bold mb-4 text-black text-center">
+                    Mantenimiento General
+                </h1>
+                <Fecha value={fechaBusqueda} onChange={handleDateChange} className="ml-2 border border-gray-400 rounded px-2 py-1" />
+            </div>
+
+
             {mensajeError && <p className="text-red-500">{mensajeError}</p>}
             <Table
                 aria-label="Tabla de mantenimientos"
