@@ -7,6 +7,6 @@ import {
 const solicitudRouter = Router();
 
 solicitudRouter.post("/", registarSolicitud);
-solicitudRouter.get("/listar", obtenerSolicitudes);
+solicitudRouter.get("/", obtenerSolicitudes);
 
 export default solicitudRouter;
