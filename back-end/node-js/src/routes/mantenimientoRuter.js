@@ -18,7 +18,7 @@ mantenimiento.get('/listar_por_id/:idMantenimiento',verificar, listarMantenimien
 mantenimiento.post('/registrar',verificar, VerificarMantenimiento, registrarMantenimiento);
 
 /* listar es el requerimiento 16 */
-mantenimiento.get('/listarRequerimiento16/:fecha_realizacion', verificar, listarRequerimiento16);
+mantenimiento.get('/listarRequerimiento16', verificar, listarRequerimiento16);
 
 /* listar por id de fichas */
 mantenimiento.get('/listar_por_ficha/:idFichas', verificar, mantenimientoDeMaquinas);

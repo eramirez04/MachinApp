@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Nav from '../molecules/Nav'
 import ButtonSitios from '../atoms/buttons/ButtonSitios'
-import api from '../atoms/api/Api'
+import { axiosCliente } from '../../service/api/axios'
 
 const BuscarMaquinas=()=>  {
 
@@ -12,7 +12,7 @@ const BuscarMaquinas=()=>  {
     useEffect(()=>{
         const listarFicha = async ()=>{
             try{
-                const response = await api.get('/ficha/listar')
+                const response = await axiosCliente.get('/ficha/listar')
                 setMaquinas(response.data.respuesta)
 
                 

@@ -259,7 +259,7 @@ export const registrarMantenimiento = async (req, res) => {
 /* listo 16 generar ficha de mantenimiento */
 export const listarRequerimiento16 = async (req, res) => {
     try {
-        const { fecha_realizacion } = req.params;
+        const { fecha_realizacion } = req.query;
 
         const sql = `
             SELECT
@@ -288,11 +288,15 @@ export const listarRequerimiento16 = async (req, res) => {
                 actividades a ON a.acti_fk_solicitud = sm.idSolicitud
             LEFT JOIN
                 tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
-            WHERE 
-                DATE(m.mant_fecha_proxima) >= ?
         `;
 
-        const [result] = await conexion.query(sql, [fecha_realizacion]);
+        let result;
+        if (fecha_realizacion) {
+            const sqlWithFilter = sql + ' WHERE DATE(m.mant_fecha_proxima) >= ?';
+            [result] = await conexion.query(sqlWithFilter, [fecha_realizacion]);
+        } else {
+            [result] = await conexion.query(sql);
+        }
 
         if (result.length > 0) {
             const requerimientos = [];
@@ -324,13 +328,12 @@ export const listarRequerimiento16 = async (req, res) => {
             
             res.status(200).json(requerimientos);
         } else {
-            res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada." });
+            res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos." });
         }
     } catch (err) {
         res.status(500).json({ "message": "Error en el controlador listarRequerimiento16: " + err.message });
     }
 };
-
 /* funciola al parecer pero toca ver,    busca el mantenimiento por id de la ficha  */
 export const mantenimientoDeMaquinas = async (req, res) => {
     try {

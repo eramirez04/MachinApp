@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import api from '../../../atoms/api/Api.jsx'
+import { axiosCliente } from '../../../../service/api/axios.js'
 
 import MenuLeft from '../../../molecules/Menuleft.jsx'
 
@@ -16,7 +16,7 @@ const ListarSedes = () =>{
     useEffect(()=>{
         const buscarSedes = async ()=>{
             try{
-                const response = await api.get("/sede/listarSede")
+                const response = await axiosCliente.get("/sede/listarSede")
                 setSedes(response.data.resultadoSede)
 
                 

@@ -8,7 +8,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const Header = lazy(() => import("../components/organisms/Header.jsx"));
 
 // modal
-const Modal = lazy(() => import("../components/molecules/Modal.jsx"));
+const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
 
 // login
 const Login = lazy(() => import("../components/organisms/Login.jsx"));
@@ -95,7 +95,7 @@ const Inicio = () => {
                       </div>
                     </div>
                   </div>
-                  <Modal
+                  <ModalComponte
                     buttonModal={"Login"}
                     tittleModal={"Iniciar Sesion"}
                     componente={<Login />}
