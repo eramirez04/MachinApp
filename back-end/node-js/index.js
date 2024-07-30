@@ -11,11 +11,13 @@ import mantenimiento from "./src/routes/mantenimientoRuter.js";
 import tipoMantRoutes from "./src/routes/tipoMantRoutes.js";
 import rutaSitio from "./src/routes/sitiosRouter.js";
 import rutaSede from "./src/routes/sedesRouter.js";
-/* import rutaCentro from "./src/routes/centrosRouter.js" */
 import rutaArea from "./src/routes/areasRouter.js";
 import rutaTipoSitio from "./src/routes/tipo_sitioRouter.js";
 import LoginRouter from "./src/routes/LoginRoutes.js";
 import partesMantRoutes from "./src/routes/partesMantRoutes.js";
+import solicitudRouter from "./src/routes/SolicitudRouter.js";
+import solicitud_has_fichas from "./src/routes/solicitud_has_fichasRouter.js";
+
 const serve = Express();
 const port = 3000;
 
@@ -46,7 +48,10 @@ serve.use("/sede", rutaSede);
 /* serve.use('/centro', rutaCentro) */
 serve.use("/area", rutaArea);
 serve.use("/partes_mantenimiento", partesMantRoutes);
+serve.use("/solicitud", solicitudRouter);
+serve.use("/solicitudesfichas", solicitud_has_fichas);
 serve.use(LoginRouter);
+
 serve.use("/documents", (req, res) => {
   res.render("documentacion.ejs");
 });

@@ -4,21 +4,37 @@ import { validarSolicitud_Mantenimiento } from "../../validar/validarSolicitudMa
 export const registarSolicitud = async (req, res) => {
   try {
     const resultado = validarSolicitud_Mantenimiento(req.body);
-    console.log(resultado.error);
 
     if (resultado.error)
       return res.status(400).json({ error: resultado.error.errors });
 
-    const { prioridad, descripcion, costo_estimado, obsevaciones } = req.body;
+    const {
+      prioridad,
+      descripcion,
+      costo_estimado,
+      obsevaciones,
+      temaLegal,
+      nombre_solicitante,
+      correo_solicitante,
+    } = req.body;
 
     const estado = "pendiente";
 
     const [resultadoSql] = await conexion.query(
       `INSERT INTO solicitud_mantenimiento 
-      (soli_prioridad, soli_descripcion_problemas, soli_costo_estimado, soli_observaciones, soli_estado) 
+      (soli_prioridad, soli_descripcion_problemas, soli_costo_estimado, soli_observaciones, soli_estado,temas_legal, nombre_solicitante, correo_solicitante) 
       VALUES
-     (?,?,?,?,?);`,
-      [prioridad, descripcion, costo_estimado, obsevaciones, estado]
+     (?,?,?,?,?,?,?,?);`,
+      [
+        prioridad,
+        descripcion,
+        costo_estimado,
+        obsevaciones,
+        estado,
+        temaLegal,
+        nombre_solicitante,
+        correo_solicitante,
+      ]
     );
 
     if (resultadoSql.affectedRows === 0)
