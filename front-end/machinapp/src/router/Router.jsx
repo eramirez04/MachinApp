@@ -36,6 +36,7 @@ export const AppRouter = () => {
       <Suspense>
         <Routes>
           <Route path="/" element={<Inicio />} />
+          <Route path="/recuperar" element={<div>hola como estasei</div>} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />

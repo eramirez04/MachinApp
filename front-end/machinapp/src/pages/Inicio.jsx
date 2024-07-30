@@ -13,12 +13,25 @@ const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
 
 // login
 const Login = lazy(() => import("../components/organisms/Login.jsx"));
+import { FormUser } from "../components/organisms/formularios/FormUser.jsx";
 
 const Inicio = () => {
   return (
     <>
       <div className="">
-        <Header color={"bg-white"} />
+        <Header
+          color={"bg-white"}
+          contenido={
+            <ModalComponte
+              buttonModal={"Crea una Cuenta"}
+              tittleModal={"Crea tu Cuenta"}
+              componente={<FormUser />}
+              /*    size={"3xl"} */
+              colorButton="primary"
+              variantButton={"shadow"}
+            />
+          }
+        />
         <div className="relative overflow-hidden bg-gray-50">
           <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
             <div className=" mx-auto max-w-7xl  px-4 sm:static sm:px-6 lg:px-8">
@@ -99,6 +112,8 @@ const Inicio = () => {
                   <ModalComponte
                     buttonModal={"Login"}
                     tittleModal={"Iniciar Sesion"}
+                    colorButton="primary"
+                    variantButton={"ghost"}
                     componente={<Login />}
                   />
                 </div>
