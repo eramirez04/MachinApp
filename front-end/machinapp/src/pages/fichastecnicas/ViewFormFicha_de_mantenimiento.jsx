@@ -3,7 +3,7 @@ import Layout from "../../components/template/Layout";
 
 export const ViewFormFicha_De_mantenimiento = () => {
   return (
-    <Layout titlePage={"title-page"}>
+    <Layout titlePage={"Ficha de mantenimiento"}>
       <FormFichaDeMantenimiento />
     </Layout>
   );
