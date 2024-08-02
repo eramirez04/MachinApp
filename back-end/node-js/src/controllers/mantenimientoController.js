@@ -337,23 +337,42 @@ export const listarRequerimiento16 = async (req, res) => {
 /* funciola al parecer pero toca ver,    busca el mantenimiento por id de la ficha  */
 export const mantenimientoDeMaquinas = async (req, res) => {
     try {
-        const { idFichas } = req.params; 
+        const { idFichas } = req.params;
         let sql = `
-            SELECT m.idMantenimiento, m.mant_codigo_mantenimiento, m.mant_fecha_proxima, 
-                   m.mant_estado, m.mant_descripcion, m.fk_tipo_mantenimiento
+            SELECT DISTINCT
+                m.idMantenimiento, 
+                m.mant_codigo_mantenimiento, 
+                m.mant_fecha_proxima, 
+                m.mant_estado, 
+                m.mant_descripcion, 
+                m.fk_tipo_mantenimiento,
+                tm.tipo_mantenimiento
             FROM mantenimiento m
             JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
             JOIN solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-            WHERE shf.fk_fichas = ?`;
+            JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+            WHERE shf.fk_fichas = ?
+            ORDER BY m.mant_fecha_proxima DESC`;
 
-        const [result] = await conexion.query(sql, [idFichas]); 
+        const [result] = await conexion.query(sql, [idFichas]);
+
         if (result.length > 0) {
-            res.status(200).json(result);
+            // Usar un Set para eliminar duplicados basados en idMantenimiento
+            const mantenimientosUnicos = Array.from(
+                new Set(result.map(m => m.idMantenimiento))
+            ).map(id => result.find(m => m.idMantenimiento === id));
+
+            res.status(200).json(mantenimientosUnicos);
         } else {
-            res.status(404).json({ "message": "No se encontraron mantenimientos relacionados con esa ficha." });
+            res.status(404).json({ 
+                "message": "No se encontraron mantenimientos relacionados con esa ficha." 
+            });
         }
     } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador mantenimientoDeMaquinas: " + err });
+        console.error('Error en mantenimientoDeMaquinas:', err);
+        res.status(500).json({ 
+            "message": "Error en el servidor al obtener los mantenimientos de máquinas." 
+        });
     }
 };
 
