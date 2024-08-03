@@ -94,15 +94,17 @@ const Nav = () => {
                 <div
                   className={`ml-6 mt-2 flex flex-col gap-2 transition-all duration-500 ease-in-out transform ${
                     submenuOpen
-                      ? "max-h-40 opacity-100 translate-y-0"
-                      : "max-h-0 opacity-0 -translate-y-4"
+                      ? "max-h-40 opacity-100 translate-y-0 pointer-events-auto"
+                      : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
                   }`}
                 >
                   {menu?.submenus.map((submenu, j) => (
                     <Link
                       to={submenu?.link}
                       key={j}
-                      className="text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2"
+                      className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2 ${
+                        submenuOpen ? "pointer-events-auto" : "pointer-events-none"
+                      }`}
                     >
                       <TbPointFilled size={16} />
                       {submenu?.name}
