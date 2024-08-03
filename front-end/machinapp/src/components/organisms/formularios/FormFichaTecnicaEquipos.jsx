@@ -144,6 +144,7 @@ export const FormFichaTecnica = () => {
             <input
               type="file"
               onChange={handleFileUpload}
+               accept="image/*" 
               className="appearance-none w-full py-2 px-4 mt-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
             />
           </div>

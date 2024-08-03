@@ -4,9 +4,6 @@ import { conexion } from "../database/database.js";
 // jwt
 import Jwt from "jsonwebtoken";
 
-// captura errores de las validaciones
-import { validationResult } from "express-validator";
-
 //encriptacion de contraseña, registro de usuarios
 import { encriptarContra } from "../config/bcryptjs.js";
 
@@ -22,6 +19,8 @@ import {
   validarUsuarios,
   validarUsuariosActualizar,
 } from "../../validar/usuariosValidaciones/usuariosRequest.js";
+
+import { validarNumeroDocumento } from "../../validar/usuariosValidaciones/recuperarContraseña.js";
 
 // registro de usuarios
 export const Store = async (req, res) => {
@@ -160,16 +159,17 @@ import { emailHtml } from "../config/emailhtml.js";
 // funcion que envia correos para recuperar contraseña
 export const recuperaraContra = async (req, res) => {
   try {
-    const error = validationResult(req);
+    const result = validarNumeroDocumento(req.body);
 
-    if (!error.isEmpty()) {
-      return res.status(400).json(error);
-    }
+    if (result.error)
+      return res.status(400).json({ error: result.error.errors });
+
     const { numero_identificacion } = req.body;
 
-    let sql = `select * from usuarios where us_numero_documento = ${numero_identificacion}`;
-
-    const [usuario] = await conexion.query(sql);
+    const [usuario] = await conexion.query(
+      "select * from usuarios where us_numero_documento = ?;",
+      [numero_identificacion]
+    );
 
     if (usuario.length === 0) {
       return res
@@ -187,11 +187,13 @@ export const recuperaraContra = async (req, res) => {
       // encriptar contraseña
       const newPasswordCrypt = await encriptarContra(newPassword);
 
-      let sqlActualizarContra = `update usuarios set us_contrasenia= '${newPasswordCrypt}' where idUsuarios = ${usuario[0].idUsuarios}`;
-      const [resu] = await conexion.query(sqlActualizarContra);
-      res
-        .status(200)
-        .json({ mensage: "contraseña recuperada", estado: true, result });
+      let sqlActualizarContra = `UPDATE usuarios SET us_contrasenia= '${newPasswordCrypt}' WHERE idUsuarios = ${usuario[0].idUsuarios}`;
+      await conexion.query(sqlActualizarContra);
+      res.status(200).json({
+        mensage: "Contraseña recuperada",
+        estado: true,
+        "Correo enviado a: ": result.accepted,
+      });
     }
   } catch (error) {
     return res.status(500).json(error);
