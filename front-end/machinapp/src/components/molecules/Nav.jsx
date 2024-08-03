@@ -12,8 +12,8 @@ const Nav = () => {
   const menus = [
     { name: "Inicio", link: "/home", icon: ImHome },
     { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
-    { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
-    { name: "Maquinas", link: "/Maquinas", icon: GiGears },
+    { name: "Solicitud", link: "/Fichas", icon: FaFileUpload },
+    { name: "Equipos", link: "/Maquinas", icon: GiGears },
     { name: "Historial", link: "/Historial", icon: FaHistory },
     {
       name: "Panel de control",
