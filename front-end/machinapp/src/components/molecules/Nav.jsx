@@ -15,21 +15,11 @@ import {
 
 const Nav = () => {
   const menus = [
-    { name: "Inicio", link: "/home", icon: HomeIcon },
-    {
-      name: "Sitios",
-      link: "#",
-      icon: MapIcon,
-      submenu: true,
-      submenus: [
-        { name: "Sedes", link: "/Sedes" },
-        { name: "Areas", link: "/Areas" },
-        { name: "Ambientes", link: "/Ambientes" },
-      ],
-    },
-    { name: "Fichas", link: "/Fichas", icon: DocumentTextIcon },
-    { name: "Maquinas", link: "/Maquinas", icon: ServerIcon },
-    { name: "Historial", link: "/Historial", icon: ClockIcon },
+    { name: "Inicio", link: "/home", icon: ImHome },
+    { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
+    { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
+    { name: "Maquinas", link: "/Maquinas", icon: GiGears },
+    { name: "Historial", link: "/Historial", icon: FaHistory },
     {
       name: "Panel de control",
       link: "/Panelcontrol",
