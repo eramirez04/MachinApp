@@ -27,8 +27,8 @@ const Nav = () => {
         { name: "Ambientes", link: "/Ambientes" },
       ],
     },
-    { name: "Fichas", link: "/Fichas", icon: DocumentTextIcon },
-    { name: "Maquinas", link: "/Maquinas", icon: ServerIcon },
+    { name: "Mantenimientos", link: "/Fichas", icon: DocumentTextIcon },
+    { name: "Equipo y Maquinaria", link: "/Maquinas", icon: ServerIcon },
     { name: "Historial", link: "/Historial", icon: ClockIcon },
     {
       name: "Panel de control",
@@ -103,7 +103,9 @@ const Nav = () => {
                       to={submenu?.link}
                       key={j}
                       className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2 ${
-                        submenuOpen ? "pointer-events-auto" : "pointer-events-none"
+                        submenuOpen
+                          ? "pointer-events-auto"
+                          : "pointer-events-none"
                       }`}
                     >
                       <TbPointFilled size={16} />

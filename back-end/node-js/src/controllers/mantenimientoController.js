@@ -2,97 +2,6 @@ import { conexion } from '../database/database.js';
 import {validationResult} from 'express-validator'
 
 
-/* nuevos controladores*/
-
-/*Listo controlador para una barra de busqueda que busque mediante: idMantenimientoa  mant_codigo_mantenimientoa mant_fecha_realizacion, mant_fecha_proxima, tipo_mantenimiento, ficha.fi_placa_sena, fichas.fi_serial 	*/
-export const buscarMantenimientoPDF = async (req, res) => {
-    try {
-        const { buscarMantenimientoPDF } = req.params;
-
-        let sql = `
-            SELECT
-                fme.fi_placa_sena AS referencia_maquina,
-                m.idMantenimiento,
-                m.mant_codigo_mantenimiento,
-                m.mant_descripcion,
-                m.mant_fecha_proxima,
-                a.acti_estado,
-                a.idActividades,
-                a.acti_nombre,
-                tm.tipo_mantenimiento,
-                fme.idFichas,
-                fme.fi_fecha_inicio_garantia,
-                fme.fi_fecha_fin_garantia,
-                fme.fi_descripcion_garantia,
-                fme.fi_serial
-            FROM
-                mantenimiento m
-            LEFT JOIN
-                solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-            LEFT JOIN
-                solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-            LEFT JOIN
-                fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
-            LEFT JOIN
-                actividades a ON a.acti_fk_solicitud = sm.idSolicitud
-            LEFT JOIN
-                tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
-            WHERE 1=1
-        `;
-
-        const params = [];
-        const searchValue = `%${buscarMantenimientoPDF}%`;
-
-        const isDate = !isNaN(Date.parse(buscarMantenimientoPDF));
-
-        sql += " AND (";
-        sql += " m.idMantenimiento LIKE ? OR";
-        params.push(searchValue);
-        sql += " m.mant_codigo_mantenimiento LIKE ? OR";
-        params.push(searchValue);
-        sql += " tm.tipo_mantenimiento LIKE ? OR";
-        params.push(searchValue);
-        sql += " fme.fi_placa_sena LIKE ? OR";
-        params.push(searchValue);
-        sql += " fme.fi_serial LIKE ?";
-        params.push(searchValue);
-
-        if (isDate) {
-            sql += " OR DATE(m.mant_fecha_proxima) >= ?";
-            params.push(buscarMantenimientoPDF);
-        }
-
-        sql += ")";
-
-        const [result] = await conexion.query(sql, params);
-
-        if (result.length > 0) {
-            const requerimientos = result.map(row => ({
-                idMantenimiento: row.idMantenimiento,
-                referencia_maquina: row.referencia_maquina,
-                codigo_mantenimiento: row.mant_codigo_mantenimiento,
-                descripcion_mantenimiento: row.mant_descripcion,
-                fecha_proxima: row.mant_fecha_proxima,
-                estado_maquina: row.acti_estado,
-                idActividades: row.idActividades,
-                acti_nombre: row.acti_nombre,
-                tipo_mantenimiento: row.tipo_mantenimiento,
-                idFichas: row.idFichas,
-                fi_fecha_inicio_garantia: row.fi_fecha_inicio_garantia,
-                fi_fecha_fin_garantia: row.fi_fecha_fin_garantia,
-                fi_descripcion_garantia: row.fi_descripcion_garantia,
-                fi_serial: row.fi_serial
-            }));
-
-            res.status(200).json(requerimientos);
-        } else {
-            res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos para el valor proporcionado." });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador buscarMantenimientoPDF: " + err.message });
-    }
-};
-
 /* listo */
 export const listarRequerimiento5 = async (req, res) => {
     try {
@@ -256,84 +165,6 @@ export const registrarMantenimiento = async (req, res) => {
     }
 };
 
-/* listo 16 generar ficha de mantenimiento */
-export const listarRequerimiento16 = async (req, res) => {
-    try {
-        const { fecha_realizacion } = req.query;
-
-        const sql = `
-            SELECT
-                fme.fi_placa_sena AS referencia_maquina,
-                m.idMantenimiento,
-                m.mant_codigo_mantenimiento,
-                m.mant_descripcion,
-                m.mant_fecha_proxima AS mant_fecha_realizacion,
-                a.acti_estado,
-                a.idActividades,
-                a.acti_nombre,
-                tm.tipo_mantenimiento,
-                fme.idFichas,
-                fme.fi_fecha_inicio_garantia,
-                fme.fi_fecha_fin_garantia,
-                fme.fi_descripcion_garantia
-            FROM
-                mantenimiento m
-            LEFT JOIN
-                solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-            LEFT JOIN
-                solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-            LEFT JOIN
-                fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
-            LEFT JOIN
-                actividades a ON a.acti_fk_solicitud = sm.idSolicitud
-            LEFT JOIN
-                tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
-        `;
-
-        let result;
-        if (fecha_realizacion) {
-            const sqlWithFilter = sql + ' WHERE DATE(m.mant_fecha_proxima) >= ?';
-            [result] = await conexion.query(sqlWithFilter, [fecha_realizacion]);
-        } else {
-            [result] = await conexion.query(sql);
-        }
-
-        if (result.length > 0) {
-            const requerimientos = [];
-            const idsProcesados = new Set();
-
-            for (let i = 0; i < result.length; i++) {
-                const row = result[i];
-                
-                if (!idsProcesados.has(row.idActividades)) {
-                    const requerimiento = {
-                        idMantenimiento: row.idMantenimiento,
-                        referencia_maquina: row.referencia_maquina,
-                        codigo_mantenimiento: row.mant_codigo_mantenimiento,
-                        descripcion_mantenimiento: row.mant_descripcion,
-                        fecha_realizacion: row.mant_fecha_realizacion,
-                        estado_maquina: row.acti_estado,
-                        idActividades: row.idActividades,
-                        acti_nombre: row.acti_nombre,
-                        tipo_mantenimiento: row.tipo_mantenimiento,
-                        idFichas: row.idFichas,
-                        fi_fecha_inicio_garantia: row.fi_fecha_inicio_garantia,
-                        fi_fecha_fin_garantia: row.fi_fecha_fin_garantia,
-                        fi_descripcion_garantia: row.fi_descripcion_garantia
-                    };
-                    requerimientos.push(requerimiento);
-                    idsProcesados.add(row.idActividades);
-                }
-            }
-            
-            res.status(200).json(requerimientos);
-        } else {
-            res.status(404).json({ "message": "No se encontraron requerimientos de mantenimiento en la base de datos." });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarRequerimiento16: " + err.message });
-    }
-};
 /* funciola al parecer pero toca ver,    busca el mantenimiento por id de la ficha  */
 export const mantenimientoDeMaquinas = async (req, res) => {
     try {
@@ -362,36 +193,72 @@ export const mantenimientoDeMaquinas = async (req, res) => {
 /* listo listar mantenimientos */
 export const listartodosmantenimientos = async (req, res) => {
     try {
-        let sql = `
-        SELECT
-            m.idMantenimiento,
-            m.mant_codigo_mantenimiento,
-            m.mant_fecha_proxima,
-            m.mant_descripcion,
-            m.mant_ficha_soporte,
-            m.mant_estado,
-            f.fi_placa_sena AS referencia_maquina,
-            tm.tipo_mantenimiento
-        FROM
-            mantenimiento m
-        LEFT JOIN
-            solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-        LEFT JOIN
-            solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-        LEFT JOIN
-            fichas_maquinas_equipos f ON shf.fk_fichas = f.idFichas
-        LEFT JOIN
-            tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+        const sql = `
+            SELECT
+                fme.fi_placa_sena AS referencia_maquina,
+                m.idMantenimiento,
+                m.mant_codigo_mantenimiento,
+                m.mant_descripcion,
+                m.mant_fecha_proxima AS mant_fecha_realizacion,
+                a.acti_estado,
+                a.idActividades,
+                a.acti_nombre,
+                tm.tipo_mantenimiento,
+                fme.idFichas,
+                fme.fi_fecha_inicio_garantia,
+                fme.fi_fecha_fin_garantia,
+                fme.fi_descripcion_garantia
+            FROM
+                mantenimiento m
+            LEFT JOIN
+                solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+            LEFT JOIN
+                solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
+            LEFT JOIN
+                fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
+            LEFT JOIN
+                actividades a ON a.acti_fk_solicitud = sm.idSolicitud
+            LEFT JOIN
+                tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
         `;
+        
         const [result] = await conexion.query(sql);
+        
         if (result.length > 0) {
-            res.status(200).json(result);
+            const requerimientos = [];
+            const idsProcesados = new Set();
+
+            for (let i = 0; i < result.length; i++) {
+                const row = result[i];
+                
+                if (!idsProcesados.has(row.idMantenimiento)) {
+                    const requerimiento = {
+                        idMantenimiento: row.idMantenimiento,
+                        referencia_maquina: row.referencia_maquina,
+                        codigo_mantenimiento: row.mant_codigo_mantenimiento,
+                        descripcion_mantenimiento: row.mant_descripcion,
+                        fecha_realizacion: new Date(row.mant_fecha_realizacion).toLocaleDateString('es-ES'), // Formateo de la fecha
+                        estado_maquina: row.acti_estado,
+                        idActividades: row.idActividades,
+                        acti_nombre: row.acti_nombre,
+                        tipo_mantenimiento: row.tipo_mantenimiento,
+                        idFichas: row.idFichas,
+                        fi_fecha_inicio_garantia: row.fi_fecha_inicio_garantia ? new Date(row.fi_fecha_inicio_garantia).toLocaleDateString('es-ES') : null, // Formateo de la fecha
+                        fi_fecha_fin_garantia: row.fi_fecha_fin_garantia ? new Date(row.fi_fecha_fin_garantia).toLocaleDateString('es-ES') : null, // Formateo de la fecha
+                        fi_descripcion_garantia: row.fi_descripcion_garantia
+                    };
+                    requerimientos.push(requerimiento);
+                    idsProcesados.add(row.idMantenimiento);
+                }
+            }
+
+            res.status(200).json(requerimientos);
         } else {
             res.status(404).json({ "message": "No se encontraron mantenimientos en la base de datos." });
         }
-    }
-    catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listartodosmantenimientos: " + err });
+    } catch (err) {
+        console.error("Error en listartodosmantenimientos:", err);
+        res.status(500).json({ "message": "Error en el controlador listartodosmantenimientos", "error": err.message });
     }
 };
 

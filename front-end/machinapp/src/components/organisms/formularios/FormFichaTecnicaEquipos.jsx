@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { axiosCliente } from "../../../service/api/axios.js";
 //
-import { multiFormData } from "../../../utils/formData.js";
+/* import { multiFormData } from "../../../utils/formData.js"; */
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
 
 // componentes
@@ -67,9 +67,6 @@ export const FormFichaTecnica = () => {
           axiosCliente.get("tipoFicha/listar"),
           axiosCliente.get("variable/listar"),
         ]);
-
-        console.log(ambientesRes);
-        /*     console.log(variablesRes) */
 
         const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
           id: item.id,
@@ -144,7 +141,7 @@ export const FormFichaTecnica = () => {
             <input
               type="file"
               onChange={handleFileUpload}
-               accept="image/*" 
+              accept="image/*"
               className="appearance-none w-full py-2 px-4 mt-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
             />
           </div>
