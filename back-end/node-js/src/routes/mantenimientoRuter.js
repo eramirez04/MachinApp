@@ -1,7 +1,7 @@
 /* routeusuario */
 import { Router } from "express";
 
-import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, listarRequerimiento16, mantenimientoDeMaquinas, listartodosmantenimientos, listarMantenimientoPorId_mantenimiento, listarMantenimientoPorFicha, eliminarMantenimiento, actualizarMantenimiento  } from "../controllers/mantenimientoController.js";
+import {listarRequerimiento5, listarMantenimientoPorId, registrarMantenimiento, mantenimientoDeMaquinas, listartodosmantenimientos, listarMantenimientoPorId_mantenimiento, listarMantenimientoPorFicha, eliminarMantenimiento, actualizarMantenimiento  } from "../controllers/mantenimientoController.js";
 
 const mantenimiento= Router();
 
@@ -16,9 +16,6 @@ mantenimiento.get('/listar_por_id/:idMantenimiento',verificar, listarMantenimien
 
 /* registrar es el requerimiento 14 */
 mantenimiento.post('/registrar',verificar, VerificarMantenimiento, registrarMantenimiento);
-
-/* listar es el requerimiento 16 */
-mantenimiento.get('/listarRequerimiento16', verificar, listarRequerimiento16);
 
 /* listar por id de fichas */
 mantenimiento.get('/listar_por_ficha/:idFichas', verificar, mantenimientoDeMaquinas);

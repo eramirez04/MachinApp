@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
-    alert("hola como estas");
     navigate("/");
   };
 

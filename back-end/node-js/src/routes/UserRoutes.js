@@ -8,8 +8,6 @@ import {
   actualizarUsuario,
 } from "../controllers/UserController.js";
 
-// verificacion de campos
-
 // validar token que llega por la cabecera de la solicitud
 import { verificar } from "../middlewares/LoginMidleware.js";
 
@@ -23,7 +21,7 @@ const RutaUsuario = Router();
 RutaUsuario.post("/registrar", Store);
 RutaUsuario.get("/listar", verificar, isAdmin, ListarUsuarios);
 RutaUsuario.put("/actualizar/:id", verificar, cargarImagen, actualizarUsuario);
-RutaUsuario.delete("/eliminar/:id", verificar, EliminarUsuario);
+RutaUsuario.delete("/eliminar/:id", verificar, isAdmin, EliminarUsuario);
 RutaUsuario.get("/listar/me", verificar, ListarUsuarioId);
 RutaUsuario.get("/tecnico", verificar, ListarTecnicos);
 

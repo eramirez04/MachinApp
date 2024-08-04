@@ -5,7 +5,7 @@ import { CardStyle } from "../components/molecules/CardStyle.jsx";
 
 const Maquinas=()=>  {
   const titulos = [
-    { name: "", url: "/crearfichaequipos" },
+    { name: "Fichas de Maquinas", url: "/crearfichaequipos" },
   ];
 
   return (

@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { ImHome } from "react-icons/im";
-import { MdHomeWork } from "react-icons/md";
-import { FaFileUpload } from "react-icons/fa";
-import { GiGears } from "react-icons/gi";
-import { FaHistory } from "react-icons/fa";
 import { FaUserGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { Icons } from "../atoms/icons/Icons";
+
+import {
+  HomeIcon,
+  MapIcon,
+  DocumentTextIcon,
+  ServerIcon,
+  ClockIcon,
+} from "@heroicons/react/24/solid";
 
 const Nav = () => {
   const menus = [
-    { name: "Inicio", link: "/home", icon: ImHome },
-    { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
-    { name: "Solicitud", link: "/Fichas", icon: FaFileUpload },
-    { name: "Equipos", link: "/Maquinas", icon: GiGears },
-    { name: "Historial", link: "/Historial", icon: FaHistory },
+    { name: "Inicio", link: "/home", icon: HomeIcon },
+    { name: "Sitios", link: "/Sitios", icon: MapIcon },
+    { name: "Solicitud", link: "/Fichas", icon: DocumentTextIcon },
+    { name: "Equipos", link: "/Maquinas", icon: ServerIcon },
+    { name: "Historial", link: "/Historial", icon: ClockIcon },
     {
       name: "Panel de control",
       link: "/Panelcontrol",
@@ -45,9 +49,12 @@ const Nav = () => {
               key={i}
               className={` ${
                 menu?.margin && "mt-96"
-              } group flex items-center text-sm  gap-3.5 font-medium p-4 hover:shadow-md hover:bg-gray-100 rounded-md`}
+              } group flex items-center text-sm gap-3.5 font-medium p-4 hover:shadow-md border-b shadow-sm hover:bg-gray-100 rounded-md`}
             >
-              <div>{React.createElement(menu?.icon, { size: "20" })}</div>
+              <div className="p-1 rounded-full">
+                {" "}
+                <Icons icon={menu.icon} />
+              </div>
               <h2
                 style={{
                   transitionDelay: `${i + 3}00ms`,

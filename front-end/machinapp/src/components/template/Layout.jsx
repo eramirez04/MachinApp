@@ -11,6 +11,7 @@ const Header = lazy(() => import("../organisms/Header.jsx"));
 const Banner = lazy(() => import("../molecules/Banner.jsx"));
 const Nav = lazy(() => import("../molecules/Nav.jsx"));
 import { AvatarCom } from "../molecules/Avatar.jsx";
+/* import Footer from "../molecules/Footer.jsx"; */
 
 // contexto Banner
 import { BannerContext } from "../../contexts/BannerContext.jsx";
@@ -37,6 +38,7 @@ const Layout = ({ children, titlePage }) => {
             </Suspense>
           </div>
         </div>
+      {/*   <Footer /> */}
       </div>
     </>
   );

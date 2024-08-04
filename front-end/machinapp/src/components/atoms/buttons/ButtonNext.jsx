@@ -8,8 +8,7 @@ import PropTypes from "prop-types";
 const ButtonNext = ({ text, type, color, variant, children }) => {
   return (
     <Button color={color} type={type} variant={variant}>
-      {text}
-      {children}
+      {children} {text}
     </Button>
   );
 };
