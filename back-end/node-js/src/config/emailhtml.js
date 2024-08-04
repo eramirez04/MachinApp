@@ -1,7 +1,7 @@
 export const emailHtml = (nombre, contrasenia) => {
-    const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-    let html = `
+  let html = `
    <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +63,7 @@ export const emailHtml = (nombre, contrasenia) => {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Recuperacion de contraseña</h1>
+            <h1>Contraseña restablecida</h1>
         </div>
         <div class="content">
             <p>Estimado/a ${nombre},</p>
@@ -81,15 +81,9 @@ export const emailHtml = (nombre, contrasenia) => {
             <p>&copy; ${currentYear} MachinApp. 2669959</p>
         </div>
     </footer>
-    
-    <script>
-        // Código JavaScript para obtener el año actual
-        
-    </script>
-
     </div>
 </body>
 </html>
-    `
-    return html
-}
+    `;
+  return html;
+};

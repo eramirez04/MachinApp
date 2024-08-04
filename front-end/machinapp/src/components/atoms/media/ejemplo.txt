@@ -1,7 +1,0 @@
-en este directorio van a ir los componentes
-
-Image.js
-Avatar.js
-Video.js
-
-muchos mas
