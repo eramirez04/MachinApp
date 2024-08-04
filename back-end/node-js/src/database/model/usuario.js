@@ -56,36 +56,45 @@ export class UsuarioModel {
 
   static async actualizarUser(dataUser, idUser, file) {
     const {
-      us_nombre,
-      us_apellidos,
-      us_correo,
-      us_numero_documento,
-      us_tipo_documento,
-      us_empresa,
-      us_especialidad,
+      nombre,
+      apellidos,
+      correo,
+      numero_documento,
+      contrasenia,
+      tipo_documento,
+      empresa,
+      especialidad,
+      rol,
     } = dataUser;
+    console.log(contrasenia);
 
-    /* console.log(us_nombre, us_apellidos, us_correo, file); */
+    // contaseña para encriptar
+    const passwordCrypt = await encriptarContra(contrasenia);
 
     const Id = idUser.toLowerCase();
 
     const response = await conexion.query(
       `
-      update usuarios
-      set
-      us_nombre = ?,us_apellidos= ?,us_correo= ? , us_numero_documento = ?,  us_tipo_documento = ?,
+      UPDATE usuarios
+      SET
+      us_nombre = ?,us_apellidos= ?,us_correo= ? , us_numero_documento = ?,
+      us_contrasenia = ?,
+      us_tipo_documento = ?,
       us_empresa= ?,
       us_especialidad = ?,
-      us_imagen = '${file}'
+      us_imagen = '${file}',
+      fk_roles = ?
       where idUsuarios = ? ;`,
       [
-        us_nombre,
-        us_apellidos,
-        us_correo,
-        us_numero_documento,
-        us_tipo_documento,
-        us_empresa,
-        us_especialidad,
+        nombre,
+        apellidos,
+        correo,
+        numero_documento,
+        passwordCrypt,
+        tipo_documento,
+        empresa,
+        especialidad,
+        rol,
         Id,
       ]
     );
