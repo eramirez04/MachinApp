@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
+import  { useState, useEffect } from 'react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner, Input, Select, Button, SelectItem } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
 import { axiosCliente } from "../../service/api/axios.js";
@@ -7,7 +7,7 @@ import MantenimientoGeneralPDF from './MantenimientoGeneralPDF.jsx';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const MantenimientoGeneral = () => {
-    const [fechaBusqueda, setFechaBusqueda] = useState('');
+   
     const [mensajeError, setMensajeError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
@@ -42,7 +42,7 @@ const MantenimientoGeneral = () => {
                 };
             } catch (error) {
                 console.error('Error obteniendo los mantenimientos:', error);
-                if (error.name !== 'CanceledError') {
+                if (error.response.name !== 'CanceledError') {
                     setMensajeError("Error al cargar los mantenimientos: " + error.message);
                 }
                 return { items: [] };
