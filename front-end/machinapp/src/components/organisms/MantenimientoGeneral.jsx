@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner, Input, Button, Select, SelectItem } from "@nextui-org/react";
+import React, { useState, useEffect } from 'react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
 import { axiosCliente } from "../../service/api/axios.js";
