@@ -164,6 +164,7 @@ export const registrarMantenimiento = async (req, res) => {
         return res.status(500).json({"mensaje": "Error: " + e.message});
     }
 };
+
 /* funciola al parecer pero toca ver,    busca el mantenimiento por id de la ficha  */
 export const mantenimientoDeMaquinas = async (req, res) => {
     try {

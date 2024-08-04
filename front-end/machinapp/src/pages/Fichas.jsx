@@ -3,8 +3,6 @@ import Layout from "../components/template/Layout.jsx";
 
 const Fichas = () => {
   const titulos = [
-    
-    
     { name: "Fichas de Mantenimiento", url: "/crear_ficha_mantenimiento" },
     { name: "Ficha de solicitud", url: "/crearsolicitud" },
   ];
@@ -25,3 +23,4 @@ const Fichas = () => {
 };
 
 export default Fichas;
+
