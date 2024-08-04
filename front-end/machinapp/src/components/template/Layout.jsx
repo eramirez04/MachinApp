@@ -1,44 +1,37 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Fragment, Suspense, lazy } from "react";
-import "react-lazy-load-image-component/src/effects/opacity.css";
-import "react-lazy-load-image-component/src/effects/blur.css";
-
+import { Suspense, lazy } from "react";
 import PropTypes from "prop-types";
 
 //componentes
 import { Outlet } from "react-router-dom";
 const Header = lazy(() => import("../organisms/Header.jsx"));
-const Banner = lazy(() => import("../molecules/Banner.jsx"));
 const Nav = lazy(() => import("../molecules/Nav.jsx"));
 import { AvatarCom } from "../molecules/Avatar.jsx";
-/* import Footer from "../molecules/Footer.jsx"; */
+import Footer from "../molecules/Footer.jsx";
+import MenuMobile from "../molecules/navigation/MenuMobile.jsx";
 
-// contexto Banner
-import { BannerContext } from "../../contexts/BannerContext.jsx";
-
-const Layout = ({ children, titlePage }) => {
+const Layout = ({ children }) => {
   return (
     <>
       <div className="bg-gray-100">
         <Header color={"bg-white"} contenido={<AvatarCom />} />
-        <BannerContext.Provider value={{ titleBanner: titlePage }}>
-          <Banner />
-        </BannerContext.Provider>
 
         <div className="flex">
-          <section className="flex flex-col w-2/12 max-lg:hidden">
+          <section className="flex flex-col max-lg:hidden">
             <Nav />
           </section>
-          <div className="w-5/6 flex flex-col gap-4 rounded-md  p-5 ">
+          <div className="w-full flex flex-col gap-4 rounded-md  p-5 ">
             <Suspense fallback={<h1>Cargando</h1>}>
               <main className="bg-white radio-error rounded-lg shadow-lg h-full">
+                <div className="p-5 z-30 ">
+                  <MenuMobile />
+                </div>
                 {children}
               </main>
               <Outlet />
             </Suspense>
           </div>
         </div>
-      {/*   <Footer /> */}
+        <Footer />
       </div>
     </>
   );
