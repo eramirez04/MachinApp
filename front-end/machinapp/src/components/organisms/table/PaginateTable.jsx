@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@nextui-org/react";
 
-export const PaginateTable = ({ columns, data, itemsPerPage = 10}) => {
+export const PaginateTable = ({ columns, data, itemsPerPage = 10 }) => {
   // paginacion
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,15 +23,18 @@ export const PaginateTable = ({ columns, data, itemsPerPage = 10}) => {
     <>
       <div className="flex flex-col w-full">
         <Table aria-label="Paginated Data Table">
-          <TableHeader >
+          <TableHeader>
             {/* eslint-disable-next-line react/prop-types */}
             {columns.map((column, index) => (
-              <TableColumn key={index} className="bg-custom-green text-white font-bold">
+              <TableColumn
+                key={index}
+                className="bg-custom-green text-white font-bold"
+              >
                 {column}
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody >
+          <TableBody>
             {data
               .map((row, index) => (
                 <TableRow className="" key={index}>

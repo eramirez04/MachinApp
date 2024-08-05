@@ -19,11 +19,7 @@ import { axiosCliente } from "../../../service/api/axios";
 
 export const FormFichaSolicitud = () => {
   const { equiposData } = useFetchEquipo();
-  const [valuesTable, setvaluesTable] = useState([
-    {
-      id: 1,
-    },
-  ]);
+  const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
   // permite almacenar un array, para poder pasarselo como propiedad a al componente select
   const [equipo, setEquipo] = useState([]);
@@ -41,17 +37,6 @@ export const FormFichaSolicitud = () => {
     { name: "urgente", descripcion: "" },
     { name: "normal", descripcion: "" },
   ];
-
-  const handleNewEquipos = () => {
-    const nuevaFila = {
-      id: valuesTable.length + 1,
-    };
-    setvaluesTable([...valuesTable, nuevaFila]);
-  };
-
-  const eliminarFila = (id) => {
-    setvaluesTable(valuesTable.filter((fila) => fila.id !== id));
-  };
 
   // enviar datos al servidor
   const handleSubmitData = async (data) => {
@@ -116,6 +101,16 @@ export const FormFichaSolicitud = () => {
     }
 
     return placas;
+  };
+  const eliminarFila = (id) => {
+    setvaluesTable(valuesTable.filter((fila) => fila.id !== id));
+  };
+
+  const handleNewEquipos = () => {
+    const nuevaFila = {
+      id: valuesTable.length + 1,
+    };
+    setvaluesTable([...valuesTable, nuevaFila]);
   };
 
   useEffect(() => {
@@ -243,9 +238,7 @@ export const FormFichaSolicitud = () => {
                           label="Seleccione el Equipo"
                         />
                       </TableCell>
-                      <TableCell className="items-center justify-center">
-                        s
-                      </TableCell>
+                      <TableCell className="items-center justify-center"></TableCell>
                       <TableCell className="flex items-center ">
                         <TextAreaComponent
                           errors={errors}
@@ -261,7 +254,6 @@ export const FormFichaSolicitud = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        {" "}
                         <Button
                           color="danger"
                           isIconOnly
