@@ -1,6 +1,6 @@
 import InputforForm from "../../molecules/InputForForm";
 import ButtonNext from "../../atoms/buttons/ButtonNext";
-import { useRegistrarUsuario } from "../../../hooks/useFetchUsuarios";
+import { useRegistrarUsuario } from "../../../hooks/useRegistrarUsuarios";
 import { SelectComponent } from "../../molecules/SelectComponent";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,6 @@ export const FormUser = () => {
       const res = await registrarUsuario(data);
       console.log(res);
       reset();
-      alert("");
     } catch (error) {
       console.log("Error al registrar un usuario", error.response.data);
     }
@@ -75,7 +74,7 @@ export const FormUser = () => {
         />
         <input type="hidden" {...register("rol")} value={"4"} />
 
-        <ButtonNext text="fsad" color="success" type="submit">
+        <ButtonNext text="" color="success" type="submit">
           {loading ? "Registrando..." : "Registrar"}
         </ButtonNext>
         {error && <p style={{ color: "red" }}>Error: {error.message}</p>}

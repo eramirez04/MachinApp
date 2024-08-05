@@ -1,27 +1,24 @@
 import { axiosCliente } from "../service/api/axios";
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
+export const useFetchUserData = () => {
+  const [dataUser, setDataUser] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export const useRegistrarUsuario = () => {
-  const [loading, setLoadind] = useState(false);
-  const [error, setError] = useState(null);
-
-  const registrarUsuario = async (usuario) => {
-    setLoadind(true);
+  const fetcDataUser = async () => {
     try {
-      const res = await axiosCliente.post("user/registrar", usuario);
-
-      return res.data;
+      const res = await axiosCliente.get("/user/listar");
+      setDataUser(res.data);
     } catch (error) {
-      setError(error.response);
-      setLoadind(false);
-      throw error;
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return {
-    registrarUsuario,
-    loading,
-    error,
-  };
+  useEffect(() => {
+    fetcDataUser();
+  }, []);
+
+  return { dataUser, loading, fetcDataUser };
 };
