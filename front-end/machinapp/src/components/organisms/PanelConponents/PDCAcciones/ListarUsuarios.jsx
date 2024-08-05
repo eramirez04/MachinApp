@@ -1,15 +1,37 @@
 import { useEffect, useState } from "react";
-
 import { axiosCliente } from "../../../../service/api/axios.js";
-
-import MenuLeft from "../../../molecules/Menuleft.jsx";
-
-import { SearchComponent } from "../../../atoms/Inputs/InputSearch.jsx";
-
-import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx";
+/* import MenuLeft from "../../../molecules/Menuleft.jsx"; */
+/* import { SearchComponent } from "../../../atoms/Inputs/InputSearch.jsx"; */
+/* import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"; */
+import { PaginateTable } from "../../table/PaginateTable.jsx";
+import {
+  Dropdown,
+  DropdownTrigger,
+  Button,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
 
 const ListarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
+
+  // definimos las columnas para la tabla
+  const columns = [
+    "Nombre",
+    "Apellidos",
+    "Correo",
+    "Tipo de documento",
+    "Acciones",
+  ];
+
+  // definimos las filas: nota => hay que tener en cuanta que tanto las columnas y filas deben ser igual en numero
+  // si envio 4 columnas debo tambien de enviarle 4 filas, de lo contrario nos arrojara un error
+  const newArrayDataUser = usuarios.map((item) => ({
+    nombre: item.us_nombre,
+    apellidos: item.us_apellidos,
+    correo: item.us_correo,
+    tipo_documento: item.us_tipo_documento,
+  }));
 
   useEffect(() => {
     const buscarUsuarios = async () => {
@@ -26,51 +48,37 @@ const ListarUsuarios = () => {
 
   return (
     <>
-      <div className="h-screen bg-gray-200">
-        <MenuLeft />
+      <div className="h-screen p-7">
+        {/*   <MenuLeft /> */}
         <div className="flex  justify-center items-center">
-          <SearchComponent />
-          <div className="pl-5 w-60">
-            <InputSubmit />
-          </div>
+          {/*   <SearchComponent /> */}
+          <div className="pl-5 w-60">{/*    <InputSubmit /> */}</div>
         </div>
         <div className="flex flex-row">
-          <table className="table bg-white">
-            <thead className=" text-white bg-green-600">
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Rol</th>
-                <th>numero CC</th>
-                <th>tipo de documento</th>
-                <th>especialidad</th>
-                <th>empresa</th>
-                <th>Correo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <td>1</td>
-              <td>emer</td>
-              <td>usuario</td>
-              <td>1231435</td>
-              <td>CC</td>
-              <td>nada</td>
-              <td>Sena</td>
-              <td>paco@paco.com</td>
-
-              {usuarios.map((usuario) => (
-                <tr key={usuario.idUsuarios}>
-                  <td className="p-3">{usuario.idUsuarios} </td>
-                  <td className="p-4">{usuario.us_nombre}</td>
-                  <td className="p-5">{usuario.us_correo}</td>
-                  <td className="p-3">{usuario.us_tipo_documento} </td>
-                  <td className="p-4">{usuario.us_numero_documento}</td>
-                  <td className="p-3">{usuario.us_especialidad} </td>
-                  <td className="p-4">{usuario.rol_nombre}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <PaginateTable
+            columns={columns}
+            data={newArrayDataUser.map((row) => ({
+              ...row,
+              acciones: (
+                <>
+                  <div className="items-center gap-2">
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button isIconOnly size="sm" variant="light">
+                          ....
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu>
+                        <DropdownItem>View</DropdownItem>
+                        <DropdownItem>Edit</DropdownItem>
+                        <DropdownItem>Delete</DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </div>
+                </>
+              ),
+            }))}
+          />
         </div>
       </div>
     </>
