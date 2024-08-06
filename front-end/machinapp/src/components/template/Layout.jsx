@@ -9,7 +9,11 @@ import { AvatarCom } from "../molecules/Avatar.jsx";
 import Footer from "../molecules/Footer.jsx";
 import MenuMobile from "../molecules/navigation/MenuMobile.jsx";
 
+// hook de rol
+import { useAuth } from "../../hooks/useAuth.jsx";
+
 const Layout = ({ children }) => {
+  const { rol } = useAuth();
   return (
     <>
       <div className="bg-gray-100">
@@ -17,7 +21,7 @@ const Layout = ({ children }) => {
 
         <div className="flex">
           <section className="flex flex-col max-lg:hidden">
-            <Nav />
+            <Nav rol={rol} />
           </section>
           <div className="w-full flex flex-col gap-4 rounded-md  p-5 ">
             <Suspense fallback={<h1>Cargando</h1>}>
