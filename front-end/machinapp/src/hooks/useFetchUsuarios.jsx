@@ -1,24 +1,31 @@
 import { axiosCliente } from "../service/api/axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "./useAuth";
 
 export const useFetchUserData = () => {
   const [dataUser, setDataUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  /*   const [error, setError] */
+
+  const { rol, user } = useAuth();
 
   const fetcDataUser = async () => {
     try {
       const res = await axiosCliente.get("/user/listar");
       setDataUser(res.data);
     } catch (error) {
-      console.error(error);
+      return error.response;
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetcDataUser();
-  }, []);
+    if (rol === "Administrador" && user) {
+      fetcDataUser();
+    }
+    return;
+  }, [rol, user]);
 
   return { dataUser, loading, fetcDataUser };
 };
