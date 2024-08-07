@@ -13,17 +13,14 @@ import {
   TableColumn,
   TableBody,
   Button,
+  Divider,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { axiosCliente } from "../../../service/api/axios";
 
 export const FormFichaSolicitud = () => {
   const { equiposData } = useFetchEquipo();
-  const [valuesTable, setvaluesTable] = useState([
-    {
-      id: 1,
-    },
-  ]);
+  const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
   // permite almacenar un array, para poder pasarselo como propiedad a al componente select
   const [equipo, setEquipo] = useState([]);
@@ -41,17 +38,6 @@ export const FormFichaSolicitud = () => {
     { name: "urgente", descripcion: "" },
     { name: "normal", descripcion: "" },
   ];
-
-  const handleNewEquipos = () => {
-    const nuevaFila = {
-      id: valuesTable.length + 1,
-    };
-    setvaluesTable([...valuesTable, nuevaFila]);
-  };
-
-  const eliminarFila = (id) => {
-    setvaluesTable(valuesTable.filter((fila) => fila.id !== id));
-  };
 
   // enviar datos al servidor
   const handleSubmitData = async (data) => {
@@ -117,6 +103,16 @@ export const FormFichaSolicitud = () => {
 
     return placas;
   };
+  const eliminarFila = (id) => {
+    setvaluesTable(valuesTable.filter((fila) => fila.id !== id));
+  };
+
+  const handleNewEquipos = () => {
+    const nuevaFila = {
+      id: valuesTable.length + 1,
+    };
+    setvaluesTable([...valuesTable, nuevaFila]);
+  };
 
   useEffect(() => {
     const equiposInfor = equiposData.map((item) => ({
@@ -130,27 +126,27 @@ export const FormFichaSolicitud = () => {
     <>
       <div className="flex justify-center  h-full w-full">
         <form
-          className="flex flex-col gap-8 w-11/12 pt-12"
+          className="flex flex-col gap-4 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}
         >
-          <div className="flex flex-row">
-            <figure className="flex-shrink-0 h-16 w-1/3 border flex justify-center items-center">
+          <div className="flex flex-row h-24">
+            <figure className="flex-shrink-0 h-full w-1/3 border flex justify-center items-center">
               <Image
                 src="logoSenaNaranja.png"
-                className="h-16 w-full object-contain"
+                className="h-20 w-full object-contain"
                 alt="logo-sena"
               />
             </figure>
-            <div className="flex-grow text-center border px-4 text-base h-16 w-1/3 flex items-center justify-center">
+            <div className="flex-grow text-center border px-4 text-base h-full w-1/3 flex items-center justify-center">
               SOLICITUD DE SERVICIO DE MANTENIMIENTO
             </div>
-            <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
+            <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
                 Centro de gestion y desarrollo sostenible surColombiano
               </p>
             </div>
           </div>
-          <div className="border flex flex-col gap-16 p-14">
+          <div className="border flex flex-col gap-10 p-14">
             <CardStyle
               titleCard={"Informacion de solicitante"}
               subtitle={"dfsdfdf"}
@@ -173,8 +169,9 @@ export const FormFichaSolicitud = () => {
                 />
               </div>
             </CardStyle>
+            <Divider />
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col ">
               Prioridad
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <SelectComponent
@@ -188,6 +185,8 @@ export const FormFichaSolicitud = () => {
               />
             </div>
 
+            <Divider />
+
             <div className="flex flex-col gap-4">
               Parte Legal
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -197,6 +196,7 @@ export const FormFichaSolicitud = () => {
                 name={"parte_legal"}
               />
             </div>
+            <Divider />
 
             <div className="flex flex-col gap-4">
               Obervaciones
@@ -207,6 +207,8 @@ export const FormFichaSolicitud = () => {
                 name={"obervaciones"}
               />
             </div>
+
+            <Divider />
 
             <div className="flex justify-end">
               <Button
@@ -243,9 +245,7 @@ export const FormFichaSolicitud = () => {
                           label="Seleccione el Equipo"
                         />
                       </TableCell>
-                      <TableCell className="items-center justify-center">
-                        s
-                      </TableCell>
+                      <TableCell className="items-center justify-center"></TableCell>
                       <TableCell className="flex items-center ">
                         <TextAreaComponent
                           errors={errors}
@@ -261,7 +261,6 @@ export const FormFichaSolicitud = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        {" "}
                         <Button
                           color="danger"
                           isIconOnly

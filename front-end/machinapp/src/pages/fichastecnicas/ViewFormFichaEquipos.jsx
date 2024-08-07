@@ -4,7 +4,7 @@ import Layout from "../../components/template/Layout";
 export const ViewFormFichaTecnica = () => {
   return (
     <>
-      <Layout titlePage={"title-page"}>
+      <Layout titlePage={"Ficha tecnica"}>
         <FormFichaTecnica />
       </Layout>
     </>

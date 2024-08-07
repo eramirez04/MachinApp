@@ -38,18 +38,15 @@ export const validarUsuarios = (usuario) => {
 };
 
 const RequestUpdate = zod.object({
-  us_nombre: zod
+  nombre: zod
     .string({ required_error: "El nombre es requerido" })
     .min(1, { message: "El nombre es requerido" }),
-  us_apellidos: zod.string().min(1, { message: "El apellido es requerido" }),
-  us_correo: zod
+  apellidos: zod.string().min(1, { message: "El apellido es requerido" }),
+  correo: zod
     .string({ required_error: "El correo es requerido" })
     .email({ message: "Dirección de correo electrónico inválida" })
     .min(5, { message: "El Correo debe tener 5 o más caracteres" }),
-  us_numero_documento: zod
-    .string()
-    .min(0, { message: "el numero de documento debe de ser mayor  a 0" }),
-  us_tipo_documento: zod
+  tipo_documento: zod
     .enum(
       ["cedula de ciudadania", "tarjeta identidad", "cedula extranjeria"],
       {
@@ -59,9 +56,16 @@ const RequestUpdate = zod.object({
       { message: "Seleccione un tipo de documento" }
     )
     .optional(),
-  rol_nombre: zod.string().min(1, { message: "rol invalido" }),
-  us_empresa: zod.string().optional(),
-  us_especialidad: zod.string().optional(),
+  contrasenia: zod
+    .string()
+    .min(5, { message: "La contraseña debe de tener minimo 5 caracteres" }),
+  numero_documento: zod
+    .string()
+    .min(0, { message: "el numero de documento debe de ser mayor  a 0" }),
+
+  rol: zod.string().min(1, { message: "rol invalido" }),
+  empresa: zod.string().optional(),
+  especialidad: zod.string().optional(),
 });
 
 export const validarUsuariosActualizar = (data) => {
