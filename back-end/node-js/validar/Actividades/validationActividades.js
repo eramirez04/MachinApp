@@ -5,6 +5,6 @@ export const validar_actividad=[
     check('acti_descripcion','la descripcion es necesaria').not().isEmpty(),
     check('acti_fecha_realizacion','la fecha es necesario').not().isEmpty(),
     check('acti_estado','el estado es necesario').not().isEmpty().isLength({max:45,min:3}),
-    check('fk_mantenimiento','Datos inválidos').not().isEmpty().isInt(),
+    check('acti_fk_solicitud','Datos inválidos').not().isEmpty().isInt(),
 
 ]
