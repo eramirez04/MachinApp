@@ -11,8 +11,8 @@ const Header = ({ color, contenido }) => {
         className="flex items-center justify-between  lg:px-8"
         aria-label="Global"
       >
-        <div className="flex  border-b-4 lg:flex-1">
-          <figure className="border-r-2 h-16 w-16 border-gray-300">
+        <div className="flex  shadow-sm lg:flex-1">
+          <figure className=" h-16 w-16 border-gray-300">
             <LazyLoadImage
               src="logoSenaNaranja.png"
               className="h-full w-full cursor-pointer"

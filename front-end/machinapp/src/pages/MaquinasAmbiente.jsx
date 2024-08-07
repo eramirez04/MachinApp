@@ -32,12 +32,8 @@ const MaquinasAmbiente=()=>{
     return (
       <>
         <Layout titlePage = { `${Nombreambiente}`}>
-            <div className='mx-12'>
-                        <div className='mt-20 flex justify-end '>
-    {/*                         <BtnAdd className="mx-1"/>
-                            <BtnOutService className="mx-1" /> */}
-                        </div>
-                        <ListarMaquinasAmb idAmbiente={idAmbiente}/>
+            <div className='mx-10'>
+                <ListarMaquinasAmb idAmbiente={idAmbiente}/>
             </div>
         </Layout>
       </>

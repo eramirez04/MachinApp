@@ -4,6 +4,7 @@ export const SelectComponent = ({
   register,
   placeholder,
   label,
+  onChange,
   ...restProps
 }) => {
   const props = { ...restProps };
@@ -16,6 +17,7 @@ export const SelectComponent = ({
         <select
           id="countries"
           name={name}
+          onChange={onChange}
           {...register(name, {
             required: {
               value: true,

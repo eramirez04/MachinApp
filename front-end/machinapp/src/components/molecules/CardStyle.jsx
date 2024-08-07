@@ -3,8 +3,7 @@ import { Image } from "@nextui-org/react";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 
 // solo se va a trabajar con este componentes para las Cards
-//
-
+// eslint-disable-next-line react/prop-types
 export const CardStyle = ({
   imagen,
   bodyContent,
@@ -16,8 +15,8 @@ export const CardStyle = ({
 }) => {
   return (
     <>
-      <Card className="border shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-gray-800 rounded-xl overflow-hidden">
-        <CardHeader className="pb-2 pt-4 px-5 flex flex-col items-start space-y-1">
+      <Card radius="lg">
+        <CardHeader className="pb-2 pt-4 px-5 flex flex-col items-start">
           <p className="text-xs uppercase font-semibold text-green-600 dark:text-purple-400">
             {subtitle}
           </p>
@@ -25,12 +24,12 @@ export const CardStyle = ({
             {titleCard}
           </span>
         </CardHeader>
-        <CardBody className="px-5 py-3 flex justify-center ">
+        <CardBody className="px-5 py-2 flex justify-center ">
           {imagen && (
             <Image
               alt="Card background"
               className="object-cover bg-red-300 w-full h-48 rounded-lg"
-              src={`http://127.0.0.1:8000/${imagen}`}
+              src={`http://localhost:3000/${imagen}`}
               width={270}
               height={210}
             />
@@ -43,7 +42,7 @@ export const CardStyle = ({
             </div>
           )}
         </CardBody>
-        <CardFooter className="px-5 py-3 flex justify-between items-center">
+        <CardFooter className="px-5 py-3 flex justify-between items-center ">
           <Link to={link}>{nameLink}</Link>
         </CardFooter>
       </Card>

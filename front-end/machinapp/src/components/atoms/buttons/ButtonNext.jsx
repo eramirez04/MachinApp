@@ -1,4 +1,4 @@
-import { Button } from "@headlessui/react";
+import { Button } from "@nextui-org/react";
 import PropTypes from "prop-types";
 
 // seguir trabajando con este componente
@@ -7,9 +7,8 @@ import PropTypes from "prop-types";
 
 const ButtonNext = ({ text, type, color, variant, children }) => {
   return (
-    <Button color={color} className="" type={type} variant={variant}>
-      {text}
-      {children}
+    <Button color={color} type={type} variant={variant}>
+      {children} {text}
     </Button>
   );
 };

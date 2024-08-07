@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        "custom-green": "#39A900",
+        "custom-green": "#39A914",
         "custom-blue": "#00324D",
       },
     },

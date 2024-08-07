@@ -1,8 +1,13 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import CardMaquinas from "../molecules/CardMaquinas.jsx"
-import { Link } from "react-router-dom"
-import api from "../atoms/api/Api.jsx"
+
+
+
+import { CardStyle } from "../molecules/CardStyle.jsx"
+
+
+import {axiosCliente} from "../../service/api/axios.js"
+
 
 const ListarMaquinasAmb = ({idAmbiente}) => {
 
@@ -11,7 +16,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
     useEffect(()=>{
         const buscarMaquinas = async () =>{
             try{
-                const response = await api.get(`ficha/listarPorAmbiente/${idAmbiente}`)
+                const response = await axiosCliente.get(`ficha/listarPorAmbiente/${idAmbiente}`)
                 setMaquinas(response.data)
                 
             }
@@ -25,13 +30,24 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
 
   return (
       <>
-        <div className = ' bg-white text-gray-600 flex flex-wrap flex-row justify-center my-16'>
+        <div className = ' bg-white text-gray-600 flex flex-wrap flex-row justify-center my-20 gap-4'>
             {
                 maquinas.map((maquina) =>(
-                    <div key= {maquina.idFicha}>
-                        <Link  to= {`/infoMaquina/${maquina.idFicha}`} >
-                            <CardMaquinas placa={maquina.placa_sena} serial ={maquina.serial} tipoEquipo={maquina.tipoEquipo[0].ti_fi_nombre} estado={maquina.estado} img={maquina.imagen}/>
-                        </Link>
+                    <div className="w-[300px]" key= {maquina.idFichas}>
+                            <CardStyle 
+                            subtitle={`${maquina.ti_fi_nombre }`}  
+                            titleCard={`Modelo :${maquina.fi_modelo}`} 
+                            imagen={`imagenes/ficha/${maquina.fi_imagen}`}
+                            link={`/infoMaquina/${maquina.idFichas}`}
+                            nameLink="ver mas" >
+
+                                <ul>
+                                    <li><b>Serial:</b> {maquina.fi_serial}</li>
+                                    <li><b>Modelo:</b> { maquina.fi_modelo}</li>
+                                    <li><b>Estado:</b> {maquina.fi_estado} </li>
+                                </ul>
+
+                            </CardStyle>
                     </div>
                 ))
             }
