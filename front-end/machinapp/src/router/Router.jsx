@@ -18,9 +18,6 @@ import Sedes from "../pages/Sedes";
 import Areas from "../pages/Areas";
 import Ambientes from "../pages/Ambientes";
 import PaneldeControlUsuarios from "../pages/PaneldeControl";
-import PaneldeControlAreas from "../pages/PaneldeControlAreas";
-import PaneldeControlSitios from "../pages/PaneldeControlSitios";
-import PaneldeControlSedes from "../pages/PaneldeControlSedes";
 import MaquinasAmbiente from "../pages/MaquinasAmbiente";
 import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
@@ -56,18 +53,6 @@ export const AppRouter = () => {
 
             <Route path="/Panelcontrol" element={<PaneldeControlUsuarios />} />
 
-            <Route
-              path="/PanelControlAreas"
-              element={<PaneldeControlAreas />}
-            />
-            <Route
-              path="/PanelControlSitios"
-              element={<PaneldeControlSitios />}
-            />
-            <Route
-              path="/PanelControlSedes"
-              element={<PaneldeControlSedes />}
-            />
             <Route
               path="/MaquinasAmb/:idAmbiente"
               element={<MaquinasAmbiente />}
