@@ -36,7 +36,7 @@ export const listarSitio = async (req, res) => {
 };
 
 export const registrarSitio = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }
@@ -93,7 +93,7 @@ export const eliminarSitio = async (req, res) => {
 };
 
 export const editarSitio = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }

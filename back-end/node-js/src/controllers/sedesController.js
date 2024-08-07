@@ -34,7 +34,7 @@ export const listarSede = async (req, res) => {
 };
 
 export const registrarSede = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }
@@ -95,7 +95,7 @@ export const eliminarSede = async (req, res) => {
 };
 
 export const editarSede = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }

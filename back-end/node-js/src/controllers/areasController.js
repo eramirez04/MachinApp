@@ -30,7 +30,7 @@ export const listarArea = async (req, res) => {
 };
 
 export const registrarArea = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }
@@ -70,7 +70,7 @@ export const eliminarArea = async (req, res) => {
 };
 
 export const editarArea = async (req, res) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errores: errors.array() });
   }
