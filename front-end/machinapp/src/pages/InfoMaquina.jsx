@@ -8,7 +8,7 @@ import Imagenes from "../components/atoms/media/Imagenes.jsx"
 import {CardStyle} from "../components/molecules/CardStyle.jsx"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
-import BlocInformation from "../components/atoms/BlocInformation.jsx"
+import BlocInformation from "../components/atoms/media/BlocInformation.jsx"
 
 
 import {Tooltip} from "@nextui-org/react"
@@ -26,7 +26,7 @@ const InfoMaquina = ()=> {
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
 
             setInfoMaquina(response.data)
-            console.log(response.data)
+          
             setMantenimientosMaquina(response.data.mantenimientos)
 
         }catch(error){

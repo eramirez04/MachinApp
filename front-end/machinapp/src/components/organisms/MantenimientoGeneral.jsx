@@ -1,96 +1,180 @@
-import React, { useEffect, useState } from 'react';
-import {axiosCliente} from "../../service/api/axios.js"
+import  { useState, useEffect } from 'react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner, Input, Select, Button, SelectItem } from "@nextui-org/react";
+import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
+import { useAsyncList } from "@react-stately/data";
+import { axiosCliente } from "../../service/api/axios.js";
 import MantenimientoGeneralPDF from './MantenimientoGeneralPDF.jsx';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import Fecha from '../atoms/Fecha.jsx';
-import Tabla from '../atoms/Tabla.jsx';
-
 
 const MantenimientoGeneral = () => {
-    const [mantenimientos, setMantenimientos] = useState([]);
-    const [fechaBusqueda, setFechaBusqueda] = useState('');
+   
     const [mensajeError, setMensajeError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [allItems, setAllItems] = useState([]);
+    const [estados, setEstados] = useState([]);
 
-    const fetchMantenimientos = async () => {
-        try {
-            let url = `mantenimiento/listarRequerimiento16/${fechaBusqueda}`;
-            const response = await axiosCliente.get(url);
-            if (response.data.length === 0) {
-                setMensajeError("No se encontraron requerimientos de mantenimiento en la base de datos para la fecha de realización proporcionada.");
-            } else {
+    const list = useAsyncList({
+        async load({ signal }) {
+            try {
+                const response = await axiosCliente.get('mantenimiento/listar', { signal });
+                
+                if (response.data.length === 0) {
+                    setMensajeError("No se encontraron mantenimientos.");
+                    return { items: [] };
+                }
+
                 setMensajeError('');
+                const mantenimientosFormateados = response.data.map(mantenimiento => ({
+                    ...mantenimiento,
+                    mant_fecha_proxima: mantenimiento.fecha_realizacion
+                }));
+
+                setAllItems(mantenimientosFormateados);
+                setFilteredItems(mantenimientosFormateados);
+
+                const estadosUnicos = [...new Set(mantenimientosFormateados.map(item => item.estado_maquina))].filter(Boolean);
+                setEstados(estadosUnicos);
+
+                return {
+                    items: mantenimientosFormateados,
+                };
+            } catch (error) {
+                console.error('Error obteniendo los mantenimientos:', error);
+                if (error.response.name !== 'CanceledError') {
+                    setMensajeError("Error al cargar los mantenimientos: " + error.message);
+                }
+                return { items: [] };
             }
-            const mantenimientosFormateados = response.data.map(mantenimiento => ({
-                ...mantenimiento,
-                fecha_realizacion: new Date(mantenimiento.fecha_realizacion).toLocaleDateString(),
-                fi_fecha_inicio_garantia: new Date(mantenimiento.fi_fecha_inicio_garantia).toLocaleDateString(),
-                fi_fecha_fin_garantia: new Date(mantenimiento.fi_fecha_fin_garantia).toLocaleDateString()
-            }));
-            setMantenimientos(mantenimientosFormateados);
-        } catch (error) {
-            console.error('Error obteniendo los mantenimientos:', error);
         }
+    });
+
+    const [loaderRef, scrollerRef] = useInfiniteScroll({
+        hasMore: false,
+        onLoadMore: list.loadMore
+    });
+
+    useEffect(() => {
+        list.reload();
+    }, []);
+
+    const handleSearch = () => {
+        let filtered = allItems;
+
+        if (searchTerm.trim() !== '') {
+            const searchTermLower = searchTerm.toLowerCase();
+            filtered = filtered.filter(item => 
+                item.idMantenimiento.toString().includes(searchTermLower) ||
+                (item.codigo_mantenimiento && item.codigo_mantenimiento.toLowerCase().includes(searchTermLower)) ||
+                (item.fecha_realizacion && item.fecha_realizacion.toLowerCase().includes(searchTermLower)) ||
+                (item.estado_maquina && item.estado_maquina.toLowerCase().includes(searchTermLower)) ||
+                (item.referencia_maquina && item.referencia_maquina.toLowerCase().includes(searchTermLower)) ||
+                (item.tipo_mantenimiento && item.tipo_mantenimiento.toLowerCase().includes(searchTermLower)) ||
+                (item.fi_fecha_inicio_garantia && item.fi_fecha_inicio_garantia.toLowerCase().includes(searchTermLower)) ||
+                (item.fi_fecha_fin_garantia && item.fi_fecha_fin_garantia.toLowerCase().includes(searchTermLower)) ||
+                (item.fi_descripcion_garantia && item.fi_descripcion_garantia.toLowerCase().includes(searchTermLower)) ||
+                (item.acti_nombre && item.acti_nombre.toLowerCase().includes(searchTermLower))
+            );
+        }
+
+        if (estadoSeleccionado !== '') {
+            filtered = filtered.filter(item => 
+                item.estado_maquina && item.estado_maquina.toLowerCase() === estadoSeleccionado.toLowerCase()
+            );
+        }
+
+        setFilteredItems(filtered);
     };
 
     useEffect(() => {
-        if (fechaBusqueda) {
-            fetchMantenimientos();
-        }
-    }, [fechaBusqueda]);
-
-    const handleDateChange = (e) => {
-        const selectedDate = e.target.value;
-        setFechaBusqueda(selectedDate);
-    };
+        handleSearch();
+    }, [estadoSeleccionado]);
 
     return (
         <div className="text-xl font-bold mb-4 text-center justify-center">
-            <h1 className="text-xl font-bold mb-4 text-black text-center justify-center">
-                Mantenimiento General
-                <Fecha value={fechaBusqueda} onChange={handleDateChange} className="ml-4 border border-gray-400 rounded px-2 py-1" />
-            </h1>
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-xl font-bold text-black">
+                    Mantenimiento General
+                </h1>
+            </div>
+
+            <div className="flex gap-2 mb-4">
+                <Input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar por ID, código, fecha, referencia o tipo..."
+                    className="max-w-xs"
+                />
+                <Select
+                    placeholder="Seleccionar estado"
+                    value={estadoSeleccionado}
+                    onChange={(e) => setEstadoSeleccionado(e.target.value)}
+                    className="max-w-xs"
+                >
+                    {estados.map((estado) => (
+                        <SelectItem key={estado} value={estado}>
+                            {estado}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Button onPress={handleSearch}>Buscar</Button>
+            </div>
+
             {mensajeError && <p className="text-red-500">{mensajeError}</p>}
-            {mantenimientos.length > 0 && (
-                <div className="flex justify-center mx-auto my-4 overflow-x-auto max-w-7xl max-h-screen-lg shadow-md sm:rounded-lg">
-                    <Tabla className="text-xs sm:text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-lg border-collapse border border-black">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border border-black">
-                            <Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">ID del mantenimiento</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Referencia de máquina</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Código de mantenimiento</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Descripción del mantenimiento</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Fecha de realización</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Estado de la máquina</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Nombre de la actividad</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Tipo de mantenimiento</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Fecha de inicio de garantía</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Fecha de fin de garantía</Tabla>
-                                <Tabla className="px-3 py-2 sm:py-3 border border-black">Descripción de garantía</Tabla>
-                            </Tabla>
-                        </thead>
-                        <tbody>
-                            {mantenimientos.map(mantenimiento => (
-                                <Tabla key={mantenimiento.idMantenimiento} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <Tabla className="px-3 py-2 sm:py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white border border-black">{mantenimiento.idMantenimiento}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.referencia_maquina}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.codigo_mantenimiento}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.descripcion_mantenimiento}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.fecha_realizacion}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.estado_maquina}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.acti_nombre}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.tipo_mantenimiento}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.fi_fecha_inicio_garantia}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.fi_fecha_fin_garantia}</Tabla>
-                                    <Tabla className="px-3 py-2 sm:py-4 border border-black">{mantenimiento.fi_descripcion_garantia}</Tabla>
-                                </Tabla>
-                            ))}
-                        </tbody>
-                    </Tabla>
-                </div>
-            )}
-            {mantenimientos.length > 0 && (
+            <Table
+                aria-label="Tabla de mantenimientos"
+                baseRef={scrollerRef}
+                bottomContent={
+                    list.isLoading ? (
+                        <div className="flex w-full justify-center">
+                            <Spinner ref={loaderRef} color="primary" />
+                        </div>
+                    ) : null
+                }
+                classNames={{
+                    base: "max-h-[70vh] overflow-scroll",
+                    table: "min-h-[400px]",
+                }}
+            >
+                <TableHeader>
+                    <TableColumn>ID</TableColumn>
+                    <TableColumn>Referencia de máquina</TableColumn>
+                    <TableColumn>Código</TableColumn>
+                    <TableColumn>Descripción</TableColumn>
+                    <TableColumn>Fecha próxima</TableColumn>
+                    <TableColumn>Estado</TableColumn>
+                    <TableColumn>Tipo</TableColumn>
+                    <TableColumn>Fecha inicio garantía</TableColumn>
+                    <TableColumn>Fecha fin garantía</TableColumn>
+                    <TableColumn>Descripción garantía</TableColumn>
+                    <TableColumn>Nombre actividad</TableColumn>
+                </TableHeader>
+                <TableBody
+                    items={filteredItems}
+                    loadingContent={<Spinner color="primary" />}
+                >
+                    {(item) => (
+                        <TableRow key={item.idMantenimiento}>
+                            <TableCell>{item.idMantenimiento}</TableCell>
+                            <TableCell>{item.referencia_maquina}</TableCell>
+                            <TableCell>{item.codigo_mantenimiento}</TableCell>
+                            <TableCell>{item.descripcion_mantenimiento}</TableCell>
+                            <TableCell>{item.fecha_realizacion}</TableCell>
+                            <TableCell>{item.estado_maquina}</TableCell>
+                            <TableCell>{item.tipo_mantenimiento}</TableCell>
+                            <TableCell>{item.fi_fecha_inicio_garantia}</TableCell>
+                            <TableCell>{item.fi_fecha_fin_garantia}</TableCell>
+                            <TableCell>{item.fi_descripcion_garantia}</TableCell>
+                            <TableCell>{item.acti_nombre}</TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+            {filteredItems.length > 0 && (
                 <PDFDownloadLink
-                    document={<MantenimientoGeneralPDF mantenimientos={mantenimientos} />}
+                    document={<MantenimientoGeneralPDF mantenimientos={filteredItems} />}
                     fileName="mantenimientos.pdf"
                     className="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 justify-center"
                 >

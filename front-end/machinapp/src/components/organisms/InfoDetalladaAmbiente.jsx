@@ -49,7 +49,7 @@ const InfoDetalladaAmbiente = () => {
                     </tr>
                     <tr className='w-full border-b'>
                       <td className='py-4 px-6 font-bold'>Fecha de Registro</td>
-                      <td className='py-4 px-6'>{detalle.sit_fecha_registro}</td>
+                      <td className='py-4 px-6'>{new Date(detalle.sit_fecha_registro).toLocaleDateString()}</td>
                     </tr>
                     <tr className='w-full border-b'>
                       <td className='py-4 px-6 font-bold'>Área en donde está ubicado</td>
