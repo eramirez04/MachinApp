@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Image } from "@nextui-org/react";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
-
+import { useState, useEffect } from 'react'
 // solo se va a trabajar con este componentes para las Cards
 // eslint-disable-next-line react/prop-types
 export const CardStyle = ({
@@ -13,7 +13,34 @@ export const CardStyle = ({
   nameLink,
   children,
 }) => {
+
+  let rutaImagen = `http://localhost:3000/${imagen}`
+
+  const [estadoImg, setEstadoImg] = useState(false)
+
+  useEffect(() => {
+      const verificarImagen = async () => {
+        try {
+          console.log(rutaImagen)
+          const response = await fetch(rutaImagen)
+
+          if (response.ok) {
+              setEstadoImg(true)
+          } else {
+              setEstadoImg(false)
+          }
+        } catch (error) {
+          setEstadoImg(false)
+        }
+      }
+  
+      verificarImagen()
+    }, [rutaImagen])
+
   return (
+
+
+    
     <>
       <Card radius="lg">
         <CardHeader className="pb-2 pt-4 px-5 flex flex-col items-start">
@@ -29,7 +56,7 @@ export const CardStyle = ({
             <Image
               alt="Card background"
               className="object-cover bg-red-300 w-full h-48 rounded-lg"
-              src={`http://localhost:3000/${imagen}`}
+              src={ estadoImg ? (rutaImagen):(`http://localhost:3000/imagenes/noEncontrada.jpg`)}
               width={270}
               height={210}
             />

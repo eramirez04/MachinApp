@@ -33,7 +33,7 @@ export const cargarImagenFicha = upload.fields([
 ])
 
 
-/* Revisar  (configurar bien codigoQR) funciona mientras*/
+/*---------------Correcto----------------------*/
 export const registrarFicha = async(req, res)=>{
 
     try{
@@ -43,21 +43,17 @@ export const registrarFicha = async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let { placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, descripcion, fiEstado, fk_sitio, fk_tipo_ficha, marca,  modelo  }= req.body
+        let { placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, descripcion, fiEstado, fk_sitio, fk_tipo_ficha, marca,  modelo, precio }= req.body
         
         //Config documentos a cargar
         let fiImagen = req.files.fiImagen[0].filename
         let fiTecnica = req.files.fiTecnica[0].filename
 
-
-
-
-
-        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_descripcion,  fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, fi_marca, fi_modelo, ficha_respaldo ) 
-        values( '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${descripcion}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${marca}','${modelo}',  '${fiTecnica}')`
+        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_descripcion,  fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, fi_marca, fi_modelo, ficha_respaldo, fi_precioEquipo ) 
+        values( '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${descripcion}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${marca}','${modelo}',  '${fiTecnica}', ${precio})`
     
-        let [respuesta] = await conexion.query(sql)
 
+        let [respuesta] = await conexion.query(sql)
 
         if(respuesta.affectedRows>0){
 
@@ -99,8 +95,7 @@ export const registrarFicha = async(req, res)=>{
                 let [respuestaQR] = await conexion.query(guardarQR)
 
                 if(respuestaQR.affectedRows>0){
-                    id = 0
-                    return res.status(200).json({"mensaje":"Se registro la ficha tecnica correctamente"})
+                    return res.status(200).json({"mensaje":"Se registro la ficha tecnica correctamente", "id": id})
                 }
                 else{
                     return res.status(404).json({"mensaje":"Error no se genero la ficha tecnica."})
@@ -119,7 +114,7 @@ export const registrarFicha = async(req, res)=>{
 }
 
 
-/* (correcto)*/
+/*---------------correcto----------------------*/
 export const listarFicha = async(req, res)=>{
     try{
         let sql = `SELECT
@@ -131,7 +126,7 @@ export const listarFicha = async(req, res)=>{
         fi_estado,
         sit_nombre
         FROM fichas_maquinas_equipos
-        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
         `
 
         let  [respuesta] = await conexion.query(sql)
@@ -205,7 +200,7 @@ export const eliminarFicha = async(req, res)=>{
 }
 
 
-/* se realizaron correcciones, comprobar en el front end.  */
+/*---------------correcto----------------------*/
 export const listarFichaPorAmbiente = async(req, res)=>{
 
     try{
@@ -221,7 +216,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         fi_imagen,
         fi_estado,
         ti_fi_nombre
-        FROM sitios
+        FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
         INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
         WHERE idAmbientes = ${idAmbiente}
@@ -280,7 +275,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 }
 
 
-/* Falta por revisar */
+/* Falta por revisar   ----->  es el resultado de toda la informacion de la ficha*/
 export const listarFichaUnica=async (req, res)=>{
     
    try{
@@ -399,7 +394,7 @@ export const listarFichaUnica=async (req, res)=>{
    }
 }
 
-/* (correcto)*/
+/* ---------Pendiente, solucionar lo de los mantenimientos   ------- (eso se da por que se registran varios detalles con el mismo id de la ficha, lo que genera que me traiga un mantenimiento por cada detalle) */
 export const listarInfoEspecifica = async(req, res)=>{
 
     try{
@@ -476,7 +471,7 @@ export const listarInfoEspecifica = async(req, res)=>{
                 mantenimientos
             }
     
-            return res.status(200).json(objInfoEspecifica)
+            return res.status(200).json(objInfoEspecifica )
     
     
         }else{
@@ -485,6 +480,5 @@ export const listarInfoEspecifica = async(req, res)=>{
 
     }catch(error){
         return res.status(500).json({"mensaje":"error en el servidor"})
-    }
-    
+    }   
 }
