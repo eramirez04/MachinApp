@@ -16,7 +16,7 @@ export const cargarImagenArea = upload.single('img');
 
 export const listarArea = async (req, res) => {
   try {
-    const sql = "SELECT idArea, sede_nombre, area_nombre FROM areas INNER JOIN sedes ON area_fk_sedes = idSede";
+    const sql = "SELECT idArea, sede_nombre, area_nombre, img_area FROM areas INNER JOIN sedes ON area_fk_sedes = idSede";
     const [resultadoArea] = await conexion.query(sql);
 
     if (resultadoArea.length > 0) {
@@ -112,7 +112,7 @@ export const listarAreaPorId = async (req, res) => {
   }
 
   try {
-    const sql = "SELECT idArea, sede_nombre, area_nombre FROM areas INNER JOIN sedes ON area_fk_sedes = idSede WHERE idArea = ?";
+    const sql = "SELECT idArea, sede_nombre, area_nombre, img_area FROM areas INNER JOIN sedes ON area_fk_sedes = idSede WHERE idArea = ?";
     const [resultadoArea] = await conexion.query(sql, [idArea]);
 
     if (resultadoArea.length > 0) {
