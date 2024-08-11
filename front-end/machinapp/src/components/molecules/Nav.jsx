@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { FaUserGear } from "react-icons/fa6";
 import { TbPointFilled } from "react-icons/tb";
@@ -15,11 +15,21 @@ import {
 
 const Nav = () => {
   const menus = [
-    { name: "Inicio", link: "/home", icon: ImHome },
-    { name: "Sitios", link: "/Sitios", icon: MdHomeWork },
-    { name: "Fichas", link: "/Fichas", icon: FaFileUpload },
-    { name: "Maquinas", link: "/Maquinas", icon: GiGears },
-    { name: "Historial", link: "/Historial", icon: FaHistory },
+    { name: "Inicio", link: "/home", icon: HomeIcon },
+    {
+      name: "Sitios",
+      link: "#",
+      icon: MapIcon,
+      submenu: true,
+      submenus: [
+        { name: "Sedes", link: "/Sedes" },
+        { name: "Areas", link: "/Areas" },
+        { name: "Ambientes", link: "/Ambientes" },
+      ],
+    },
+    { name: "Mantenimientos", link: "/Fichas", icon: DocumentTextIcon },
+    { name: "Equipo y Maquinaria", link: "/Maquinas", icon: ServerIcon },
+    { name: "Historial", link: "/Historial", icon: ClockIcon },
     {
       name: "Panel de control",
       link: "/Panelcontrol",
@@ -29,11 +39,21 @@ const Nav = () => {
   ];
 
   const [open, setOpen] = useState(true);
-  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState(
+    JSON.parse(localStorage.getItem("submenuOpen")) || false
+  );
 
   const handleSubmenuToggle = () => {
     setSubmenuOpen(!submenuOpen);
+    localStorage.setItem("submenuOpen", JSON.stringify(!submenuOpen));
   };
+
+  useEffect(() => {
+    const storedSubmenuOpen = JSON.parse(localStorage.getItem("submenuOpen"));
+    if (storedSubmenuOpen !== null) {
+      setSubmenuOpen(storedSubmenuOpen);
+    }
+  }, []);
 
   return (
     <section className="flex gap-6">
@@ -93,7 +113,9 @@ const Nav = () => {
                       to={submenu?.link}
                       key={j}
                       className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2 ${
-                        submenuOpen ? "pointer-events-auto" : "pointer-events-none"
+                        submenuOpen
+                          ? "pointer-events-auto"
+                          : "pointer-events-none"
                       }`}
                     >
                       <TbPointFilled size={16} />

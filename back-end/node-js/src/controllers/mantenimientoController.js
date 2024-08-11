@@ -170,7 +170,7 @@ export const mantenimientoDeMaquinas = async (req, res) => {
     try {
         const { idFichas } = req.params; 
         let sql = `
-            SELECT m.idMantenimiento, m.mant_codigo_mantenimiento, m.mant_fecha_proxima, 
+            SELECT Distinct m.idMantenimiento, m.mant_codigo_mantenimiento, m.mant_fecha_proxima, 
                    m.mant_estado, m.mant_descripcion, m.fk_tipo_mantenimiento
             FROM mantenimiento m
             JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
