@@ -26,7 +26,7 @@ const InfoMaquina = ()=> {
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
 
             setInfoMaquina(response.data)
-            console.log(response.data)
+          
             setMantenimientosMaquina(response.data.mantenimientos)
 
         }catch(error){

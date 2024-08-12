@@ -1,18 +1,14 @@
 import { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { axiosCliente } from "../../service/api/axios.js";
 import { Link } from "react-router-dom";
-
 // importacion de componentes
-const InputSubmit = lazy(() => import("../atoms/Inputs/InputSubmit.jsx"));
-import Alert from "../atoms/feedback/Alert.jsx";
 
+import Alert from "../atoms/feedback/Alert.jsx";
 const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
+import { Button } from "@nextui-org/react";
+import { useAuth } from "../../hooks/useAuth.jsx";
 
 const Login = () => {
-  // iniciando variables de estado
-
   //error captura de errores
   const [error, setError] = useState("");
   const {
@@ -21,20 +17,40 @@ const Login = () => {
     handleSubmit,
   } = useForm();
 
-  // uso de navegacion si se retorna un token
-  const navegacion = useNavigate();
+  const { login, loading } = useAuth();
 
-  // funcion para gurdar token en local6storage
-  const setLocalStorage = (token) => {
-    try {
-      window.localStorage.setItem("token", token);
-    } catch (error) {
-      console.log(error);
+  const handleLogin = async (data) => {
+    const res = await login(data);
+    if (res && res.data) {
+      if (res.data.mensaje) {
+        setError((prevErros) => ({
+          ...prevErros,
+          invalido: res.data.mensaje,
+        }));
+      }
+      if (res.data.error) {
+        let errores = res.data.error;
+
+        errores.forEach((element) => {
+          switch (element.path[0]) {
+            case "contrasenia":
+              setError((prevErros) => ({
+                ...prevErros,
+                contrasenia: element.message,
+              }));
+              break;
+
+            default:
+              console.log("error");
+              break;
+          }
+        });
+      }
     }
   };
 
   // funcion para validar las credenciales del usuario
-  const makeLogin = async (data) => {
+  /* const makeLogin = async (data) => {
     try {
       // peticion http post a api para poder obtener un token
       const response = await axiosCliente.post("/login", {
@@ -77,13 +93,13 @@ const Login = () => {
       }
     }
   };
-
+ */
   return (
     <>
       <div className="pt-3">
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(makeLogin)}
+          onSubmit={handleSubmit(handleLogin)}
         >
           <InputforForm
             errors={errors}
@@ -98,7 +114,14 @@ const Login = () => {
             name={"Contraseña"}
           />
           {error.contrasenia && <Alert descripcion={error.contrasenia} />}
-          <InputSubmit valorInput="Login" />
+          <Button
+            type="submit"
+            isLoading={loading}
+            className="text-white bg-custom-green"
+            /* color="success" */
+          >
+            {loading ? "Cargando" : "Iniciar Sesion"}
+          </Button>
           <Link to="/recuperar"> ¿Olvidades tu contraseña?</Link>
         </form>
         {error && (

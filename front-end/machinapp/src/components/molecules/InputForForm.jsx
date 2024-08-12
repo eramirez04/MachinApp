@@ -1,4 +1,3 @@
-import Alert from "../atoms/feedback/Alert";
 import { Input } from "@nextui-org/react";
 
 // eslint-disable-next-line react/prop-types
@@ -18,7 +17,10 @@ const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
             name={name}
             id={name}
             label={name}
-            errorMessage="Please enter a valid email"
+            isInvalid={errors[name] ? true : false}
+            autoFocus
+            /*  eslint-disable-next-line react/prop-types  */
+            errorMessage={errors[name]?.message}
             autoComplete="off"
             {...register(name, {
               required: {
@@ -29,12 +31,6 @@ const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
             value={value}
             onChange={onChange}
           />
-
-          {/* eslint-disable-next-line react/prop-types */}
-          {errors[name]?.type === "required" && (
-            // eslint-disable-next-line react/prop-types
-            <Alert descripcion={errors[name].message} />
-          )}
         </div>
       </div>
     </>

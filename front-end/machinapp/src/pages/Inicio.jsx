@@ -5,6 +5,10 @@ import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Footer from "../components/molecules/Footer.jsx";
 
+// translate
+import { useLenguage } from "../hooks/useTranslate.jsx";
+
+import { useTranslation } from "react-i18next";
 //componentes
 const Header = lazy(() => import("../components/organisms/Header.jsx"));
 
@@ -16,8 +20,26 @@ const Login = lazy(() => import("../components/organisms/Login.jsx"));
 import { FormUser } from "../components/organisms/formularios/FormUser.jsx";
 
 const Inicio = () => {
+  const { t } = useTranslation();
+  const { lenguage, onChangeTransalate } = useLenguage();
+
   return (
     <>
+      <div>
+        <h1></h1>
+        <p></p>
+
+        <div>
+          <select
+            onChange={(e) => onChangeTransalate(e.target.value)}
+            value={lenguage}
+          >
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+
       <div className="">
         <Header
           color={"bg-white"}
@@ -27,7 +49,7 @@ const Inicio = () => {
               tittleModal={"Crea tu Cuenta"}
               componente={<FormUser />}
               /*    size={"3xl"} */
-              colorButton="primary"
+              colorButton="success"
               variantButton={"shadow"}
             />
           }
@@ -37,15 +59,9 @@ const Inicio = () => {
             <div className=" mx-auto max-w-7xl  px-4 sm:static sm:px-6 lg:px-8">
               <div className="sm:max-w-lg ">
                 <h1 className="text-4xl font-bold tracking-tight text-custom-green sm:text-6xl">
-                  Mantenimiento, Seguridad y Alerta
+                  {t("description_welcome")}
                 </h1>
-                <p className="mt-4 text-xl text-custom-blue">
-                  Aquí, cada archivo es una pieza clave para mantener nuestras
-                  máquinas en su máximo esplendor. Descubre la organización
-                  estructurada que preserva la calidad de cada servicio.
-                  ¡Explora, registra y eleva el estándar de tus máquinas y
-                  equipos con nosotros!
-                </p>
+                <p className="mt-4 text-xl text-custom-blue">{t("welcome")}</p>
               </div>
               <div>
                 <div className="mt-10">

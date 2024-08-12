@@ -1,78 +1,142 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { axiosCliente } from "../../../service/api/axios.js";
+import { axiosCliente } from "../../../service/api/axios.js"
+
+import { useNavigate } from 'react-router-dom'
+
 //
 import { multiFormData } from "../../../utils/formData.js";
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
 
 // componentes
 import InputforForm from "../../molecules/InputForForm";
+import {TextAreaComponent} from "../../atoms/Inputs/TextArea.jsx"
 import ButtonNext from "../../atoms/buttons/ButtonNext.jsx";
 import { InputDate } from "../../atoms/Inputs/InputDate.jsx";
-import { CardStyle } from "../../molecules/CardStyle.jsx";
 import { SelectComponent } from "../../molecules/SelectComponent.jsx";
 import { Image } from "@nextui-org/react";
 
 export const FormFichaTecnica = () => {
   //variables de estado
   const [ambientes, setAmbientes] = useState([]);
-  const [tipoEquipo, setTipoEquipo] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [tipoEquipo, setTipoEquipo] = useState([])
+
+  //fechas 
+  const [fechaAdquisicion, setDateAduisicion] = useState("")
+  const [fechaInicioGarantia, setInicioGarantia] = useState("")
+  const [fechaFinGarantia, setFinGarantia] = useState("")
+  
   // previsua// hookslizar una imagen
-  const [previewImagen, setPreviewImagen] = useState(null);
-  const [imagen, setImagen] = useState(null);
+  const [previewImagen, setPreviewImagen] = useState(null)
+
+  //documentos
+  const [imagen, setImagen] = useState(null)
+  const [fichaRespaldo, setFicha] = useState(null)
+
+
   // asignacion de componentes a una maquinaria, seguna la base de datos
-  const [variables, setVariables] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+  //const [variables, setVariables] = useState([]);
+  //const [filteredData, setFilteredData] = useState([]);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
+  const navigate = useNavigate()
+
+
   // poder enviar los datos al servidor por metodo POST
   const handleSubmitData = async (data) => {
-    console.log(data);
-  };
+    console.log(data)
+
+    //creamos un objeto y organizamos con la informacion que traemos en el data.-- esto por q las claves del formulario y lo que acepta la api son diferentes
+
+    const dataFicha = {
+      placaSena: data.Placa,
+      serial: data.Serial,
+      fechaAdquisicion: fechaAdquisicion, 
+      fechaInicioGarantia: fechaInicioGarantia, 
+      fechaFinGarantia: fechaFinGarantia, 
+      descipcionGarantia: data.descripcionGarantia,
+      descripcion: data.DescripcionEquipo,
+      fiEstado: "operacion",
+      fk_sitio: data.ambiente, 
+      fk_tipo_ficha: data.tipo_equipo,
+      marca: data.Marca, 
+      modelo: data.Modelo,
+      fiImagen: imagen,
+      fiTecnica:fichaRespaldo,
+      precio: data.Precio
+    }
+
+    console.log(dataFicha)
+
+    try{
+      const response = await  multiFormData("http://localhost:3000/ficha/registrar",dataFicha, "POST" )
+    
+      const id = response.data.id
+
+      navigate(`/infoMaquina/${id}`)
+    }
+    catch(e){
+      alert("Error al registrar ficha tecnica")
+      console.log(e)
+    }
+
+
+  }
 
   // opciones de estado de una maquina
-  const opciones = [
+/*   const opciones = [
     { id: 2, valor: "operacion" },
     { valor: "fuera_servicio" },
     { valor: "reparacion" },
-  ];
+  ]; */
 
   // poder obtener la fecha del input DATE fecha
-  const handleDateChange = (date) => {
-    setSelectedDate(date.target.value);
-  };
+  const dateAdquisicion = (date) => {
+    setDateAduisicion(date.target.value);
+  }
+
+  const dateInicioGarantia = (date) => {
+    setInicioGarantia(date.target.value);
+  }
+
+  const dateFinGarantia = (date) => {
+    setFinGarantia(date.target.value);
+  }
 
   // tomar la imagen del input file, para poder visualizarla y enviarla al back-end
   const handleFileUpload = (event) => {
-    const archivo = event.target.files[0];
+    const archivo = event.target.files[0]
+
     if (archivo) {
       const previewUrl = URL.createObjectURL(archivo);
-      setPreviewImagen(previewUrl);
-      setImagen(archivo);
+      setPreviewImagen(previewUrl)
+      setImagen(archivo)
     } else {
-      setPreviewImagen(null);
+      setPreviewImagen(null)
     }
-  };
+
+  }
+
+  //cargar ficha tecnica de respaldo
+  const cargardocumento = (event) =>{
+    setFicha(event.target.files[0])
+  }
 
   useEffect(() => {
     const fechtData = async () => {
       try {
-        const [ambientesRes, tipoMaquinaRes, variablesRes] = await Promise.all([
+        const [ambientesRes, tipoMaquinaRes /* , variablesRes */] = await Promise.all([
           axiosCliente.get("sitio/listarsitio"),
-          axiosCliente.get("tipoFicha/listar"),
-          axiosCliente.get("variable/listar"),
+          axiosCliente.get("tipoFicha/listar")
+          //axiosCliente.get("variable/listar"),
         ]);
 
-        console.log(ambientesRes);
-        /*     console.log(variablesRes) */
-
         const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
-          id: item.id,
+          id: item.idAmbientes,
           valor: item.area_nombre,
         }));
 
@@ -83,8 +147,8 @@ export const FormFichaTecnica = () => {
 
         setAmbientes(ambientesArray);
         setTipoEquipo(tipoEquipoArray);
-        setVariables(variablesRes.data);
-        setFilteredData(variablesRes.data);
+        //setVariables(variablesRes.data);
+        //setFilteredData(variablesRes.data);
       } catch (error) {
         console.error(error.response);
       }
@@ -108,7 +172,7 @@ export const FormFichaTecnica = () => {
             />
           </figure>
           <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-            Ficha de equipos
+            Ficha Tecnica
           </div>
           <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
             <p className="overflow-hidden overflow-ellipsis text-center">
@@ -116,25 +180,73 @@ export const FormFichaTecnica = () => {
             </p>
           </div>
         </div>
-        <div className="border flex flex-col sm:flex-row mt-5 w-full h-auto sm:h-96">
-          <div className="w-full sm:w-2/4 p-4">
-            <CardStyle subtitle={"descripcion"} titleCard={"Descripcion"}>
+        <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
+
+          <div className="w-full sm:w-2/4 p-2">
+            <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Basica</h3>
+
+            <div className="grid grid-cols-2 gap-3 ">
+
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
-                name={"placa"}
+                name={"Placa"}
               />
+
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
-                name={"serial"}
+                name={"Marca"}
               />
-            </CardStyle>
+
+              <InputforForm
+                errors={errors}
+                register={register}
+                tipo={"text"}
+                name={"Serial"}
+              />
+              
+              <InputforForm
+                errors={errors}
+                register={register}
+                tipo={"text"}
+                name={"Modelo"}
+              />
+            </div>
+
+            <div className="border-b-1 border-b-green-400 p-3 pb-3 mb-8">     
+              <InputDate
+                label="Fecha de adquisicion: "
+                value={fechaAdquisicion}
+                onChange={dateAdquisicion}
+                className="mt-4"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-5 ">
+              <InputforForm
+                errors={errors}
+                register={register}
+                tipo={"number"}
+                name={"Precio"}
+              />
+              <SelectComponent
+                options={ambientes}
+                name="ambiente"
+                placeholder="Ambiente"
+                valueKey="id"
+                textKey="valor"
+                register={register}
+                label="Ambiente"
+              />
+            </div>
           </div>
-          <div className="w-full sm:w-2/4 p-4">
-            <div className="flex items-center justify-center w-full h-80 bg-gray-300 rounded sm:w-full dark:bg-gray-700">
+
+
+          <div className="w-full sm:w-2/4 p-2 ml-11">
+            <div className="flex items-center justify-center w-full h-[284px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
               <img
                 className="h-full w-full object-contain rounded"
                 alt=""
@@ -144,55 +256,90 @@ export const FormFichaTecnica = () => {
             <input
               type="file"
               onChange={handleFileUpload}
-               accept="image/*" 
-              className="appearance-none w-full py-2 px-4 mt-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
+              accept="image/*"
+              className="appearance-none  w-full py-2 px-4 mt-5 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
             />
           </div>
         </div>
-        <div className="grid border grid-cols-1 gap-6 mt-12 sm:grid-cols-2 p-5">
-          <CardStyle titleCard={"Estado de maquina"}>
-            {/* componente para mostrar la lista de los ambientes */}
+
+        <div className="border-b-1 border-t-1 border-t-green-600 border-b-green-600 my-14 py-6  px-3 flex  items-center ">
+          <p className="mr-3 text-gray-900">Seleccionar el tipo de ficha tecnica: </p>
+          <div>
             <SelectComponent
-              options={ambientes}
-              name="ambiente"
-              placeholder="Ambiente"
-              valueKey="id"
-              textKey="valor"
-              register={register}
-              label="Ambiente"
+                options={tipoEquipo}
+                name="tipo_equipo"
+                placeholder="Seleccione una opcion"
+                valueKey="id"
+                textKey="valor"
+                register={register}
             />
-            {/* Componente para seleccionar el tipo de equipo que es  */}
-            <SelectComponent
-              options={tipoEquipo}
-              name="tipo_equipo"
-              placeholder="Seleccione una opcion"
-              valueKey="id"
-              textKey="valor"
-              label="Tipo de Equipo o Maquinaria"
-              register={register}
-            />
-            {/* Componente para seleccionar el estado en el que se encuentra la maquina o equipo */}
-            <SelectComponent
-              options={opciones}
-              name="options"
-              placeholder="Estado"
-              valueKey="valor"
-              textKey="valor"
-              label="Estado"
-              register={register}
-            />
-          </CardStyle>
-          <CardStyle>
-            {/* Para seleccionar las fechas del equipo */}
-            <InputDate
-              value={selectedDate}
-              onChange={handleDateChange}
-              className="mt-4"
-            />
-          </CardStyle>
+          </div>
+
+          <a href="" className="text-green-600/55 ml-28 hover:text-green-600">Si no existe, <br /> registrelo aqui!</a>  {/* hacer modal para registra tipos de equipo */}
         </div>
-        <ButtonNext color="primary" text="generar" type="submit" />
+
+        <div className="border-b-1 border-b-green-600 pb-7 mb-12">
+          <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Descripcion del equipo</h3>
+          <div className="w-full  p-2">
+            <TextAreaComponent
+            errors = {errors}
+            register={register}
+            name={'DescripcionEquipo'}
+            descripcion={'Descripcion del equipo'}
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row mt-5 w-full gap-10 ">
+            <div className="flex items-center justify-center">
+              <p >Añadir ficha tecnica de respaldo (opcional) :</p>
+            </div>
+            
+            
+            <div className="flex items-center justify-center">
+              <input
+                type="file"
+                onChange={cargardocumento}
+                className="appearance-none  py-2 px-4 mt-5 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
+              />
+            </div>
+
+          </div>
+        </div>
+
+        <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Garantia</h3>
+        <div className=" flex flex-col sm:flex-row mt-5 w-full ">
+
+          <div className="w-full sm:w-2/4 p-2">
+
+            <div className="my-3">
+              <InputDate
+                label="Fecha inicio garantia : "
+                value={fechaInicioGarantia}
+                onChange={dateInicioGarantia}
+                className="mt-4"
+              />
+            </div>
+            <div className="my-3">
+              <InputDate
+                label="Fecha fin garantia: "
+                value={fechaFinGarantia}
+                onChange={dateFinGarantia}
+                className="mt-4"
+              />
+            </div>
+          </div>
+
+          <div className="w-full sm:w-2/4 p-2">
+            <TextAreaComponent
+            errors = {errors}
+            register={register}
+            name={'descripcionGarantia'}
+            descripcion={'Descripcion de la garantia'}
+            />
+          </div>
+        </div>
+        
+        <ButtonNext color="primary" text="Registrar ficha tecnica" type="submit" />
       </form>
     </>
-  );
-};
+  )
+}
