@@ -131,7 +131,7 @@ export const listarFicha = async(req, res)=>{
         fi_estado,
         sit_nombre
         FROM fichas_maquinas_equipos
-        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
         `
 
         let  [respuesta] = await conexion.query(sql)
