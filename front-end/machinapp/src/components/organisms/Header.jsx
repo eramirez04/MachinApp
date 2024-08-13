@@ -14,7 +14,7 @@ const Header = ({ color, contenido }) => {
         <div className="flex  shadow-sm lg:flex-1">
           <figure className=" h-16 w-16 border-gray-300">
             <LazyLoadImage
-              src="logoSenaNaranja.png"
+              src="/logoSenaNaranja.png"
               className="h-full w-full cursor-pointer"
               effect="opacity"
               alt="logo-sena"
@@ -23,7 +23,6 @@ const Header = ({ color, contenido }) => {
           <div className="flex justify-center items-center ml-2">MachinApp</div>
         </div>
         {contenido}
-        {/*   <MenuMobile /> */}
       </nav>
     </header>
   );

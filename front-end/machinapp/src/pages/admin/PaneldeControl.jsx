@@ -1,5 +1,6 @@
-import Layout from "../components/template/Layout.jsx";
-import ListarUsuarios from "../components/organisms/PanelConponents/PDCAcciones/ListarUsuarios.jsx";
+import Layout from "../../components/template/Layout.jsx";
+import ListarUsuarios from "../../components/organisms/PanelConponents/PDCAcciones/ListarUsuarios.jsx";
+
 const PaneldeControlUsuarios = () => {
   return (
     <>
