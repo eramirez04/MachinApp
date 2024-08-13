@@ -7,26 +7,24 @@ import { useAuth } from "../../hooks/useAuth";
 
 export const AdminRoute = () => {
   return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRouteAdmin>
-              <PaneldeControlUsuarios />
-            </ProtectedRouteAdmin>
-          }
-        />
-        <Route
-          path="user/"
-          element={
-            <ProtectedRouteAdmin>
-              <UpdateUserAdmin />
-            </ProtectedRouteAdmin>
-          }
-        />
-      </Routes>
-    </>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <ProtectedRouteAdmin>
+            <PaneldeControlUsuarios />
+          </ProtectedRouteAdmin>
+        }
+      />
+      <Route
+        path="user/"
+        element={
+          <ProtectedRouteAdmin>
+            <UpdateUserAdmin />
+          </ProtectedRouteAdmin>
+        }
+      />
+    </Routes>
   );
 };
 

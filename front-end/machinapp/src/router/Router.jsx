@@ -8,7 +8,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 import Inicio from "../pages/Inicio";
 import Home from "../pages/auth/Home";
-import Perfil from "../pages/auth/Perfil";
+import { PerfilRoutes } from "./rutas/PerfilRoute";
 import Fichas from "../pages/Fichas";
 import Historial from "../pages/Historial";
 import Maquinas from "../pages/Maquinas";
@@ -16,7 +16,7 @@ import Sitios from "../pages/Sitios";
 /* import PanelControl from "../pages/PaneldeControl"; */
 import Sedes from "../pages/Sedes";
 import Areas from "../pages/Areas";
-import PaneldeControlUsuarios from "../pages/PaneldeControl";
+import { AdminRoute } from "./rutas/AdminRoutes";
 import MaquinasAmbiente from "../pages/MaquinasAmbiente";
 import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
@@ -37,7 +37,7 @@ export const AppRouter = () => {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
-            <Route path="/perfil/" element={<Perfil />} />
+            <Route path="/perfil/*" element={<PerfilRoutes />} />
             <Route path="/FIchas" element={<Fichas />} />
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
@@ -48,7 +48,7 @@ export const AppRouter = () => {
               path="/crearfichaequipos"
               element={<ViewFormFichaTecnica />}
             />
-            <Route path="/Panelcontrol" element={<PaneldeControlUsuarios />} />
+            <Route path="/Panelcontrol/*" element={<AdminRoute />} />
             <Route
               path="/MaquinasAmb/:idAmbiente"
               element={<MaquinasAmbiente />}
