@@ -126,7 +126,7 @@ export const FormFichaSolicitud = () => {
     <>
       <div className="flex justify-center  h-full w-full">
         <form
-          className="flex flex-col gap-4 w-11/12 pt-12"
+          className="flex flex-col gap-8 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}
         >
           <div className="flex flex-row h-24">
@@ -170,7 +170,6 @@ export const FormFichaSolicitud = () => {
               </div>
             </CardStyle>
             <Divider />
-
             <div className="flex flex-col ">
               Prioridad
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -184,9 +183,7 @@ export const FormFichaSolicitud = () => {
                 label="Prioridad"
               />
             </div>
-
             <Divider />
-
             <div className="flex flex-col gap-4">
               Parte Legal
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -197,7 +194,6 @@ export const FormFichaSolicitud = () => {
               />
             </div>
             <Divider />
-
             <div className="flex flex-col gap-4">
               Obervaciones
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -207,7 +203,6 @@ export const FormFichaSolicitud = () => {
                 name={"obervaciones"}
               />
             </div>
-
             <Divider />
 
             <div className="flex justify-end">
@@ -219,7 +214,6 @@ export const FormFichaSolicitud = () => {
                 <Icons icon={PlusIcon} /> Añadir
               </Button>
             </div>
-
             <div>
               <Table aria-label="Example table with client async pagination">
                 <TableHeader>
@@ -276,7 +270,9 @@ export const FormFichaSolicitud = () => {
             </div>
           </div>
 
-          <Button type="submit">Registrar</Button>
+          <Button type="submit" size="lg" className="mt-9 bg-custom-green">
+            <span className="text-white font-bold">Registrar</span>
+          </Button>
         </form>
       </div>
     </>
