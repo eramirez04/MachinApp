@@ -26,6 +26,7 @@ import InfoAmbiente from "../pages/InfoAmbiente";
 import InfoSede from "../pages/InfoSede";
 import AreasGeneral from "../pages/AreasGeneral";
 import AmbientesGeneral from "../pages/AmbientesGeneral";
+import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AppRouter = () => {
   return (
@@ -33,7 +34,7 @@ export const AppRouter = () => {
       <Suspense>
         <Routes>
           <Route path="/" element={<Inicio />} />
-          <Route path="/recuperar" element={<div>hola como estasei</div>} />
+          <Route path="/recuperar" element={<ResetPassword />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
