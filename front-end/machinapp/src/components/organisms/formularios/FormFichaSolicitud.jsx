@@ -7,6 +7,9 @@ import { Icons } from "../../atoms/icons/Icons";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { SelectComponent } from "../../molecules/SelectComponent";
 import { useFetchEquipo } from "../../../hooks/useFetchEquipos";
+import { useEffect, useState } from "react";
+import { axiosCliente } from "../../../service/api/axios";
+import { useSolicitudFichasData } from "../../../hooks/solicitud/Solicitud";
 import {
   Table,
   TableHeader,
@@ -15,11 +18,10 @@ import {
   Button,
   Divider,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { axiosCliente } from "../../../service/api/axios";
 
 export const FormFichaSolicitud = () => {
   const { equiposData } = useFetchEquipo();
+  const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
   // permite almacenar un array, para poder pasarselo como propiedad a al componente select
@@ -62,22 +64,14 @@ export const FormFichaSolicitud = () => {
         fk_solicitud: id,
       }));
 
-      const resfichas = await handledata(placasSenaConSolicitud);
+      const resfichas = await registrarSolicitudFichas(placasSenaConSolicitud);
+      console.log(resfichas);
 
       if (res && resfichas) {
         alert("se registro con exito la solicitud del mantenimiento");
         reset();
+        setvaluesTable([{ id: 1 }]);
       }
-    } catch (error) {
-      console.error(error.response.data);
-    }
-  };
-
-  // enviar los datos al servidor para la tabla solicitud_has_fichas
-  const handledata = async (data) => {
-    try {
-      const res = await axiosCliente.post("solicitudesfichas/", data);
-      return res.data;
     } catch (error) {
       console.error(error.response.data);
     }
@@ -125,6 +119,7 @@ export const FormFichaSolicitud = () => {
   return (
     <>
       <div className="flex justify-center  h-full w-full">
+        hola
         <form
           className="flex flex-col gap-8 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}

@@ -8,7 +8,7 @@ import {
 import { Icons } from "../atoms/icons/Icons.jsx";
 
 import { useAuth } from "../../hooks/useAuth.jsx";
-import { Divider } from "@nextui-org/react";
+import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
 const BuscarUsuario = () => {
@@ -36,7 +36,16 @@ const BuscarUsuario = () => {
 
   return (
     <>
-      <Link to={"/perfil/settings"}>isRequired</Link>
+      <div className="flex justify-end">
+        <Button color="primary" type="submit" radius="sm">
+          <Link
+            to={"/perfil/settings"}
+            className="h-full w-full text-sm flex justify-center items-center "
+          >
+            Editar Información
+          </Link>
+        </Button>
+      </div>
 
       <div className="p-4 sm:p-6 lg:p-8 rounded-lg">
         <Divider />
