@@ -28,16 +28,16 @@ export const PaginateTable = ({ columns, data, itemsPerPage = 10 }) => {
             {columns.map((column, index) => (
               <TableColumn
                 key={index}
-                className="bg-custom-green text-white font-bold"
+                className="bg-green-600 text-white font-bold"
               >
                 {column}
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="flex gap-36">
             {data
               .map((row, index) => (
-                <TableRow className="" key={index}>
+                <TableRow className="hover:bg-base-300 gap-7 h-12 " key={index}>
                   {Object.values(row).map((cell, cellIndex) => (
                     <TableCell key={cellIndex}>{cell}</TableCell>
                   ))}

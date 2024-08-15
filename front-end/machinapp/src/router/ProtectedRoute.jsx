@@ -5,7 +5,6 @@ export const ProtectedRoute = () => {
 
   try {
     if (!token) {
-      alert("permiso denegado");
       return <Navigate to={"/"} />;
     }
 
@@ -14,7 +13,7 @@ export const ProtectedRoute = () => {
     console.error(error);
   }
 
-  console.log("Renderizando el Outlet"); // Declaración de depuración
+  /* console.log("Renderizando el Outlet"); // Declaración de depuración */
 
   return <Outlet />;
 };

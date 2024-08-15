@@ -9,7 +9,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Inicio from "../pages/Inicio";
 import Home from "../pages/auth/Home";
 import { PerfilRoutes } from "./rutas/PerfilRoute";
-import Fichas from "../pages/Fichas";
+import Fichas from "../pages/admin/Fichas";
 import Historial from "../pages/Historial";
 import Maquinas from "../pages/Maquinas";
 import Sitios from "../pages/Sitios";
@@ -39,7 +39,7 @@ export const AppRouter = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
-            <Route path="/FIchas" element={<Fichas />} />
+            <Route path="/solicitudes" element={<Fichas />} />
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
