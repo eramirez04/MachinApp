@@ -10,7 +10,7 @@ import { useLenguage } from "../hooks/useTranslate.jsx";
 
 import { useTranslation } from "react-i18next";
 //componentes
-const Header = lazy(() => import("../components/organisms/Header.jsx"));
+import Header from "../components/molecules/Header.jsx";
 
 // modal
 const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
