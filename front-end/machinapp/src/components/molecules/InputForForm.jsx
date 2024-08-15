@@ -14,6 +14,8 @@ const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
           </label>
           <Input
             type={tipo}
+            variant="bordered"
+            radius="sm"
             name={name}
             id={name}
             label={name}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -10,17 +10,17 @@ const Example = ( ) => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // Función para obtener eventos desde el back-end
+
     const fetchEvents = async () => {
       try {
         const response = await axiosCliente.get('actividades/listar/{acti_fecha_realizacion}');
         const actividades = response.data.resultadoActividad;
 
-        // Mapea las actividades a eventos de FullCalendar
+
         const calendarEvents = actividades.map(actividad => ({
-          title: actividad.acti_nombre, // Ajusta el nombre del campo según tu base de datos
-          start: actividad.acti_fecha_realizacion, // Asegúrate de que esté en el formato correcto
-          description: actividad.acti_descripciones // Ajusta el nombre del campo según tu base de datos
+          title: actividad.acti_nombre, 
+          start: actividad.acti_fecha_realizacion,
+          description: actividad.acti_descripciones 
         }));
 
         setEvents(calendarEvents);

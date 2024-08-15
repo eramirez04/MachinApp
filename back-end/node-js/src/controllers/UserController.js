@@ -192,7 +192,7 @@ export const recuperaraContra = async (req, res) => {
       res.status(200).json({
         mensage: "Contraseña recuperada",
         estado: true,
-        "Correo enviado a: ": result.accepted,
+        "correo_usuario: ": result.accepted,
       });
     }
   } catch (error) {

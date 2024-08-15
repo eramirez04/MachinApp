@@ -16,6 +16,8 @@ export const useRegistrarUsuario = () => {
       setError(error.response);
       setLoadind(false);
       throw error;
+    } finally {
+      setLoadind(false);
     }
   };
 

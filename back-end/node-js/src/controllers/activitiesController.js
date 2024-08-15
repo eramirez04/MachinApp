@@ -29,71 +29,7 @@ export const listarActividades= async (req,res)=>{
 
 }
 
-export const listarActividadesFecha= async (req,res)=>{     
-    
-    try{
-        const {acti_fecha_realizacion}=req.params
-        let sql = `SELECT * FROM actividades WHERE acti_fecha_realizacion=?`
-
-        const [resultadoActividad] = await conexion.query(sql,[acti_fecha_realizacion])
-
-        if (resultadoActividad.length > 0) {
-          res.status(200).json({
-            "Mensaje": "Usuarios encontrado",
-            resultadoActividad
-          })
-        }
-        else {
-          return res.status(404).json(
-            { "Mensaje": "No se encontraron usuarios" }
-          )
-        }
-    }
-    catch(err){
-        res.status(500).json({"message":"error en el servidor"+err})
-
-    }
-
-}
-
-/* export const registrarActividades = async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        console.log(req.body);
-
-        const { acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_estado, acti_fk_solicitud } = req.body;
-
-        const sql = `INSERT INTO actividades (
-            acti_nombre,
-            acti_descripcion,
-            acti_fecha_realizacion,
-            acti_estado,
-            acti_fk_solicitud
-        ) VALUES (?, ?, ?, ?, ?)`;
-
-        const [respuesta] = await conexion.query(sql, [
-            acti_nombre,
-            acti_descripcion,
-            acti_fecha_realizacion,
-            acti_estado,
-            acti_fk_solicitud
-        ]);
-
-        if (respuesta.affectedRows > 0) {
-            return res.status(200).json({ message: "Se registró con éxito" });
-        } else {
-            return res.status(404).json({ message: "No se registró" });
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Error: " + error.message });
-    }
-};
- */
+//registrar por defecto las actividades
 export const registrarActividades = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -103,13 +39,13 @@ export const registrarActividades = async (req, res) => {
 
         console.log(req.body);
 
-        const { acti_nombre, acti_descripciones, acti_fecha_realizacion, acti_estado, acti_fk_solicitud } = req.body;
+        const { acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_fk_solicitud } = req.body;
 
-        if (!Array.isArray(acti_nombre) || !Array.isArray(acti_descripciones)) {
+        if (!Array.isArray(acti_nombre) || !Array.isArray(acti_descripcion)) {
             return res.status(400).json({ message: "acti_nombre y acti_descripciones deben ser arrays" });
         }
 
-        if (acti_nombre.length !== acti_descripciones.length) {
+        if (acti_nombre.length !== acti_descripcion.length) {
             return res.status(400).json({ message: "acti_nombre y acti_descripciones deben tener la misma longitud" });
         }
 
@@ -117,20 +53,19 @@ export const registrarActividades = async (req, res) => {
         const placeholders = acti_nombre.map((_, index) => {
             values.push(
                 JSON.stringify(acti_nombre[index]), 
-                JSON.stringify(acti_descripciones[index]), 
+                JSON.stringify(acti_descripcion[index]), 
                 acti_fecha_realizacion, 
-                acti_estado, 
                 acti_fk_solicitud
             );
-            return "(?, ?, ?, ?, ?)";
+            return "(?, ?, ?, ?, DEFAULT)";  
         }).join(", ");
 
         const sql = `INSERT INTO actividades (
             acti_nombre,
-            acti_descripciones,
+            acti_descripcion,
             acti_fecha_realizacion,
-            acti_estado,
-            acti_fk_solicitud
+            acti_fk_solicitud,
+            acti_estado
         ) VALUES ${placeholders}`;
 
         const [respuesta] = await conexion.query(sql, values);
@@ -147,7 +82,7 @@ export const registrarActividades = async (req, res) => {
 };
 
 
-
+//registrar manualmente las actividades 
 export const registrarVariasActividades = async (req, res) => {
     const actividades = req.body;
 
@@ -159,8 +94,8 @@ export const registrarVariasActividades = async (req, res) => {
     let connection;
 
     try {
-        connection = await conexion.getConnection(); // Obtener una conexión
-        await connection.beginTransaction(); // Iniciar una transacción
+        connection = await conexion.getConnection(); 
+        await connection.beginTransaction(); 
 
         for (let i = 0; i < actividades.length; i++) {
             const { acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_estado, acti_fk_solicitud } = actividades[i];
@@ -186,16 +121,16 @@ export const registrarVariasActividades = async (req, res) => {
             }
         }
 
-        await connection.commit(); // Confirmar la transacción
+        await connection.commit(); 
 
         return res.status(200).json({ message: "Se registraron correctamente las actividades" });
 
     } catch (error) {
-        if (connection) await connection.rollback(); // Deshacer la transacción en caso de error
+        if (connection) await connection.rollback(); 
         console.error(error);
         return res.status(500).json({ message: "Error en el servidor: " + error.message });
     } finally {
-        if (connection) connection.release(); // Liberar la conexión
+        if (connection) connection.release(); 
     }
 };
 
