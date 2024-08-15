@@ -4,14 +4,13 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Footer from "../components/molecules/Footer.jsx";
-import Header from "../components/molecules/Header.jsx";
 
 // translate
 import { useLenguage } from "../hooks/useTranslate.jsx";
 
 import { useTranslation } from "react-i18next";
 //componentes
-
+import Header from "../components/molecules/Header.jsx";
 
 // modal
 const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
