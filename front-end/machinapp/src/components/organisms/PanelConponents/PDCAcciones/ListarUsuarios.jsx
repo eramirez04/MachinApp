@@ -5,6 +5,7 @@ import { FormUser } from "../../formularios/FormUser.jsx";
 import { PaginateTable } from "../../table/PaginateTable.jsx";
 import ModalComponte from "../../../molecules/Modal.jsx";
 import { useGlobalData } from "../../../../hooks/useGlobalData.jsx";
+import { useNavigate } from "react-router-dom";
 import {
   Dropdown,
   DropdownTrigger,
@@ -16,12 +17,16 @@ import {
 const ListarUsuarios = () => {
   const { dataUser } = useGlobalData();
 
+  const navigate = useNavigate();
+
   // definimos las columnas para la tabla
   const columns = [
     "Nombre",
     "Apellidos",
     "Correo",
     "Tipo de documento",
+    "Numero de Documento",
+    "Rol",
     "Acciones",
   ];
 
@@ -32,7 +37,18 @@ const ListarUsuarios = () => {
     apellidos: item.us_apellidos,
     correo: item.us_correo,
     tipo_documento: item.us_tipo_documento,
+    numero_documento: item.us_numero_documento,
+    rol: item.fk_roles,
   }));
+
+  const handleEdit = (id) => {
+    const resultadoUsuario = dataUser.find(
+      (persona) => persona.us_numero_documento === id
+    );
+
+    // Navega a la ruta deseada con la información del usuario
+    navigate("/panelcontrol/user", { state: { resultadoUsuario } });
+  };
 
   return (
     <>
@@ -68,8 +84,12 @@ const ListarUsuarios = () => {
                         </Button>
                       </DropdownTrigger>
                       <DropdownMenu>
-                        <DropdownItem>View</DropdownItem>
-                        <DropdownItem>Edit</DropdownItem>
+                        {/* <DropdownItem>View</DropdownItem> */}
+                        <DropdownItem
+                          onClick={() => handleEdit(row.numero_documento)}
+                        >
+                          Edit
+                        </DropdownItem>
                         <DropdownItem>Delete</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
