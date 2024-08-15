@@ -27,7 +27,17 @@ const Nav = ({ rol }) => {
         { name: "Ambientes", link: "/Ambientes" },
       ],
     },
-    { name: "Mantenimientos", link: "/Fichas", icon: DocumentTextIcon },
+    {
+      name: "Mantenimientos",
+      link: "#",
+      icon: DocumentTextIcon,
+      submenu: true,
+      submenus: [
+        { name: "Registrar Solicitud", link: "/crearsolicitud" },
+        { name: "Registrar Mantenimiento", link: "/crear_ficha_mantenimiento" },
+        { name: "Solicitudes", link: "/solicitudes" },
+      ],
+    },
     { name: "Equipo y Maquinaria", link: "/Maquinas", icon: ServerIcon },
     { name: "Historial", link: "/Historial", icon: ClockIcon },
     {
@@ -38,13 +48,16 @@ const Nav = ({ rol }) => {
   ];
 
   const [open, setOpen] = useState(true);
-  const [submenuOpen, setSubmenuOpen] = useState(
-    JSON.parse(localStorage.getItem("submenuOpen")) || false
-  );
+  const [submenuOpen, setSubmenuOpen] = useState(() => {
+    const saved = localStorage.getItem("submenuOpen");
+    return saved ? JSON.parse(saved) : {};
+  });
 
-  const handleSubmenuToggle = () => {
-    setSubmenuOpen(!submenuOpen);
-    localStorage.setItem("submenuOpen", JSON.stringify(!submenuOpen));
+  const handleSubmenuToggle = (name) => {
+    setSubmenuOpen((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
   };
 
   useEffect(() => {
@@ -54,6 +67,11 @@ const Nav = ({ rol }) => {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("submenuOpen", JSON.stringify(submenuOpen));
+  }, [submenuOpen]);
+
+ 
   return (
     <section className="flex gap-6">
       <div
@@ -78,7 +96,12 @@ const Nav = ({ rol }) => {
                     className={` ${
                       menu?.margin && "mt-96"
                     } group flex items-center text-sm gap-3.5 font-medium p-4 hover:shadow-md border-b shadow-sm hover:bg-gray-100 rounded-md`}
-                    onClick={menu?.submenu ? handleSubmenuToggle : null}
+                    onClick={(e) => {
+                      if (menu?.submenu) {
+                        e.preventDefault();
+                        handleSubmenuToggle(menu.name);
+                      }
+                    }}
                   >
                     <div className="p-1 rounded-full">
                       <Icons icon={menu.icon} />
@@ -104,7 +127,7 @@ const Nav = ({ rol }) => {
                   {menu?.submenu && (
                     <div
                       className={`ml-6 mt-2 flex flex-col gap-2 transition-all duration-500 ease-in-out transform ${
-                        submenuOpen
+                        submenuOpen[menu.name]
                           ? "max-h-40 opacity-100 translate-y-0 pointer-events-auto"
                           : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
                       }`}
@@ -113,11 +136,7 @@ const Nav = ({ rol }) => {
                         <Link
                           to={submenu?.link}
                           key={j}
-                          className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2 ${
-                            submenuOpen
-                              ? "pointer-events-auto"
-                              : "pointer-events-none"
-                          }`}
+                          className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2`}
                         >
                           <TbPointFilled size={16} />
                           {submenu?.name}

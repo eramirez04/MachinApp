@@ -15,7 +15,7 @@ const Header = ({ color, contenido }) => {
           <figure className=" h-16 w-16 border-gray-300">
             <LazyLoadImage
               src="/logoSenaNaranja.png"
-              className="h-full w-full cursor-pointer"
+              className="h-full w-full cursor-fdfdpointer"
               effect="opacity"
               alt="logo-sena"
             />
@@ -39,7 +39,7 @@ export default Header;
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-            </a>
+            </a>fdfd
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"

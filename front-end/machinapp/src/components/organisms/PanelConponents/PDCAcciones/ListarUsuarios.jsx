@@ -42,12 +42,12 @@ const ListarUsuarios = () => {
   }));
 
   const handleEdit = (id) => {
-    const resultado = dataUser.find(
-      (fruta) => fruta.us_numero_documento === id
+    const resultadoUsuario = dataUser.find(
+      (persona) => persona.us_numero_documento === id
     );
 
     // Navega a la ruta deseada con la información del usuario
-    navigate("/panelcontrol/user", { state: { resultado } });
+    navigate("/panelcontrol/user", { state: { resultadoUsuario } });
   };
 
   return (

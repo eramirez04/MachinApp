@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 //componentes
 import { Outlet } from "react-router-dom";
-const Header = lazy(() => import("../organisms/Header.jsx"));
+const Header = lazy(() => import("../molecules/Header.jsx"));
 const Nav = lazy(() => import("../molecules/Nav.jsx"));
 import { AvatarCom } from "../molecules/Avatar.jsx";
 import Footer from "../molecules/Footer.jsx";
