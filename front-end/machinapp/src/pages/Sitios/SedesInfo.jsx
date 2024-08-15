@@ -1,4 +1,4 @@
-import BuscarSedesGenerales from "../components/organisms/SedesGeneral"
+import BuscarSedesGenerales from "../components/organisms/Sitios/SedesGeneral"
 
 const Sedees = () => {
 

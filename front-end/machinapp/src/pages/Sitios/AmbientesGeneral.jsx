@@ -1,5 +1,5 @@
-import BuscarAmbientesGeneral from '../components/organisms/ListarAmbientesGeneral'
-import Layout from '../components/template/Layout'
+import BuscarAmbientesGeneral from '../../components/organisms/Sitios/ListarAmbientesGeneral'
+import Layout from '../../components/template/Layout'
 
 const AmbientesGeneral=()=>  {
   return (

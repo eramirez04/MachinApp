@@ -1,5 +1,5 @@
-import InfoDetalladaSede from '../components/organisms/InfoDetalladaSede'
-import Layout from '../components/template/Layout'
+import InfoDetalladaSede from '../../components/organisms/Sitios/InfoDetalladaSede'
+import Layout from '../../components/template/Layout'
 
 const InfoSede = () => {
   return (

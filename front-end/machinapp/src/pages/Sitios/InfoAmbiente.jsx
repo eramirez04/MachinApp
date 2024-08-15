@@ -1,5 +1,5 @@
-import InfoDetalladaAmbiente from '../components/organisms/InfoDetalladaAmbiente'
-import Layout from '../components/template/Layout'
+import InfoDetalladaAmbiente from '../../components/organisms/Sitios/InfoDetalladaAmbiente'
+import Layout from '../../components/template/Layout'
 
 const InfoAmbiente = () => {
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { axiosCliente } from '../../service/api/axios';
+import { axiosCliente } from '../../../service/api/axios';
 import { FaArrowLeft } from "react-icons/fa";
 
 const InfoDetalladaAmbiente = () => {

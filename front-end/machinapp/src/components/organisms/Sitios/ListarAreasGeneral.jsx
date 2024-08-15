@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../service/api/axios';
-import ButtonC from '../atoms/buttons/BottonC';
+import { axiosCliente } from '../../../service/api/axios';
+import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from "react-icons/fa";
-import { AiFillInfoCircle } from "react-icons/ai";
 
-const BuscarSedes = () => {
-  const [sedes, setSedes] = useState([]);
+const BuscarAreasGeneral = () => {
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    const listarSede = async () => {
+    const listarAreaGeneral = async () => {
       try {
-        const response = await axiosCliente.get('/sede/listarsede');
-        setSedes(response.data.resultadoSede);
+        const response = await axiosCliente.get('/area/listararea');
+        setAreas(response.data.resultadoArea);
       } catch (error) {
         console.error(error);
       }
     };
 
-    listarSede();
+    listarAreaGeneral();
   }, []);
 
   const handleImageError = (event) => {
@@ -42,34 +41,29 @@ const BuscarSedes = () => {
       </header>
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {sedes.map((sede) => (
+          {areas.map((area) => (
             <div
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative"
-              key={sede.idSede}
+              key={area.idArea}
             >
               <div className="relative h-72">
                 <img
-                  src={`http://localhost:3000/imagenes/${sede.img_sede}`}
-                  alt={sede.sede_nombre}
+                  src={`http://localhost:3000/imagenes/${area.img_area}`}
+                  alt={area.area_nombre}
                   className="w-full h-full object-cover"
                   onError={handleImageError}
                 />
               </div>
-              <Link to={`/Sedes/InfoSede/${sede.idSede}`}>
-                  <button className="absolute text-4xl top-4 right-4 text-blue-600 hover:cursor-pointer hover:text-blue-700">
-                    <AiFillInfoCircle />
-                  </button>
-                </Link>
               <div className="p-6">
                 <div className='flex justify-end'>
                   <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
                     <FaEdit />
                   </button>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">{sede.sede_nombre}</h2>
-                <p className="text-gray-600 mt-2">{sede.sede_nombre_centro}</p>
+                <h2 className="text-2xl font-bold text-gray-800">{area.area_nombre}</h2>
+                <p className="text-gray-600 mt-2">{area.sede_nombre}</p>
                 <div className="mt-4 flex justify-end">
-                  <Link to={`/Sedes/${sede.idSede}`}>
+                  <Link to={`/Areas/${area.idArea}`}>
                     <ButtonC bgColor="bg-green-400 hover:bg-green-600 text-white" name="Ingresar" />
                   </Link>
                 </div>
@@ -82,4 +76,4 @@ const BuscarSedes = () => {
   );
 };
 
-export default BuscarSedes;
+export default BuscarAreasGeneral;
