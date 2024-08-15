@@ -77,7 +77,7 @@ const Login = () => {
           >
             {loading ? "Cargando" : "Iniciar Sesion"}
           </Button>
-          <Link to="/recuperar"> ¿Olvidades tu contraseña?</Link>
+          <Link to="/recuperar"> ¿Olvidaste tu contraseña?</Link>
         </form>
         {error && (
           <div>

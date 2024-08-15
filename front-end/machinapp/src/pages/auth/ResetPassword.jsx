@@ -1,4 +1,4 @@
-import Header from "../../components/organisms/Header";
+import Header from "../../components/molecules/Header";
 import ModalComponte from "../../components/molecules/Modal";
 import { FormUser } from "../../components/organisms/formularios/FormUser";
 import Footer from "../../components/molecules/Footer";
