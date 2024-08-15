@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { FaUserGear } from "react-icons/fa6";
 import { TbPointFilled } from "react-icons/tb";
@@ -14,9 +14,6 @@ import {
 } from "@heroicons/react/24/solid";
 
 const Nav = ({ rol }) => {
-  const [open, setOpen] = useState(true);
-  const [submenuOpen, setSubmenuOpen] = useState(false);
-
   const menus = [
     { name: "Inicio", link: "/home", icon: HomeIcon },
     {
@@ -40,9 +37,22 @@ const Nav = ({ rol }) => {
     },
   ];
 
+  const [open, setOpen] = useState(true);
+  const [submenuOpen, setSubmenuOpen] = useState(
+    JSON.parse(localStorage.getItem("submenuOpen")) || false
+  );
+
   const handleSubmenuToggle = () => {
     setSubmenuOpen(!submenuOpen);
+    localStorage.setItem("submenuOpen", JSON.stringify(!submenuOpen));
   };
+
+  useEffect(() => {
+    const storedSubmenuOpen = JSON.parse(localStorage.getItem("submenuOpen"));
+    if (storedSubmenuOpen !== null) {
+      setSubmenuOpen(storedSubmenuOpen);
+    }
+  }, []);
 
   return (
     <section className="flex gap-6">
@@ -73,7 +83,7 @@ const Nav = ({ rol }) => {
                     <div className="p-1 rounded-full">
                       <Icons icon={menu.icon} />
                     </div>
-                    <span
+                    <h2
                       style={{
                         transitionDelay: `${i + 3}00ms`,
                       }}
@@ -82,14 +92,14 @@ const Nav = ({ rol }) => {
                       }`}
                     >
                       {menu?.name}
-                    </span>
-                    <span
+                    </h2>
+                    <h2
                       className={`${
                         open && "hidden"
                       } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
                     >
                       {menu?.name}
-                    </span>
+                    </h2>
                   </Link>
                   {menu?.submenu && (
                     <div

@@ -2,7 +2,6 @@ import { query, response } from 'express'
 import { conexion } from '../database/database.js'
 
 import QRCode  from 'qrcode'
-import fs from 'fs/promises'
 
 import { validationResult } from 'express-validator'
 
@@ -33,7 +32,7 @@ export const cargarImagenFicha = upload.fields([
 ])
 
 
-/*---------------Correcto----------------------*/
+/*----------------------------------------------------------------Correcto----------------------*/
 export const registrarFicha = async(req, res)=>{
 
     try{
@@ -43,14 +42,14 @@ export const registrarFicha = async(req, res)=>{
             return res.status(400).json(error)
         }
 
-        let { placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia, descripcion, fiEstado, fk_sitio, fk_tipo_ficha, marca,  modelo, precio }= req.body
+        let { placaSena, fiEstado, fk_sitio, fk_tipo_ficha, }= req.body
         
         //Config documentos a cargar
         let fiImagen = req.files.fiImagen[0].filename
         let fiTecnica = req.files.fiTecnica[0].filename
 
-        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_serial, fi_fecha_adquisicion, fi_fecha_inicio_garantia, fi_fecha_fin_garantia, fi_descripcion_garantia, fi_descripcion,  fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, fi_marca, fi_modelo, ficha_respaldo, fi_precioEquipo ) 
-        values( '${placaSena}', '${serial}', '${fechaAdquisicion}' , '${fechaInicioGarantia}' , '${fechaFinGarantia}', '${descipcionGarantia}', '${descripcion}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${marca}','${modelo}',  '${fiTecnica}', ${precio})`
+        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) 
+        values( '${placaSena}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
     
 
         let [respuesta] = await conexion.query(sql)
@@ -113,36 +112,308 @@ export const registrarFicha = async(req, res)=>{
     }
 }
 
-
-/*---------------correcto----------------------*/
-export const listarFicha = async(req, res)=>{
+/*----------------------------------------------------------------Correcto----------------------*/
+export const listarFichas = async(req, res)=>{
     try{
-        let sql = `SELECT
+
+        //consulta de datos 
+        let sql = `
+        SELECT
         idFichas,
         fi_placa_sena,
-        fi_serial,
-        fi_marca,
-        fi_modelo,
         fi_estado,
         sit_nombre
-        FROM fichas_maquinas_equipos
-        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        FROM ambientes
+        INNER JOIN fichas_maquinas_equipos ON  idAmbientes  = fi_fk_sitios
         `
-
-        let  [respuesta] = await conexion.query(sql)
+        const  [respuesta] = await conexion.query(sql)
 
         if(respuesta.length>0){
+
+            //hacemos consulta de las variables de clase obligatoria
+
+            for (let i = 0 ; respuesta.length>i ;i++ ){
+
+                let vari = `
+                SELECT
+                var_nombre,
+                idVariable,
+                det_valor
+                FROM 
+                variable
+                INNER JOIN detalles_fichas ON idVariable =  det_fk_variable
+                WHERE det_fk_fichas = ${respuesta[i].idFichas} AND var_clase = 'obligatoria'
+                `
+                const [infoVar] = await conexion.query(vari)
+
+                //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
+                for(let j = 0; infoVar.length > j; j++){
+
+                    if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
+                        respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 7){
+                        respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 8){
+                        respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                    }
+                }
+            }
+
             res.status(200).json(respuesta)
         }
         else{
             res.status(404).json({"mensaje":"No se encontraron fichas."})
         }
 
-
     }catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor"+error})
     }
 }
+
+/*----------------------------------------------------------------Correcto----------------------*/
+export const listarFichaPorAmbiente = async(req, res)=>{
+
+    try{
+
+        let idAmbiente = req.params.idAmbiente
+
+        let sql = `
+        SELECT 
+		idFichas, 
+        fi_placa_sena,
+        fi_imagen,
+        fi_estado,
+        ti_fi_nombre
+        FROM ambientes
+        INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
+        INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
+        WHERE idAmbientes = ${idAmbiente}
+        `
+        const [resuladoFichas] = await conexion.query(sql)
+
+        if(resuladoFichas.length>0){
+
+            //consulta de las varibales de clase obligatoria
+            for(let i = 0 ; resuladoFichas.length>i ;i++ ){
+                
+                let vari = `
+                SELECT
+                var_nombre,
+                idVariable,
+                det_valor
+                FROM 
+                variable
+
+                INNER JOIN detalles_fichas ON idVariable =  det_fk_variable
+                WHERE det_fk_fichas = ${resuladoFichas[i].idFichas} AND var_clase = 'obligatoria'
+                `
+                const [infoVar] = await conexion.query(vari)
+
+                //for para seeccionar solo las variables que queremos traer
+                
+                for(let j = 0; infoVar.length > j; j++){
+
+                    if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
+                        resuladoFichas[i]["fi_serial"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 8){
+                        resuladoFichas[i]["fi_modelo"] = infoVar[j].det_valor
+                    }
+                }
+            }
+
+            res.status(200).json(resuladoFichas)
+        }
+        else{
+            res.status(404).json({"mensaje":"No se encontraron fichas en este ambiente"})
+        }
+
+    }
+    catch(error){
+        return res.status(500).json({"message":"Error en el servidor",error})
+    }
+
+}
+
+
+
+
+/*----------------------------------------------------------------Correcto----------------------(los mantenimientos van en otro controlador)*/
+export const listarInfoEspecifica = async(req, res)=>{
+
+    try{
+        let idFicha = req.params.idFicha
+
+        //buscamos informacion de la ficha correspondiente
+        let sqlFicha = `
+        SELECT 
+        idFichas, 
+        fi_placa_sena,
+        fi_imagen,
+        fi_estado,
+        CodigoQR,
+        ficha_respaldo,
+        ti_fi_nombre as tipoEquipo
+        FROM fichas_maquinas_equipos
+        INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
+        WHERE idFichas = ${idFicha}
+        `
+
+
+        const[respuesta] = await conexion.query(sqlFicha)
+
+        /* 
+        fi_serial,
+        fi_fecha_adquisicion, 
+        fi_fecha_inicio_garantia,
+        fi_fecha_fin_garantia, 
+        fi_descripcion_garantia,
+        fi_descripcion,
+        fi_marca,
+        fi_modelo,
+        fi_precio
+         */
+
+        console.log(respuesta)
+        
+
+
+        if(respuesta.length > 0 ){
+
+            //consultar variables y asignarles una clave
+
+            let vari = `
+                SELECT
+                var_nombre,
+                idVariable,
+                det_valor
+                FROM 
+                variable
+                INNER JOIN detalles_fichas ON idVariable =  det_fk_variable
+                WHERE det_fk_fichas = ${respuesta[0].idFichas} AND var_clase = 'obligatoria'`
+
+            const [variablesInfo] = await conexion.query(vari)
+
+
+            for(let i = 0; variablesInfo.length > i; i++){
+                switch(variablesInfo[i].idVariable){
+                    case 1 :
+                        respuesta[0]["fi_fecha_adquisicion"] = variablesInfo[i].det_valor
+                        break
+                    case 2:
+                        respuesta[0]["fi_serial"] = variablesInfo[i].det_valor
+                        break
+                    case 3:
+                        respuesta[0]["fi_fecha_inicio_garantia"] = variablesInfo[i].det_valor
+                        break
+                    case 4:
+                        respuesta[0]["fi_fecha_fin_garantia"] = variablesInfo[i].det_valor
+                        break
+                    case 5:
+                        respuesta[0]["fi_descripcion_garantia"] = variablesInfo[i].det_valor
+                        break
+                    case 6:
+                        respuesta[0]["fi_descripcion"] = variablesInfo[i].det_valor
+                        break
+                    case 7:
+                        respuesta[0]["fi_marca"] = variablesInfo[i].det_valor
+                        break
+                    case 8:
+                        respuesta[0]["fi_modelo"] = variablesInfo[i].det_valor
+                        break
+                    case 9:
+                        respuesta[0]["fi_precioEquipo"] = variablesInfo[i].det_valor
+                        break
+                }
+            }
+
+            //consultar los mantenimientos
+            //buscamos los mantenimientos que se le an echo a esa ficha 
+            let sqlMantenimientos = `
+
+            SELECT
+            idMantenimiento,
+            mant_estado,
+            mant_costo_final,
+            mant_ficha_soporte,
+            tipo_mantenimiento, 
+            idSolicitud
+            FROM fichas_maquinas_equipos
+            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
+            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
+            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
+            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
+            WHERE idFichas = ${idFicha}
+            `
+
+            const[mantenimientos] = await conexion.query(sqlMantenimientos)
+            
+            respuesta[0]["mantenimientos"] = mantenimientos
+        
+
+            //le envio solo el objeto dentro del array no propiamente el array
+            return res.status(200).json(respuesta[0])
+           
+   /*  
+            //buscamos los mantenimientos que se le an echo a esa ficha 
+            let sqlMantenimientos = `
+            
+
+            SELECT
+            idMantenimiento,
+            mant_estado,
+            mant_costo_final,
+            mant_ficha_soporte,
+            tipo_mantenimiento, 
+            idSolicitud
+            FROM fichas_maquinas_equipos
+            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
+            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
+            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
+            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
+            WHERE idFichas = ${idFicha}
+            `
+
+            const[mantenimientos] = await conexion.query(sqlMantenimientos)
+    
+            let objInfoEspecifica = {
+                idFichas: respuesta[0].idFichas,
+                fi_placa_sena: respuesta[0].fi_placa_sena, 
+                fi_serial: respuesta[0].fi_serial,
+                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
+                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
+                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
+                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
+                fi_descripcion:respuesta[0].fi_descripcion,
+                fi_marca:respuesta[0].fi_marca,
+                fi_modelo:respuesta[0].fi_modelo,
+                CodigoQR:respuesta[0].CodigoQR,
+                fi_imagen: respuesta[0].fi_imagen, 
+                fi_estado: respuesta[0].fi_estado,
+                tipoEquipo: respuesta[0].tipoEquipo,
+                ficha_respaldo: respuesta[0].ficha_respaldo,
+                mantenimientos
+            }
+     */
+
+    
+    
+        }else{
+            return res.status(404).json({"mensaje":"No se encontro ficha"})
+        }
+
+    }catch(error){
+        return res.status(500).json({"mensaje":"error en el servidor"+error})
+    }   
+}
+
+
+
+
+
+
 
 
 /* Falta por revisar */
@@ -198,82 +469,6 @@ export const eliminarFicha = async(req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"})
     }
 }
-
-
-/*---------------correcto----------------------*/
-export const listarFichaPorAmbiente = async(req, res)=>{
-
-    try{
-
-        let idAmbiente = req.params.idAmbiente
-
-        let sql = `
-        SELECT 
-		idFichas, 
-        fi_placa_sena,
-        fi_serial,
-        fi_modelo,
-        fi_imagen,
-        fi_estado,
-        ti_fi_nombre
-        FROM ambientes
-        INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
-        INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
-        WHERE idAmbientes = ${idAmbiente}
-        `
-        const [resuladoFichas] = await conexion.query(sql)
-
-        if(resuladoFichas.length>0){
-            res.status(200).json(resuladoFichas)
-        }
-        else{
-            res.status(404).json({"mensaje":"No se encontraron fichas en este ambiente"})
-        }
-
-
-/* 
-        let Maquinas = []
-
-        for (let i = 0; i < resuladoFichas.length; i++){
-            let idFicha = resuladoFichas[i].idFichas
-
-            let sqlTipoEquipo = `
-            SELECT 
-            tipo_equipo.idTipo_ficha, 
-            tipo_equipo.ti_fi_nombre
-            FROM tipo_equipo 
-            INNER JOIN fichas ON fichas.fi_fk_tipo_ficha = tipo_equipo.idTipo_ficha 
-            WHERE fichas.idFichas = ${idFicha};
-            `
-            const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
-
-            let ObjMaquina = {
-                idFicha: resuladoFichas[i].idFichas,
-                placa_sena: resuladoFichas[i].fi_placa_sena,
-                serial: resuladoFichas[i].fi_serial,
-                imagen: resuladoFichas[i].fi_imagen,
-                estado: resuladoFichas[i].fi_estado,
-                tipoEquipo
-            }
-          Maquinas[i] = ObjMaquina
-        }
-
-        if (Maquinas.length === 0){
-            return res.status(404).json({
-                "Estado" : 404,
-                "Mensage" :"No se encontraron maquinas o equipos al ambiente"
-            })
-        }
-
-        res.status(200).json(Maquinas) */
-
-    }
-    catch(error){
-        return res.status(500).json({"message":"Error en el servidor"})
-    }
-
-}
-
 
 /* Falta por revisar   ----->  es el resultado de toda la informacion de la ficha*/
 export const listarFichaUnica=async (req, res)=>{
@@ -394,91 +589,3 @@ export const listarFichaUnica=async (req, res)=>{
    }
 }
 
-/* ---------Pendiente, solucionar lo de los mantenimientos   ------- (eso se da por que se registran varios detalles con el mismo id de la ficha, lo que genera que me traiga un mantenimiento por cada detalle) */
-export const listarInfoEspecifica = async(req, res)=>{
-
-    try{
-        let idFicha = req.params.idFicha
-
-        //buscamos informacion de la ficha correspondiente
-        let sqlFicha = `
-        SELECT 
-        idFichas, 
-        fi_placa_sena,
-        fi_serial,
-        fi_fecha_adquisicion, 
-        fi_fecha_inicio_garantia,
-        fi_fecha_fin_garantia, 
-        fi_descripcion_garantia,
-        fi_descripcion,
-        fi_marca,
-        fi_modelo,
-        fi_imagen,
-        fi_estado,
-        CodigoQR,
-        ficha_respaldo,
-        ti_fi_nombre as tipoEquipo
-        FROM fichas_maquinas_equipos
-        INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
-        WHERE idFichas = ${idFicha}
-        `
-
-        const[respuesta] = await conexion.query(sqlFicha)
-
-
-        if(respuesta.length > 0 ){
-           
-    
-            //buscamos los mantenimientos que se le an echo a esa ficha 
-    
-            
-            let sqlMantenimientos = `
-            
-
-            SELECT
-            idMantenimiento,
-            mant_estado,
-            mant_costo_final,
-            mant_ficha_soporte,
-            tipo_mantenimiento, 
-            idSolicitud
-            FROM fichas_maquinas_equipos
-            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
-            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
-            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
-            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
-            WHERE idFichas = ${idFicha}
-            `
-
-            const[mantenimientos] = await conexion.query(sqlMantenimientos)
-    
-            let objInfoEspecifica = {
-                idFichas: respuesta[0].idFichas,
-                fi_placa_sena: respuesta[0].fi_placa_sena, 
-                fi_serial: respuesta[0].fi_serial,
-                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
-                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
-                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
-                fi_descripcion:respuesta[0].fi_descripcion,
-                fi_marca:respuesta[0].fi_marca,
-                fi_modelo:respuesta[0].fi_modelo,
-                CodigoQR:respuesta[0].CodigoQR,
-                fi_imagen: respuesta[0].fi_imagen, 
-                fi_estado: respuesta[0].fi_estado,
-                tipoEquipo: respuesta[0].tipoEquipo,
-                ficha_respaldo: respuesta[0].ficha_respaldo,
-                mantenimientos
-            }
-    
-            return res.status(200).json(objInfoEspecifica )
-    
-    
-        }else{
-            return res.status(404).json({"mensaje":"No se encontro ficha"})
-        }
-
-    }catch(error){
-        return res.status(500).json({"mensaje":"error en el servidor"})
-    }   
-}
