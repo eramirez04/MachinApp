@@ -1,8 +1,7 @@
-import { PaginateTable } from "./table/PaginateTable"
+import { PaginateTable } from "../table/PaginateTable"
 import { useEffect, useState } from "react";
-import { axiosCliente } from '../../service/api/axios'
+import { axiosCliente } from '../../../service/api/axios'
 import { FaEdit } from "react-icons/fa"
-import { AiFillInfoCircle } from "react-icons/ai"
 
 
 const BuscarAmbientesGeneral = () => {

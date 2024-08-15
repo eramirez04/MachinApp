@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../service/api/axios';
-import ButtonC from '../atoms/buttons/BottonC';
+import { axiosCliente } from '../../../service/api/axios';
+import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
 

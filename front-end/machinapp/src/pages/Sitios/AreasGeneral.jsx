@@ -1,5 +1,5 @@
-import BuscarAreasGeneral from "../components/organisms/ListarAreasGeneral"
-import Layout from '../components/template/Layout'
+import BuscarAreasGeneral from "../../components/organisms/Sitios/ListarAreasGeneral"
+import Layout from '../../components/template/Layout'
 
 const AreasGeneral=()=>  {
   return (

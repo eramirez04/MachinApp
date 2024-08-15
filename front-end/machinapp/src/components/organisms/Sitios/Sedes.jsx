@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Nav from '../molecules/Nav'
+import Nav from '../../molecules/Nav'
 
 const Sedes=()=>  {
     return (
