@@ -9,7 +9,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Inicio from "../pages/Inicio";
 import Home from "../pages/auth/Home";
 import { PerfilRoutes } from "./rutas/PerfilRoute";
-import Fichas from "../pages/Fichas";
+import { SolicitudRouter } from "./rutas/SolicitudRouter";
 import Historial from "../pages/Historial";
 import Maquinas from "../pages/Maquinas";
 import Sitios from "../pages/Sitios/Sitios";
@@ -22,10 +22,10 @@ import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
 import { ViewFormFicha_De_mantenimiento } from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento";
 import { FichaSolicitudPage } from "../pages/fichastecnicas/ViewFormFichaSolicitudPage";
-import InfoAmbiente from "../pages/Sitios/InfoAmbiente";
-import InfoSede from "../pages/Sitios/InfoSede";
-import AreasGeneral from "../pages/Sitios/AreasGeneral";
-import AmbientesGeneral from "../pages/Sitios/AmbientesGeneral";
+import InfoAmbiente from "../pages/InfoAmbiente";
+import InfoSede from "../pages/InfoSede";
+import AreasGeneral from "../pages/AreasGeneral";
+import AmbientesGeneral from "../pages/AmbientesGeneral";
 import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AppRouter = () => {
@@ -39,7 +39,7 @@ export const AppRouter = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
-            <Route path="/FIchas" element={<Fichas />} />
+            <Route path="/solicitud/*" element={<SolicitudRouter />} />
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
@@ -64,7 +64,6 @@ export const AppRouter = () => {
               path="/crear_ficha_mantenimiento"
               element={<ViewFormFicha_De_mantenimiento />}
             />
-            <Route path="/crearsolicitud" element={<FichaSolicitudPage />} />
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
           </Route>

@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
           <div className="w-full flex flex-col gap-4 rounded-md  p-5 ">
             <Suspense fallback={<h1>Cargando</h1>}>
               <main className="bg-white rounded-lg shadow-lg h-full p-5 ">
-                <div className="z-30 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                <div className="lg:hidden relative z-30  sm:px-6 2xl:p-10">
                   <MenuMobile />
                 </div>
                 {children}

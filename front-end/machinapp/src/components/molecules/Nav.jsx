@@ -33,9 +33,9 @@ const Nav = ({ rol }) => {
       icon: DocumentTextIcon,
       submenu: true,
       submenus: [
-        { name: "Registrar Solicitud", link: "/crearsolicitud" },
+        { name: "Registrar Solicitud", link: "/solicitud/registrar" },
         { name: "Registrar Mantenimiento", link: "/crear_ficha_mantenimiento" },
-        { name: "Solicitudes", link: "/solicitudes" },
+        { name: "Solicitudes", link: "/solicitud" },
       ],
     },
     { name: "Equipo y Maquinaria", link: "/Maquinas", icon: ServerIcon },

@@ -1,5 +1,5 @@
 import { axiosCliente } from "../../service/api/axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const useSolicitudFichasData = () => {
   const [loading, setLoading] = useState(false);
@@ -29,6 +29,39 @@ export const useSolicitudFichasData = () => {
 
   return {
     registrarSolicitudFichas,
+    error,
+    loading,
+  };
+};
+
+export const useFetchSolicitud = () => {
+  const [solicitudData, setsolicitudData] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchDataSoliticitud = async () => {
+      setLoading(true);
+      try {
+        const res = await axiosCliente.get("/solicitud/");
+
+      /*   console.log(res.data);
+ */
+        setsolicitudData(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error.response);
+        setError(error.response);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDataSoliticitud();
+  }, []);
+
+  return {
+    solicitudData,
     error,
     loading,
   };

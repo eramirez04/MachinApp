@@ -119,7 +119,6 @@ export const FormFichaSolicitud = () => {
   return (
     <>
       <div className="flex justify-center  h-full w-full">
-        hola
         <form
           className="flex flex-col gap-8 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}
