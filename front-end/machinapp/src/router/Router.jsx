@@ -21,10 +21,11 @@ import MaquinasAmbiente from "../pages/MaquinasAmbiente";
 import InfoMaquina from "../pages/InfoMaquina";
 import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
 import { ViewFormFicha_De_mantenimiento } from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento";
-import InfoAmbiente from "../pages/Sitios/InfoAmbiente";
-import InfoSede from "../pages/Sitios/InfoSede";
-import AreasGeneral from "../pages/Sitios/AreasGeneral";
-import AmbientesGeneral from "../pages/Sitios/AmbientesGeneral";
+import { FichaSolicitudPage } from "../pages/fichastecnicas/ViewFormFichaSolicitudPage";
+import InfoAmbiente from "../pages/InfoAmbiente";
+import InfoSede from "../pages/InfoSede";
+import AreasGeneral from "../pages/AreasGeneral";
+import AmbientesGeneral from "../pages/AmbientesGeneral";
 import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AppRouter = () => {
