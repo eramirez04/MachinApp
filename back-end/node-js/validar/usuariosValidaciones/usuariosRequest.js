@@ -56,9 +56,6 @@ const RequestUpdate = zod.object({
       { message: "Seleccione un tipo de documento" }
     )
     .optional(),
-  contrasenia: zod
-    .string()
-    .min(5, { message: "La contraseña debe de tener minimo 5 caracteres" }),
   numero_documento: zod
     .string()
     .min(0, { message: "el numero de documento debe de ser mayor  a 0" }),
