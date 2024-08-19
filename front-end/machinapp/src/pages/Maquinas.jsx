@@ -1,11 +1,11 @@
-import Layout from "../components/template/Layout.jsx";
+import { Layout } from "../index.js";
 import TablaMaquinas from "../components/organisms/TablaMaquinas.jsx";
 import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import { Icons } from "../components/atoms/icons/Icons.jsx";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
-const Maquinas = () => {
+export const Maquinas = () => {
   return (
     <>
       <Layout titlePage="Maquinas">
@@ -32,4 +32,4 @@ const Maquinas = () => {
   );
 };
 
-export default Maquinas;
+

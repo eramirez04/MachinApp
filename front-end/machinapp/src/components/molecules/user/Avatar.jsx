@@ -1,9 +1,7 @@
-import { DropDown } from "./navigation/Dropdown";
+import { useAuth, Icons } from "../../../index";
+import { DropDown } from "../navigation/Dropdown";
 import { User } from "@nextui-org/react";
 import { Link } from "react-router-dom";
-import { Icons } from "../atoms/icons/Icons";
-
-import { useAuth } from "../../hooks/useAuth";
 
 import {
   UserCircleIcon,

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import BuscarAreas from '../../components/organisms/Sitios/ListarAreas.jsx'
-import Layout from '../../components/template/Layout.jsx'
+import { Layout } from "../../index";
 import { useParams } from "react-router-dom"
 import { axiosCliente } from "../../service/api/axios.js"
 
-const Sedes = () => {
+export const Sedes = () => {
   const { idSede } = useParams()
   const [nombreSede, setNombreSede] = useState([])
 
@@ -29,4 +29,3 @@ const Sedes = () => {
   );
 };
 
-export default Sedes

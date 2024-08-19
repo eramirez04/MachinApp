@@ -3,7 +3,17 @@ import { Input } from "@nextui-org/react";
 
 export const InputUpdate = React.forwardRef(
   (
-    { errors, value, name, tipo, onChange, isUpdating = false, ...props },
+    {
+      errors,
+      value,
+      name,
+      label,
+      tipo,
+      onChange,
+      isUpdating = false,
+      isDisabled = false,
+      ...props
+    },
     ref
   ) => {
     const handleValidation = () => {
@@ -14,29 +24,28 @@ export const InputUpdate = React.forwardRef(
     };
 
     return (
-      <div className="mb-5">
-        <div className="z-0 w-full">
-          <label
-            className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "
-            htmlFor="fullName"
-          >
-            {name}
-          </label>
-          <Input
-            type={tipo}
-            variant="bordered"
-            name={name}
-            id={name}
-            label={name}
-            isInvalid={Boolean(handleValidation())}
-            autoFocus
-            errorMessage={handleValidation()}
-            autoComplete="off"
-            value={isUpdating ? value : undefined}
-            onChange={isUpdating ? onChange : undefined}
-            {...props}
-          />
-        </div>
+      <div className="z-0 w-full mb-5">
+        <label
+          className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "
+          htmlFor="fullName"
+        >
+          {label}
+        </label>
+        <Input
+          type={tipo}
+          variant="bordered"
+          isDisabled={isDisabled}
+          name={name}
+          id={name}
+          label={label}
+          isInvalid={Boolean(handleValidation())}
+          autoFocus
+          errorMessage={handleValidation()}
+          autoComplete="off"
+          value={isUpdating ? value : undefined}
+          onChange={isUpdating ? onChange : undefined}
+          {...props}
+        />
       </div>
     );
   }

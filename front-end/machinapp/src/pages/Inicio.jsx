@@ -1,25 +1,19 @@
-// eslint-disable-next-line no-unused-vars
-import React, { lazy } from "react";
+import { useLenguage, Footer, Header, ModalComponte } from "./../index.js";
+import { lazy } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import Footer from "../components/molecules/Footer.jsx";
-
-// translate
-import { useLenguage } from "../hooks/useTranslate.jsx";
 
 import { useTranslation } from "react-i18next";
 //componentes
-import Header from "../components/molecules/Header.jsx";
 
 // modal
-const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
 
 // login
 const Login = lazy(() => import("../components/organisms/Login.jsx"));
 import { FormUser } from "../components/organisms/formularios/FormUser.jsx";
 
-const Inicio = () => {
+export const Inicio = () => {
   const { t } = useTranslation();
   const { lenguage, onChangeTransalate } = useLenguage();
 
@@ -142,5 +136,3 @@ const Inicio = () => {
     </>
   );
 };
-
-export default Inicio;

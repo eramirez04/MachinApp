@@ -1,8 +1,6 @@
-import Header from "../../components/molecules/Header";
-import ModalComponte from "../../components/molecules/Modal";
+import { Header, Footer, InputforForm, ModalComponte } from "../../index";
+
 import { FormUser } from "../../components/organisms/formularios/FormUser";
-import Footer from "../../components/molecules/Footer";
-import InputforForm from "../../components/molecules/InputForForm";
 import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import { axiosCliente } from "../../service/api/axios";

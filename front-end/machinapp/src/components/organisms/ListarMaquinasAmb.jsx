@@ -3,7 +3,7 @@ import { useEffect } from "react"
 
 
 
-import { CardStyle } from "../molecules/CardStyle.jsx"
+import { CardStyle } from "../molecules/content/CardStyle.jsx"
 
 
 import {axiosCliente} from "../../service/api/axios.js"

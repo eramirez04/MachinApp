@@ -63,6 +63,11 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
+
+  const refreshUserLoged = async () => {
+    return await getDataUser();
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -75,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     logout,
     rol,
+    refreshUserLoged,
     user,
     login,
     loading,

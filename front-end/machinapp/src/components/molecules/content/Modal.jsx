@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 
 // eslint-disable-next-line react/prop-types
-const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButton, colorButton="primary" }) => {
+export const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButton, colorButton="primary" }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
@@ -46,4 +46,4 @@ const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButt
   );
 };
 
-export default ModalComponte;
+

@@ -1,3 +1,5 @@
+import { useAuth, Icons } from "../../index.js";
+
 import {
   UserIcon,
   DocumentTextIcon,
@@ -5,9 +7,7 @@ import {
   UserCircleIcon,
   TruckIcon,
 } from "@heroicons/react/24/outline";
-import { Icons } from "../atoms/icons/Icons.jsx";
 
-import { useAuth } from "../../hooks/useAuth.jsx";
 import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 

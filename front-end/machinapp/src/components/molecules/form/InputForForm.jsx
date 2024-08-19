@@ -1,7 +1,7 @@
 import { Input } from "@nextui-org/react";
 
 // eslint-disable-next-line react/prop-types
-const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
+export const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
   return (
     <>
       <div className="mb-5">
@@ -39,4 +39,4 @@ const InputforForm = ({ register, errors, value, name, tipo, onChange }) => {
   );
 };
 
-export default InputforForm;
+
