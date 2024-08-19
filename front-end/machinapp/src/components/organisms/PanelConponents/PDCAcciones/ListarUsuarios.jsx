@@ -1,10 +1,6 @@
-/* import MenuLeft from "../../../molecules/Menuleft.jsx"; */
-/* import { SearchComponent } from "../../../atoms/Inputs/InputSearch.jsx"; */
-/* import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"; */
+import { useGlobalData, ModalComponte } from "../../../../index.js";
 import { FormUser } from "../../formularios/FormUser.jsx";
 import { PaginateTable } from "../../table/PaginateTable.jsx";
-import ModalComponte from "../../../molecules/Modal.jsx";
-import { useGlobalData } from "../../../../hooks/useGlobalData.jsx";
 import { useNavigate } from "react-router-dom";
 
 import { DropDown } from "../../../molecules/navigation/Dropdown.jsx";
@@ -33,7 +29,7 @@ const ListarUsuarios = () => {
     correo: item.us_correo,
     tipo_documento: item.us_tipo_documento,
     numero_documento: item.us_numero_documento,
-    rol: item.fk_roles,
+    rol: item.rol_nombre,
   }));
 
   const handleEdit = (id) => {
@@ -87,4 +83,3 @@ const ListarUsuarios = () => {
 };
 
 export default ListarUsuarios;
-

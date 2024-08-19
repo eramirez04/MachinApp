@@ -1,9 +1,9 @@
+import { Icons } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { FaUserGear } from "react-icons/fa6";
 import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { Icons } from "../atoms/icons/Icons";
 
 import {
   HomeIcon,
@@ -13,7 +13,7 @@ import {
   ClockIcon,
 } from "@heroicons/react/24/solid";
 
-const Nav = ({ rol }) => {
+export const Nav = ({ rol }) => {
   const menus = [
     { name: "Inicio", link: "/home", icon: HomeIcon },
     {
@@ -71,9 +71,8 @@ const Nav = ({ rol }) => {
     localStorage.setItem("submenuOpen", JSON.stringify(submenuOpen));
   }, [submenuOpen]);
 
- 
   return (
-    <section className="flex gap-6">
+    <nav className="flex gap-6">
       <div
         className={`bg-[white] min-h-screen border shadow-md rounded-e-lg ${
           open ? "w-72" : "w-20"
@@ -86,11 +85,11 @@ const Nav = ({ rol }) => {
             onClick={() => setOpen(!open)}
           />
         </div>
-        <div className="mt-9 flex flex-col gap-4 relative">
+        <ul className="mt-9 flex flex-col gap-4 relative">
           {menus?.map(
             (menu, i) =>
               (menu.name !== "Panel de control" || rol === "Administrador") && (
-                <div key={i} className="relative">
+                <li key={i} className="relative">
                   <Link
                     to={menu?.link}
                     className={` ${
@@ -106,7 +105,7 @@ const Nav = ({ rol }) => {
                     <div className="p-1 rounded-full">
                       <Icons icon={menu.icon} />
                     </div>
-                    <h2
+                    <span
                       style={{
                         transitionDelay: `${i + 3}00ms`,
                       }}
@@ -115,7 +114,7 @@ const Nav = ({ rol }) => {
                       }`}
                     >
                       {menu?.name}
-                    </h2>
+                    </span>
                     <h2
                       className={`${
                         open && "hidden"
@@ -144,13 +143,11 @@ const Nav = ({ rol }) => {
                       ))}
                     </div>
                   )}
-                </div>
+                </li>
               )
           )}
-        </div>
+        </ul>
       </div>
-    </section>
+    </nav>
   );
 };
-
-export default Nav;

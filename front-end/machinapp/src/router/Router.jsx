@@ -1,31 +1,31 @@
 import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-
 //proteger las rutas
 import { ProtectedRoute } from "./ProtectedRoute";
 
 // paginas
+import {
+  Inicio,
+  Home,
+  Historial,
+  Maquinas,
+  Sitios,
+  Sedes,
+  Areas,
+  MaquinasAmbiente,
+  InfoMaquina,
+  ViewFormFichaTecnica,
+  ViewFormFicha_De_mantenimiento,
+  ResetPassword,
+  InfoAmbiente,
+  InfoSede,
+  AreasGeneral,
+  AmbientesGeneral,
+} from "../index";
 
-import Inicio from "../pages/Inicio";
-import Home from "../pages/auth/Home";
 import { PerfilRoutes } from "./rutas/PerfilRoute";
 import { SolicitudRouter } from "./rutas/SolicitudRouter";
-import Historial from "../pages/Historial";
-import Maquinas from "../pages/Maquinas";
-import Sitios from "../pages/Sitios/Sitios";
-/* import PanelControl from "../pages/PaneldeControl"; */
-import Sedes from "../pages/Sitios/Sedes";
-import Areas from "../pages/Sitios/Areas";
 import { AdminRoute } from "./rutas/AdminRoutes";
-import MaquinasAmbiente from "../pages/MaquinasAmbiente";
-import InfoMaquina from "../pages/InfoMaquina";
-import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
-import { ViewFormFicha_De_mantenimiento } from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento";
-import InfoAmbiente from "../pages/Sitios/InfoAmbiente";
-import InfoSede from "../pages/Sitios/InfoSede";
-import AreasGeneral from "../pages/Sitios/AreasGeneral";
-import AmbientesGeneral from "../pages/Sitios/AmbientesGeneral";
-import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AppRouter = () => {
   return (

@@ -1,4 +1,4 @@
-const Footer = () => {
+export const Footer = () => {
   let hoy = new Date();
   let ahora = hoy.toLocaleDateString();
   const ID = "2669959";
@@ -25,5 +25,3 @@ const Footer = () => {
     </>
   );
 };
-
-export default Footer;

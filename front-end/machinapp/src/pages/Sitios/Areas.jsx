@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import BuscarAmbientes from '../../components/organisms/Sitios/ListarAmbientes.jsx'
-import Layout from '../../components/template/Layout.jsx'
+import { Layout } from "../../index";
 import { useParams } from "react-router-dom"
 import { axiosCliente } from "../../service/api/axios.js"
 
-const Areas = () => {
+export const Areas = () => {
   const { idArea } = useParams();
   const [nombreArea, setNombreArea] = useState([]);
 
@@ -29,4 +29,3 @@ const Areas = () => {
   );
 };
 
-export default Areas

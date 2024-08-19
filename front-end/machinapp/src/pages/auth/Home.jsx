@@ -1,7 +1,7 @@
-import Layout from "../../components/template/Layout.jsx";
+import { Layout } from "../../index.js";
 import Artboard from "../../components/organisms/Paginacentrar.jsx";
 
-const Home = () => {
+export const Home = () => {
   return (
     <>
       <Layout titlePage={"Home"}>
@@ -10,5 +10,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;

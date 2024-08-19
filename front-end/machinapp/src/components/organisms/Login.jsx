@@ -1,12 +1,10 @@
-import { lazy, useState } from "react";
+import { InputforForm, useAuth } from "../../index.js";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 // importacion de componentes
-
 import Alert from "../atoms/feedback/Alert.jsx";
-const InputforForm = lazy(() => import("../molecules/InputForForm.jsx"));
 import { Button } from "@nextui-org/react";
-import { useAuth } from "../../hooks/useAuth.jsx";
 
 const Login = () => {
   //error captura de errores

@@ -1,15 +1,18 @@
+import {
+  InputforForm,
+  Icons,
+  useGlobalData,
+  SelectComponent,
+  useSolicitudFichasData,
+} from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
-import { CardStyle } from "../../molecules/CardStyle";
-import InputforForm from "../../molecules/InputForForm";
+import { CardStyle } from "../../molecules/content/CardStyle";
+
 import { useForm } from "react-hook-form";
 import { TextAreaComponent } from "../../atoms/Inputs/TextArea";
-import { Icons } from "../../atoms/icons/Icons";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { SelectComponent } from "../../molecules/SelectComponent";
-import { useFetchEquipo } from "../../../hooks/useFetchEquipos";
 import { useEffect, useState } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { useSolicitudFichasData } from "../../../hooks/solicitud/Solicitud";
 import {
   Table,
   TableHeader,
@@ -20,7 +23,7 @@ import {
 } from "@nextui-org/react";
 
 export const FormFichaSolicitud = () => {
-  const { equiposData } = useFetchEquipo();
+  const { equiposData } = useGlobalData();
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 

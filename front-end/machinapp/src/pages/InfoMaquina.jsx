@@ -2,10 +2,10 @@ import  { useEffect } from "react"
 import TablaMantenimientosMa from "../components/organisms/TablaMantenimientosMa.jsx"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import Layout from "../components/template/Layout.jsx"
+import { Layout } from "../index.js";
 import {axiosCliente} from "../service/api/axios.js"
 import Imagenes from "../components/atoms/media/Imagenes.jsx"
-import {CardStyle} from "../components/molecules/CardStyle.jsx"
+import {CardStyle} from "../components/molecules/content/CardStyle.jsx"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
 import BlocInformation from "../components/atoms/media/BlocInformation.jsx"
@@ -13,7 +13,7 @@ import BlocInformation from "../components/atoms/media/BlocInformation.jsx"
 
 import {Tooltip} from "@nextui-org/react"
 
-const InfoMaquina = ()=> {
+export const InfoMaquina = ()=> {
 
   const [maquina, setInfoMaquina ] = useState([])
   const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
@@ -134,4 +134,3 @@ const InfoMaquina = ()=> {
     </>
   )
 }
-export default InfoMaquina

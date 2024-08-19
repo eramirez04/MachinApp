@@ -1,6 +1,5 @@
 /* import { CardStyle } from "../../components/molecules/CardStyle.jsx"; */
-import Layout from "../../components/template/Layout.jsx";
-import { useFetchSolicitud } from "../../hooks/solicitud/Solicitud.js";
+import { Layout, useGlobalData } from "../../index.js";
 import { SolicitudList } from "../../components/organisms/listas/SolicitudList.jsx";
 
 const Fichas = () => {
@@ -9,9 +8,9 @@ const Fichas = () => {
     { name: "Ficha de solicitud", url: "/crearsolicitud" },
   ]; */
 
-  const { solicitudData, loading } = useFetchSolicitud();
+  const { solicitudData, loading } = useGlobalData();
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     console.log(solicitudData);
     console.log(loading);
   }, [solicitudData, loading]); */
@@ -28,8 +27,12 @@ const Fichas = () => {
           />
         ))}
       </div> */}
-      <SolicitudList DataSolicitud={solicitudData} />
-      {loading && <>cargando</>}
+
+      {loading ? (
+        <> cargando</>
+      ) : (
+        <SolicitudList DataSolicitud={solicitudData} />
+      )}
     </Layout>
   );
 };

@@ -1,3 +1,4 @@
+import { ButtonNext, InputforForm } from "../../../index.js"
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { axiosCliente } from "../../../service/api/axios.js"
@@ -9,11 +10,10 @@ import { multiFormData } from "../../../utils/formData.js";
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
 
 // componentes
-import InputforForm from "../../molecules/InputForForm";
+
 import {TextAreaComponent} from "../../atoms/Inputs/TextArea.jsx"
-import ButtonNext from "../../atoms/buttons/ButtonNext.jsx";
 import { InputDate } from "../../atoms/Inputs/InputDate.jsx";
-import { SelectComponent } from "../../molecules/SelectComponent.jsx";
+import { SelectComponent } from "../../molecules/form/SelectComponent.jsx";
 import { Image } from "@nextui-org/react";
 
 export const FormFichaTecnica = () => {
