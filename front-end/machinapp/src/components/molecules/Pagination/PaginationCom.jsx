@@ -22,6 +22,7 @@ export const Paginacion = ({
       <div className="flex justify-between items-center mt-4">
         <Pagination
           total={pageNumbers}
+          radius="sm"
           color="primary"
           onChange={(pageNumbers) => setCurrentPage(pageNumbers)}
         />

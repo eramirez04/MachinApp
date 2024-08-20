@@ -1,5 +1,6 @@
+import { Paginacion, V } from "../../../index";
 import { useState } from "react";
-import { Paginacion } from "../../molecules/PaginationCom";
+
 import PropTypes from "prop-types";
 import {
   Table,
@@ -28,7 +29,7 @@ export const PaginateTable = ({ columns, data, itemsPerPage = 10 }) => {
             {columns.map((column, index) => (
               <TableColumn
                 key={index}
-                className="bg-green-600 text-white font-bold"
+                className={`${(V.bg_sena_verde)} ${V.text_white}`}
               >
                 {column}
               </TableColumn>

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-
+import { V } from "../../../index";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Header = ({ color, contenido }) => {
@@ -14,7 +14,7 @@ export const Header = ({ color, contenido }) => {
         <div className="flex  shadow-sm lg:flex-1">
           <figure className=" h-16 w-16 border-gray-300">
             <LazyLoadImage
-              src="/logoSenaNaranja.png"
+              src={V.logoSena}
               className="h-full w-full cursor-fdfdpointer"
               effect="opacity"
               alt="logo-sena"

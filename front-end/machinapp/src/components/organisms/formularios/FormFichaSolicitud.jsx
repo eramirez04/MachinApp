@@ -4,13 +4,12 @@ import {
   useGlobalData,
   SelectComponent,
   useSolicitudFichasData,
+  TextAreaComponent,
+  CardStyle,
+  V,
 } from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
-import { CardStyle } from "../../molecules/content/CardStyle";
-
 import { useForm } from "react-hook-form";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea";
-import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { axiosCliente } from "../../../service/api/axios";
 import {
@@ -129,7 +128,7 @@ export const FormFichaSolicitud = () => {
           <div className="flex flex-row h-24">
             <figure className="flex-shrink-0 h-full w-1/3 border flex justify-center items-center">
               <Image
-                src="logoSenaNaranja.png"
+                src={V.logoSena}
                 className="h-20 w-full object-contain"
                 alt="logo-sena"
               />
@@ -205,10 +204,11 @@ export const FormFichaSolicitud = () => {
             <div className="flex justify-end">
               <Button
                 type="button"
-                color="primary"
+                color={V.BtnRegistrar}
                 onClick={() => handleNewEquipos()}
+                radius={V.Bradius}
               >
-                <Icons icon={PlusIcon} /> Añadir
+                <Icons icon={V.PlusIcon} /> Añadir
               </Button>
             </div>
             <div>
@@ -257,7 +257,7 @@ export const FormFichaSolicitud = () => {
                           isIconOnly
                           onClick={() => eliminarFila(fila.id)}
                         >
-                          <Icons icon={TrashIcon} />
+                          <Icons icon={V.TrashIcon} />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -267,7 +267,12 @@ export const FormFichaSolicitud = () => {
             </div>
           </div>
 
-          <Button type="submit" size="lg" className="mt-9 bg-custom-green">
+          <Button
+            type="submit"
+            size="lg"
+            radius={V.Bradius}
+            color={V.BtnRegistrar}
+          >
             <span className="text-white font-bold">Registrar</span>
           </Button>
         </form>

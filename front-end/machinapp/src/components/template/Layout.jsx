@@ -1,44 +1,46 @@
-import { Nav, useAuth, AvatarCom, Footer, Header } from "../../index.js";
+import { Nav, useAuth, AvatarCom, Footer, Header, V } from "../../index.js";
 import { Suspense } from "react";
 import PropTypes from "prop-types";
-
-//componentes
 import { Outlet } from "react-router-dom";
-
 import MenuMobile from "../molecules/navigation/MenuMobile.jsx";
 
 export const Layout = ({ children }) => {
   const { rol } = useAuth();
-  return (
-    <>
-      <Header color={"bg-white"} contenido={<AvatarCom />} />
 
-      <main className="flex">
-        <section className="flex flex-col max-lg:hidden">
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <Header color="bg-white shadow-sm" contenido={<AvatarCom />} />
+
+      <main className="flex-grow flex">
+        <aside className="bg-white shadow-md max-lg:hidden">
           <Nav rol={rol} />
-        </section>
-        <section className="w-full flex flex-col gap-4 rounded-md  p-5 ">
-          <Suspense fallback={<h1>Cargando</h1>}>
-            <main className="bg-white rounded-lg shadow-lg h-full p-5 ">
-              <div className="lg:hidden relative z-30  sm:px-6 2xl:p-10">
+        </aside>
+
+        <section className="flex-grow p-6 lg:p-8">
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-full">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            }
+          >
+            <div className={`bg-white ${V.radius} shadow-lg h-full p-6 lg:p-8`}>
+              <div className="lg:hidden mb-4">
                 <MenuMobile />
               </div>
               {children}
-            </main>
+            </div>
             <Outlet />
           </Suspense>
         </section>
       </main>
-      <Footer />
-    </>
+
+      <Footer className="shadow-md mt-auto" />
+    </div>
   );
 };
 
-// forma de prototipar un componente
-
 Layout.propTypes = {
-  children: PropTypes.any.isRequired,
+  children: PropTypes.node.isRequired,
   titlePage: PropTypes.string,
 };
-
-/* mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 */
