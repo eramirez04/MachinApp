@@ -1,7 +1,7 @@
 import InfoDetalladaSede from '../../components/organisms/Sitios/InfoDetalladaSede'
-import Layout from '../../components/template/Layout'
+import { Layout } from "../../index";
 
-const InfoSede = () => {
+export const InfoSede = () => {
   return (
     <Layout titlePage="Información de Sede">
       <InfoDetalladaSede />
@@ -9,4 +9,3 @@ const InfoSede = () => {
   )
 }
 
-export default InfoSede

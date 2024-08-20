@@ -1,7 +1,7 @@
 import BuscarSedes from '../../components/organisms/Sitios/ListarSedes'
-import Layout from '../../components/template/Layout'
+import {Layout} from "../../index";
 
-const Sitios=()=>  {
+export const Sitios=()=>  {
   return (
     <Layout titlePage='Centro'>
       <BuscarSedes/>
@@ -9,4 +9,3 @@ const Sitios=()=>  {
   )
 }
 
-export default Sitios

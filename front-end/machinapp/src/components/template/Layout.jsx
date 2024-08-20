@@ -1,52 +1,46 @@
-import { Suspense, lazy } from "react";
+import { Nav, useAuth, AvatarCom, Footer, Header, V } from "../../index.js";
+import { Suspense } from "react";
 import PropTypes from "prop-types";
-
-//componentes
 import { Outlet } from "react-router-dom";
-const Header = lazy(() => import("../molecules/Header.jsx"));
-const Nav = lazy(() => import("../molecules/Nav.jsx"));
-import { AvatarCom } from "../molecules/Avatar.jsx";
-import Footer from "../molecules/Footer.jsx";
 import MenuMobile from "../molecules/navigation/MenuMobile.jsx";
 
-// hook de rol
-import { useAuth } from "../../hooks/useAuth.jsx";
-
-const Layout = ({ children }) => {
+export const Layout = ({ children }) => {
   const { rol } = useAuth();
-  return (
-    <>
-      <div className="bg-gray-100">
-        <Header color={"bg-white"} contenido={<AvatarCom />} />
 
-        <div className="flex">
-          <section className="flex flex-col max-lg:hidden">
-            <Nav rol={rol} />
-          </section>
-          <div className="w-full flex flex-col gap-4 rounded-md  p-5 ">
-            <Suspense fallback={<h1>Cargando</h1>}>
-              <main className="bg-white rounded-lg shadow-lg h-full p-5 ">
-                <div className="z-30 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                  <MenuMobile />
-                </div>
-                {children}
-              </main>
-              <Outlet />
-            </Suspense>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    </>
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <Header color="bg-white shadow-sm" contenido={<AvatarCom />} />
+
+      <main className="flex-grow flex">
+        <aside className="bg-white shadow-md max-lg:hidden">
+          <Nav rol={rol} />
+        </aside>
+
+        <section className="flex-grow p-6 lg:p-8">
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-full">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            }
+          >
+            <div className={`bg-white ${V.radius} shadow-lg h-full p-6 lg:p-8`}>
+              <div className="lg:hidden mb-4">
+                <MenuMobile />
+              </div>
+              {children}
+            </div>
+            <Outlet />
+          </Suspense>
+        </section>
+      </main>
+
+      <Footer className="shadow-md mt-auto" />
+    </div>
   );
 };
 
-// forma de prototipar un componente
-
 Layout.propTypes = {
-  children: PropTypes.any.isRequired,
+  children: PropTypes.node.isRequired,
   titlePage: PropTypes.string,
 };
-
-export default Layout;
-/* mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 */

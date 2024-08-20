@@ -1,4 +1,4 @@
-import Layout from "../../components/template/Layout";
+import { Layout } from "../../index";
 import { FormFichaSolicitud } from "../../components/organisms/formularios/FormFichaSolicitud";
 
 export const FichaSolicitudPage = () => {

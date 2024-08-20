@@ -1,3 +1,4 @@
+import { V } from "../../../style"; 
 import {
   Modal,
   useDisclosure,
@@ -9,11 +10,11 @@ import {
 } from "@nextui-org/react";
 
 // eslint-disable-next-line react/prop-types
-const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButton, colorButton="primary" }) => {
+export const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButton, colorButton="primary" }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <Button color={colorButton} variant={variantButton} onPress={onOpen}>
+      <Button color={colorButton}  variant={variantButton} onPress={onOpen} className={`${V.radius}`}>
         {buttonModal}
       </Button>
       <Modal
@@ -46,4 +47,4 @@ const ModalComponte = ({ buttonModal, tittleModal, componente, size, variantButt
   );
 };
 
-export default ModalComponte;
+

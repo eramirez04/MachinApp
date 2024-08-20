@@ -53,13 +53,12 @@ export const registarSolicitud = async (req, res) => {
 
 export const obtenerSolicitudes = async (req, res) => {
   try {
-    const consultaSQL = "select * from solicitud_mantenimiento";
+    const consultaSQL =
+      "select * from solicitud_mantenimiento where soli_estado = 'pendiente'";
 
-    const [hola] = await conexion.query(consultaSQL);
+    const [resultadoConsulta] = await conexion.query(consultaSQL);
 
-    console.log(hola);
-
-    return res.status(200).json(hola);
+    return res.status(200).json(resultadoConsulta);
   } catch (error) {
     return res.status(500).json({ Mensaje: "Error en el servidor", error });
   }

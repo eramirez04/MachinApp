@@ -1,15 +1,17 @@
+import {
+  InputforForm,
+  Icons,
+  useGlobalData,
+  SelectComponent,
+  useSolicitudFichasData,
+  TextAreaComponent,
+  CardStyle,
+  V,
+} from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
-import { CardStyle } from "../../molecules/CardStyle";
-import InputforForm from "../../molecules/InputForForm";
 import { useForm } from "react-hook-form";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea";
-import { Icons } from "../../atoms/icons/Icons";
-import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { SelectComponent } from "../../molecules/SelectComponent";
-import { useFetchEquipo } from "../../../hooks/useFetchEquipos";
 import { useEffect, useState } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { useSolicitudFichasData } from "../../../hooks/solicitud/Solicitud";
 import {
   Table,
   TableHeader,
@@ -20,7 +22,7 @@ import {
 } from "@nextui-org/react";
 
 export const FormFichaSolicitud = () => {
-  const { equiposData } = useFetchEquipo();
+  const { equiposData } = useGlobalData();
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
@@ -119,7 +121,6 @@ export const FormFichaSolicitud = () => {
   return (
     <>
       <div className="flex justify-center  h-full w-full">
-        hola
         <form
           className="flex flex-col gap-8 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}
@@ -127,7 +128,7 @@ export const FormFichaSolicitud = () => {
           <div className="flex flex-row h-24">
             <figure className="flex-shrink-0 h-full w-1/3 border flex justify-center items-center">
               <Image
-                src="logoSenaNaranja.png"
+                src={V.logoSena}
                 className="h-20 w-full object-contain"
                 alt="logo-sena"
               />
@@ -203,10 +204,11 @@ export const FormFichaSolicitud = () => {
             <div className="flex justify-end">
               <Button
                 type="button"
-                color="primary"
+                color={V.BtnRegistrar}
                 onClick={() => handleNewEquipos()}
+                radius={V.Bradius}
               >
-                <Icons icon={PlusIcon} /> Añadir
+                <Icons icon={V.PlusIcon} /> Añadir
               </Button>
             </div>
             <div>
@@ -255,7 +257,7 @@ export const FormFichaSolicitud = () => {
                           isIconOnly
                           onClick={() => eliminarFila(fila.id)}
                         >
-                          <Icons icon={TrashIcon} />
+                          <Icons icon={V.TrashIcon} />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -265,7 +267,12 @@ export const FormFichaSolicitud = () => {
             </div>
           </div>
 
-          <Button type="submit" size="lg" className="mt-9 bg-custom-green">
+          <Button
+            type="submit"
+            size="lg"
+            radius={V.Bradius}
+            color={V.BtnRegistrar}
+          >
             <span className="text-white font-bold">Registrar</span>
           </Button>
         </form>

@@ -2,7 +2,7 @@
 import React, { lazy } from "react";
 
 // layout
-const Layout = lazy(() => import("../../components/template/Layout.jsx"));
+import { Layout } from "../../index.js";
 const BuscarUsuario = lazy(() =>
   import("../../components/organisms/ListarUsuario.jsx")
 );

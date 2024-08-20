@@ -1,18 +1,9 @@
-/* import MenuLeft from "../../../molecules/Menuleft.jsx"; */
-/* import { SearchComponent } from "../../../atoms/Inputs/InputSearch.jsx"; */
-/* import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"; */
+import { useGlobalData, ModalComponte } from "../../../../index.js";
 import { FormUser } from "../../formularios/FormUser.jsx";
 import { PaginateTable } from "../../table/PaginateTable.jsx";
-import ModalComponte from "../../../molecules/Modal.jsx";
-import { useGlobalData } from "../../../../hooks/useGlobalData.jsx";
 import { useNavigate } from "react-router-dom";
-import {
-  Dropdown,
-  DropdownTrigger,
-  Button,
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/react";
+
+import { DropDown } from "../../../molecules/navigation/Dropdown.jsx";
 
 const ListarUsuarios = () => {
   const { dataUser } = useGlobalData();
@@ -38,7 +29,7 @@ const ListarUsuarios = () => {
     correo: item.us_correo,
     tipo_documento: item.us_tipo_documento,
     numero_documento: item.us_numero_documento,
-    rol: item.fk_roles,
+    rol: item.rol_nombre,
   }));
 
   const handleEdit = (id) => {
@@ -52,7 +43,7 @@ const ListarUsuarios = () => {
 
   return (
     <>
-      <div className="h-screen p-7">
+      <div className="h-screen p-5">
         {/*   <MenuLeft /> */}
         <div className="flex pb-6 justify-between items-center">
           {/*     <SearchComponent /> */}
@@ -76,24 +67,11 @@ const ListarUsuarios = () => {
               ...row,
               acciones: (
                 <>
-                  <div className="items-center gap-2">
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <Button isIconOnly size="sm" variant="light">
-                          ....
-                        </Button>
-                      </DropdownTrigger>
-                      <DropdownMenu>
-                        {/* <DropdownItem>View</DropdownItem> */}
-                        <DropdownItem
-                          onClick={() => handleEdit(row.numero_documento)}
-                        >
-                          Edit
-                        </DropdownItem>
-                        <DropdownItem>Delete</DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </div>
+                  <DropDown
+                    DropdownTriggerElement={"..."}
+                    dropdown={["Editar"]}
+                    onClick={() => handleEdit(row.numero_documento)}
+                  />
                 </>
               ),
             }))}

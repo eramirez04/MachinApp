@@ -5,12 +5,13 @@ export const SelectComponent = ({
   placeholder,
   label,
   onChange,
+  value = true,
   ...restProps
 }) => {
   const props = { ...restProps };
   return (
     <>
-      <div className="max-w-sm mx-auto">
+      <div className="max-w-sm mx-auto flex items-center justify-evenly">
         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           {label}
         </label>
@@ -20,7 +21,7 @@ export const SelectComponent = ({
           onChange={onChange}
           {...register(name, {
             required: {
-              value: true,
+              value: value,
               message: `${name} es requerido`,
             },
           })}

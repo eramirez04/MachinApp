@@ -1,7 +1,7 @@
 import InfoDetalladaAmbiente from '../../components/organisms/Sitios/InfoDetalladaAmbiente'
-import Layout from '../../components/template/Layout'
+import { Layout } from "../../index";
 
-const InfoAmbiente = () => {
+export const InfoAmbiente = () => {
   return (
     <Layout titlePage="Información de Sitio">
       <InfoDetalladaAmbiente />
@@ -9,4 +9,3 @@ const InfoAmbiente = () => {
   )
 }
 
-export default InfoAmbiente

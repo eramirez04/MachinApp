@@ -1,52 +1,10 @@
+import { Icons, menus, V } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { FaUserGear } from "react-icons/fa6";
 import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { Icons } from "../atoms/icons/Icons";
 
-import {
-  HomeIcon,
-  MapIcon,
-  DocumentTextIcon,
-  ServerIcon,
-  ClockIcon,
-} from "@heroicons/react/24/solid";
-
-const Nav = ({ rol }) => {
-  const menus = [
-    { name: "Inicio", link: "/home", icon: HomeIcon },
-    {
-      name: "Sitios",
-      link: "#",
-      icon: MapIcon,
-      submenu: true,
-      submenus: [
-        { name: "Sedes", link: "/Sedes" },
-        { name: "Areas", link: "/Areas" },
-        { name: "Ambientes", link: "/Ambientes" },
-      ],
-    },
-    {
-      name: "Mantenimientos",
-      link: "#",
-      icon: DocumentTextIcon,
-      submenu: true,
-      submenus: [
-        { name: "Registrar Solicitud", link: "/crearsolicitud" },
-        { name: "Registrar Mantenimiento", link: "/crear_ficha_mantenimiento" },
-        { name: "Solicitudes", link: "/solicitudes" },
-      ],
-    },
-    { name: "Equipo y Maquinaria", link: "/Maquinas", icon: ServerIcon },
-    { name: "Historial", link: "/Historial", icon: ClockIcon },
-    {
-      name: "Panel de control",
-      link: "/Panelcontrol",
-      icon: FaUserGear,
-    },
-  ];
-
+export const Nav = ({ rol }) => {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(() => {
     const saved = localStorage.getItem("submenuOpen");
@@ -71,11 +29,10 @@ const Nav = ({ rol }) => {
     localStorage.setItem("submenuOpen", JSON.stringify(submenuOpen));
   }, [submenuOpen]);
 
- 
   return (
-    <section className="flex gap-6">
+    <nav className="flex gap-6 w-64">
       <div
-        className={`bg-[white] min-h-screen border shadow-md rounded-e-lg ${
+        className={`bg-[white] min-h-screen border shadow-md  ${
           open ? "w-72" : "w-20"
         } duration-500 text-black px-4`}
       >
@@ -86,16 +43,18 @@ const Nav = ({ rol }) => {
             onClick={() => setOpen(!open)}
           />
         </div>
-        <div className="mt-9 flex flex-col gap-4 relative">
+        <ul className="mt-9 flex flex-col gap-4 relative">
           {menus?.map(
             (menu, i) =>
               (menu.name !== "Panel de control" || rol === "Administrador") && (
-                <div key={i} className="relative">
+                <li key={i} className="relative">
                   <Link
                     to={menu?.link}
                     className={` ${
                       menu?.margin && "mt-96"
-                    } group flex items-center text-sm gap-3.5 font-medium p-4 hover:shadow-md border-b shadow-sm hover:bg-gray-100 rounded-md`}
+                    } group flex items-center hover:bg-slate-100 text-sm gap-3.5 font-medium p-4  border ${
+                      V.radius
+                    }`}
                     onClick={(e) => {
                       if (menu?.submenu) {
                         e.preventDefault();
@@ -106,7 +65,7 @@ const Nav = ({ rol }) => {
                     <div className="p-1 rounded-full">
                       <Icons icon={menu.icon} />
                     </div>
-                    <h2
+                    <span
                       style={{
                         transitionDelay: `${i + 3}00ms`,
                       }}
@@ -115,7 +74,7 @@ const Nav = ({ rol }) => {
                       }`}
                     >
                       {menu?.name}
-                    </h2>
+                    </span>
                     <h2
                       className={`${
                         open && "hidden"
@@ -144,13 +103,11 @@ const Nav = ({ rol }) => {
                       ))}
                     </div>
                   )}
-                </div>
+                </li>
               )
           )}
-        </div>
+        </ul>
       </div>
-    </section>
+    </nav>
   );
 };
-
-export default Nav;

@@ -1,7 +1,7 @@
 import BuscarAmbientesGeneral from '../../components/organisms/Sitios/ListarAmbientesGeneral'
-import Layout from '../../components/template/Layout'
+import {Layout} from "../../index";
 
-const AmbientesGeneral=()=>  {
+export const AmbientesGeneral=()=>  {
   return (
     <Layout titlePage='Centro'>
       <BuscarAmbientesGeneral/>
@@ -9,4 +9,3 @@ const AmbientesGeneral=()=>  {
   )
 }
 
-export default AmbientesGeneral

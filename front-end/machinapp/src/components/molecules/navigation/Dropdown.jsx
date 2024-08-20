@@ -1,24 +1,29 @@
 import PropTypes from "prop-types";
-import { Dropdown, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
 
-export const DropDown = ({ children, DropdownTriggerElement }) => {
+export const DropDown = ({ DropdownTriggerElement, dropdown, onClick }) => {
   return (
     <>
-      <Dropdown
-        radius="sm"
-        classNames={{
-          base: "before:bg-default-200",
-          content: "p-0 border-small border-divider bg-background",
-        }}
-      >
-        <DropdownTrigger>{DropdownTriggerElement}</DropdownTrigger>
-        <DropdownMenu
-          aria-label="Custom item styles"
-          disabledKeys={["profile"]}
-          className="p-7"
-          variant="flat"
-        >
-          {children}
+      <Dropdown radius="sm">
+        <DropdownTrigger className="cursor-pointer">
+          {DropdownTriggerElement}
+        </DropdownTrigger>
+        <DropdownMenu variant="flat" className="p-7">
+          {dropdown.map((item, index) => (
+            <DropdownItem
+              key={index}
+              textValue={`item ${index}`}
+              onClick={onClick}
+              className="cursor-pointer flex text-center"
+            >
+              {item}
+            </DropdownItem>
+          ))}
         </DropdownMenu>
       </Dropdown>
     </>
@@ -28,5 +33,6 @@ export const DropDown = ({ children, DropdownTriggerElement }) => {
 DropDown.propTypes = {
   children: PropTypes.any,
   DropdownTriggerElement: PropTypes.any.isRequired,
+  dropdown: PropTypes.any,
+  onClick: PropTypes.func,
 };
-
