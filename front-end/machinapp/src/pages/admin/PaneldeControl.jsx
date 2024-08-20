@@ -1,4 +1,4 @@
-import Layout from "../../components/template/Layout.jsx";
+import { Layout } from "../../index";
 import ListarUsuarios from "../../components/organisms/PanelConponents/PDCAcciones/ListarUsuarios.jsx";
 
 const PaneldeControlUsuarios = () => {

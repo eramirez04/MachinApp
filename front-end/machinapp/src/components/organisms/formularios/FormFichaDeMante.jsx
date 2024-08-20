@@ -1,8 +1,6 @@
-import React from 'react';
+import { InputforForm, SelectComponent } from "../../../index.js"
 import { useForm } from 'react-hook-form';
-import { CardStyle } from "../../molecules/CardStyle.jsx";
-import InputforForm from "../../molecules/InputForForm";
-import { SelectComponent } from "../../molecules/SelectComponent.jsx";
+import { CardStyle } from "../../molecules/content/CardStyle.jsx";
 import { Image } from "@nextui-org/react";
 
 // Simple Textarea component

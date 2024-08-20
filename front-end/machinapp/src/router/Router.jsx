@@ -1,32 +1,31 @@
 import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-
 //proteger las rutas
 import { ProtectedRoute } from "./ProtectedRoute";
 
 // paginas
+import {
+  Inicio,
+  Home,
+  Historial,
+  Maquinas,
+  Sitios,
+  Sedes,
+  Areas,
+  MaquinasAmbiente,
+  InfoMaquina,
+  ViewFormFichaTecnica,
+  ViewFormFicha_De_mantenimiento,
+  ResetPassword,
+  InfoAmbiente,
+  InfoSede,
+  AreasGeneral,
+  AmbientesGeneral,
+} from "../index";
 
-import Inicio from "../pages/Inicio";
-import Home from "../pages/auth/Home";
 import { PerfilRoutes } from "./rutas/PerfilRoute";
-import Fichas from "../pages/Fichas";
-import Historial from "../pages/Historial";
-import Maquinas from "../pages/Maquinas";
-import Sitios from "../pages/Sitios";
-/* import PanelControl from "../pages/PaneldeControl"; */
-import Sedes from "../pages/Sedes";
-import Areas from "../pages/Areas";
+import { SolicitudRouter } from "./rutas/SolicitudRouter";
 import { AdminRoute } from "./rutas/AdminRoutes";
-import MaquinasAmbiente from "../pages/MaquinasAmbiente";
-import InfoMaquina from "../pages/InfoMaquina";
-import { ViewFormFichaTecnica } from "../pages/fichastecnicas/ViewFormFichaEquipos";
-import { ViewFormFicha_De_mantenimiento } from "../pages/fichastecnicas/ViewFormFicha_de_mantenimiento";
-import { FichaSolicitudPage } from "../pages/fichastecnicas/ViewFormFichaSolicitudPage";
-import InfoAmbiente from "../pages/InfoAmbiente";
-import InfoSede from "../pages/InfoSede";
-import AreasGeneral from "../pages/AreasGeneral";
-import AmbientesGeneral from "../pages/AmbientesGeneral";
-import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AppRouter = () => {
   return (
@@ -39,7 +38,7 @@ export const AppRouter = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
-            <Route path="/FIchas" element={<Fichas />} />
+            <Route path="/solicitud/*" element={<SolicitudRouter />} />
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
@@ -64,7 +63,6 @@ export const AppRouter = () => {
               path="/crear_ficha_mantenimiento"
               element={<ViewFormFicha_De_mantenimiento />}
             />
-            <Route path="/crearsolicitud" element={<FichaSolicitudPage />} />
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
           </Route>

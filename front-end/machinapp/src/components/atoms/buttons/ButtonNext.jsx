@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 // url para mas info
 // https://nextui.org/docs/components/button
 
-const ButtonNext = ({ text, type, color, variant, children }) => {
+export const ButtonNext = ({ text, type, color, variant, children }) => {
   return (
     <Button color={color} type={type} variant={variant}>
       {children} {text}
@@ -20,5 +20,3 @@ ButtonNext.propTypes = {
   variant: PropTypes.string,
   children: PropTypes.any,
 };
-
-export default ButtonNext;

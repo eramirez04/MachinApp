@@ -1,5 +1,5 @@
 import { FormFichaDeMantenimiento } from "../../components/organisms/formularios/FormFichaDeMante";
-import Layout from "../../components/template/Layout";
+import { Layout } from "../../index";
 
 export const ViewFormFicha_De_mantenimiento = () => {
   return (
@@ -9,4 +9,3 @@ export const ViewFormFicha_De_mantenimiento = () => {
   );
 };
 
-export default ViewFormFicha_De_mantenimiento;
