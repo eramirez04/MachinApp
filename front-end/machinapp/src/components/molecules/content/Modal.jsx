@@ -1,3 +1,4 @@
+import { V } from "../../../style"; 
 import {
   Modal,
   useDisclosure,
@@ -13,7 +14,7 @@ export const ModalComponte = ({ buttonModal, tittleModal, componente, size, vari
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <Button color={colorButton} variant={variantButton} onPress={onOpen}>
+      <Button color={colorButton}  variant={variantButton} onPress={onOpen} className={`${V.radius}`}>
         {buttonModal}
       </Button>
       <Modal

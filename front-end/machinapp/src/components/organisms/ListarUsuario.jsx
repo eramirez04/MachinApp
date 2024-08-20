@@ -1,12 +1,4 @@
-import { useAuth, Icons } from "../../index.js";
-
-import {
-  UserIcon,
-  DocumentTextIcon,
-  EnvelopeIcon,
-  UserCircleIcon,
-  TruckIcon,
-} from "@heroicons/react/24/outline";
+import { useAuth, Icons, V } from "../../index.js";
 
 import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
@@ -24,12 +16,12 @@ const BuscarUsuario = () => {
   };
 
   const iconNames = {
-    nombre: UserIcon,
-    apellidos: UserIcon,
-    correo: EnvelopeIcon,
-    "numero Documento": DocumentTextIcon,
-    especialidad: UserCircleIcon,
-    empresa: TruckIcon,
+    nombre: V.UserIcon,
+    apellidos: V.UserIcon,
+    correo: V.EnvelopeIcon,
+    "numero Documento": V.DocumentTextIcon,
+    especialidad: V.UserCircleIcon,
+    empresa: V.TruckIcon,
   };
 
   const newUser = Object.entries(newd);
@@ -75,7 +67,7 @@ const BuscarUsuario = () => {
                   {newUser.map(([key, value]) => (
                     <li
                       key={key}
-                      className="flex flex-col p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                      className={`${V.radius} flex flex-col p-4 bg-white shadow-md hover:shadow-lg transition-shadow duration-300`}
                     >
                       <label className="flex flex-col space-y-2">
                         <span className="font-semibold text-gray-800 capitalize">
