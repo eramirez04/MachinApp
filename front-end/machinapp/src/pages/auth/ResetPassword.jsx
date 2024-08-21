@@ -1,8 +1,5 @@
-import Header from "../../components/organisms/Header";
-import ModalComponte from "../../components/molecules/Modal";
-import { FormUser } from "../../components/organisms/formularios/FormUser";
-import Footer from "../../components/molecules/Footer";
-import InputforForm from "../../components/molecules/InputForForm";
+import { Header, Footer, InputforForm, ModalComponte, V } from "../../index";
+import Login from "../../components/organisms/Login";
 import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import { axiosCliente } from "../../service/api/axios";
@@ -46,11 +43,10 @@ export const ResetPassword = () => {
         color={"bg-white"}
         contenido={
           <ModalComponte
-            buttonModal={"Crea una Cuenta"}
-            tittleModal={"Crea tu Cuenta"}
-            componente={<FormUser />}
-            colorButton="success"
-            variantButton={"shadow"}
+            buttonModal={"Login"}
+            tittleModal={"Iniciar Sesion"}
+            colorButton="primary"
+            componente={<Login />}
           />
         }
       />
@@ -83,6 +79,7 @@ export const ResetPassword = () => {
             />
             <Button
               type="submit"
+              radius={V.Bradius}
               isLoading={loading ? true : false}
               className="text-white bg-blue-600 mt-4"
             >

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import PaneldeControlUsuarios from "../../pages/admin/PaneldeControl";
 import { UpdateUserAdmin } from "../../pages/admin/UpdateUsersAdmin";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/user/useAuth";
 
 export const AdminRoute = () => {
   return (

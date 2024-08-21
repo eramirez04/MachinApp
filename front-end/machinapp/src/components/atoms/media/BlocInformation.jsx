@@ -1,6 +1,5 @@
 
-
-const BlocInformation = ({titulo, contenido})=> {
+export const BlocInformation = ({titulo, contenido})=> {
   return (
     <>
         <div className="  p-2 rounded-lg text-zinc-700 " >
@@ -10,4 +9,3 @@ const BlocInformation = ({titulo, contenido})=> {
     </>
   )
 }
-export default BlocInformation  

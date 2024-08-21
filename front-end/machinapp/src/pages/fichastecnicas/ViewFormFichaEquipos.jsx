@@ -1,5 +1,5 @@
 import { FormFichaTecnica } from "../../components/organisms/formularios/FormFichaTecnicaEquipos";
-import Layout from "../../components/template/Layout";
+import { Layout } from "../../index";
 
 export const ViewFormFichaTecnica = () => {
   return (

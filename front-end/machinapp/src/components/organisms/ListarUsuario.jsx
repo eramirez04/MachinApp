@@ -1,14 +1,6 @@
-import {
-  UserIcon,
-  DocumentTextIcon,
-  EnvelopeIcon,
-  UserCircleIcon,
-  TruckIcon,
-} from "@heroicons/react/24/outline";
-import { Icons } from "../atoms/icons/Icons.jsx";
+import { useAuth, Icons, V } from "../../index.js";
 
-import { useAuth } from "../../hooks/useAuth.jsx";
-import { Divider } from "@nextui-org/react";
+import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
 const BuscarUsuario = () => {
@@ -24,19 +16,28 @@ const BuscarUsuario = () => {
   };
 
   const iconNames = {
-    nombre: UserIcon,
-    apellidos: UserIcon,
-    correo: EnvelopeIcon,
-    "numero Documento": DocumentTextIcon,
-    especialidad: UserCircleIcon,
-    empresa: TruckIcon,
+    nombre: V.UserIcon,
+    apellidos: V.UserIcon,
+    correo: V.EnvelopeIcon,
+    "numero Documento": V.DocumentTextIcon,
+    especialidad: V.UserCircleIcon,
+    empresa: V.TruckIcon,
   };
 
   const newUser = Object.entries(newd);
 
   return (
     <>
-      <Link to={"/perfil/settings"}>isRequired</Link>
+      <div className="flex justify-end">
+        <Button color="primary" type="submit" radius="sm">
+          <Link
+            to={"/perfil/settings"}
+            className="h-full w-full text-sm flex justify-center items-center "
+          >
+            Editar Información
+          </Link>
+        </Button>
+      </div>
 
       <div className="p-4 sm:p-6 lg:p-8 rounded-lg">
         <Divider />
@@ -66,7 +67,7 @@ const BuscarUsuario = () => {
                   {newUser.map(([key, value]) => (
                     <li
                       key={key}
-                      className="flex flex-col p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                      className={`${V.radius} flex flex-col p-4 bg-white shadow-md hover:shadow-lg transition-shadow duration-300`}
                     >
                       <label className="flex flex-col space-y-2">
                         <span className="font-semibold text-gray-800 capitalize">

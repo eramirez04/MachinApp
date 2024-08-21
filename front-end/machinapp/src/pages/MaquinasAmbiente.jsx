@@ -1,13 +1,13 @@
 
 import { useEffect, useState } from 'react'
 import ListarMaquinasAmb from '../components/organisms/ListarMaquinasAmb.jsx'
-import Layout from '../components/template/Layout.jsx'
+import {Layout} from "../index.js"
 import { useParams } from "react-router-dom"
 
 import {axiosCliente} from "../service/api/axios.js"
 
 
-const MaquinasAmbiente=()=>{
+export const MaquinasAmbiente=()=>{
 
     const {idAmbiente} = useParams()
 
@@ -39,4 +39,3 @@ const MaquinasAmbiente=()=>{
       </>
     )
 }
-export default MaquinasAmbiente
