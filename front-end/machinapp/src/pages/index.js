@@ -14,3 +14,6 @@ export { InfoAmbiente } from "./Sitios/InfoAmbiente";
 export { InfoSede } from "./Sitios/InfoSede";
 export { AreasGeneral } from "./Sitios/AreasGeneral";
 export { AmbientesGeneral } from "./Sitios/AmbientesGeneral";
+export { RegistrarAmbiente } from "./Sitios/RegistrarAmbiente";
+export { RegistrarArea } from "./Sitios/RegistrarArea";
+export { RegistrarSede } from "./Sitios/RegistrarSede";
