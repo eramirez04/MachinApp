@@ -1,32 +1,96 @@
 import { conexion } from '../database/database.js';
 import {validationResult} from 'express-validator'
+import multer from "multer";
 
-
-/* listo */
-export const listarRequerimiento5 = async (req, res) => {
-    try {
-        let sql = `
-            SELECT idMantenimiento, mant_codigo_mantenimiento, mant_estado, mant_fecha_proxima
-            FROM mantenimiento 
+// Configuración de Multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "public/pdfs");
+    },
+    filename: function (req, file, cb) {
+      cb(null, `${Date.now()}_${file.originalname}`); // Renombrar el archivo para evitar colisiones
+    },
+  });
+  
+  const upload = multer({
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+      if (file.mimetype === 'application/pdf') {
+        cb(null, true);
+      } else {
+        cb(new Error('Solo se permiten archivos PDF'), false);
+      }
+    },
+  });
+  
+  // Middleware para manejar la subida del archivo
+  export const cargarMantenimiento = upload.single('mant_ficha_soporte');
+  
+  export const registrarMantenimiento = async (req, res) => {
+    cargarMantenimiento(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ "mensaje": err.message });
+      }
+  
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const {
+        mant_codigo_mantenimiento,
+        mant_estado,
+        mant_fecha_proxima,
+        mant_descripcion,
+        mant_costo_final,
+        fk_tipo_mantenimiento,
+        fk_solicitud_mantenimiento
+      } = req.body;
+  
+      const mant_ficha_soporte = req.file ? req.file.path : null;
+  
+      try {
+        const sql = `
+          INSERT INTO mantenimiento (
+            mant_codigo_mantenimiento,
+            mant_estado,
+            mant_fecha_proxima,
+            fk_tipo_mantenimiento,
+            mant_descripcion,
+            mant_ficha_soporte,
+            mant_costo_final,
+            fk_solicitud_mantenimiento
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
-        const [result] = await conexion.query(sql);
-        if (result.length > 0) {
-            res.status(200).json(result);
+        const [resultado] = await conexion.query(sql, [
+          mant_codigo_mantenimiento,
+          mant_estado,
+          mant_fecha_proxima,
+          fk_tipo_mantenimiento,
+          mant_descripcion,
+          mant_ficha_soporte,
+          mant_costo_final,
+          fk_solicitud_mantenimiento
+        ]);
+  
+        if (resultado.affectedRows > 0) {
+          // Obtener el id del nuevo mantenimiento
+          const idMantenimiento = resultado.insertId;
+          return res.status(200).json({ "mensaje": "Se registró el mantenimiento con éxito", idMantenimiento });
         } else {
-            res.status(404).json({ "message": "No se encontraron mantenimientos en la base de datos." });
+          return res.status(400).json({ "mensaje": "No se registró el mantenimiento" });
         }
-    }
-    catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarRequerimiento5: " + err });
-    }
-};
+      } catch (e) {
+        return res.status(500).json({ "mensaje": "Error: " + e.message });
+      }
+    });
+  };
+  
+
 
 /* 5.1 Generar alertas de mantenimiento de a través de correo electrónico */
 import { mantenimiento_correo } from "../config/mantenimiento_email/email_mantenimineto.js";
 import { emailHtml_mantenimiento } from "../config/mantenimiento_email/emailhtml_mantenimiento.js";
-
-
-
 
 /* Listo función para verificar y enviar correos electrónicos de mantenimiento automáticamente */
 export const verificarEnvioCorreosMantenimiento = async () => {
@@ -67,127 +131,9 @@ export const verificarEnvioCorreosMantenimiento = async () => {
     }
 };
 
-setInterval(verificarEnvioCorreosMantenimiento, 24 * 60 * 60 * 1000);
-
 /* ejecuta el codigo para verificar cada dia */
 setInterval(verificarEnvioCorreosMantenimiento, 24 * 60 * 60 * 1000); 
 /* setInterval(verificarEnvioCorreosMantenimiento, 10 * 1000); */
-
-
-/* 5.2 listo busqueda por id de mantenimiento y que aparesca todas las actividades */
-export const listarMantenimientoPorId = async (req, res) => {
-    try {
-        const { idMantenimiento } = req.params;
-        let sql = `
-            SELECT a.idActividades, a.acti_nombre, a.acti_descripcion, a.acti_fecha_realizacion, a.acti_estado, m.idMantenimiento
-            FROM mantenimiento AS m
-            JOIN solicitud_mantenimiento AS sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-            JOIN actividades AS a ON sm.idSolicitud = a.acti_fk_solicitud
-            WHERE m.idMantenimiento = ?`;
-        const [result] = await conexion.query(sql, [idMantenimiento]);
-
-        if (result.length > 0) {
-            res.status(200).json(result);
-        } else {
-            res.status(404).json({ "message": "No se encontraron actividades con el ID de mantenimiento especificado" });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarMantenimientoPorId: " + err });
-    }
-};
-
-/* arreglar */
-export const registrarMantenimiento = async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()){
-            return res.status(400).json({ errors: errors.array() });
-        }
-        
-        const {
-            mant_codigo_mantenimiento,
-            mant_estado,
-            mant_fecha_proxima,
-            fi_placa_sena,
-            tipo_mantenimiento,
-            mant_descripcion,
-            mant_ficha_soporte,
-            mant_costo_final
-        } = req.body;
-        
-        // Consultar la tabla fichas_maquinas_equipos para obtener idFichas
-        let [fichasResult] = await conexion.query(`SELECT idFichas FROM fichas_maquinas_equipos WHERE fi_placa_sena = ?`, [fi_placa_sena]);
-        if (fichasResult.length === 0) {
-            return res.status(400).json({"mensaje": "Ficha no encontrada"});
-        }
-        const idFichas = fichasResult[0].idFichas;
-        
-        // Consultar la tabla tipo_mantenimiento para obtener idTipo_mantenimiento
-        let [tipoMantenimientoResult] = await conexion.query(`SELECT idTipo_mantenimiento FROM tipo_mantenimiento WHERE tipo_mantenimiento = ?`, [tipo_mantenimiento]);
-        if (tipoMantenimientoResult.length === 0) {
-            return res.status(400).json({"mensaje": "Tipo de mantenimiento no encontrado"});
-        }
-        const fk_tipo_mantenimiento = tipoMantenimientoResult[0].idTipo_mantenimiento;
-        
-        // Crear una nueva solicitud de mantenimiento
-        const [solicitudResult] = await conexion.query(`
-            INSERT INTO solicitud_mantenimiento (soli_descripcion_problemas, soli_estado) 
-            VALUES (?, 'Pendiente')`, [mant_descripcion]);
-        const idSolicitud = solicitudResult.insertId;
-        
-        // Insertar en solicitud_has_fichas
-        await conexion.query(`
-            INSERT INTO solicitud_has_fichas (fk_solicitud, fk_fichas) 
-            VALUES (?, ?)`, [idSolicitud, idFichas]);
-        
-        // Insertar el nuevo mantenimiento con los campos adicionales
-        const [mantenimientoResult] = await conexion.query(`
-            INSERT INTO mantenimiento (
-                mant_codigo_mantenimiento, 
-                mant_estado,
-                mant_fecha_proxima, 
-                fk_tipo_mantenimiento,
-                mant_descripcion,
-                mant_ficha_soporte,
-                mant_costo_final,
-                fk_solicitud_mantenimiento
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [mant_codigo_mantenimiento, mant_estado, mant_fecha_proxima, fk_tipo_mantenimiento, mant_descripcion, mant_ficha_soporte, mant_costo_final, idSolicitud]
-        );
-        
-        if (mantenimientoResult.affectedRows > 0) {
-            return res.status(200).json({"mensaje": "Se registró el mantenimiento con éxito"});
-        } else {
-            return res.status(404).json({"mensaje": "No se registró con éxito el mantenimiento"});
-        }
-    } catch (e) {
-        return res.status(500).json({"mensaje": "Error: " + e.message});
-    }
-};
-
-/* funciola al parecer pero toca ver,    busca el mantenimiento por id de la ficha  */
-export const mantenimientoDeMaquinas = async (req, res) => {
-    try {
-        const { idFichas } = req.params; 
-        let sql = `
-            SELECT Distinct m.idMantenimiento, m.mant_codigo_mantenimiento, m.mant_fecha_proxima, 
-                   m.mant_estado, m.mant_descripcion, m.fk_tipo_mantenimiento
-            FROM mantenimiento m
-            JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-            JOIN solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-            WHERE shf.fk_fichas = ?`;
-
-        const [result] = await conexion.query(sql, [idFichas]); 
-        if (result.length > 0) {
-            res.status(200).json(result);
-        } else {
-            res.status(404).json({ "message": "No se encontraron mantenimientos relacionados con esa ficha." });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador mantenimientoDeMaquinas: " + err });
-    }
-};
-
 
 /* front-end */
 /* listo listar mantenimientos */
@@ -205,9 +151,7 @@ export const listartodosmantenimientos = async (req, res) => {
                 a.acti_nombre,
                 tm.tipo_mantenimiento,
                 fme.idFichas,
-                fme.fi_fecha_inicio_garantia,
-                fme.fi_fecha_fin_garantia,
-                fme.fi_descripcion_garantia
+                fme.fi_estado
             FROM
                 mantenimiento m
             LEFT JOIN
@@ -225,14 +169,14 @@ export const listartodosmantenimientos = async (req, res) => {
         const [result] = await conexion.query(sql);
         
         if (result.length > 0) {
-            const requerimientos = [];
+            const mantenimientos = [];
             const idsProcesados = new Set();
 
             for (let i = 0; i < result.length; i++) {
                 const row = result[i];
                 
                 if (!idsProcesados.has(row.idMantenimiento)) {
-                    const requerimiento = {
+                    const mantenimiento = {
                         idMantenimiento: row.idMantenimiento,
                         referencia_maquina: row.referencia_maquina,
                         codigo_mantenimiento: row.mant_codigo_mantenimiento,
@@ -243,119 +187,91 @@ export const listartodosmantenimientos = async (req, res) => {
                         acti_nombre: row.acti_nombre,
                         tipo_mantenimiento: row.tipo_mantenimiento,
                         idFichas: row.idFichas,
-                        fi_fecha_inicio_garantia: row.fi_fecha_inicio_garantia ? new Date(row.fi_fecha_inicio_garantia).toLocaleDateString('es-ES') : null, // Formateo de la fecha
-                        fi_fecha_fin_garantia: row.fi_fecha_fin_garantia ? new Date(row.fi_fecha_fin_garantia).toLocaleDateString('es-ES') : null, // Formateo de la fecha
-                        fi_descripcion_garantia: row.fi_descripcion_garantia
+                        estado_ficha: row.fi_estado
                     };
-                    requerimientos.push(requerimiento);
+                    mantenimientos.push(mantenimiento);
                     idsProcesados.add(row.idMantenimiento);
                 }
             }
 
-            res.status(200).json(requerimientos);
+            res.status(200).json(mantenimientos);
         } else {
             res.status(404).json({ "message": "No se encontraron mantenimientos en la base de datos." });
         }
     } catch (err) {
         console.error("Error en listartodosmantenimientos:", err);
-        res.status(500).json({ "message": "Error en el controlador listartodosmantenimientos", "error": err.message });
-    }
-};
-
-/* arreglar */
-export const listarMantenimientoPorFicha = async (req, res) => {
-    try {
-        const { mant_ficha_soporte } = req.params;
-        let sql = `SELECT a.idActividades, a.acti_nombre, a.acti_descripcion, a.acti_fecha_realizacion, a.acti_estado, a.acti_fk_solicitud 
-                    FROM mantenimiento AS m
-                    JOIN solicitud_mantenimiento AS sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
-                    JOIN actividades AS a ON sm.idSolicitud = a.acti_fk_solicitud
-                    WHERE m.mant_ficha_soporte = ?`;
-        const [result] = await conexion.query(sql, [mant_ficha_soporte]);
-
-        if (result.length > 0) {
-            res.status(200).json(result);
-        } else {
-            res.status(404).json({ "message": "No se encontraron actividades para la ficha de soporte especificada" });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador listarMantenimientoPorFicha: " + err });
-    }
-};
-
-export const listarMantenimientoPorId_mantenimiento = async (req, res) => {
-    try {
-        const { mant_codigo_mantenimiento } = req.params;
-
-        let sql = `SELECT idMantenimiento, mant_codigo_mantenimiento, mant_fecha_proxima, mant_descripcion, 
-                          mant_ficha_soporte, mant_estado, mant_costo_final, fk_tipo_mantenimiento, fk_solicitud_mantenimiento
-                   FROM mantenimiento 
-                   WHERE mant_codigo_mantenimiento = ?`;
-
-        const [result] = await conexion.query(sql, [mant_codigo_mantenimiento]);
-
-        if (result.length > 0) {
-            res.status(200).json(result);
-        } else {
-            res.status(404).json({ message: "No se encontró mantenimiento con el código especificado" });
-        }
-    } catch (err) {
-        res.status(500).json({ message: "Error en el controlador listarMantenimientoPorId_mantenimiento: " + err.message });
+        res.status(500).json({ "message": "Error en el controlador listartodosmantenimientos: " + err.message });
     }
 };
 
 
-/* verificar ,eliminar mantenimiento */
-export const eliminarMantenimiento = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        let sql = 'DELETE FROM mantenimiento WHERE idMantenimiento = ?';
-
-        const [result] = await conexion.query(sql, [id]);
-
-        if (result.affectedRows > 0) {
-            res.status(200).json({ "message": "Mantenimiento eliminado exitosamente." });
-        } else {
-            res.status(404).json({ "message": "No se encontró el mantenimiento con el ID especificado." });
-        }
-    } catch (err) {
-        res.status(500).json({ "message": "Error en el controlador eliminarMantenimiento: " + err });
-    }
-};
-/* verificar actualizar */
+/* listo actualizar */
 export const actualizarMantenimiento = async (req, res) => {
-    try {
-        let { mant_codigo_mantenimiento, mant_fecha_proxima, mant_descripcion, mant_estado, mant_costo_final, fk_tipo_mantenimiento, fk_solicitud_mantenimiento } = req.body;
-        let id = req.params.id;
-
-        let sql = `UPDATE mantenimiento 
-        SET mant_codigo_mantenimiento = ?, 
-            mant_fecha_proxima = ?, 
-            mant_descripcion = ?, 
+    cargarMantenimiento(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ "mensaje": err.message });
+      }
+  
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const {
+        mant_id, // ID del mantenimiento que se va a actualizar
+        mant_codigo_mantenimiento,
+        mant_estado,
+        mant_fecha_proxima,
+        mant_descripcion,
+        mant_costo_final,
+        fk_tipo_mantenimiento,
+        fk_solicitud_mantenimiento
+      } = req.body;
+  
+      // Obtener la ruta del archivo
+      const mant_ficha_soporte = req.file ? req.file.path : null;
+  
+      try {
+        // Construir la consulta de actualización
+        let sql = `
+          UPDATE mantenimiento SET
+            mant_codigo_mantenimiento = ?,
             mant_estado = ?,
-            mant_costo_final = ?,
+            mant_fecha_proxima = ?,
             fk_tipo_mantenimiento = ?,
+            mant_descripcion = ?,
+            mant_costo_final = ?,
             fk_solicitud_mantenimiento = ?
-        WHERE idMantenimiento = ?`;
-
-        const [respuesta] = await conexion.query(sql, [
-            mant_codigo_mantenimiento,
-            mant_fecha_proxima,
-            mant_descripcion,
-            mant_estado,
-            mant_costo_final,
-            fk_tipo_mantenimiento,
-            fk_solicitud_mantenimiento,
-            id
-        ]);
-
-        if (respuesta.affectedRows > 0) {
-            return res.status(200).json({ "message": "Se actualizó con éxito" });
-        } else {
-            return res.status(404).json({ "message": "No se encontró el mantenimiento para actualizar" });
+        `;
+        
+        const params = [
+          mant_codigo_mantenimiento,
+          mant_estado,
+          mant_fecha_proxima,
+          fk_tipo_mantenimiento,
+          mant_descripcion,
+          mant_costo_final,
+          fk_solicitud_mantenimiento
+        ];
+  
+        // Si hay un nuevo archivo PDF, incluirlo en la consulta
+        if (mant_ficha_soporte) {
+          sql += `, mant_ficha_soporte = ?`;
+          params.push(mant_ficha_soporte);
         }
-    } catch (e) {
-        return res.status(500).json({ "message": "Error: " + e });
-    }
-}
+  
+        sql += ` WHERE mant_id = ?`;
+        params.push(mant_id);
+  
+        const [resultado] = await conexion.query(sql, params);
+  
+        if (resultado.affectedRows > 0) {
+          return res.status(200).json({ "mensaje": "Se actualizó el mantenimiento con éxito" });
+        } else {
+          return res.status(400).json({ "mensaje": "No se actualizó el mantenimiento" });
+        }
+      } catch (e) {
+        return res.status(500).json({ "mensaje": "Error: " + e.message });
+      }
+    });
+  };
