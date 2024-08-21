@@ -113,20 +113,20 @@ export const registrarVariasVariables = async (req, res)=>{
             return res.status(400).json(error)
         }
 
-        let {variblesFicha, tipoFicha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
+        let {variablesFicha, tipoFicha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
 
-        console.log(variblesFicha)
+        console.log(variablesFicha)
         console.log(tipoFicha)
 
 
         let sql 
-        for(let i = 0 ;variblesFicha.length>i; i++){
+        for(let i = 0 ;variablesFicha.length>i; i++){
 
-            if(variblesFicha[i].var_clase == "obligatoria"){
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato) values('${variblesFicha[i].var_nombre}', '${variblesFicha[i].var_descripcion}', '${variblesFicha[i].var_clase}', '${variblesFicha[i].var_tipoDato}')`
+            if(variablesFicha[i].var_clase == "obligatoria"){
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}')`
             }
             else{
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo ) values('${variblesFicha[i].var_nombre}', '${variblesFicha[i].var_descripcion}', '${variblesFicha[i].var_clase}', '${variblesFicha[i].var_tipoDato}', '${tipoFicha}')`
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}')`
             }
             
             const [respuesta] = await conexion.query(sql)
@@ -148,6 +148,7 @@ export const registrarVariasVariables = async (req, res)=>{
 
 /* ---------------------------Listo------------------------------------------------------------- */
 //listar las variables dependiendo del tipo de ficha tecnica, esto se utilizara al momento de generar el formulario de registro de la ficha tecnica
+
 export const listarVarFicha = async (req, res)=>{
 
     try{
@@ -157,6 +158,7 @@ export const listarVarFicha = async (req, res)=>{
         let sql = `
         
         SELECT 
+        idVariable,
         var_nombre,
         var_descripcion,
         var_clase,

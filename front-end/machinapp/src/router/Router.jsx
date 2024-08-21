@@ -21,6 +21,7 @@ import {
   InfoSede,
   AreasGeneral,
   AmbientesGeneral,
+  ViewFormTipoFicha
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -65,6 +66,13 @@ export const AppRouter = () => {
             />
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
+            
+            {/*  */}
+            <Route
+              path="/crearTiposFichaTec"
+              element={<ViewFormTipoFicha />}
+            />
+            {/*  */}
           </Route>
         </Routes>
       </Suspense>
