@@ -21,10 +21,16 @@ import {
   InfoSede,
   AreasGeneral,
   AmbientesGeneral,
+
   ViewFormTipoFicha,
   RegistrarAmbiente,
   RegistrarArea,
   RegistrarSede,
+
+  RegistrarAmbiente,
+  RegistrarArea,
+  RegistrarSede
+
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -72,6 +78,7 @@ export const AppRouter = () => {
             <Route path="/Ambientes/Registrar" element={<RegistrarAmbiente />} />
             <Route path="/Areas/Registrar" element={<RegistrarArea />} />
             <Route path="/Sedes/Registrar" element={<RegistrarSede />} />
+
             
             {/*  */}
             <Route
@@ -79,6 +86,8 @@ export const AppRouter = () => {
               element={<ViewFormTipoFicha />}
             />
             {/*  */}
+
+
           </Route>
         </Routes>
       </Suspense>
