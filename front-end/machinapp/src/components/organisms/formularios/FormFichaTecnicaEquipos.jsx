@@ -172,18 +172,18 @@ export const FormFichaTecnica = () => {
             />
           </figure>
           <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-            Ficha Tecnica
+            Ficha Técnica
           </div>
           <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
             <p className="overflow-hidden overflow-ellipsis text-center">
-              Centro de gestion y desarrollo sostenible surColombiano
+              Centro de Gestión y Desarrollo Sostenible Surcolombiano
             </p>
           </div>
         </div>
         <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
 
           <div className="w-full sm:w-2/4 p-2">
-            <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Basica</h3>
+            <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información Básica</h3>
 
             <div className="grid grid-cols-2 gap-3 ">
 
@@ -218,7 +218,7 @@ export const FormFichaTecnica = () => {
 
             <div className="border-b-1 border-b-green-400 p-3 pb-3 mb-8">     
               <InputDate
-                label="Fecha de adquisicion: "
+                label="Fecha de adquisición: "
                 value={fechaAdquisicion}
                 onChange={dateAdquisicion}
                 className="mt-4"
@@ -263,7 +263,7 @@ export const FormFichaTecnica = () => {
         </div>
 
         <div className="border-b-1 border-t-1 border-t-green-600 border-b-green-600 my-14 py-6  px-3 flex  items-center ">
-          <p className="mr-3 text-gray-900">Seleccionar el tipo de ficha tecnica: </p>
+          <p className="mr-3 text-gray-900">Seleccionar el tipo de ficha técnica: </p>
           <div>
             <SelectComponent
                 options={tipoEquipo}
@@ -275,22 +275,22 @@ export const FormFichaTecnica = () => {
             />
           </div>
 
-          <a href="" className="text-green-600/55 ml-28 hover:text-green-600">Si no existe, <br /> registrelo aqui!</a>  {/* hacer modal para registra tipos de equipo */}
+          <a href="" className="text-green-600/55 ml-28 hover:text-green-600">¡Si no existe, <br /> regístrelo aqui!</a>  {/* hacer modal para registra tipos de equipo */}
         </div>
 
         <div className="border-b-1 border-b-green-600 pb-7 mb-12">
-          <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Descripcion del equipo</h3>
+          <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Descripción del equipo</h3>
           <div className="w-full  p-2">
             <TextAreaComponent
             errors = {errors}
             register={register}
             name={'DescripcionEquipo'}
-            descripcion={'Descripcion del equipo'}
+            descripcion={'Descripción del equipo'}
             />
           </div>
           <div className="flex flex-col sm:flex-row mt-5 w-full gap-10 ">
             <div className="flex items-center justify-center">
-              <p >Añadir ficha tecnica de respaldo (opcional) :</p>
+              <p >Añadir ficha técnica de respaldo (opcional) :</p>
             </div>
             
             
@@ -305,14 +305,14 @@ export const FormFichaTecnica = () => {
           </div>
         </div>
 
-        <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Garantia</h3>
+        <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información de la Garantía</h3>
         <div className=" flex flex-col sm:flex-row mt-5 w-full ">
 
           <div className="w-full sm:w-2/4 p-2">
 
             <div className="my-3">
               <InputDate
-                label="Fecha inicio garantia : "
+                label="Fecha de inicio de la garantía : "
                 value={fechaInicioGarantia}
                 onChange={dateInicioGarantia}
                 className="mt-4"
@@ -320,7 +320,7 @@ export const FormFichaTecnica = () => {
             </div>
             <div className="my-3">
               <InputDate
-                label="Fecha fin garantia: "
+                label="Fecha de fin de la garantía: "
                 value={fechaFinGarantia}
                 onChange={dateFinGarantia}
                 className="mt-4"
@@ -333,12 +333,12 @@ export const FormFichaTecnica = () => {
             errors = {errors}
             register={register}
             name={'descripcionGarantia'}
-            descripcion={'Descripcion de la garantia'}
+            descripcion={'Descripción de la garantía'}
             />
           </div>
         </div>
         
-        <ButtonNext color="primary" text="Registrar ficha tecnica" type="submit" />
+        <ButtonNext color="primary" text="Registrar ficha técnica" type="submit" />
       </form>
     </>
   )
