@@ -47,7 +47,7 @@ export const FormFichaDeMantenimiento = () => {
         </div>
         <div className="w-1/4 text-right">
           <p className="text-xs">Fecha: <input type="date" {...register('date')} /></p>
-          <p className="text-xs">Centro de gestión y desarrollo sostenible surColombiano</p>
+          <p className="text-xs">Centro de Gestión y Desarrollo Sostenible Surcolombiano</p>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export const FormFichaDeMantenimiento = () => {
         <InputforForm
           register={register}
           errors={errors}
-          name="Sede de formacion "
+          name="Sede de formacion"
           tipo="text"
         />
         <InputforForm
@@ -77,7 +77,7 @@ export const FormFichaDeMantenimiento = () => {
           tipo="text"
         />
       </div>
-      <CardStyle titleCard="Datos del equipo o maquina">
+      <CardStyle titleCard="Datos del equipo o máquina">
         <Textarea
           register={register}
           name="description"
@@ -85,7 +85,7 @@ export const FormFichaDeMantenimiento = () => {
           rows={4}
         />
       </CardStyle>
-      <CardStyle titleCard="Tipo de Reparacion">
+      <CardStyle titleCard="Tipo de Reparación">
         <SelectComponent
           register={register}
           name="Tipo_de_Reparacion"
