@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Nav from '../molecules/Nav'
-import ButtonSitios from '../atoms/buttons/ButtonSitios'
+/* import Nav from '../molecules/Nav'
+import ButtonSitios from '../atoms/buttons/ButtonSitios' */
+
+import {Nav,ButtonSitios } from "../../index"
+
 import { axiosCliente } from '../../service/api/axios'
 
 const BuscarMaquinas=()=>  {

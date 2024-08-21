@@ -6,7 +6,7 @@ import { Button } from "@nextui-org/react";
 export const Maquinas = () => {
   return (
     <>
-      <Layout titlePage="Maquinas">
+      <Layout titlePage="Máquinas">
         <div className="pt-3 px-9 flex justify-end">
           <Button
             type="submit"
