@@ -256,7 +256,7 @@ export const FormFichaTecnica = () => {
             <SelectComponent
                 options={tipoEquipo}
                 name="tipo_equipo"
-                placeholder="Seleccione una opcion"
+                placeholder="Seleccione una opción"
                 valueKey="id"
                 textKey="valor"
                 register={register}
@@ -282,11 +282,11 @@ export const FormFichaTecnica = () => {
                 />
               </figure>
               <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-                Ficha Tecnica
+                Ficha Técnica
               </div>
               <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
                 <p className="overflow-hidden overflow-ellipsis text-center">
-                  Centro de gestion y desarrollo sostenible surColombiano
+                  Centro de Gestión y Desarrollo Sostenible Surcolombiano
                 </p>
               </div>
             </div>
@@ -296,7 +296,7 @@ export const FormFichaTecnica = () => {
               <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
 
                 <div className="w-full sm:w-2/4 p-2">
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Basica</h3>
+                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información Básica</h3>
                   <div className="grid grid-cols-2 gap-3 ">
                     
 
@@ -421,18 +421,18 @@ export const FormFichaTecnica = () => {
 
 
               <div className="w-full my-5">
-                <label > Descripcion del equipo</label>
+                <label > Descripción del equipo</label>
                 <TextAreaComponent
                   errors={errors}
                   register={register}
                   name={`variables.${varObligatorias.idVar6.idVariable}`}
-                  descripcion={'Descripcion general del equipo'}
+                  descripcion={'Descripción general del equipo'}
                 />
               </div>
 
               {/* Especificaciones tecnicas */}
               <div className="my-14">
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones técnicas</h3>
 
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse">
@@ -466,7 +466,7 @@ export const FormFichaTecnica = () => {
 
               {/* GARANTIA */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Garantia</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion de Garantía</h3>
                 <div className=" flex flex-col sm:flex-row mt-5 w-full ">
 
                   <div className="w-full sm:w-2/4 p-2  items-center">
@@ -496,7 +496,7 @@ export const FormFichaTecnica = () => {
                     errors = {errors}
                     register={register}
                     name={`variables.${varObligatorias.idVar5.idVariable}`}
-                    descripcion={'Descripcion de la garantia'}
+                    descripcion={'Descripción de la garantía'}
                     />
                   </div>
                 </div>
@@ -506,7 +506,7 @@ export const FormFichaTecnica = () => {
 
               {/* Secciones */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion relevante</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información relevante</h3>
                 
                 <div>
                   {
@@ -543,7 +543,7 @@ export const FormFichaTecnica = () => {
 
 
             </div>
-            <ButtonNext color="primary" text="Registrar ficha tecnica" type="submit"/>
+            <ButtonNext color="primary" text="Registrar ficha técnica" type="submit"/>
           </div>
           )
         }

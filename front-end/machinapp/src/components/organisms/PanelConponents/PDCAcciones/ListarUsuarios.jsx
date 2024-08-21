@@ -16,7 +16,7 @@ const ListarUsuarios = () => {
     "Apellidos",
     "Correo",
     "Tipo de documento",
-    "Numero de Documento",
+    "Número de Documento",
     "Rol",
     "Acciones",
   ];
@@ -47,7 +47,7 @@ const ListarUsuarios = () => {
         {/*   <MenuLeft /> */}
         <div className="flex pb-6 justify-between items-center">
           {/*     <SearchComponent /> */}
-          mas info aqui
+          Más info aquí
           <div className="pl-5 w-60">
             <ModalComponte
               buttonModal={"Añadir nuevo usuario"}

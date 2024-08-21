@@ -1,5 +1,5 @@
 import { FormAmbientes } from "../../components/organisms/formularios/FormAmbientes";
-import { Layout } from "../../index";
+import { Layout } from "../../components/index";
 
 export const RegistrarAmbiente = () => {
   return (

@@ -1,5 +1,5 @@
 import { FormSedes } from '../../components/organisms/formularios/FormSedes';
-import { Layout } from "../../index";
+import { Layout } from "../../components/index";
 
 export const RegistrarSede = () => {
   return (
