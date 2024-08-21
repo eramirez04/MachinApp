@@ -1,17 +1,19 @@
 import  { useEffect } from "react"
-import TablaMantenimientosMa from "../components/organisms/TablaMantenimientosMa.jsx"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import { Layout } from "../index.js"
-import {axiosCliente} from "../service/api/axios.js"
-import Imagenes from "../components/atoms/media/Imagenes.jsx"
-import {CardStyle} from "../components/molecules/content/CardStyle.jsx"
+import {axiosCliente} from "../../service/api/axios.js"
+
+//import Imagenes from "../../components/atoms/media/Imagenes.jsx"
+//import {CardStyle} from "../../components/molecules/CardStyle.jsx"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
-import BlocInformation from "../components/atoms/media/BlocInformation.jsx"
-
-
+//import BlocInformation from "../../components/atoms/media/BlocInformation.jsx"
 import {Tooltip} from "@nextui-org/react"
+
+import { Layout, CardStyle, Imagenes ,BlocInformation  } from "../../index.js"
+
+import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx"
+
 
 export const InfoMaquina = ()=> {
 

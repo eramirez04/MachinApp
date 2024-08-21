@@ -20,8 +20,9 @@ export const registrarTipoFicha= async(req, res)=>{
 
         const [respuesta] = await conexion.query(sql)
 
+
         if(respuesta.affectedRows>0){
-            return res.status(200).json({"mensaje":"Se registro con exito"}) 
+            return res.status(200).json({"mensaje":"Se registro con exito", "idTipoFicha": respuesta.insertId}) 
         }
         else{
             return res.status(404).json({"mensaje":"No se registro con exito"})
