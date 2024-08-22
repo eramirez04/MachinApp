@@ -12,7 +12,7 @@ export const Layout = ({ children }) => {
       <Header color="bg-white shadow-sm" contenido={<AvatarCom />} />
 
       <main className="flex-grow flex">
-        <aside className="bg-white shadow-md max-lg:hidden">
+        <aside className=" max-lg:hidden">
           <Nav rol={rol} />
         </aside>
 

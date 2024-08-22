@@ -190,7 +190,6 @@ export const FormFichaTecnica = () => {
     fechtData();
   }, []);
 
-
   const tipoFicha = async() =>{
     
     let idTipoFicha = getValues("tipo_equipo") //traemos solo el valor del input con ese nombre
@@ -198,36 +197,6 @@ export const FormFichaTecnica = () => {
     if(idTipoFicha != ""){
       
       try{
-
-  return (
-    <>
-      <form
-        onSubmit={handleSubmit(handleSubmitData)}
-        className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12  mx-auto "
-      >
-        {" "}
-        <div className="flex flex-row h-auto items-center">
-          <figure className="flex-shrink-0 h-16 w-1/3 border flex justify-center items-center">
-            <Image
-              src="logoSenaNaranja.png"
-              className="h-16 w-full object-contain"
-              alt="logo-sena"
-            />
-          </figure>
-          <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-            Ficha Técnica
-          </div>
-          <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
-            <p className="overflow-hidden overflow-ellipsis text-center">
-              Centro de Gestión y Desarrollo Sostenible Surcolombiano
-            </p>
-          </div>
-        </div>
-        <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
-
-          <div className="w-full sm:w-2/4 p-2">
-            <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información Básica</h3>
-
 
         const response = await axiosCliente.get(`variable/listarVars/${idTipoFicha}`)
 
@@ -242,20 +211,9 @@ export const FormFichaTecnica = () => {
 
         //para las que son obligatorias como se muestran los inpust ya creados, entonces creamos un objeto con estas variables
 
-
         let varObligatoriasArr = variables?.filter(item => item.var_clase == "obligatoria")
         
         const varObligatoriasObj = {}
-
-            <div className="border-b-1 border-b-green-400 p-3 pb-3 mb-8">     
-              <InputDate
-                label="Fecha de adquisición: "
-                value={fechaAdquisicion}
-                onChange={dateAdquisicion}
-                className="mt-4"
-              />
-            </div>
-
 
         //recorre el array y crea objetos destro del objeto definido anteriormente, esto para no tener que recurrir al orden en que se encuentran en el array.
 
@@ -279,7 +237,6 @@ export const FormFichaTecnica = () => {
 
         setMostrarFormulario(true)
 
-
       }catch(error){
         console.error(error.response)
       }
@@ -296,21 +253,15 @@ export const FormFichaTecnica = () => {
       >
         <div className="flex flex-row items-center justify-around mb-20 border-b-2 border-b-green-600 pb-10">
           <label className="flex flex-row items-center gap-4"> Seleccionar un tipo de ficha
-
-        <div className="border-b-1 border-t-1 border-t-green-600 border-b-green-600 my-14 py-6  px-3 flex  items-center ">
-          <p className="mr-3 text-gray-900">Seleccionar el tipo de ficha técnica: </p>
-          <div>
-
             <SelectComponent
                 options={tipoEquipo}
                 name="tipo_equipo"
-                placeholder="Seleccione una opción"
+                placeholder="Seleccione una opcion"
                 valueKey="id"
                 textKey="valor"
                 register={register}
             />
           </label>
-
 
           <Button  onClick={tipoFicha}  color="success">
             Siguiente 
@@ -320,25 +271,6 @@ export const FormFichaTecnica = () => {
         {
           mostrarFormulario &&(
           <div  className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12  mx-auto ">
-
-          <a href="" className="text-green-600/55 ml-28 hover:text-green-600">¡Si no existe, <br /> regístrelo aqui!</a>  {/* hacer modal para registra tipos de equipo */}
-        </div>
-
-        <div className="border-b-1 border-b-green-600 pb-7 mb-12">
-          <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Descripción del equipo</h3>
-          <div className="w-full  p-2">
-            <TextAreaComponent
-            errors = {errors}
-            register={register}
-            name={'DescripcionEquipo'}
-            descripcion={'Descripción del equipo'}
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row mt-5 w-full gap-10 ">
-            <div className="flex items-center justify-center">
-              <p >Añadir ficha técnica de respaldo (opcional) :</p>
-            </div>
-
             
             {/* cabezera */}
             <div className="flex flex-row h-auto items-center">
@@ -350,11 +282,11 @@ export const FormFichaTecnica = () => {
                 />
               </figure>
               <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-                Ficha Técnica
+                Ficha Tecnica
               </div>
               <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
                 <p className="overflow-hidden overflow-ellipsis text-center">
-                  Centro de Gestión y Desarrollo Sostenible Surcolombiano
+                  Centro de gestion y desarrollo sostenible surColombiano
                 </p>
               </div>
             </div>
@@ -364,7 +296,7 @@ export const FormFichaTecnica = () => {
               <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
 
                 <div className="w-full sm:w-2/4 p-2">
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información Básica</h3>
+                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Basica</h3>
                   <div className="grid grid-cols-2 gap-3 ">
                     
 
@@ -489,18 +421,18 @@ export const FormFichaTecnica = () => {
 
 
               <div className="w-full my-5">
-                <label > Descripción del equipo</label>
+                <label > Descripcion del equipo</label>
                 <TextAreaComponent
                   errors={errors}
                   register={register}
                   name={`variables.${varObligatorias.idVar6.idVariable}`}
-                  descripcion={'Descripción general del equipo'}
+                  descripcion={'Descripcion general del equipo'}
                 />
               </div>
 
               {/* Especificaciones tecnicas */}
               <div className="my-14">
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones técnicas</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
 
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse">
@@ -534,7 +466,7 @@ export const FormFichaTecnica = () => {
 
               {/* GARANTIA */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion de Garantía</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Garantia</h3>
                 <div className=" flex flex-col sm:flex-row mt-5 w-full ">
 
                   <div className="w-full sm:w-2/4 p-2  items-center">
@@ -564,7 +496,7 @@ export const FormFichaTecnica = () => {
                     errors = {errors}
                     register={register}
                     name={`variables.${varObligatorias.idVar5.idVariable}`}
-                    descripcion={'Descripción de la garantía'}
+                    descripcion={'Descripcion de la garantia'}
                     />
                   </div>
                 </div>
@@ -574,7 +506,7 @@ export const FormFichaTecnica = () => {
 
               {/* Secciones */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información relevante</h3>
+                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion relevante</h3>
                 
                 <div>
                   {
@@ -603,53 +535,18 @@ export const FormFichaTecnica = () => {
   </table>
 </div>
 
-
                     ))
                   }
                 </div>
 
               </div>
 
-        <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Información de la Garantía</h3>
-        <div className=" flex flex-col sm:flex-row mt-5 w-full ">
-
-
-
-
-            <div className="my-3">
-              <InputDate
-                label="Fecha de inicio de la garantía : "
-                value={fechaInicioGarantia}
-                onChange={dateInicioGarantia}
-                className="mt-4"
-              />
-            </div>
-            <div className="my-3">
-              <InputDate
-                label="Fecha de fin de la garantía: "
-                value={fechaFinGarantia}
-                onChange={dateFinGarantia}
-                className="mt-4"
-              />
 
             </div>
-            <ButtonNext color="primary" text="Registrar ficha técnica" type="submit"/>
+            <ButtonNext color="primary" text="Registrar ficha tecnica" type="submit"/>
           </div>
           )
         }
-
-
-          <div className="w-full sm:w-2/4 p-2">
-            <TextAreaComponent
-            errors = {errors}
-            register={register}
-            name={'descripcionGarantia'}
-            descripcion={'Descripción de la garantía'}
-            />
-          </div>
-        </div>
-        
-        <ButtonNext color="primary" text="Registrar ficha técnica" type="submit" />
 
       </form>
     </>
