@@ -1,25 +1,18 @@
-// eslint-disable-next-line no-unused-vars
-import React, { lazy } from "react";
+import { useLenguage, Footer, Header, ModalComponte, V } from "./../index.js";
+import { lazy } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import Footer from "../components/molecules/Footer.jsx";
-
-// translate
-import { useLenguage } from "../hooks/useTranslate.jsx";
 
 import { useTranslation } from "react-i18next";
 //componentes
-const Header = lazy(() => import("../components/organisms/Header.jsx"));
 
 // modal
-const ModalComponte = lazy(() => import("../components/molecules/Modal.jsx"));
 
 // login
 const Login = lazy(() => import("../components/organisms/Login.jsx"));
-import { FormUser } from "../components/organisms/formularios/FormUser.jsx";
 
-const Inicio = () => {
+export const Inicio = () => {
   const { t } = useTranslation();
   const { lenguage, onChangeTransalate } = useLenguage();
 
@@ -45,12 +38,10 @@ const Inicio = () => {
           color={"bg-white"}
           contenido={
             <ModalComponte
-              buttonModal={"Crea una Cuenta"}
-              tittleModal={"Crea tu Cuenta"}
-              componente={<FormUser />}
-              /*    size={"3xl"} */
-              colorButton="success"
-              variantButton={"shadow"}
+              buttonModal={"Login"}
+              tittleModal={"Iniciar Sesion"}
+              colorButton={V.BtnRegistrar}
+              componente={<Login />}
             />
           }
         />
@@ -80,7 +71,7 @@ const Inicio = () => {
                               effect="blur"
                             />
                           </div>
-                          <div className="h-64 w-44 overflow-hidden rounded-lg bg-red-300">
+                          <div className="h-64 w-44 overflow-hidden rounded-lg ">
                             <LazyLoadImage
                               src="escuela.jpg"
                               className="h-full w-full object-cover object-center"
@@ -88,7 +79,7 @@ const Inicio = () => {
                           </div>
                         </div>
                         <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                          <div className="h-64 w-44 overflow-hidden rounded-lg bg-red-900">
+                          <div className="h-64 w-44 overflow-hidden rounded-lg ">
                             <LazyLoadImage
                               src="escuela.jpg"
                               className="h-full w-full object-cover object-center"
@@ -125,13 +116,6 @@ const Inicio = () => {
                       </div>
                     </div>
                   </div>
-                  <ModalComponte
-                    buttonModal={"Login"}
-                    tittleModal={"Iniciar Sesion"}
-                    colorButton="primary"
-                    variantButton={"ghost"}
-                    componente={<Login />}
-                  />
                 </div>
               </div>
             </div>
@@ -142,5 +126,3 @@ const Inicio = () => {
     </>
   );
 };
-
-export default Inicio;

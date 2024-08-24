@@ -1,5 +1,6 @@
+import { Paginacion, V } from "../../../index";
 import { useState } from "react";
-import { Paginacion } from "../../molecules/PaginationCom";
+
 import PropTypes from "prop-types";
 import {
   Table,
@@ -28,16 +29,16 @@ export const PaginateTable = ({ columns, data, itemsPerPage = 10 }) => {
             {columns.map((column, index) => (
               <TableColumn
                 key={index}
-                className="bg-custom-green text-white font-bold"
+                className={`${(V.bg_sena_verde)} ${V.text_white}`}
               >
                 {column}
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="flex gap-36">
             {data
               .map((row, index) => (
-                <TableRow className="" key={index}>
+                <TableRow className="hover:bg-base-300 gap-7 h-12 " key={index}>
                   {Object.values(row).map((cell, cellIndex) => (
                     <TableCell key={cellIndex}>{cell}</TableCell>
                   ))}

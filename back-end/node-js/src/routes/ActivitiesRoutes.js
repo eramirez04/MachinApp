@@ -8,15 +8,28 @@ import {
   eliminarActividades,
   actualizarActividades,
   registrarVariasActividades,
-  listarActividadesFecha,
+
 } from "../controllers/activitiesController.js";
 
 import { verificar } from "../middlewares/LoginMidleware.js";
 
 const ActivitiesRoutes = Router();
-
+/**
+ * @swagger
+ * /listar:
+ *   get:
+ *     summary: Retrieve a list of activities
+ *     responses:
+ *       200:
+ *         description: A list of activities
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ */
 ActivitiesRoutes.get("/listar", verificar, listarActividades);
-ActivitiesRoutes.get("/listar/:acti_fecha_realizacion", verificar, listarActividadesFecha);
 
 ActivitiesRoutes.post(
   "/registrar",

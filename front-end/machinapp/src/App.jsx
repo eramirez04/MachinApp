@@ -1,9 +1,9 @@
 import { ProviderContext } from "./contexts/IndexContext.jsx";
-import { AppRouter } from "./router/Router.jsx";
+import { AppRouter } from "./index.js";
 /* import { useAxioshttpErrorStatus } from "./service/api/AxioshttpError.jsx"; */
 
 const App = () => {
- /*  useAxioshttpErrorStatus(); */
+  /*  useAxioshttpErrorStatus(); */
   return (
     <>
       <ProviderContext>

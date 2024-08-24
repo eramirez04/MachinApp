@@ -18,7 +18,7 @@ import { middlewareRolRegistro } from "../../validar/usuariosValidaciones/RolReq
 const RutaRol = Router();
 
 RutaRol.post("/registrar", verificar, middlewareRolRegistro, RegistraRol);
-RutaRol.get("/listar", adminAndInstructor, verificar, listarRoles);
+RutaRol.get("/listar", verificar, listarRoles);
 RutaRol.delete("/eliminar/:id", verificar, eliminarRol);
 RutaRol.put("/actualizar/:id", verificar, actualizarRol);
 RutaRol.get("/listar/:id", verificar, listarRolId);
