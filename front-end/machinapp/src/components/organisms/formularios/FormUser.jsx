@@ -1,11 +1,16 @@
-import InputforForm from "../../molecules/InputForForm";
-import ButtonNext from "../../atoms/buttons/ButtonNext";
-import { useRegistrarUsuario } from "../../../hooks/useRegistrarUsuarios";
-import { SelectComponent } from "../../molecules/SelectComponent";
+import {
+  useGlobalData,
+  useRegistrarUsuario,
+  ButtonNext,
+  InputforForm,
+  SelectComponent,
+  V,
+} from "../../../index";
 import { useForm } from "react-hook-form";
 
 export const FormUser = () => {
   const { registrarUsuario, loading, error } = useRegistrarUsuario();
+  const { refreshDataUser } = useGlobalData();
 
   const {
     register,
@@ -15,11 +20,15 @@ export const FormUser = () => {
   } = useForm();
 
   const handleSumitData = async (data) => {
-    console.log(data);
     try {
       const res = await registrarUsuario(data);
-      console.log(res);
-      reset();
+
+      if (res) {
+        alert("Usuario registrado con exito");
+        await refreshDataUser();
+        reset();
+        return;
+      }
     } catch (error) {
       console.log("Error al registrar un usuario", error.response.data);
     }
@@ -72,7 +81,7 @@ export const FormUser = () => {
           register={register}
           name={"contrasenia"}
         />
-        <input type="hidden" {...register("rol")} value={"4"} />
+        <input type="hidden" {...register("rol")} value={"2"} />
 
         <ButtonNext text="" color="success" type="submit">
           {loading ? "Registrando..." : "Registrar"}

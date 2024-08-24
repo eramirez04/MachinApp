@@ -1,12 +1,12 @@
-import Layout from "../components/template/Layout.jsx";
-import MantenimientoGeneral from "../components/organisms/MantenimientoGeneral.jsx"
+import { Layout } from "../index.js";
+import MantenimientoGeneral from "../components/organisms/MantenimientoGeneral.jsx";
 
-const Historial = () => {
+export const Historial = () => {
   return (
     <Layout titlePage="Historial">
-      <MantenimientoGeneral/>
+      <MantenimientoGeneral />
     </Layout>
   );
 };
 
-export default Historial;
+

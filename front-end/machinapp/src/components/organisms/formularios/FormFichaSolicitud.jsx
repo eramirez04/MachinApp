@@ -1,12 +1,17 @@
+import {
+  InputforForm,
+  Icons,
+  useGlobalData,
+  SelectComponent,
+  useSolicitudFichasData,
+  TextAreaComponent,
+  CardStyle,
+  V,
+} from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
-import { CardStyle } from "../../molecules/CardStyle";
-import InputforForm from "../../molecules/InputForForm";
 import { useForm } from "react-hook-form";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea";
-import { Icons } from "../../atoms/icons/Icons";
-import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { SelectComponent } from "../../molecules/SelectComponent";
-import { useFetchEquipo } from "../../../hooks/useFetchEquipos";
+import { useEffect, useState } from "react";
+import { axiosCliente } from "../../../service/api/axios";
 import {
   Table,
   TableHeader,
@@ -15,11 +20,10 @@ import {
   Button,
   Divider,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { axiosCliente } from "../../../service/api/axios";
 
 export const FormFichaSolicitud = () => {
-  const { equiposData } = useFetchEquipo();
+  const { equiposData } = useGlobalData();
+  const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
   // permite almacenar un array, para poder pasarselo como propiedad a al componente select
@@ -62,22 +66,14 @@ export const FormFichaSolicitud = () => {
         fk_solicitud: id,
       }));
 
-      const resfichas = await handledata(placasSenaConSolicitud);
+      const resfichas = await registrarSolicitudFichas(placasSenaConSolicitud);
+      console.log(resfichas);
 
       if (res && resfichas) {
         alert("se registro con exito la solicitud del mantenimiento");
         reset();
+        setvaluesTable([{ id: 1 }]);
       }
-    } catch (error) {
-      console.error(error.response.data);
-    }
-  };
-
-  // enviar los datos al servidor para la tabla solicitud_has_fichas
-  const handledata = async (data) => {
-    try {
-      const res = await axiosCliente.post("solicitudesfichas/", data);
-      return res.data;
     } catch (error) {
       console.error(error.response.data);
     }
@@ -126,13 +122,13 @@ export const FormFichaSolicitud = () => {
     <>
       <div className="flex justify-center  h-full w-full">
         <form
-          className="flex flex-col gap-4 w-11/12 pt-12"
+          className="flex flex-col gap-8 w-11/12 pt-12"
           onSubmit={handleSubmit(handleSubmitData)}
         >
           <div className="flex flex-row h-24">
             <figure className="flex-shrink-0 h-full w-1/3 border flex justify-center items-center">
               <Image
-                src="logoSenaNaranja.png"
+                src={V.logoSena}
                 className="h-20 w-full object-contain"
                 alt="logo-sena"
               />
@@ -142,14 +138,14 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de gestion y desarrollo sostenible surColombiano
+                Centro de Gestión y Desarrollo Sostenible Surcolombiano
               </p>
             </div>
           </div>
           <div className="border flex flex-col gap-10 p-14">
             <CardStyle
-              titleCard={"Informacion de solicitante"}
-              subtitle={"dfsdfdf"}
+              titleCard={"Información de solicitante"}
+              subtitle={"Información general"}
             >
               <div className="flex gap-10 max-md:inline justify-between">
                 <InputforForm
@@ -170,7 +166,6 @@ export const FormFichaSolicitud = () => {
               </div>
             </CardStyle>
             <Divider />
-
             <div className="flex flex-col ">
               Prioridad
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -184,9 +179,7 @@ export const FormFichaSolicitud = () => {
                 label="Prioridad"
               />
             </div>
-
             <Divider />
-
             <div className="flex flex-col gap-4">
               Parte Legal
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
@@ -197,9 +190,8 @@ export const FormFichaSolicitud = () => {
               />
             </div>
             <Divider />
-
             <div className="flex flex-col gap-4">
-              Obervaciones
+              Observaciones
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -207,27 +199,26 @@ export const FormFichaSolicitud = () => {
                 name={"obervaciones"}
               />
             </div>
-
             <Divider />
 
             <div className="flex justify-end">
               <Button
                 type="button"
-                color="primary"
+                color={V.BtnRegistrar}
                 onClick={() => handleNewEquipos()}
+                radius={V.Bradius}
               >
-                <Icons icon={PlusIcon} /> Añadir
+                <Icons icon={V.PlusIcon} /> Añadir
               </Button>
             </div>
-
             <div>
               <Table aria-label="Example table with client async pagination">
                 <TableHeader>
                   <TableColumn key="name">Equipo</TableColumn>
                   <TableColumn key="height">Placa sena</TableColumn>
-                  <TableColumn key="mass">Descripcion del daño</TableColumn>
+                  <TableColumn key="mass">Descripción del daño</TableColumn>
                   <TableColumn key="birth_year">Actividad</TableColumn>
-                  <TableColumn key={"accion"}>Accion</TableColumn>
+                  <TableColumn key={"accion"}>Acción</TableColumn>
                 </TableHeader>
 
                 <TableBody>
@@ -266,7 +257,7 @@ export const FormFichaSolicitud = () => {
                           isIconOnly
                           onClick={() => eliminarFila(fila.id)}
                         >
-                          <Icons icon={TrashIcon} />
+                          <Icons icon={V.TrashIcon} />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -276,7 +267,14 @@ export const FormFichaSolicitud = () => {
             </div>
           </div>
 
-          <Button type="submit">Registrar</Button>
+          <Button
+            type="submit"
+            size="lg"
+            radius={V.Bradius}
+            color={V.BtnRegistrar}
+          >
+            <span className="text-white font-bold">Registrar</span>
+          </Button>
         </form>
       </div>
     </>

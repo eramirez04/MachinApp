@@ -1,20 +1,14 @@
-/* import MenuLeft from "../../../molecules/Menuleft.jsx"; */
-/* import { SearchComponent } from "../../../atoms/Inputs/InputSearch.jsx"; */
-/* import InputSubmit from "../../../atoms/Inputs/InputSubmit.jsx"; */
+import { useGlobalData, ModalComponte } from "../../../../index.js";
 import { FormUser } from "../../formularios/FormUser.jsx";
 import { PaginateTable } from "../../table/PaginateTable.jsx";
-import ModalComponte from "../../../molecules/Modal.jsx";
-import { useGlobalData } from "../../../../hooks/useGlobalData.jsx";
-import {
-  Dropdown,
-  DropdownTrigger,
-  Button,
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+
+import { DropDown } from "../../../molecules/navigation/Dropdown.jsx";
 
 const ListarUsuarios = () => {
   const { dataUser } = useGlobalData();
+
+  const navigate = useNavigate();
 
   // definimos las columnas para la tabla
   const columns = [
@@ -22,6 +16,8 @@ const ListarUsuarios = () => {
     "Apellidos",
     "Correo",
     "Tipo de documento",
+    "Número de Documento",
+    "Rol",
     "Acciones",
   ];
 
@@ -32,15 +28,26 @@ const ListarUsuarios = () => {
     apellidos: item.us_apellidos,
     correo: item.us_correo,
     tipo_documento: item.us_tipo_documento,
+    numero_documento: item.us_numero_documento,
+    rol: item.rol_nombre,
   }));
+
+  const handleEdit = (id) => {
+    const resultadoUsuario = dataUser.find(
+      (persona) => persona.us_numero_documento === id
+    );
+
+    // Navega a la ruta deseada con la información del usuario
+    navigate("/panelcontrol/user", { state: { resultadoUsuario } });
+  };
 
   return (
     <>
-      <div className="h-screen p-7">
+      <div className="h-screen p-5">
         {/*   <MenuLeft /> */}
         <div className="flex pb-6 justify-between items-center">
           {/*     <SearchComponent /> */}
-          mas info aqui
+          Más info aquí
           <div className="pl-5 w-60">
             <ModalComponte
               buttonModal={"Añadir nuevo usuario"}
@@ -60,20 +67,11 @@ const ListarUsuarios = () => {
               ...row,
               acciones: (
                 <>
-                  <div className="items-center gap-2">
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <Button isIconOnly size="sm" variant="light">
-                          ....
-                        </Button>
-                      </DropdownTrigger>
-                      <DropdownMenu>
-                        <DropdownItem>View</DropdownItem>
-                        <DropdownItem>Edit</DropdownItem>
-                        <DropdownItem>Delete</DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </div>
+                  <DropDown
+                    DropdownTriggerElement={"..."}
+                    dropdown={["Editar"]}
+                    onClick={() => handleEdit(row.numero_documento)}
+                  />
                 </>
               ),
             }))}

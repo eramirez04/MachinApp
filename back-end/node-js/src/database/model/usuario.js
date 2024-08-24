@@ -6,13 +6,15 @@ import { encriptarContra } from "../../config/bcryptjs.js";
 // clase que actuara como modelo en el sistema
 export class UsuarioModel {
   getAll = async () => {
-    return await conexion.query("select * from usuarios");
+    return await conexion.query(
+      "select *, rol_nombre from usuarios INNER JOIN roles ON fk_roles = idRoles "
+    );
   };
 
   async getId(id) {
     return await conexion.query(
       `SELECT 
-      idUsuarios, us_nombre,us_apellidos,us_correo, us_imagen,us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre 
+      idUsuarios, us_nombre,us_apellidos,us_correo, us_imagen,us_tipo_documento, us_numero_documento, us_contrasenia ,us_especialidad ,us_empresa,rol_nombre ,idRoles
       FROM usuarios 
       INNER JOIN roles ON fk_roles = idRoles where idUsuarios = ? ;`,
       [id]
@@ -27,8 +29,8 @@ export class UsuarioModel {
       numero_documento,
       tipo_documento,
       contrasenia,
-      especialidad,
-      empresa,
+      especialidad = "No aplica",
+      empresa = "No aplica",
       rol,
     } = input;
 
@@ -60,16 +62,14 @@ export class UsuarioModel {
       apellidos,
       correo,
       numero_documento,
-      contrasenia,
       tipo_documento,
       empresa,
       especialidad,
       rol,
     } = dataUser;
-    console.log(contrasenia);
 
-    // contaseña para encriptar
-    const passwordCrypt = await encriptarContra(contrasenia);
+    /* // contaseña para encriptar
+    const passwordCrypt = await encriptarContra(contrasenia); */
 
     const Id = idUser.toLowerCase();
 
@@ -78,7 +78,6 @@ export class UsuarioModel {
       UPDATE usuarios
       SET
       us_nombre = ?,us_apellidos= ?,us_correo= ? , us_numero_documento = ?,
-      us_contrasenia = ?,
       us_tipo_documento = ?,
       us_empresa= ?,
       us_especialidad = ?,
@@ -90,7 +89,6 @@ export class UsuarioModel {
         apellidos,
         correo,
         numero_documento,
-        passwordCrypt,
         tipo_documento,
         empresa,
         especialidad,

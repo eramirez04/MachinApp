@@ -102,27 +102,38 @@ export const eliminarVariable = async (req, res)=>{
     }
 }
 
+
+
+/* ---------------------------Listo----------------------------------------------------------------- */
 export const registrarVariasVariables = async (req, res)=>{
     try{
-
-        let variblesFicha = req.body
 
         const error = validationResult(req)
         if(!error.isEmpty()){
             return res.status(400).json(error)
         }
 
+        let {variablesFicha, tipoFicha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
 
-        for(let i = 0 ;variblesFicha.length>i; i++){
+        console.log(variablesFicha)
+        console.log(tipoFicha)
 
-            let sql = `insert into variable (var_nombre, var_descripcion, var_fk_tipo_ficha) 
-            values ('${variblesFicha[i].varNombre}', '${variblesFicha[i].varDescripcion}', ${variblesFicha[i].fkTipoFicha})`
+
+        let sql 
+        for(let i = 0 ;variablesFicha.length>i; i++){
+
+            if(variablesFicha[i].var_clase == "obligatoria"){
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}')`
+            }
+            else{
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}')`
+            }
             
-            const [respuesta] = await  conexion.query(sql)
+            const [respuesta] = await conexion.query(sql)
 
             if (respuesta.affectedRows == 0){   
                 return res.status(404).json({"message":"Error al registrar variables."})
-            }
+            }   
         }
 
         return res.status(200).json({"message":"Se registraron correctamente las variables"})
@@ -132,4 +143,44 @@ export const registrarVariasVariables = async (req, res)=>{
 
         return res.status(500).json({"message":"Error en el servidor: "+error})
     }
+}
+
+
+/* ---------------------------Listo------------------------------------------------------------- */
+//listar las variables dependiendo del tipo de ficha tecnica, esto se utilizara al momento de generar el formulario de registro de la ficha tecnica
+
+export const listarVarFicha = async (req, res)=>{
+
+    try{
+        let idTipoFicha = req.params.idTipoFicha
+
+
+        let sql = `
+        
+        SELECT 
+        idVariable,
+        var_nombre,
+        var_descripcion,
+        var_clase,
+        var_tipoDato
+        FROM variable
+        WHERE fk_tipo_equipo = ${idTipoFicha} or var_clase = 'obligatoria'
+        `
+
+        const [respuesta] = await conexion.query(sql)
+
+        if (respuesta.length>0){
+
+            return  res.status(200).json({respuesta})
+        }
+
+        return  res.status(404).json({"mensaje":"error al listar variables"})
+
+
+    }
+    catch(e){
+        return res.status(500).json({"mensaje":"Error del servidor"})
+    }
+
+
 }

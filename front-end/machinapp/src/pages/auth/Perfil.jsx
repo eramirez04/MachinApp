@@ -2,7 +2,7 @@
 import React, { lazy } from "react";
 
 // layout
-const Layout = lazy(() => import("../../components/template/Layout.jsx"));
+import { Layout } from "../../index.js";
 const BuscarUsuario = lazy(() =>
   import("../../components/organisms/ListarUsuario.jsx")
 );
@@ -10,7 +10,11 @@ const BuscarUsuario = lazy(() =>
 const Perfil = () => {
   return (
     <>
-      <Layout titlePage={"Perfil de Usuario"}>
+      <Layout>
+        <div className="px-10 ">
+          <span className="text-4xl font-bold text-gray-800 mb-4">Perfil</span>
+          <div className="border-b-8 border-green-600 inline-block w-full"></div>
+        </div>
         <BuscarUsuario />
       </Layout>
     </>

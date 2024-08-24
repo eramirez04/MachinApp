@@ -6,6 +6,33 @@ import { validationResult } from 'express-validator'
 
 
 
+export const registrarDetalles = async(req, res)=>{
+
+    try{
+
+        let{detalles, idFicha} = req.body
+
+
+        for(let i=0; detalles.length>i;i++){
+            let sql = `insert into detalles_fichas (det_fk_fichas, det_fk_variable, det_valor) values(${idFicha}, ${detalles[i].detFkVariable},'${detalles[i].detValor}')`
+        
+            const [respuesta] = await conexion.query(sql)
+    
+            if (respuesta.affectedRows == 0 ){   
+                return res.status(404).json({"message":"Error al registrar variables."})
+            }
+        }
+
+        return res.status(200).json({"message":"Se registraron correctamente los detalles"})
+
+    }
+    catch(error){
+
+        return res.status(500).json({"message":"Error en el servidor: "+error})
+    }
+}
+
+
 export const registrarDetalle = async(req, res)=>{
 
 
