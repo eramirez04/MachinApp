@@ -1,4 +1,4 @@
-import logoSenaVerde from "../../public/logoSenaNaranja.png";
+import logoSenaVerde from "/logoSenaNaranja.png";
 import {
   HomeIcon,
   MapIcon,

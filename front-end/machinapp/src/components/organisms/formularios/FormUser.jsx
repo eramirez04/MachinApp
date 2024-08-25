@@ -1,16 +1,17 @@
+import { useState } from "react";
 import {
   useGlobalData,
   useRegistrarUsuario,
   ButtonNext,
   InputforForm,
   SelectComponent,
-  V,
 } from "../../../index";
 import { useForm } from "react-hook-form";
 
 export const FormUser = () => {
-  const { registrarUsuario, loading, error } = useRegistrarUsuario();
-  const { refreshDataUser } = useGlobalData();
+  const { registrarUsuario, loading } = useRegistrarUsuario();
+  const { refreshDataUser, roles } = useGlobalData();
+  const [errorUser, setError] = useState("");
 
   const {
     register,
@@ -23,14 +24,49 @@ export const FormUser = () => {
     try {
       const res = await registrarUsuario(data);
 
-      if (res) {
-        alert("Usuario registrado con exito");
+      if (res && res.Mensaje) {
+        alert("Usuario registrado con éxito");
         await refreshDataUser();
         reset();
+        setError("");
         return;
       }
     } catch (error) {
-      console.log("Error al registrar un usuario", error.response.data);
+      if (error.response?.data.mensaje) {
+        setError((prevErrors) => ({
+          ...prevErrors,
+          correo: error.response?.data.mensaje,
+        }));
+      } else {
+        setError((prevErrors) => ({
+          ...prevErrors,
+          correo: "",
+          contrasenia: "",
+        }));
+      }
+
+      if (error.response && error.response.data.error) {
+        let errores = error.response.data.error;
+
+        errores.forEach((element) => {
+          switch (element.path[0]) {
+            case "contrasenia":
+              setError((prevErrors) => ({
+                ...prevErrors,
+                contrasenia: element.message,
+              }));
+              break;
+
+            default:
+              console.log("Mensaje de error desconocido:", element.message);
+              setError((prevErrors) => ({
+                ...prevErrors,
+                [element.path[0]]: element.message,
+              }));
+              break;
+          }
+        });
+      }
     }
   };
 
@@ -38,23 +74,44 @@ export const FormUser = () => {
     <>
       <form
         action=""
-        className="flex flex-col"
+        className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md"
         onSubmit={handleSubmit(handleSumitData)}
       >
-        <div className="grid grid-cols-2 gap-3">
-          <InputforForm errors={errors} register={register} name={"nombre"} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+          <div className="flex flex-col">
+            <InputforForm errors={errors} register={register} name={"nombre"} />
+            {errors.nombre && (
+              <span className="text-red-500 text-sm mt-1">
+                {errors.nombre.message}
+              </span>
+            )}
+          </div>
 
-          <InputforForm
-            errors={errors}
-            register={register}
-            name={"apellidos"}
-          />
+          <div className="flex flex-col">
+            <InputforForm
+              errors={errors}
+              register={register}
+              name={"apellidos"}
+            />
+            {errors.apellidos && (
+              <span className="text-red-500 text-sm mt-1">
+                {errors.apellidos.message}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col">
           <InputforForm
             tipo={"email"}
             errors={errors}
             register={register}
             name={"correo"}
           />
+          {errorUser.correo}
+        </div>
+
+        <div className="flex flex-col">
           <SelectComponent
             options={[
               { name: "cedula de ciudadania" },
@@ -70,23 +127,49 @@ export const FormUser = () => {
           />
         </div>
 
-        <InputforForm
-          errors={errors}
-          register={register}
-          name={"numero_documento"}
-        />
+        <div className="flex flex-col">
+          <InputforForm
+            errors={errors}
+            register={register}
+            name={"numero_documento"}
+          />
+          {errors.numero_documento && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.numero_documento.message}
+            </span>
+          )}
+        </div>
 
-        <InputforForm
-          errors={errors}
-          register={register}
-          name={"contrasenia"}
-        />
-        <input type="hidden" {...register("rol")} value={"2"} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+          <div className="flex flex-col">
+            <InputforForm
+              errors={errors}
+              register={register}
+              name={"contrasenia"}
+            />
+            {errors.contrasenia && (
+              <span className="text-red-500 text-sm mt-1">
+                {errors.contrasenia.message}
+              </span>
+            )}
+          </div>
 
-        <ButtonNext text="" color="success" type="submit">
+          <div className="flex flex-col">
+            <SelectComponent
+              options={roles}
+              name="rol"
+              placeholder="Tipo de rol"
+              valueKey="idRoles"
+              textKey="rol_nombre"
+              register={register}
+              label="Rol"
+            />
+          </div>
+        </div>
+
+        <ButtonNext text="" color="success" type="submit" className="mt-4">
           {loading ? "Registrando..." : "Registrar"}
         </ButtonNext>
-        {error && <p style={{ color: "red" }}>Error: {error.message}</p>}
       </form>
     </>
   );

@@ -1,12 +1,20 @@
-import { useGlobalData, ModalComponte } from "../../../../index.js";
-import { FormUser } from "../../formularios/FormUser.jsx";
-import { PaginateTable } from "../../table/PaginateTable.jsx";
+import {
+  useGlobalData,
+  ModalComponte,
+  FormRol,
+  FormUser,
+  PaginateTable,
+  DropDown,
+} from "../../../../index.js";
+
 import { useNavigate } from "react-router-dom";
 
-import { DropDown } from "../../../molecules/navigation/Dropdown.jsx";
+import { Button } from "@nextui-org/react";
+import { useState } from "react";
 
-const ListarUsuarios = () => {
-  const { dataUser } = useGlobalData();
+export const ListarUsuarios = () => {
+  const { dataUser, roles } = useGlobalData();
+  const [data, setData] = useState(true);
 
   const navigate = useNavigate();
 
@@ -20,6 +28,9 @@ const ListarUsuarios = () => {
     "Rol",
     "Acciones",
   ];
+
+  // columnas para roles []
+  const ColumnsRoles = ["id", "Rol", "Descripcion"];
 
   // definimos las filas: nota => hay que tener en cuanta que tanto las columnas y filas deben ser igual en numero
   // si envio 4 columnas debo tambien de enviarle 4 filas, de lo contrario nos arrojara un error
@@ -41,45 +52,90 @@ const ListarUsuarios = () => {
     navigate("/panelcontrol/user", { state: { resultadoUsuario } });
   };
 
+  const handleDataUser = () => {
+    setData(true);
+  };
+
+  const handleDataRol = () => {
+    setData(false);
+  };
+
   return (
     <>
-      <div className="h-screen p-5">
-        {/*   <MenuLeft /> */}
-        <div className="flex pb-6 justify-between items-center">
-          {/*     <SearchComponent /> */}
-          mas info aqui
-          <div className="pl-5 w-60">
+      <div className="min-h-screen p-6 flex flex-col gap-8 bg-gray-50">
+        {/* Sección del encabezado */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
+          <div className="text-lg font-semibold text-gray-800">
+            Más info aquí
+          </div>
+          <div className="w-full md:w-auto">
             <ModalComponte
               buttonModal={"Añadir nuevo usuario"}
               componente={<FormUser />}
-              tittleModal={"registrando usuario"}
+              tittleModal={"Registrando usuario"}
               size={"5xl"}
+              className="w-full"
             />
           </div>
         </div>
-        <div className="flex flex-col">
-          <span className="text-default-400 text-small">
-            Total de usuarios en la plataforma : {newArrayDataUser.length}
-          </span>
-          <PaginateTable
-            columns={columns}
-            data={newArrayDataUser.map((row) => ({
-              ...row,
-              acciones: (
-                <>
-                  <DropDown
-                    DropdownTriggerElement={"..."}
-                    dropdown={["Editar"]}
-                    onClick={() => handleEdit(row.numero_documento)}
-                  />
-                </>
-              ),
-            }))}
-          />
+
+        {/* Contenedor de la tabla */}
+        <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="flex flex-row justify-between p-4 bg-gray-100 border-b">
+            <span className="text-gray-600 text-sm md:text-base">
+              {data
+                ? `Total de usuarios en el sistema: ${newArrayDataUser.length} `
+                : `Total de roles en el sistema: ${roles.length}`}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="bordered"
+                color="success"
+                onClick={handleDataUser}
+                className="text-xs md:text-sm"
+              >
+                Usuarios
+              </Button>
+              <Button
+                variant="bordered"
+                color="success"
+                onClick={handleDataRol}
+                className="text-xs md:text-sm"
+              >
+                Roles
+              </Button>
+            </div>
+          </div>
+
+          {/* Tabla Paginada */}
+          <div className="w-full overflow-x-auto">
+            <div className="w-full min-w-max">
+              <PaginateTable
+                columns={data ? columns : ColumnsRoles}
+                data={
+                  data
+                    ? newArrayDataUser.map((row) => ({
+                        ...row,
+                        acciones: (
+                          <div className="truncate">
+                            <DropDown
+                              DropdownTriggerElement={"..."}
+                              dropdown={["Editar"]}
+                              onClick={() => handleEdit(row.numero_documento)}
+                            />
+                          </div>
+                        ),
+                      }))
+                    : roles
+                }
+                className="w-full table-auto"
+              />
+            </div>
+          </div>
         </div>
+        {!data && <FormRol />}
       </div>
     </>
   );
 };
 
-export default ListarUsuarios;
