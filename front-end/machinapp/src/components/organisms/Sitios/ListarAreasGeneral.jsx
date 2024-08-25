@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../../service/api/axios';
-import ButtonC from '../../atoms/buttons/BottonC';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { axiosCliente } from "../../../service/api/axios";
+import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
 
 const BuscarAreasGeneral = () => {
@@ -10,7 +10,7 @@ const BuscarAreasGeneral = () => {
   useEffect(() => {
     const listarAreaGeneral = async () => {
       try {
-        const response = await axiosCliente.get('/area/listararea');
+        const response = await axiosCliente.get("/area/listararea");
         setAreas(response.data.resultadoArea);
       } catch (error) {
         console.error(error);
@@ -21,11 +21,12 @@ const BuscarAreasGeneral = () => {
   }, []);
 
   const handleImageError = (event) => {
-    event.target.style.display = 'none';
+    event.target.style.display = "none";
     const parent = event.target.parentElement;
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold';
-    errorMessage.textContent = 'No se encontró imagen';
+    const errorMessage = document.createElement("div");
+    errorMessage.className =
+      "absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold";
+    errorMessage.textContent = "No se encontró imagen";
     parent.appendChild(errorMessage);
   };
 
@@ -36,10 +37,18 @@ const BuscarAreasGeneral = () => {
           Centro de Gestión y Desarrollo Sostenible Surcolombiano
         </h1>
         <p className="text-center text-white mt-6 mx-4 md:mx-0">
-          Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.
+          Este centro está ubicado en el departamento del Huila, municipio de
+          Pitalito. Este centro cuenta con dos sedes a día de hoy.
         </p>
       </header>
       <div className="container mx-auto p-4">
+        <div className="flex justify-end">
+          <Link to={"/Areas/Registrar"}>
+            <button className="bg-blue-500 rounded-md p-3 hover:bg-blue-700 mb-5 font-semibold">
+              Registrar nueva
+            </button>
+          </Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {areas.map((area) => (
             <div
@@ -55,16 +64,21 @@ const BuscarAreasGeneral = () => {
                 />
               </div>
               <div className="p-6">
-                <div className='flex justify-end'>
+                <div className="flex justify-end">
                   <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
                     <FaEdit />
                   </button>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">{area.area_nombre}</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {area.area_nombre}
+                </h2>
                 <p className="text-gray-600 mt-2">{area.sede_nombre}</p>
                 <div className="mt-4 flex justify-end">
                   <Link to={`/Areas/${area.idArea}`}>
-                    <ButtonC bgColor="bg-green-400 hover:bg-green-600 text-white" name="Ingresar" />
+                    <ButtonC
+                      bgColor="bg-green-400 hover:bg-green-600 text-white"
+                      name="Ingresar"
+                    />
                   </Link>
                 </div>
               </div>

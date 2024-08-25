@@ -8,4 +8,7 @@ export { ModalComponte } from "./content/Modal";
 export { CardStyle } from "./content/CardStyle";
 export { CardDataStats } from "./content/CardContent";
 export { Paginacion } from "./Pagination/PaginationCom";
+
 export { DropDown } from "./navigation/Dropdown";
+
+export { InputForm } from "./form/InputForm"

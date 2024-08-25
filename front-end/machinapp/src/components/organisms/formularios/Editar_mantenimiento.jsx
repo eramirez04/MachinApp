@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { axiosCliente } from '../../../service/api/axios';
+import { axiosCliente } from '../../../service/api/axios.js';
 import { CardStyle } from "../../molecules/content/CardStyle.jsx";
-import {InputforForm} from "../../molecules/form/InputForForm";
+import {InputforForm} from "../../molecules/form/InputForForm.jsx";
 import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
@@ -38,7 +38,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export const FormFichaDeMantenimiento = () => {
+export const Editar_Component = () => {
   const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       mant_codigo_mantenimiento: '',
@@ -98,7 +98,7 @@ export const FormFichaDeMantenimiento = () => {
       formData.append('fk_tipo_mantenimiento', data.fk_tipo_mantenimiento);
       formData.append('fk_solicitud_mantenimiento', data.fk_solicitud_mantenimiento);
 
-      /* console.log("Envío de datos de mantenimiento:", Object.fromEntries(formData)); */
+      console.log("Envío de datos de mantenimiento:", Object.fromEntries(formData));
 
       const mantenimientoResponse = await axiosCliente.post('mantenimiento/registrar', formData, {
         headers: {
@@ -106,7 +106,7 @@ export const FormFichaDeMantenimiento = () => {
         }
       });
 
-      /* console.log("Respuesta de registro de mantenimiento:", mantenimientoResponse.data); */
+      console.log("Respuesta de registro de mantenimiento:", mantenimientoResponse.data);
 
       const mantenimientoId = mantenimientoResponse.data.idMantenimiento;
 
@@ -121,12 +121,12 @@ export const FormFichaDeMantenimiento = () => {
         par_costo: repuesto.costo
       }));
 
-      /* console.log("Envío de datos de piezas:", partesMantenimiento);
-      console.log(partesMantenimiento) */
+      console.log("Envío de datos de piezas:", partesMantenimiento);
+      console.log(partesMantenimiento)
 
       const partesResponse = await axiosCliente.post('partes_mantenimiento/registrar', partesMantenimiento);
 
-      /* console.log("Respuesta de registro de piezas:", partesResponse.data); */
+      console.log("Respuesta de registro de piezas:", partesResponse.data);
 
       // Alerta de éxito
       alert("Todo registrado con éxito.");
@@ -166,7 +166,7 @@ export const FormFichaDeMantenimiento = () => {
             />
           </div>
           <div className="w-1/2 text-center">
-            <h2 className="text-sm font-bold">SUBSISTEMA DE MANTENIMIENTO Y CONTROL DE MAQUINARIA Y EQUIPO ORDEN DE TRABAJO DE MANTENIMIENTO</h2>
+            <h2 className="text-sm font-bold">{/* SUBSISTEMA DE MANTENIMIENTO Y CONTROL DE MAQUINARIA Y EQUIPO ORDEN DE TRABAJO DE MANTENIMIENTO */} editar mantenimientos</h2>
           </div>
           <div className="w-1/4 text-right">
             <p className="text-xs">Centro de gestión y desarrollo sostenible surColombiano</p>

@@ -1,11 +1,6 @@
 import { useState } from "react"
 import { useEffect } from "react"
-
-
-
-import { CardStyle } from "../molecules/content/CardStyle.jsx"
-
-
+import { CardStyle } from "../../index.js"
 import {axiosCliente} from "../../service/api/axios.js"
 
 

@@ -155,7 +155,7 @@ export const FormUserUpdate = ({ userData }) => {
                   render={({ field }) => (
                     <InputUpdate
                       {...field}
-                      label="Correo Electronico"
+                      label="Correo electrónico"
                       errors={errors}
                       tipo="email"
                       isUpdating={true}

@@ -139,14 +139,14 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de gestion y desarrollo sostenible surColombiano
+                Centro de Gestión y Desarrollo Sostenible Surcolombiano
               </p>
             </div>
           </div>
           <div className="border flex flex-col gap-10 p-14">
             <CardStyle
-              titleCard={"Informacion de solicitante"}
-              subtitle={"dfsdfdf"}
+              titleCard={"Información de solicitante"}
+              subtitle={"Información general"}
             >
               <div className="flex gap-10 max-md:inline justify-between">
                 <InputforForm
@@ -192,7 +192,7 @@ export const FormFichaSolicitud = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-4">
-              Obervaciones
+              Observaciones
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -217,9 +217,9 @@ export const FormFichaSolicitud = () => {
                 <TableHeader>
                   <TableColumn key="name">Equipo</TableColumn>
                   <TableColumn key="height">Placa sena</TableColumn>
-                  <TableColumn key="mass">Descripcion del daño</TableColumn>
+                  <TableColumn key="mass">Descripción del daño</TableColumn>
                   <TableColumn key="birth_year">Actividad</TableColumn>
-                  <TableColumn key={"accion"}>Accion</TableColumn>
+                  <TableColumn key={"accion"}>Acción</TableColumn>
                 </TableHeader>
 
                 <TableBody>

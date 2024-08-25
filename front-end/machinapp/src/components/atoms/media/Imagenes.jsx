@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react';
 
-const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la carpeta public */}
+export const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la carpeta public */}
 
     let rutaImagen = `http://localhost:3000/${rutaImg}`
 
@@ -41,5 +41,3 @@ const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la carpeta pu
 Imagenes.propTypes = {
     rutaImg: PropTypes.string.isRequired     
 }
-
-export default Imagenes
