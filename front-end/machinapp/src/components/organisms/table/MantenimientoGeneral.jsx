@@ -1,20 +1,18 @@
+import { MantenimientoGeneralPDF, GenerarPdf, axiosCliente, PaginateTable, Icons} from "../../../index.js"
+
 import { useState, useEffect } from 'react';
 import { Input, Select, SelectItem, Button } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
-import { axiosCliente } from "../../../service/api/axios.js";
-import MantenimientoGeneralPDF from '../pdf/MantenimientoGeneralPDF.jsx';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { GenerarPdf } from '../pdf/PDFMantenimiento.jsx';
-import { PaginateTable } from './PaginateTable.jsx';
 
 import { Link } from 'react-router-dom';
 
 //componente de icons
-import { Icons } from "../../atoms/icons/Icons.jsx";
+
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
-const MantenimientoGeneral = () => {
+export const MantenimientoGeneral = () => {
     const [mensajeError, setMensajeError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
@@ -211,4 +209,3 @@ const MantenimientoGeneral = () => {
     );
 };
 
-export default MantenimientoGeneral;

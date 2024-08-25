@@ -17,35 +17,26 @@ export const Layout = ({ children }) => {
             <Nav rol={rol} />
           </aside>
 
-          <main className="flex-grow flex">
-            <aside className=" max-lg:hidden">
-              <Nav rol={rol} />
-            </aside>
-
-
-            <section className="flex-grow p-6 lg:p-8 overflow-auto">
-              <Suspense
-                fallback={
-                  <div className="flex justify-center items-center h-full">
-                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-                  </div>
-                }
-              >
-                <div
-                  className={`bg-white ${V.radius} shadow-lg h-full px-6 `}
-                >
-                  <div className="lg:hidden mb-4">
-                    <MenuMobile />
-                  </div>
-                  {children}
+          <section className="flex-grow p-6 lg:p-8 overflow-auto">
+            <Suspense
+              fallback={
+                <div className="flex justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
                 </div>
-                <Outlet />
-              </Suspense>
-            </section>
-          </main>
+              }
+            >
+              <div className={`bg-white ${V.radius} shadow-lg h-full p-6 `}>
+                <div className="lg:hidden mb-4">
+                  <MenuMobile />
+                </div>
+                {children}
+              </div>
+              <Outlet />
+            </Suspense>
+          </section>
         </main>
 
-          <Footer className="shadow-md mt-auto" />
+        <Footer className="shadow-md mt-auto" />
       </div>
     </>
   );
