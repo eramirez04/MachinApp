@@ -1,9 +1,9 @@
-import { useAuth, Icons, V } from "../../index.js";
+import { useAuth, Icons, V } from "../../../index.js";
 
 import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
-const BuscarUsuario = () => {
+export const BuscarUsuario = () => {
   const { user } = useAuth();
 
   const newd = {
@@ -92,7 +92,5 @@ const BuscarUsuario = () => {
     </>
   );
 };
-
-export default BuscarUsuario;
 
 /*    */

@@ -1,11 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React, { lazy } from "react";
 
 // layout
-import { Layout } from "../../index.js";
-const BuscarUsuario = lazy(() =>
-  import("../../components/organisms/ListarUsuario.jsx")
-);
+import { Layout, BuscarUsuario } from "../../index.js";
 
 const Perfil = () => {
   return (

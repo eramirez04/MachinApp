@@ -1,4 +1,4 @@
-import Alert from "../feedback/Alert";
+import { Alert } from "../../../index";
 import { Textarea } from "@nextui-org/react";
 // eslint-disable-next-line react/prop-types
 export const TextAreaComponent = ({ register, errors, name, descripcion }) => {
