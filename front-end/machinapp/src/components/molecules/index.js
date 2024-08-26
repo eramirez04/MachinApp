@@ -11,4 +11,6 @@ export { Paginacion } from "./Pagination/PaginationCom";
 
 export { DropDown } from "./navigation/Dropdown";
 
-export { InputForm } from "./form/InputForm"
+export { InputForm } from "./form/InputForm";
+export { Breadcrumb } from "./navigation/Breadcrumb";
+export { SearchComponent } from "./form/Search";

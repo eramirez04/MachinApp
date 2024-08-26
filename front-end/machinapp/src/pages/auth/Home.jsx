@@ -5,6 +5,7 @@ import {
   useGlobalData,
   Icons,
   V,
+  Breadcrumb,
 } from "../../index.js";
 /* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
 
@@ -28,6 +29,7 @@ export const Home = () => {
   return (
     <>
       <Layout titlePage={"Home"}>
+        <Breadcrumb pageName={"Inicio"} />
         {/* Primera fila con 4 tarjetas */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {dataMap.map((value, index) => (
