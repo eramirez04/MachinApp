@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const GenerarPdf = ({ data }) => {
+export const GenerarPdf = ({ data }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -183,4 +182,3 @@ const GenerarPdf = ({ data }) => {
   );
 };
 
-export { GenerarPdf };

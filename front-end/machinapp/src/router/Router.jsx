@@ -25,6 +25,7 @@ import {
   RegistrarArea,
   RegistrarSede,
   RegistrarAmbiente,
+  Editar_Component
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -77,6 +78,7 @@ export const AppRouter = () => {
             <Route path="/Sedes/Registrar" element={<RegistrarSede />} />
             {/*  */}
             <Route path="/crearTiposFichaTec" element={<ViewFormTipoFicha />} />
+            <Route path="/Editar_o_ver" element={<Editar_Component/>} />
             {/*  */}
           </Route>
         </Routes>

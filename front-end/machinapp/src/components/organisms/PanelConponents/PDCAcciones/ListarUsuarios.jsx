@@ -62,12 +62,13 @@ export const ListarUsuarios = () => {
 
   return (
     <>
-      <div className="h-screen p-5">
-        {/*   <MenuLeft /> */}
-        <div className="flex pb-6 justify-between items-center">
-          {/*     <SearchComponent /> */}
-          mas info aqui
-          <div className="pl-5 w-60">
+      <div className="min-h-screen p-6 flex flex-col gap-8 bg-gray-50">
+        {/* Sección del encabezado */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
+          <div className="text-lg font-semibold text-gray-800">
+            Más info aquí
+          </div>
+          <div className="w-full md:w-auto">
             <ModalComponte
               buttonModal={"Añadir nuevo usuario"}
               componente={<FormUser />}
@@ -137,4 +138,3 @@ export const ListarUsuarios = () => {
     </>
   );
 };
-
