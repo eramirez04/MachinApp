@@ -1,31 +1,24 @@
-import swaggerJsdoc from 'swagger-jsdoc'
-
-import swaggerUi from 'swagger-ui-express'
-
+// swagger.js
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: '3.0.0', 
     info: {
-      title: 'Mini Blog API',
+      title: 'Mi API',
       version: '1.0.0',
+      description: 'Documentación de mi API usando Swagger'
     },
   },
 
-  apis: ['../src/routes/.js'],
-}
-const swaggerSpec = swaggerJsdoc(options)
+  apis: ["./src/routes/*.js"], 
+};
 
-function swaggerDocs(app, port) {
 
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+const specs = swaggerJsdoc(options);
 
-  app.get('/docs.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json')
-    res.send(swaggerSpec)
-  })
-  console.log(
-    `versiion 1 docs are avaliable at http://localhost:${port}/docs`
-  )
-}
-export default swaggerDocs
+
+const swaggerSetup = swaggerUi.setup(specs);
+
+export { swaggerUi, swaggerSetup };
