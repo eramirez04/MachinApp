@@ -1,17 +1,21 @@
+import { axiosCliente } from "../../index.js"
+
 import  { useEffect } from "react"
-import TablaMantenimientosMa from "../components/organisms/TablaMantenimientosMa.jsx"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import { Layout } from "../index.js";
-import {axiosCliente} from "../service/api/axios.js"
-import Imagenes from "../components/atoms/media/Imagenes.jsx"
-import {CardStyle} from "../components/molecules/content/CardStyle.jsx"
+
+
+//import Imagenes from "../../components/atoms/media/Imagenes.jsx"
+//import {CardStyle} from "../../components/molecules/CardStyle.jsx"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
-import BlocInformation from "../components/atoms/media/BlocInformation.jsx"
-
-
+//import BlocInformation from "../../components/atoms/media/BlocInformation.jsx"
 import {Tooltip} from "@nextui-org/react"
+
+import { Layout, CardStyle, Imagenes ,BlocInformation  } from "../../index.js"
+
+/* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
+
 
 export const InfoMaquina = ()=> {
 
@@ -127,7 +131,7 @@ export const InfoMaquina = ()=> {
             
             <div className=" block mx-16 mb-14 ">
                     <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >Mantenimientos</h3>
-                    <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
+                    {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
             </div>
 
         </Layout>

@@ -1,16 +1,17 @@
-import { useLenguage, Footer, Header, ModalComponte, V } from "./../index.js";
-import { lazy } from "react";
+import {
+  useLenguage,
+  Footer,
+  Header,
+  ModalComponte,
+  Login,
+  V,
+} from "./../index.js";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { useTranslation } from "react-i18next";
 //componentes
-
-// modal
-
-// login
-const Login = lazy(() => import("../components/organisms/Login.jsx"));
 
 export const Inicio = () => {
   const { t } = useTranslation();

@@ -36,6 +36,17 @@ export const Store = async (req, res) => {
     // y se agregan a la variable
     const data = req.body;
 
+    const [resultadoEmail] = await conexion.query(
+      "SELECT us_correo FROM usuarios WHERE us_correo = ?",
+      [data.correo]
+    );
+
+    if (resultadoEmail.length > 0) {
+      return res
+        .status(400)
+        .json({ mensaje: "Ya existe usuarios con este correo" });
+    }
+
     // conexion con el modelo
     const [resultadoUser] = await UsuarioModel.registroUsuario(data);
 

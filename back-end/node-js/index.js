@@ -18,6 +18,8 @@ import partesMantRoutes from "./src/routes/partesMantRoutes.js";
 import solicitudRouter from "./src/routes/SolicitudRouter.js";
 import solicitud_has_fichas from "./src/routes/solicitud_has_fichasRouter.js";
 
+import { swaggerUi, swaggerSetup }  from "./views/swagger.js"
+
 const serve = Express();
 const port = 3000;
 
@@ -51,6 +53,7 @@ serve.use("/partes_mantenimiento", partesMantRoutes);
 serve.use("/solicitud", solicitudRouter);
 serve.use("/solicitudesfichas", solicitud_has_fichas);
 serve.use(LoginRouter);
+serve.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
 serve.use("/documents", (req, res) => {
   res.render("documentacion.ejs");
@@ -58,4 +61,5 @@ serve.use("/documents", (req, res) => {
 
 serve.listen(port, () => {
   console.log(`servidor escuchando en el http://localhost:${port}`);
+  
 });

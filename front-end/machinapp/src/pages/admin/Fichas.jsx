@@ -1,6 +1,5 @@
 /* import { CardStyle } from "../../components/molecules/CardStyle.jsx"; */
-import { Layout, useGlobalData } from "../../index.js";
-import { SolicitudList } from "../../components/organisms/listas/SolicitudList.jsx";
+import { Layout, useGlobalData, SolicitudList } from "../../index.js";
 
 const Fichas = () => {
   /*  const titulos = [

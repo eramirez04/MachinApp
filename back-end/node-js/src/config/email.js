@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -9,10 +9,15 @@ export const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PWD,
   },
   tls: {
-    ciphers: 'SSLv3'
-  }
+    ciphers: "SSLv3",
+  },
 });
 
-transporter.verify().then(() => {
-  console.log("listo para enviar correos")
-})
+transporter
+  .verify()
+  .then(() => {
+    console.log("listo para enviar correos");
+  })
+  .catch((error) => {
+    console.log(error, "error no se puede enviar los correos");
+  });

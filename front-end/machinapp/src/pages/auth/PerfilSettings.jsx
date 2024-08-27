@@ -1,5 +1,4 @@
-import { FormUserUpdate } from "../../components/organisms/formularios/FormUserUpdate";
-import { Layout, useAuth } from "../../index";
+import { Layout, useAuth, FormUserUpdate } from "../../index";
 
 export const PerfilSettings = () => {
   const { user } = useAuth();

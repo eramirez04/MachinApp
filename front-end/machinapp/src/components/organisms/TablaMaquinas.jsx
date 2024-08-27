@@ -30,7 +30,7 @@ const   TablaMaquinas=() =>{
                 setMaquinas(response.data)
     
             }catch(error){
-                console.error('Error listando maquinas ')
+                console.error('Error listando máquinas ')
             }
         }
         buscarInfo()
@@ -50,7 +50,7 @@ const   TablaMaquinas=() =>{
                     <TableColumn className='bg-green-600 text-white text-sm'>Marca</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Modelo</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'>Estado</TableColumn>
-                    <TableColumn className='bg-green-600 text-white text-sm'>Ubicacion</TableColumn>
+                    <TableColumn className='bg-green-600 text-white text-sm'>Ubicación</TableColumn>
                     <TableColumn className='bg-green-600 text-white text-sm'></TableColumn>
                 </TableHeader>
 

@@ -10,11 +10,11 @@ export const registrarDetalles = async(req, res)=>{
 
     try{
 
-        let{detalles} = req.body
+        let{detalles, idFicha} = req.body
 
 
         for(let i=0; detalles.length>i;i++){
-            let sql = `insert into detalles_fichas (det_fk_fichas, det_fk_variable, det_valor) values(${detalles[i].detFkFicha}, ${detalles[i].detFkVariable},'${detalles[i].detValor}')`
+            let sql = `insert into detalles_fichas (det_fk_fichas, det_fk_variable, det_valor) values(${idFicha}, ${detalles[i].detFkVariable},'${detalles[i].detValor}')`
         
             const [respuesta] = await conexion.query(sql)
     

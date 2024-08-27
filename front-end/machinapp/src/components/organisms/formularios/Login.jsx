@@ -1,12 +1,11 @@
-import { InputforForm, useAuth } from "../../index.js";
+import { InputforForm, useAuth, Alert } from "../../../index.js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 // importacion de componentes
-import Alert from "../atoms/feedback/Alert.jsx";
 import { Button } from "@nextui-org/react";
 
-const Login = () => {
+export const Login = () => {
   //error captura de errores
   const [error, setError] = useState("");
   const {
@@ -86,5 +85,3 @@ const Login = () => {
     </>
   );
 };
-
-export default Login;

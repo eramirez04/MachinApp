@@ -1,5 +1,5 @@
-import { Layout } from "../index.js";
-import MantenimientoGeneral from "../components/organisms/MantenimientoGeneral.jsx";
+import { Layout, MantenimientoGeneral } from "../index.js";
+
 
 export const Historial = () => {
   return (

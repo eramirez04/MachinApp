@@ -1,8 +1,15 @@
-import { Header, Footer, InputforForm, ModalComponte, V } from "../../index";
-import Login from "../../components/organisms/Login";
+import {
+  Header,
+  Footer,
+  InputforForm,
+  ModalComponte,
+  Login,
+  V,
+  axiosCliente,
+} from "../../index";
+
 import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
-import { axiosCliente } from "../../service/api/axios";
 import { useState } from "react";
 
 export const ResetPassword = () => {
