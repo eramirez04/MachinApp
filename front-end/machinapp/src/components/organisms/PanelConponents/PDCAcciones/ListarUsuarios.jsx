@@ -124,7 +124,7 @@ export const ListarUsuarios = () => {
                 <>
                   <span className="flex">
                     <Icons icon={V.UserCircleIcon} /> Usuarios :
-                    {" " + newArrayDataUser.length}
+                    {" " + filteredData.length}
                   </span>
                 </>
               ) : (

@@ -5,7 +5,7 @@ import { V } from "../../../style";
 export const Breadcrumb = ({ pageName }) => {
   return (
     <>
-      <div className="px-10 pt-7">
+      <div className="px-5">
         <div className="flex flex-row justify-between">
           <span className="text-4xl font-bold text-gray-800 ">{pageName}</span>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { axiosCliente } from "../../service/api/axios";
+import { useAuth } from "../../index";
 
 //listar roles
 
@@ -8,6 +9,7 @@ export const useFetchRoles = () => {
   const [loading, setLoadind] = useState(false);
   const [error, setError] = useState(null);
 
+  const { rol, user } = useAuth();
   const refreshRol = async () => {
     await fetchRoles();
   };
@@ -26,8 +28,8 @@ export const useFetchRoles = () => {
     }
   };
   useEffect(() => {
-    fetchRoles();
-  }, []);
+    if (rol === "Administrador" && user) fetchRoles();
+  }, [rol, user]);
 
   return {
     roles,
