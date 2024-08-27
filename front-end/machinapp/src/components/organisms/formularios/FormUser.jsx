@@ -5,6 +5,7 @@ import {
   ButtonNext,
   InputforForm,
   SelectComponent,
+  V,
 } from "../../../index";
 import { useForm } from "react-hook-form";
 
@@ -167,7 +168,11 @@ export const FormUser = () => {
           </div>
         </div>
 
-        <ButtonNext text="" color="success" type="submit" className="mt-4">
+        <ButtonNext
+          color="s"
+          type="submit"
+          className={`${V.btnSecundary} ${V.text_white}`}
+        >
           {loading ? "Registrando..." : "Registrar"}
         </ButtonNext>
       </form>

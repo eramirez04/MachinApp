@@ -42,6 +42,11 @@ export const Login = () => {
               break;
           }
         });
+      } else {
+        setError((prevErros) => ({
+          ...prevErros,
+          contrasenia: "",
+        }));
       }
     }
   };

@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   ServerIcon,
   ClockIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import {
   UserIcon,
@@ -14,6 +15,9 @@ import {
   PlusIcon,
   TrashIcon,
   UsersIcon,
+  UserGroupIcon,
+  UserMinusIcon,
+  ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 
 export const V = {
@@ -36,7 +40,13 @@ export const V = {
   PlusIcon,
   TrashIcon,
   UsersIcon,
+  UserGroupIcon,
+  MagnifyingGlassIcon,
+  ShieldCheckIcon,
+  UserMinusIcon,
 
   Bradius: "sm",
-  BtnRegistrar: "primary",
+
+  btnPrimary: "primary",
+  btnSecundary: "bg-green-600",
 };

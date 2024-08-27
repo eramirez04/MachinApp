@@ -139,14 +139,14 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de Gestión y Desarrollo Sostenible Surcolombiano
+                Centro de Gestión y Desarrollo Sostenible SurColombiano
               </p>
             </div>
           </div>
           <div className="border flex flex-col gap-10 p-14">
             <CardStyle
-              titleCard={"Información de solicitante"}
-              subtitle={"Información general"}
+              titleCard={"Informacion de solicitante"}
+              subtitle={"dfsdfdf"}
             >
               <div className="flex gap-10 max-md:inline justify-between">
                 <InputforForm
@@ -192,7 +192,7 @@ export const FormFichaSolicitud = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-4">
-              Observaciones
+              Obervaciones
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -205,7 +205,8 @@ export const FormFichaSolicitud = () => {
             <div className="flex justify-end">
               <Button
                 type="button"
-                color={V.BtnRegistrar}
+                variant="ghost"
+                color={V.btnPrimary}
                 onClick={() => handleNewEquipos()}
                 radius={V.Bradius}
               >
@@ -217,9 +218,9 @@ export const FormFichaSolicitud = () => {
                 <TableHeader>
                   <TableColumn key="name">Equipo</TableColumn>
                   <TableColumn key="height">Placa sena</TableColumn>
-                  <TableColumn key="mass">Descripción del daño</TableColumn>
+                  <TableColumn key="mass">Descripcion del daño</TableColumn>
                   <TableColumn key="birth_year">Actividad</TableColumn>
-                  <TableColumn key={"accion"}>Acción</TableColumn>
+                  <TableColumn key={"accion"}>Accion</TableColumn>
                 </TableHeader>
 
                 <TableBody>
@@ -272,7 +273,7 @@ export const FormFichaSolicitud = () => {
             type="submit"
             size="lg"
             radius={V.Bradius}
-            color={V.BtnRegistrar}
+            className={`${V.btnSecundary} mb-6`}
           >
             <span className="text-white font-bold">Registrar</span>
           </Button>

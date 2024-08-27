@@ -7,3 +7,4 @@ export { Alert } from "./feedback/Alert"
 export {BlocInformation} from "./media/BlocInformation";
 export {Imagenes} from "./media/Imagenes";
 
+export { Toggles } from "./buttons/Toggle"
