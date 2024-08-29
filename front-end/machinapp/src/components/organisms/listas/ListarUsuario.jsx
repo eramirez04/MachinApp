@@ -28,7 +28,7 @@ export const BuscarUsuario = () => {
 
   return (
     <>
-      <div className="flex justify-end">
+      <div className="px-5 flex justify-end">
         <Button color="primary" type="submit" radius="sm">
           <Link
             to={"/perfil/settings"}
@@ -50,7 +50,11 @@ export const BuscarUsuario = () => {
             <div className="w-full md:w-2/5">
               <div className="flex items-center justify-center w-full bg-gray-300 rounded dark:bg-gray-700 overflow-hidden">
                 <img
-                  src="ruta-de-tu-imagen.jpg"
+                  src={
+                    user.us_imagen
+                      ? `http://localhost:3000/imagenes/${user.us_imagen}`
+                      : "null"
+                  }
                   className="object-cover w-full h-48 sm:h-64 md:h-80 lg:h-96"
                 />
               </div>

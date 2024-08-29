@@ -1,4 +1,5 @@
 import logoSenaVerde from "/logoSenaNaranja.png";
+
 import {
   HomeIcon,
   MapIcon,
@@ -6,6 +7,7 @@ import {
   ServerIcon,
   ClockIcon,
   MagnifyingGlassIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/solid";
 import {
   UserIcon,
@@ -18,6 +20,8 @@ import {
   UserGroupIcon,
   UserMinusIcon,
   ShieldCheckIcon,
+  EllipsisHorizontalCircleIcon,
+  PencilIcon,
 } from "@heroicons/react/24/outline";
 
 export const V = {
@@ -44,6 +48,9 @@ export const V = {
   MagnifyingGlassIcon,
   ShieldCheckIcon,
   UserMinusIcon,
+  ChevronRightIcon,
+  EllipsisHorizontalCircleIcon,
+  PencilIcon,
 
   Bradius: "sm",
 
