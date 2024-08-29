@@ -47,6 +47,17 @@ export const Store = async (req, res) => {
         .json({ mensaje: "Ya existe usuarios con este correo" });
     }
 
+    const [resultadoNumDoc] = await conexion.query(
+      "SELECT us_numero_documento FROM usuarios WHERE us_numero_documento = ?",
+      [data.numero_documento]
+    );
+
+    if (resultadoNumDoc.length > 0) {
+      return res
+        .status(400)
+        .json({ mensajeDoc: "Ya existe usuario con este numero de documento" });
+    }
+
     // conexion con el modelo
     const [resultadoUser] = await UsuarioModel.registroUsuario(data);
 
@@ -83,9 +94,9 @@ export const actualizarUsuario = async (req, res) => {
     let id = req.params.id;
 
     let imagen = "";
-    if (req.body.us_imagen) {
+    if (req.body.imagen) {
       // imagen cuando se actulizan los demas datos pero conserva la imagen
-      imagen = req.body.us_imagen;
+      imagen = req.body.imagen;
     } else {
       // variable que recibe la imagen que se desa actualizar
       let img = req.file;
