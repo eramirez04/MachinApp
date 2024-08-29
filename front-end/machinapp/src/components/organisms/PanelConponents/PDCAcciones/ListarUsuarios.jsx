@@ -118,7 +118,7 @@ export const ListarUsuarios = () => {
           </div>
 
           {/* Tabla Paginada */}
-          <div className="w-full overflow-x-auto">
+          <div className="w-full overflow-x-scroll">
             <span className="text-gray-600 text-sm md:text-base">
               {data ? (
                 <>
@@ -139,13 +139,16 @@ export const ListarUsuarios = () => {
                     ? filteredData.map((row) => ({
                         ...row,
                         acciones: (
-                          <div className="">
-                            <DropDown
-                              DropdownTriggerElement={"..."}
-                              dropdown={["Editar"]}
+                          <>
+                            <Button
+                              isIconOnly
+                              color="warning"
                               onClick={() => handleEdit(row.numero_documento)}
-                            />
-                          </div>
+                              variant="faded"
+                            >
+                              <Icons icon={V.PencilIcon} />{" "}
+                            </Button>
+                          </>
                         ),
                       }))
                     : roles
@@ -160,3 +163,9 @@ export const ListarUsuarios = () => {
     </>
   );
 };
+
+/*   <DropDown
+                              DropdownTriggerElement={"..."}
+                              dropdown={["Editar"]}
+                              onClick={() => handleEdit(row.numero_documento)}
+                            /> */

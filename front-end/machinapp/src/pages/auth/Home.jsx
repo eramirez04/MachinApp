@@ -6,23 +6,38 @@ import {
   Icons,
   V,
   Breadcrumb,
+  useAuth,
 } from "../../index.js";
 /* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const { dataUser, equiposData, solicitudData } = useGlobalData();
+  const { rol } = useAuth();
 
   const dataMap = [
-    { title: "Total de usuarios", total: dataUser.length, icon: V.UsersIcon },
+    {
+      title: "Total de usuarios",
+      total: dataUser.length,
+      icon: V.UsersIcon,
+      link: "/Panelcontrol",
+    },
     {
       title: "Total de Equipos en el sistema",
       total: equiposData.length,
       icon: V.UsersIcon,
+      link: "/Maquinas",
     },
     {
       title: "Total de solicitudes de mantenimiento",
       total: solicitudData.length,
       icon: V.UsersIcon,
+    },
+    {
+      title: "Total de usuarios",
+      total: dataUser.length,
+      icon: V.UsersIcon,
+      link: "/Panelcontrol",
     },
   ];
 
@@ -39,6 +54,17 @@ export const Home = () => {
                 key={index}
                 title={value.title}
                 total={value.total}
+                link={
+                  <>
+                    {rol === "Administrador" ? (
+                      <Link to={value.link}>
+                        <Icons icon={V.ChevronRightIcon} />
+                      </Link>
+                    ) : (
+                      " "
+                    )}
+                  </>
+                }
               >
                 <Icons icon={value.icon} />
               </CardDataStats>
