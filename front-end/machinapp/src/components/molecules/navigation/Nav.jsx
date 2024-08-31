@@ -1,8 +1,11 @@
-import { Icons, menus, V } from "../../../index";
+import { Icons, menus, V, useLenguage } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Select, SelectItem } from "@nextui-org/react";
 
 export const Nav = ({ rol }) => {
   const [open, setOpen] = useState(true);
@@ -11,11 +14,20 @@ export const Nav = ({ rol }) => {
     return saved ? JSON.parse(saved) : {};
   });
 
+  const { onChangeTransalate, lenguage } = useLenguage();
+  const { t } = useTranslation();
+
+  const menuss = useMemo(() => menus(t), [t]);
+
   const handleSubmenuToggle = (name) => {
     setSubmenuOpen((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
+  };
+
+  const handleSelectionChange = (value) => {
+    onChangeTransalate(value.target.value);
   };
 
   useEffect(() => {
@@ -44,7 +56,7 @@ export const Nav = ({ rol }) => {
           />
         </div>
         <ul className="mt-9 flex flex-col gap-4 relative">
-          {menus?.map(
+          {menuss?.map(
             (menu, i) =>
               (menu.name !== "Panel de control" || rol === "Administrador") && (
                 <li key={i} className="relative">
@@ -107,6 +119,24 @@ export const Nav = ({ rol }) => {
               )
           )}
         </ul>
+        <Select
+          value={lenguage}
+          aria-label="Seleccionar idioma"
+          label="Elige un idioma"
+          onChange={handleSelectionChange}
+          className="max-w-xs pt-20"
+          variant="bordered"
+          color="primary"
+          size="md"
+          startContent={<Icons icon={V.GlobeAltIcon} />}
+        >
+          <SelectItem key="en" value="en">
+            Inglés
+          </SelectItem>
+          <SelectItem key="es" value="es">
+            Español
+          </SelectItem>
+        </Select>
       </div>
     </nav>
   );

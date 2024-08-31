@@ -10,26 +10,28 @@ import {
 } from "../../index.js";
 /* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const { dataUser, equiposData, solicitudData } = useGlobalData();
   const { rol } = useAuth();
+  const { t } = useTranslation();
 
   const dataMap = [
     {
-      title: "Total de usuarios",
+      title: t("total_users"),
       total: dataUser.length,
       icon: V.UsersIcon,
       link: "/Panelcontrol",
     },
     {
-      title: "Total de Equipos en el sistema",
+      title: t("total_equipos_sena"),
       total: equiposData.length,
       icon: V.UsersIcon,
       link: "/Maquinas",
     },
     {
-      title: "Total de solicitudes de mantenimiento",
+      title: t("total_solicitudes_mantenimiento"),
       total: solicitudData.length,
       icon: V.UsersIcon,
     },
@@ -44,7 +46,7 @@ export const Home = () => {
   return (
     <>
       <Layout titlePage={"Home"}>
-        <Breadcrumb pageName={"Inicio"} />
+        <Breadcrumb pageName={t("inicio")} />
         {/* Primera fila con 4 tarjetas */}
 
         <div className="p-5">

@@ -22,6 +22,7 @@ import {
   ShieldCheckIcon,
   EllipsisHorizontalCircleIcon,
   PencilIcon,
+  GlobeAltIcon,
 } from "@heroicons/react/24/outline";
 
 export const V = {
@@ -51,6 +52,7 @@ export const V = {
   ChevronRightIcon,
   EllipsisHorizontalCircleIcon,
   PencilIcon,
+  GlobeAltIcon,
 
   Bradius: "sm",
 

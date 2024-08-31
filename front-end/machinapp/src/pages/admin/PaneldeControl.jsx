@@ -1,10 +1,12 @@
+import { useTranslation } from "react-i18next";
 import { Layout, ListarUsuarios, Breadcrumb } from "../../index";
 
 const PaneldeControlUsuarios = () => {
+  const { t } = useTranslation();
   return (
     <>
-      <Layout titlePage={"Panel de control"}>
-        <Breadcrumb pageName={"Listado de Usuarios"} />
+      <Layout>
+        <Breadcrumb pageName={t("listado_usuarios")} />
         <ListarUsuarios />
       </Layout>
     </>

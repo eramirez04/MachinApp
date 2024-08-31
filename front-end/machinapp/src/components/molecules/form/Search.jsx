@@ -1,10 +1,11 @@
 import { V, Icons } from "../../../index";
-
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Input } from "@nextui-org/react";
 
-export const SearchComponent = ({ onSearch }) => {
+export const SearchComponent = ({ onSearch, label }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -24,12 +25,12 @@ export const SearchComponent = ({ onSearch }) => {
         <Input
           radius="sm"
           type="text"
-          label="Search"
+          label={label}
           color="success"
           variant="bordered"
           value={searchTerm}
           onChange={handleInputChange}
-          placeholder={`Buscar`}
+          placeholder={t("buscar")}
           startContent={<Icons icon={V.MagnifyingGlassIcon} />}
         />
       </label>

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 // importacion de componentes
 import { Button } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 export const Login = () => {
   //error captura de errores
@@ -13,6 +14,8 @@ export const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  const { t } = useTranslation();
 
   const { login, loading } = useAuth();
 
@@ -63,12 +66,14 @@ export const Login = () => {
             register={register}
             tipo={"email"}
             name={"Correo"}
+            label={t("correo")}
           />
           <InputforForm
             errors={errors}
             register={register}
             tipo={"password"}
             name={"Contraseña"}
+            label={t("contrasena")}
           />
           {error.contrasenia && <Alert descripcion={error.contrasenia} />}
           <Button
@@ -77,9 +82,9 @@ export const Login = () => {
             className="text-white bg-custom-green"
             /* color="success" */
           >
-            {loading ? "Cargando" : "Iniciar Sesion"}
+            {loading ? "Cargando" : t("iniciar_sesion")}
           </Button>
-          <Link to="/recuperar"> ¿Olvidaste tu contraseña?</Link>
+          <Link to="/recuperar">{t("olvidaste_contrasena")}</Link>
         </form>
         {error && (
           <div>
