@@ -35,8 +35,8 @@ export const Inicio = () => {
           color={"bg-white"}
           contenido={
             <ModalComponte
-              buttonModal={"Login"}
-              tittleModal={"Iniciar Sesion"}
+              buttonModal={t("iniciar_sesion")}
+              tittleModal={t("iniciar_sesion")}
               colorButton={V.BtnRegistrar}
               componente={<Login />}
             />

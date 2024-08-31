@@ -5,16 +5,20 @@ import {
   InputUpdate,
   V,
   multiFormData,
+  ButtonNext,
 } from "../../../index";
 
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Spinner } from "@nextui-org/react";
 
 export const FormUserUpdate = ({ userData }) => {
   const { rol, refreshUserLoged } = useAuth();
   const { roles } = useFetchRoles();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const user = userData;
 
   const [admin, setAdmin] = useState(false);
@@ -128,7 +132,7 @@ export const FormUserUpdate = ({ userData }) => {
               className={`border-b border-stroke py-4 px-7 dark:border-strokedark ${V.bg_sena_verde}`}
             >
               <span className="font-medium text-black dark:text-white">
-                Tu Foto
+                {t("tu_foto")}
               </span>
             </div>
             <div className="p-7">
@@ -188,7 +192,7 @@ export const FormUserUpdate = ({ userData }) => {
             className={`border-b border-stroke py-4 px-7  ${V.bg_sena_verde}`}
           >
             <h3 className="font-medium text-black dark:text-white">
-              Información personal
+              {t("informacion_personal")}
             </h3>
           </div>
           <div className="p-7">
@@ -204,7 +208,7 @@ export const FormUserUpdate = ({ userData }) => {
                         <InputUpdate
                           {...field}
                           errors={errors}
-                          label="Nombre"
+                          label={t("nombre")}
                           tipo="text"
                           isUpdating={true}
                         />
@@ -221,7 +225,7 @@ export const FormUserUpdate = ({ userData }) => {
                         <InputUpdate
                           {...field}
                           errors={errors}
-                          label="Apellidos"
+                          label={t("apellidos")}
                           tipo="text"
                           isUpdating={true}
                         />
@@ -236,7 +240,7 @@ export const FormUserUpdate = ({ userData }) => {
                   render={({ field }) => (
                     <InputUpdate
                       {...field}
-                      label="Correo electrónico"
+                      label={t("correo")}
                       errors={errors}
                       tipo="email"
                       isUpdating={true}
@@ -254,7 +258,7 @@ export const FormUserUpdate = ({ userData }) => {
                         <InputUpdate
                           {...field}
                           errors={errors}
-                          label="Número de documento"
+                          label={t("numero_documento")}
                           tipo="text"
                           isUpdating={true}
                         />
@@ -278,12 +282,12 @@ export const FormUserUpdate = ({ userData }) => {
                           ]}
                           name="tipo_documento"
                           isDi
-                          placeholder="Documento"
+                          placeholder={t("tipo_documento")}
                           valueKey="idRoles"
                           value={false}
                           textKey="value"
                           register={register}
-                          label="Tipo de documento de identidad"
+                          label={t("tipo_documento")}
                         />
                       </div>
                     </>
@@ -298,7 +302,7 @@ export const FormUserUpdate = ({ userData }) => {
                         <SelectComponent
                           options={roles}
                           name="rol"
-                          placeholder="Rol sistema"
+                          placeholder="Rol"
                           valueKey="idRoles"
                           value={false}
                           textKey="rol_nombre"
@@ -322,8 +326,7 @@ export const FormUserUpdate = ({ userData }) => {
                             <InputUpdate
                               {...field}
                               errors={errors}
-                              /*    isDisabled={admin} */
-                              label="Empresa"
+                              label={t("empresa")}
                               tipo="text"
                               isUpdating={true}
                             />
@@ -331,7 +334,6 @@ export const FormUserUpdate = ({ userData }) => {
                         />
                       </div>
                       <div className="w-full sm:w-1/2">
-                        {" "}
                         <Controller
                           name="especialidad"
                           control={control}
@@ -340,7 +342,7 @@ export const FormUserUpdate = ({ userData }) => {
                             <InputUpdate
                               {...field}
                               errors={errors}
-                              label="Especialidad"
+                              label={t("especialidad")}
                               tipo="text"
                               isUpdating={true}
                             />
@@ -352,16 +354,19 @@ export const FormUserUpdate = ({ userData }) => {
                 )}
 
                 <div className="flex justify-end gap-4.5">
-                  <button
-                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  <ButtonNext
                     type="submit"
+                    text={" "}
+                    className={`${V.text_white} ${V.bg_sena_verde}`}
                   >
-                    Save
-                  </button>
+                    {t("actualizar")}
+                  </ButtonNext>
                 </div>
               </div>
             ) : (
-              <>Cargando datos</>
+              <>
+                <Spinner />
+              </>
             )}
           </div>
         </div>

@@ -1,11 +1,17 @@
-import { InputforForm, useRegistrarRol, useGlobalData } from "../../../index";
+import {
+  InputforForm,
+  useRegistrarRol,
+  useGlobalData,
+  V,
+} from "../../../index";
 import { Button } from "@nextui-org/react";
-
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
 export const FormRol = () => {
   const { registrarRol } = useRegistrarRol();
   const { refreshRol } = useGlobalData();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -30,19 +36,22 @@ export const FormRol = () => {
             register={register}
             tipo={"text"}
             name={"nombre"}
-            label={"Nombre"}
+            label={t("nombre_rol")}
           />
           <InputforForm
             errors={errors}
             register={register}
             tipo={"text"}
             name={"descripcion"}
-            label={"Descripción"}
+            label={t("descripcion")}
           />
 
           <div className="flex justify-end">
-            <Button type="submit" color="success" className="px-4 py-2">
-              Añadir
+            <Button
+              type="submit"
+              className={`px-4 py-2 ${V.bg_sena_verde} ${V.text_white}`}
+            >
+              {t("registrar")}
             </Button>
           </div>
         </form>
