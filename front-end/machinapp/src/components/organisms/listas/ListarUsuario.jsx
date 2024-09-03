@@ -49,18 +49,17 @@ export const BuscarUsuario = () => {
             action=""
             className="space-y-8 md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
           >
-            <div className="w-full md:w-2/5">
-              <div className="flex items-center justify-center w-full bg-gray-300 rounded dark:bg-gray-700 overflow-hidden">
-                <img
-                  src={
-                    user.us_imagen
-                      ? `http://localhost:3000/imagenes/${user.us_imagen}`
-                      : "null"
-                  }
-                  className="object-cover w-full h-48 sm:h-64 md:h-80 lg:h-96"
-                />
-              </div>
+            <div className="flex items-center  md:w-2/5 justify-center w-full bg-gray-300 rounded dark:bg-gray-700 overflow-hidden">
+              <img
+                src={
+                  user.us_imagen
+                    ? `http://localhost:3000/imagenes/${user.us_imagen}`
+                    : null
+                }
+                className="object-cover w-full h-48 sm:h-64 md:h-80 lg:h-96"
+              />
             </div>
+
             <div className="w-full">
               <div className="p-3 sm:p-1 lg:flex-auto">
                 <div className="mt-10 flex items-center gap-x-1">
