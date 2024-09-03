@@ -18,3 +18,9 @@ export { MantenimientoGeneral } from "./table/MantenimientoGeneral";
 // pdf
 export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
+
+
+
+
+/*  */
+export {FormFichaTecnicaListUpdate} from "./formularios/FormFichaTecnicaListUpdate"; 

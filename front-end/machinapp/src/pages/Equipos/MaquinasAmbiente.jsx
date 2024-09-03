@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import ListarMaquinasAmb from '../../components/organisms/ListarMaquinasAmb.jsx'
-import {Layout} from "../../index.js"
+import {Layout, Breadcrumb} from "../../index.js"
 import { useParams } from "react-router-dom"
 
 import {axiosCliente} from "../../service/api/axios.js"
@@ -12,8 +12,6 @@ export const MaquinasAmbiente=()=>{
     const {idAmbiente} = useParams()
 
     const [Nombreambiente, setAmbienteNombre] = useState([]) 
-
-    /* Hacer consulta para el titulo del sitio o ambiente !!!!!! */
 
     useEffect(()=>{
 
@@ -32,6 +30,7 @@ export const MaquinasAmbiente=()=>{
     return (
       <>
         <Layout titlePage = { `${Nombreambiente}`}>
+            <Breadcrumb pageName={`${Nombreambiente}`} />
             <div className='mx-10'>
                 <ListarMaquinasAmb idAmbiente={idAmbiente}/>
             </div>
