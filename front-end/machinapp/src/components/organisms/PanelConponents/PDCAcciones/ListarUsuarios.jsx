@@ -5,7 +5,11 @@ import {
   FormUser,
   PaginateTable,
   DropDown,
+  SearchComponent,
+  Icons,
+  V,
 } from "../../../../index.js";
+import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
 
@@ -16,21 +20,24 @@ export const ListarUsuarios = () => {
   const { dataUser, roles } = useGlobalData();
   const [data, setData] = useState(true);
 
+  const [filteredData, setFilteredData] = useState([]);
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   // definimos las columnas para la tabla
   const columns = [
-    "Nombre",
-    "Apellidos",
-    "Correo",
-    "Tipo de documento",
-    "Número de Documento",
+    t("nombre"),
+    t("apellidos"),
+    t("correo"),
+    t("tipo_documento"),
+    t("numero_documento"),
     "Rol",
     "Acciones",
   ];
 
   // columnas para roles []
-  const ColumnsRoles = ["id", "Rol", "Descripcion"];
+  const ColumnsRoles = ["id", "Rol", t("descripcion")];
 
   // definimos las filas: nota => hay que tener en cuanta que tanto las columnas y filas deben ser igual en numero
   // si envio 4 columnas debo tambien de enviarle 4 filas, de lo contrario nos arrojara un error
@@ -60,43 +67,42 @@ export const ListarUsuarios = () => {
     setData(false);
   };
 
+  const handleSearchUsuario = (search) => {
+    const filtered = newArrayDataUser.filter((usuario) => {
+      return (
+        usuario.numero_documento.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.nombre.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.correo.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.rol.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+
+    setFilteredData(filtered);
+  };
+
   return (
     <>
-      <div className="min-h-screen p-6 flex flex-col gap-8 bg-gray-50">
-        {/* Sección del encabezado */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
-          <div className="text-lg font-semibold text-gray-800">
-            Más info aquí
-          </div>
-          <div className="w-full md:w-auto">
-            <ModalComponte
-              buttonModal={"Añadir nuevo usuario"}
-              componente={<FormUser />}
-              tittleModal={"Registrando usuario"}
-              size={"5xl"}
-              className="w-full"
-            />
-          </div>
-        </div>
-
+      <div className="min-h-screen p-6 flex flex-col gap-8 ">
         {/* Contenedor de la tabla */}
         <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="flex flex-row justify-between p-4 bg-gray-100 border-b">
-            <span className="text-gray-600 text-sm md:text-base">
-              {data
-                ? `Total de usuarios en el sistema: ${newArrayDataUser.length} `
-                : `Total de roles en el sistema: ${roles.length}`}
-            </span>
-            <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row justify-between p-4 items-center bg-gray-100 border-b space-y-4 md:space-y-0">
+            <SearchComponent
+              label={`${t("nombre")}, ${t("correo")}, ${t("numero_documento")}`}
+              onSearch={handleSearchUsuario}
+              className="w-full md:w-auto"
+            />
+            <div className="flex gap-2 flex-wrap justify-center md:justify-end w-full md:w-auto">
               <Button
+                startContent={<Icons icon={V.UserGroupIcon} />}
                 variant="bordered"
                 color="success"
                 onClick={handleDataUser}
                 className="text-xs md:text-sm"
               >
-                Usuarios
+                {t("usuarios")}
               </Button>
               <Button
+                startContent={<Icons icon={V.ShieldCheckIcon} />}
                 variant="bordered"
                 color="success"
                 onClick={handleDataRol}
@@ -105,25 +111,49 @@ export const ListarUsuarios = () => {
                 Roles
               </Button>
             </div>
+            <ModalComponte
+              buttonModal={
+                data ? t("usuarios_añadir_nuevo") : t("rol_añadir_nuevo")
+              }
+              componente={data ? <FormUser /> : <FormRol />}
+              tittleModal={data ? t("registrar_usuario") : t("registrar_rol")}
+              size={""}
+              className="w-full md:w-auto"
+            />
           </div>
 
           {/* Tabla Paginada */}
-          <div className="w-full overflow-x-auto">
+          <div className="w-full overflow-x-scroll">
+            <span className="text-gray-600 text-sm md:text-base">
+              {data ? (
+                <>
+                  <span className="flex">
+                    <Icons icon={V.UserCircleIcon} /> {t("usuarios")} :
+                    {" " + filteredData.length}
+                  </span>
+                </>
+              ) : (
+                `Total de roles en el sistema: ${roles.length}`
+              )}
+            </span>
             <div className="w-full min-w-max">
               <PaginateTable
                 columns={data ? columns : ColumnsRoles}
                 data={
                   data
-                    ? newArrayDataUser.map((row) => ({
+                    ? filteredData.map((row) => ({
                         ...row,
                         acciones: (
-                          <div className="truncate">
-                            <DropDown
-                              DropdownTriggerElement={"..."}
-                              dropdown={["Editar"]}
+                          <>
+                            <Button
+                              isIconOnly
+                              color="warning"
                               onClick={() => handleEdit(row.numero_documento)}
-                            />
-                          </div>
+                              variant="faded"
+                            >
+                              <Icons icon={V.PencilIcon} />{" "}
+                            </Button>
+                          </>
                         ),
                       }))
                     : roles
@@ -133,8 +163,13 @@ export const ListarUsuarios = () => {
             </div>
           </div>
         </div>
-        {!data && <FormRol />}
       </div>
     </>
   );
 };
+
+/*   <DropDown
+                              DropdownTriggerElement={"..."}
+                              dropdown={["Editar"]}
+                              onClick={() => handleEdit(row.numero_documento)}
+                            /> */

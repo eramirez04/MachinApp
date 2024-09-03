@@ -5,13 +5,16 @@ import {
   ButtonNext,
   InputforForm,
   SelectComponent,
+  V,
 } from "../../../index";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 export const FormUser = () => {
   const { registrarUsuario, loading } = useRegistrarUsuario();
   const { refreshDataUser, roles } = useGlobalData();
   const [errorUser, setError] = useState("");
+  const { t } = useTranslation();
 
   const {
     register,
@@ -32,41 +35,23 @@ export const FormUser = () => {
         return;
       }
     } catch (error) {
-      if (error.response?.data.mensaje) {
-        setError((prevErrors) => ({
-          ...prevErrors,
-          correo: error.response?.data.mensaje,
-        }));
-      } else {
-        setError((prevErrors) => ({
-          ...prevErrors,
-          correo: "",
-          contrasenia: "",
-        }));
-      }
+      let newErrors = {};
 
-      if (error.response && error.response.data.error) {
-        let errores = error.response.data.error;
-
-        errores.forEach((element) => {
-          switch (element.path[0]) {
-            case "contrasenia":
-              setError((prevErrors) => ({
-                ...prevErrors,
-                contrasenia: element.message,
-              }));
-              break;
-
-            default:
-              console.log("Mensaje de error desconocido:", element.message);
-              setError((prevErrors) => ({
-                ...prevErrors,
-                [element.path[0]]: element.message,
-              }));
-              break;
-          }
+      if (error.response?.data.error) {
+        error.response.data.error.forEach((element) => {
+          newErrors[element.path[0]] = element.message;
         });
       }
+
+      if (error.response?.data.mensaje) {
+        newErrors.correo = error.response.data.mensaje;
+      }
+
+      if (error.response?.data.mensajeDoc) {
+        newErrors.numeroDocumento = error.response.data.mensajeDoc;
+      }
+
+      setError(newErrors);
     }
   };
 
@@ -79,12 +64,12 @@ export const FormUser = () => {
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           <div className="flex flex-col">
-            <InputforForm errors={errors} register={register} name={"nombre"} />
-            {errors.nombre && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.nombre.message}
-              </span>
-            )}
+            <InputforForm
+              errors={errors}
+              register={register}
+              name={"nombre"}
+              label={t("nombre")}
+            />
           </div>
 
           <div className="flex flex-col">
@@ -92,12 +77,8 @@ export const FormUser = () => {
               errors={errors}
               register={register}
               name={"apellidos"}
+              label={t("apellidos")}
             />
-            {errors.apellidos && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.apellidos.message}
-              </span>
-            )}
           </div>
         </div>
 
@@ -107,6 +88,7 @@ export const FormUser = () => {
             errors={errors}
             register={register}
             name={"correo"}
+            label={t("correo")}
           />
           {errorUser.correo}
         </div>
@@ -119,11 +101,11 @@ export const FormUser = () => {
               { name: "cedula extranjeria" },
             ]}
             name="tipo_documento"
-            placeholder="Tipo de documento"
+            placeholder={t("tipo_documento")}
             valueKey="name"
             textKey="name"
             register={register}
-            label="Tipo de documento"
+            label={t("tipo_documento")}
           />
         </div>
 
@@ -132,10 +114,11 @@ export const FormUser = () => {
             errors={errors}
             register={register}
             name={"numero_documento"}
+            label={t("numero_documento")}
           />
-          {errors.numero_documento && (
+          {errorUser.numeroDocumento && (
             <span className="text-red-500 text-sm mt-1">
-              {errors.numero_documento.message}
+              {errorUser.numeroDocumento}
             </span>
           )}
         </div>
@@ -146,10 +129,11 @@ export const FormUser = () => {
               errors={errors}
               register={register}
               name={"contrasenia"}
+              label={t("contrasena")}
             />
-            {errors.contrasenia && (
+            {errorUser.contrasenia && (
               <span className="text-red-500 text-sm mt-1">
-                {errors.contrasenia.message}
+                {errorUser.contrasenia}
               </span>
             )}
           </div>
@@ -158,7 +142,7 @@ export const FormUser = () => {
             <SelectComponent
               options={roles}
               name="rol"
-              placeholder="Tipo de rol"
+              placeholder="Rol"
               valueKey="idRoles"
               textKey="rol_nombre"
               register={register}
@@ -167,8 +151,12 @@ export const FormUser = () => {
           </div>
         </div>
 
-        <ButtonNext text="" color="success" type="submit" className="mt-4">
-          {loading ? "Registrando..." : "Registrar"}
+        <ButtonNext
+          color="s"
+          type="submit"
+          className={`${V.btnSecundary} ${V.text_white}`}
+        >
+          {loading ? "Registrando..." : t("registrar")}
         </ButtonNext>
       </form>
     </>

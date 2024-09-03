@@ -2,39 +2,41 @@ import { useAuth, Icons, V } from "../../../index.js";
 
 import { Divider, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const BuscarUsuario = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const newd = {
-    nombre: user.us_nombre,
-    apellidos: user.us_apellidos,
-    correo: user.us_correo,
-    "numero Documento": user.us_numero_documento,
-    especialidad: user.us_especialidad,
-    empresa: user.us_empresa,
+    [t("nombre")]: user.us_nombre,
+    [t("apellidos")]: user.us_apellidos,
+    [t("correo")]: user.us_correo,
+    [t("numero_documento")]: user.us_numero_documento,
+    [t("especialidad")]: user.us_especialidad,
+    [t("empresa")]: user.us_empresa,
   };
 
-  const iconNames = {
-    nombre: V.UserIcon,
-    apellidos: V.UserIcon,
-    correo: V.EnvelopeIcon,
-    "numero Documento": V.DocumentTextIcon,
-    especialidad: V.UserCircleIcon,
-    empresa: V.TruckIcon,
+  const iconArray = {
+    [t("nombre")]: V.UserIcon,
+    [t("apellidos")]: V.UserIcon,
+    [t("correo")]: V.EnvelopeIcon,
+    [t("numero_documento")]: V.DocumentTextIcon,
+    [t("especialidad")]: V.UserCircleIcon,
+    [t("empresa")]: V.TruckIcon,
   };
 
   const newUser = Object.entries(newd);
 
   return (
     <>
-      <div className="flex justify-end">
+      <div className="px-5 flex justify-end">
         <Button color="primary" type="submit" radius="sm">
           <Link
             to={"/perfil/settings"}
             className="h-full w-full text-sm flex justify-center items-center "
           >
-            Editar Información
+            {t("editar_informacion")}
           </Link>
         </Button>
       </div>
@@ -50,7 +52,11 @@ export const BuscarUsuario = () => {
             <div className="w-full md:w-2/5">
               <div className="flex items-center justify-center w-full bg-gray-300 rounded dark:bg-gray-700 overflow-hidden">
                 <img
-                  src="ruta-de-tu-imagen.jpg"
+                  src={
+                    user.us_imagen
+                      ? `http://localhost:3000/imagenes/${user.us_imagen}`
+                      : "null"
+                  }
                   className="object-cover w-full h-48 sm:h-64 md:h-80 lg:h-96"
                 />
               </div>
@@ -59,7 +65,7 @@ export const BuscarUsuario = () => {
               <div className="p-3 sm:p-1 lg:flex-auto">
                 <div className="mt-10 flex items-center gap-x-1">
                   <span className="flex-none text-sm font-semibold leading-6 text-indigo-600">
-                    Información personal
+                    {t("informacion_personal")}
                   </span>
                   <div className="h-px flex-auto bg-gray-100"></div>
                 </div>
@@ -74,7 +80,7 @@ export const BuscarUsuario = () => {
                           {key}
                         </span>
                         <div className="flex items-center gap-2">
-                          <Icons icon={iconNames[key]} />
+                          <Icons icon={iconArray[key]} />
                           <span className="text-gray-700">
                             {value || "No disponible"}
                           </span>
