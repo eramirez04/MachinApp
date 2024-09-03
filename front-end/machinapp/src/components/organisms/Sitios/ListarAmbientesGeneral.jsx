@@ -2,6 +2,7 @@ import { PaginateTable } from "../table/PaginateTable";
 import { useEffect, useState } from "react";
 import { axiosCliente } from "../../../service/api/axios";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const BuscarAmbientesGeneral = () => {
   const [data, setData] = useState([]);

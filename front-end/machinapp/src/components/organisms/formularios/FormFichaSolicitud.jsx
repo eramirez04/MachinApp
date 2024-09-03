@@ -7,11 +7,12 @@ import {
   TextAreaComponent,
   CardStyle,
   V,
+  axiosCliente,
 } from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { axiosCliente } from "../../../service/api/axios";
+
 import {
   Table,
   TableHeader,
@@ -26,7 +27,7 @@ export const FormFichaSolicitud = () => {
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
 
-  // permite almacenar un array, para poder pasarselo como propiedad a al componente select
+  // permite almacenar un array, para poder pasarsimport Alert from "../feedback/Alert";elo como propiedad a al componente select
   const [equipo, setEquipo] = useState([]);
 
   // validaciones de los campos de los formularios
@@ -138,7 +139,7 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de gestion y desarrollo sostenible surColombiano
+                Centro de Gestión y Desarrollo Sostenible SurColombiano
               </p>
             </div>
           </div>
@@ -204,7 +205,8 @@ export const FormFichaSolicitud = () => {
             <div className="flex justify-end">
               <Button
                 type="button"
-                color={V.BtnRegistrar}
+                variant="ghost"
+                color={V.btnPrimary}
                 onClick={() => handleNewEquipos()}
                 radius={V.Bradius}
               >
@@ -271,7 +273,7 @@ export const FormFichaSolicitud = () => {
             type="submit"
             size="lg"
             radius={V.Bradius}
-            color={V.BtnRegistrar}
+            className={`${V.btnSecundary} mb-6`}
           >
             <span className="text-white font-bold">Registrar</span>
           </Button>

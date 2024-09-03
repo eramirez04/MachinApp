@@ -1,8 +1,11 @@
 import { PaginateTable } from "../table/PaginateTable";
 import { DropDown } from "../../molecules/navigation/Dropdown";
+import { useState } from "react";
+import { SearchComponent } from "../../../index";
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
+  const [filteredData, setFilteredData] = useState([]);
   const COLUMNAS = [
     "Prioridad",
     "Costo",
@@ -30,24 +33,34 @@ export const SolicitudList = ({ DataSolicitud }) => {
     };
   });
 
+  const handleSearSolicitud = (search) => {
+    const filtered = newArrayDataSolicitud.filter((item) =>
+      item.costo.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredData(filtered);
+  };
+
   return (
     <>
-      <section className="px-10">
-        <PaginateTable
-          columns={COLUMNAS}
-          data={newArrayDataSolicitud.map((fila) => ({
-            ...fila,
-            acciones: (
-              <>
-                <DropDown
-                  dropdown={["Ver solicitud"]}
-                  DropdownTriggerElement={"..."}
-                />
-              </>
-            ),
-          }))}
-        />
-      </section>
+      <div className="min-h-screen p-6 flex flex-col gap-8 ">
+        <SearchComponent onSearch={handleSearSolicitud} />
+        <div className="w-full overflow-x-auto">
+          <PaginateTable
+            columns={COLUMNAS}
+            data={filteredData.map((fila) => ({
+              ...fila,
+              acciones: (
+                <>
+                  <DropDown
+                    dropdown={["Ver solicitud"]}
+                    DropdownTriggerElement={"..."}
+                  />
+                </>
+              ),
+            }))}
+          />
+        </div>
+      </div>
     </>
   );
 };

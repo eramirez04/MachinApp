@@ -1,10 +1,11 @@
 import { FormFichaTecnica } from "../../components/organisms/formularios/FormFichaTecnicaEquipos";
-import { Layout } from "../../index";
+import { Layout, Breadcrumb } from "../../index";
 
 export const ViewFormFichaTecnica = () => {
   return (
     <>
-      <Layout titlePage={"Ficha tecnica"}>
+      <Layout titlePage={"Ficha técnica"}>
+      <Breadcrumb pageName={`Registrar equipos`} />
         <FormFichaTecnica />
       </Layout>
     </>

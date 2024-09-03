@@ -1,18 +1,15 @@
 import  { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import {axiosCliente} from "../../service/api/axios.js"
-
-//import Imagenes from "../../components/atoms/media/Imagenes.jsx"
-//import {CardStyle} from "../../components/molecules/CardStyle.jsx"
+import {Link as LinkNextui} from "@nextui-org/react"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
-//import BlocInformation from "../../components/atoms/media/BlocInformation.jsx"
+
 import {Tooltip} from "@nextui-org/react"
 
-import { Layout, CardStyle, Imagenes ,BlocInformation  } from "../../index.js"
+import { Layout, CardStyle, Imagenes ,BlocInformation, axiosCliente, Breadcrumb  } from "../../index.js"
 
-import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx"
+/* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
 
 export const InfoMaquina = ()=> {
@@ -43,8 +40,10 @@ export const InfoMaquina = ()=> {
   return (
     <>
         <Layout titlePage={`${maquina.tipoEquipo}`} > 
+
+            <Breadcrumb pageName={`${maquina.tipoEquipo}`} />
             
-            <div className=" flex justify-center flex-row pt-12 mb-20 pb-16  border-b-2 border-b-green-600 ">
+            <div className=" flex justify-center flex-row pt-12 mt-11 mb-20 pb-16  border-b-2 border-b-green-600 ">
                 
                 <div className="mr-14">
                     <CardStyle
@@ -63,30 +62,23 @@ export const InfoMaquina = ()=> {
                 </div>
 
                     
-{/*                 <div className=" border-b-2 border-b-green-600  text-3xl gap-4 flex flex-row">
-                    <a href={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`} target="_blank" download>
-                        <Tooltip content="CodigoQR" >
-                            <span className="text-3xl cursor-pointer ">
-                                <BiQrScan/>
-                            </span>
-                        </Tooltip>
-                    </a>
-                    <a href={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`} target="_blank" download>
-                        <Tooltip content="Ficha de respaldo" >
-                            <span className="text-3xl cursor-pointer ">
-                                <CiSaveDown1 />
-                            </span>
-                        </Tooltip>
-                    </a>
-                </div> */}
 
                 <div className="w-[500px]">
 
                     <div className=" shadow-sm border-1 border-green-600 rounded-lg shadow-green-500 p-3  gap-4 flex flex-row justify-end">
                         
-                        <a className=" flex justify-self-start text-zinc-800" href="">
+{/*                         <a className=" flex justify-self-start text-zinc-800" href="">
                                 Acceder ficha tecnica.
-                        </a>
+                        </a> */}
+                        <div className="w-full">
+                            
+                            <LinkNextui  isBlock showAnchorIcon href= {`/listarFichaTecnica/${maquina.idFichas}`} color="success">
+                                Acceder ficha tecnica
+                                
+                            </LinkNextui>
+                            
+                        </div>
+
                         <a href={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`} target="_blank" download>
                             <Tooltip content="CodigoQR" >
                                 <span className="text-3xl cursor-pointer text-zinc-800 ">
@@ -115,6 +107,7 @@ export const InfoMaquina = ()=> {
                             <BlocInformation titulo = "Estado: " contenido={maquina.fi_estado} />
                         </div>
                     </div>
+
                     <div className=" my-5 rounded-lg  shadow-sm  shadow-gray-500/50 p-4 " >
                         <h3 className="pl-10 text-lg border-b-1 border-b-green-600 pb-2 text-zinc-800  font-medium"> Informacion Garantia</h3>
                         <div className="grid grid-cols-2 gap-2 mt-3" >
@@ -129,7 +122,7 @@ export const InfoMaquina = ()=> {
             
             <div className=" block mx-16 mb-14 ">
                     <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >Mantenimientos</h3>
-                    <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/>
+                    {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
             </div>
 
         </Layout>

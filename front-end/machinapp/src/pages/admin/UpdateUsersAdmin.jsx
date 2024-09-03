@@ -1,5 +1,4 @@
-import { Layout } from "../../index";
-import { FormUserUpdate } from "../../components/organisms/formularios/FormUserUpdate";
+import { Layout, FormUserUpdate } from "../../index";
 import { useLocation } from "react-router-dom";
 
 export const UpdateUserAdmin = () => {

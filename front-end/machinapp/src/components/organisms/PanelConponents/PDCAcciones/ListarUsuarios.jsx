@@ -1,25 +1,43 @@
-import { useGlobalData, ModalComponte } from "../../../../index.js";
-import { FormUser } from "../../formularios/FormUser.jsx";
-import { PaginateTable } from "../../table/PaginateTable.jsx";
+import {
+  useGlobalData,
+  ModalComponte,
+  FormRol,
+  FormUser,
+  PaginateTable,
+  DropDown,
+  SearchComponent,
+  Icons,
+  V,
+} from "../../../../index.js";
+import { useTranslation } from "react-i18next";
+
 import { useNavigate } from "react-router-dom";
 
-import { DropDown } from "../../../molecules/navigation/Dropdown.jsx";
+import { Button } from "@nextui-org/react";
+import { useState } from "react";
 
-const ListarUsuarios = () => {
-  const { dataUser } = useGlobalData();
+export const ListarUsuarios = () => {
+  const { dataUser, roles } = useGlobalData();
+  const [data, setData] = useState(true);
+
+  const [filteredData, setFilteredData] = useState([]);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
   // definimos las columnas para la tabla
   const columns = [
-    "Nombre",
-    "Apellidos",
-    "Correo",
-    "Tipo de documento",
-    "Numero de Documento",
+    t("nombre"),
+    t("apellidos"),
+    t("correo"),
+    t("tipo_documento"),
+    t("numero_documento"),
     "Rol",
     "Acciones",
   ];
+
+  // columnas para roles []
+  const ColumnsRoles = ["id", "Rol", t("descripcion")];
 
   // definimos las filas: nota => hay que tener en cuanta que tanto las columnas y filas deben ser igual en numero
   // si envio 4 columnas debo tambien de enviarle 4 filas, de lo contrario nos arrojara un error
@@ -41,45 +59,117 @@ const ListarUsuarios = () => {
     navigate("/panelcontrol/user", { state: { resultadoUsuario } });
   };
 
+  const handleDataUser = () => {
+    setData(true);
+  };
+
+  const handleDataRol = () => {
+    setData(false);
+  };
+
+  const handleSearchUsuario = (search) => {
+    const filtered = newArrayDataUser.filter((usuario) => {
+      return (
+        usuario.numero_documento.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.nombre.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.correo.toLowerCase().includes(search.toLowerCase()) ||
+        usuario.rol.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+
+    setFilteredData(filtered);
+  };
+
   return (
     <>
-      <div className="h-screen p-5">
-        {/*   <MenuLeft /> */}
-        <div className="flex pb-6 justify-between items-center">
-          {/*     <SearchComponent /> */}
-          mas info aqui
-          <div className="pl-5 w-60">
+      <div className="min-h-screen p-6 flex flex-col gap-8 ">
+        {/* Contenedor de la tabla */}
+        <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="flex flex-col md:flex-row justify-between p-4 items-center bg-gray-100 border-b space-y-4 md:space-y-0">
+            <SearchComponent
+              label={`${t("nombre")}, ${t("correo")}, ${t("numero_documento")}`}
+              onSearch={handleSearchUsuario}
+              className="w-full md:w-auto"
+            />
+            <div className="flex gap-2 flex-wrap justify-center md:justify-end w-full md:w-auto">
+              <Button
+                startContent={<Icons icon={V.UserGroupIcon} />}
+                variant="bordered"
+                color="success"
+                onClick={handleDataUser}
+                className="text-xs md:text-sm"
+              >
+                {t("usuarios")}
+              </Button>
+              <Button
+                startContent={<Icons icon={V.ShieldCheckIcon} />}
+                variant="bordered"
+                color="success"
+                onClick={handleDataRol}
+                className="text-xs md:text-sm"
+              >
+                Roles
+              </Button>
+            </div>
             <ModalComponte
-              buttonModal={"Añadir nuevo usuario"}
-              componente={<FormUser />}
-              tittleModal={"registrando usuario"}
-              size={"5xl"}
+              buttonModal={
+                data ? t("usuarios_añadir_nuevo") : t("rol_añadir_nuevo")
+              }
+              componente={data ? <FormUser /> : <FormRol />}
+              tittleModal={data ? t("registrar_usuario") : t("registrar_rol")}
+              size={""}
+              className="w-full md:w-auto"
             />
           </div>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-default-400 text-small">
-            Total de usuarios en la plataforma : {newArrayDataUser.length}
-          </span>
-          <PaginateTable
-            columns={columns}
-            data={newArrayDataUser.map((row) => ({
-              ...row,
-              acciones: (
+
+          {/* Tabla Paginada */}
+          <div className="w-full overflow-x-scroll">
+            <span className="text-gray-600 text-sm md:text-base">
+              {data ? (
                 <>
-                  <DropDown
-                    DropdownTriggerElement={"..."}
-                    dropdown={["Editar"]}
-                    onClick={() => handleEdit(row.numero_documento)}
-                  />
+                  <span className="flex">
+                    <Icons icon={V.UserCircleIcon} /> {t("usuarios")} :
+                    {" " + filteredData.length}
+                  </span>
                 </>
-              ),
-            }))}
-          />
+              ) : (
+                `Total de roles en el sistema: ${roles.length}`
+              )}
+            </span>
+            <div className="w-full min-w-max">
+              <PaginateTable
+                columns={data ? columns : ColumnsRoles}
+                data={
+                  data
+                    ? filteredData.map((row) => ({
+                        ...row,
+                        acciones: (
+                          <>
+                            <Button
+                              isIconOnly
+                              color="warning"
+                              onClick={() => handleEdit(row.numero_documento)}
+                              variant="faded"
+                            >
+                              <Icons icon={V.PencilIcon} />{" "}
+                            </Button>
+                          </>
+                        ),
+                      }))
+                    : roles
+                }
+                className="w-full table-auto"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default ListarUsuarios;
+/*   <DropDown
+                              DropdownTriggerElement={"..."}
+                              dropdown={["Editar"]}
+                              onClick={() => handleEdit(row.numero_documento)}
+                            /> */

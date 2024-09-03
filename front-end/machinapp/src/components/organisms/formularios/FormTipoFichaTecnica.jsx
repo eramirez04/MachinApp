@@ -135,7 +135,7 @@ export const FormTipoFichaTecnica = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleSubmitData)} className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5">
+      <form onSubmit={handleSubmit(handleSubmitData)} className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5 mt-10">
         
         <InputForm
           errors={errors}
@@ -146,9 +146,9 @@ export const FormTipoFichaTecnica = () => {
         />
 
         {/* Variables de clase especifica */}
-        <div className="bg-gray-50 p-5 rounded-xl ">
+        <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">Agregar datos específicos</h3>
+          <h3 className="text-xl text-gray-800 mb-10 ">Agregar caracteristicas generales</h3>
             
           {containersEsp.map((container)  => (
 
@@ -255,7 +255,7 @@ export const FormTipoFichaTecnica = () => {
 
         <div className="bg-gray-50 p-5 rounded-xl my-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">Agregar seccion</h3>
+          <h3 className="text-xl text-gray-800 mb-10 ">Agregar secciones</h3>
             
           {containersSecc.map((container)  => (
             <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center gap-4 justify-around">
@@ -301,7 +301,7 @@ export const FormTipoFichaTecnica = () => {
         </div>
 
 
-        <ButtonNext text={"Registrar"}  type="submit" color="success"> </ButtonNext>
+        <ButtonNext text={"Registrar"}  type="submit" className={"bg-green-600 text-white w-full"}> </ButtonNext>
 
       </form>
     </>

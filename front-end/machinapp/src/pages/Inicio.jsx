@@ -1,45 +1,42 @@
-import { useLenguage, Footer, Header, ModalComponte, V } from "./../index.js";
-import { lazy } from "react";
+import {
+  useLenguage,
+  Footer,
+  Header,
+  ModalComponte,
+  Login,
+  V,
+  Toggles,
+} from "./../index.js";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { useTranslation } from "react-i18next";
 //componentes
-
-// modal
-
-// login
-const Login = lazy(() => import("../components/organisms/Login.jsx"));
+import { useState } from "react";
 
 export const Inicio = () => {
   const { t } = useTranslation();
-  const { lenguage, onChangeTransalate } = useLenguage();
+  const { onChangeTransalate } = useLenguage();
+
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleSelectIdioma = (idioma) => {
+    setIsSelected(idioma);
+    onChangeTransalate(isSelected ? "es" : "en");
+  };
 
   return (
     <>
-      <div>
-        <h1></h1>
-        <p></p>
-
-        <div>
-          <select
-            onChange={(e) => onChangeTransalate(e.target.value)}
-            value={lenguage}
-          >
-            <option value="en">English</option>
-            <option value="es">Español</option>
-          </select>
-        </div>
-      </div>
+      <Toggles onClick={handleSelectIdioma} isSelected={isSelected} />
 
       <div className="">
         <Header
           color={"bg-white"}
           contenido={
             <ModalComponte
-              buttonModal={"Login"}
-              tittleModal={"Iniciar Sesion"}
+              buttonModal={t("iniciar_sesion")}
+              tittleModal={t("iniciar_sesion")}
               colorButton={V.BtnRegistrar}
               componente={<Login />}
             />

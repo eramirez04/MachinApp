@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { axiosCliente } from "../../../service/api/axios";
 import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
-
+import { V } from "../../../style";
 const BuscarAreasGeneral = () => {
   const [areas, setAreas] = useState([]);
 
@@ -32,7 +32,7 @@ const BuscarAreasGeneral = () => {
 
   return (
     <div className="bg-gray-200 min-h-screen">
-      <header className="bg-green-500 py-16 shadow-md top-0 z-10">
+      <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className="text-4xl font-extrabold text-center text-white">
           Centro de Gestión y Desarrollo Sostenible Surcolombiano
         </h1>

@@ -21,7 +21,14 @@ import {
   InfoSede,
   AreasGeneral,
   AmbientesGeneral,
-  ViewFormTipoFicha
+  ViewFormTipoFicha,
+  RegistrarArea,
+  RegistrarSede,
+  RegistrarAmbiente,
+  Editar_Component,
+
+
+  UpdateAndListFichaTecnica
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -66,13 +73,20 @@ export const AppRouter = () => {
             />
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
-            
-            {/*  */}
             <Route
-              path="/crearTiposFichaTec"
-              element={<ViewFormTipoFicha />}
+              path="/Ambientes/Registrar"
+              element={<RegistrarAmbiente />}
             />
+            <Route path="/Areas/Registrar" element={<RegistrarArea />} />
+            <Route path="/Sedes/Registrar" element={<RegistrarSede />} />
             {/*  */}
+            <Route path="/crearTiposFichaTec" element={<ViewFormTipoFicha />} />
+            <Route path="/Editar_o_ver" element={<Editar_Component/>} />
+            {/*  */}
+
+
+            {/* dddddddddd */}
+            <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica/>}/>
           </Route>
         </Routes>
       </Suspense>

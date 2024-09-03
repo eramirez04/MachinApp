@@ -1,10 +1,13 @@
-import logoSenaVerde from "../../public/logoSenaNaranja.png";
+import logoSenaVerde from "/logoSenaNaranja.png";
+
 import {
   HomeIcon,
   MapIcon,
   DocumentTextIcon,
   ServerIcon,
   ClockIcon,
+  MagnifyingGlassIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/solid";
 import {
   UserIcon,
@@ -14,6 +17,12 @@ import {
   PlusIcon,
   TrashIcon,
   UsersIcon,
+  UserGroupIcon,
+  UserMinusIcon,
+  ShieldCheckIcon,
+  EllipsisHorizontalCircleIcon,
+  PencilIcon,
+  GlobeAltIcon,
 } from "@heroicons/react/24/outline";
 
 export const V = {
@@ -36,7 +45,17 @@ export const V = {
   PlusIcon,
   TrashIcon,
   UsersIcon,
+  UserGroupIcon,
+  MagnifyingGlassIcon,
+  ShieldCheckIcon,
+  UserMinusIcon,
+  ChevronRightIcon,
+  EllipsisHorizontalCircleIcon,
+  PencilIcon,
+  GlobeAltIcon,
 
   Bradius: "sm",
-  BtnRegistrar: "primary",
+
+  btnPrimary: "primary",
+  btnSecundary: "bg-green-600",
 };

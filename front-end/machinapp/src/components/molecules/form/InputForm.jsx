@@ -1,7 +1,7 @@
 import { Input } from "@nextui-org/react";
 
 // eslint-disable-next-line react/prop-types
-export const InputForm = ({ register, errors, value, name, tipo, onChange, text  }) => {
+export const InputForm = ({ register, errors, value, name, tipo, onChange, text , disabled }) => {
   return (
     <>
       <div className="mb-2">
@@ -13,6 +13,8 @@ export const InputForm = ({ register, errors, value, name, tipo, onChange, text 
             {text}:
           </label>
           <Input
+            disabled={disabled}
+            
             type={tipo}
             variant="bordered"
             radius="sm"
@@ -29,6 +31,7 @@ export const InputForm = ({ register, errors, value, name, tipo, onChange, text 
                 value: true,
                 message: `${name} es obligatorio`,
               },
+              onChange: (e) =>console.log(e.target.value)
             })}
             value={value}
             onChange={onChange}
