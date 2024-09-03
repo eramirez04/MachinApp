@@ -313,6 +313,457 @@
  */
 /**
  * @swagger
+ * /sede/registrarsede:
+ *   post:
+ *     summary: Registrar una nueva sede
+ *     tags:
+ *       - sedes:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sede_nombre:
+ *                 type: string
+ *                 example: "Yamboro"
+ *               sede_descripcion:
+ *                 type: string
+ *                 example: "yamboro descripcion"
+ *               sede_direccion:
+ *                 type: string
+ *                 example: "vereda yamboro"
+ *               sede_nombre_centro:
+ *                 type: string
+ *                 example: "Gestio y desarrollo sur colombiano."
+ *               sede_regional:
+ *                 type: string
+ *                 example: "huila"
+ *               sede_municipio:
+ *                 type: string
+ *                 example: "pitalito"
+ *               sede_subdirector:
+ *                 type: string
+ *                 example: "Jaramillo"
+ *               img_sede:
+ *                 type: string
+ *                 nullable: true
+ *                 example: null
+ *     responses:
+ *       201:
+ *         description: Sede registrada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sede registrada exitosamente"
+ *                 idSede:
+ *                   type: integer
+ *                   example: 1
+ *       400:
+ *         description: Error al registrar la sede
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No se pudo registrar la sede"
+ */
+
+/**
+ * @swagger
+ * /sede/listarsede:
+ *   get:
+ *     summary: Listar todas las sedes
+ *     tags:
+ *       - sedes:
+ *     responses:
+ * 
+ *       200:
+ *         description: Sedes encontradas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sedes encontradas"
+ *                 resultadoSede:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       idSede:
+ *                         type: integer
+ *                         example: 1
+ *                       sede_nombre:
+ *                         type: string
+ *                         example: "Yamboro"
+ *                       sede_descripcion:
+ *                         type: string
+ *                         example: "yamboro descripcion"
+ *                       sede_direccion:
+ *                         type: string
+ *                         example: "vereda yamboro"
+ *                       sede_nombre_centro:
+ *                         type: string
+ *                         example: "Gestio y desarrollo sur colombiano."
+ *                       sede_regional:
+ *                         type: string
+ *                         example: "huila"
+ *                       sede_municipio:
+ *                         type: string
+ *                         example: "pitalito"
+ *                       sede_subdirector:
+ *                         type: string
+ *                         example: "Jaramillo"
+ *                       img_sede:
+ *                         type: string
+ *                         nullable: true
+ *                         example: null
+ *       400:
+ *         description: Error al listar las sedes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No se encontraron sedes"
+ */
+/**
+ * @swagger
+ * /sede/actualizarsede/{id}:
+ *   put:
+ *     summary: Actualizar una sede existente
+ *     tags:
+ *       - sedes:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la sede a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sede_nombre:
+ *                 type: string
+ *                 example: "Yamboro"
+ *               sede_descripcion:
+ *                 type: string
+ *                 example: "yamboro descripcion actualizada"
+ *               sede_direccion:
+ *                 type: string
+ *                 example: "vereda yamboro"
+ *               sede_nombre_centro:
+ *                 type: string
+ *                 example: "Gestio y desarrollo sur colombiano."
+ *               sede_regional:
+ *                 type: string
+ *                 example: "huila"
+ *               sede_municipio:
+ *                 type: string
+ *                 example: "pitalito"
+ *               sede_subdirector:
+ *                 type: string
+ *                 example: "Jaramillo"
+ *               img_sede:
+ *                 type: string
+ *                 nullable: true
+ *                 example: null
+ *     responses:
+ *       200:
+ *         description: Sede actualizada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sede actualizada exitosamente"
+ *                 idSede:
+ *                   type: integer
+ *                   example: 1
+ *       400:
+ *         description: Error al actualizar la sede
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No se pudo actualizar la sede"
+ */
+/**
+ * @swagger
+ * /area/listar:
+ *   get:
+ *     summary: "Listar todas las áreas"
+ *     tags:
+ *       - areas:
+ *     description: "Devuelve una lista de todas las áreas registradas."
+ *     responses:
+ *       200:
+ *         description: "Lista de áreas encontradas."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Áreas encontradas"
+ *                 resultadoArea:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       idArea:
+ *                         type: integer
+ *                         example: 1
+ *                       sede_nombre:
+ *                         type: string
+ *                         example: "Yamboro"
+ *                       area_nombre:
+ *                         type: string
+ *                         example: "TIC"
+ *                       img_area:
+ *                         type: string
+ *                         format: binary
+ *                         nullable: true
+ *                         example: null
+ */
+
+/**
+ * @swagger
+ * /area/registrar:
+ *   post:
+ *     summary: "Registrar una nueva área"
+ *     tags:
+ *       - areas:
+ *     description: "Registra una nueva área en una sede específica."
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sede_nombre:
+ *                 type: string
+ *                 example: "Yamboro"
+ *               area_nombre:
+ *                 type: string
+ *                 example: "TIC"
+ *               img_area:
+ *                 type: string
+ *                 format: binary
+ *                 description: "Imagen opcional de la área."
+ *     responses:
+ *       200:
+ *         description: "Área registrada exitosamente."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Área registrada exitosamente"
+ */
+/**
+ * @swagger
+ * /area/actualizar:
+ *   put:
+ *     summary: "Actualizar una área existente"
+ *     tags:
+ *       - areas:
+ *     description: "Actualiza los detalles de una área existente."
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idArea:
+ *                 type: integer
+ *                 example: 1
+ *               sede_nombre:
+ *                 type: string
+ *                 example: "Yamboro"
+ *               area_nombre:
+ *                 type: string
+ *                 example: "TIC"
+ *               img_area:
+ *                 type: string
+ *                 format: binary
+ *                 description: "Imagen opcional de la área."
+ *     responses:
+ *       200:
+ *         description: "Área actualizada exitosamente."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Área actualizada exitosamente"
+ */
+/**
+ * @swagger
+ * /sitio/registrar:
+ *   post:
+ *     summary: "Registrar un nuevo sitio"
+ *     tags:
+ *       - ambientes:
+ *     description: "Registra un nuevo sitio en un área específica."
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sit_nombre:
+ *                 type: string
+ *                 example: "Ambiente y14"
+ *               tipo_sitio:
+ *                 type: string
+ *                 example: "Ambiente de formacion"
+ *               sit_fecha_registro:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-08-13T05:00:00.000Z"
+ *               area_nombre:
+ *                 type: string
+ *                 example: "TIC"
+ *               instructor_encargado:
+ *                 type: string
+ *                 example: "Juan Camilo"
+ *     responses:
+ *       200:
+ *         description: "Sitio registrado exitosamente."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sitio registrado exitosamente"
+ */
+
+/**
+ * @swagger
+ * /sitio/listar:
+ *   get:
+ *     summary: "Listar todos los sitios"
+ *     tags:
+ *       - ambientes:
+ *     description: "Devuelve una lista de todos los sitios registrados."
+ *     responses:
+ *       200:
+ *         description: "Lista de sitios encontrados."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sitios encontrados"
+ *                 resultadoSitio:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       idAmbientes:
+ *                         type: integer
+ *                         example: 1
+ *                       sit_nombre:
+ *                         type: string
+ *                         example: "Ambiente y14"
+ *                       tipo_sitio:
+ *                         type: string
+ *                         example: "Ambiente de formacion"
+ *                       sit_fecha_registro:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-08-13T05:00:00.000Z"
+ *                       area_nombre:
+ *                         type: string
+ *                         example: "TIC"
+ *                       instructor_encargado:
+ *                         type: string
+ *                         example: "Juan Camilo"
+ */
+/**
+ * @swagger
+ * /sitio/actualizar:
+ *   put:
+ *     summary: "Actualizar un sitio existente"
+ *     tags:
+ *       - ambientes:
+ *     description: "Actualiza los detalles de un sitio existente."
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idAmbientes:
+ *                 type: integer
+ *                 example: 1
+ *               sit_nombre:
+ *                 type: string
+ *                 example: "Ambiente y14"
+ *               tipo_sitio:
+ *                 type: string
+ *                 example: "Ambiente de formacion"
+ *               sit_fecha_registro:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-08-13T05:00:00.000Z"
+ *               area_nombre:
+ *                 type: string
+ *                 example: "TIC"
+ *               instructor_encargado:
+ *                 type: string
+ *                 example: "Juan Camilo"
+ *     responses:
+ *       200:
+ *         description: "Sitio actualizado exitosamente."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sitio actualizado exitosamente"
+ */
+
+/**
+ * @swagger
  * /maquina/fichaTecnica/registrar:
  *   post:
  *     summary: Registra una ficha técnica de una máquina
