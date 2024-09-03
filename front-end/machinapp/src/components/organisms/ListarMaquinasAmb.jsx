@@ -13,7 +13,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
             try{
                 const response = await axiosCliente.get(`ficha/listarPorAmbiente/${idAmbiente}`)
                 setMaquinas(response.data)
-                
+                console.log(response.data)
             }
             catch(error){
                 console.error('Error listando maquinas por ambiente ', error)
@@ -25,13 +25,13 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
 
   return (
       <>
-        <div className = ' bg-white text-gray-600 flex flex-wrap flex-row justify-center my-20 gap-4'>
+        <div className = ' bg-white text-gray-600 flex flex-wrap flex-row justify-center my-20 gap-6'>
             {
                 maquinas.map((maquina) =>(
-                    <div className="w-[300px]" key= {maquina.idFichas}>
+                    <div className="w-[250px]" key= {maquina.idFichas}>
                             <CardStyle 
                             subtitle={`${maquina.ti_fi_nombre }`}  
-                            titleCard={`Modelo :${maquina.fi_modelo}`} 
+                            titleCard={`Placa:${maquina.fi_placa_sena}`} 
                             imagen={`imagenes/ficha/${maquina.fi_imagen}`}
                             link={`/infoMaquina/${maquina.idFichas}`}
                             nameLink="ver mas" >

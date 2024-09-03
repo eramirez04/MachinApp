@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller  } from "react-hook-form"
 import { axiosCliente } from "../../../service/api/axios.js"
 import { useNavigate } from 'react-router-dom'
-
+import { MdNavigateNext } from "react-icons/md";
 import {Button} from "@nextui-org/button";
 import { Image } from "@nextui-org/react"
 
@@ -17,8 +17,7 @@ export const FormFichaTecnica = () => {
 
   const navigate = useNavigate()
 
-
-
+  //select 
   const [ambientes, setAmbientes] = useState([])
   const [tipoEquipo, setTipoEquipo] = useState([])
   
@@ -31,12 +30,6 @@ export const FormFichaTecnica = () => {
   const [varSecciones, setVarSecciones] = useState([])
   const [varEspecificas, setVarEspecificas] = useState([])
 
-
-
-  //fechas 
-/*   const [fechaAdquisicion, setDateAduisicion] = useState("")
-  const [fechaInicioGarantia, setInicioGarantia] = useState("")
-  const [fechaFinGarantia, setFinGarantia] = useState("") */
   
   // previsua// hookslizar una imagen
   const [previewImagen, setPreviewImagen] = useState(null)
@@ -46,6 +39,7 @@ export const FormFichaTecnica = () => {
   const [fichaRespaldo, setFicha] = useState(null)
 
   const {
+    control,
     register,
     formState: { errors },
     handleSubmit,
@@ -79,8 +73,6 @@ export const FormFichaTecnica = () => {
       placaSena:data.placaSena
     }
 
-
-
     try{
       
       //registramos la ficha tecnica
@@ -101,47 +93,8 @@ export const FormFichaTecnica = () => {
 
 
     }catch(error){
-      console.error(error.response)
+      alert(error.response?.data.mensaje)
     }
-
-    console.log(dataFicha)
-
-
-    //creamos un objeto y organizamos con la informacion que traemos en el data.-- esto por q las claves del formulario y lo que acepta la api son diferentes
-
-/*     const dataFicha = {
-      placaSena: data.Placa,
-      serial: data.Serial,
-      fechaAdquisicion: fechaAdquisicion, 
-      fechaInicioGarantia: fechaInicioGarantia, 
-      fechaFinGarantia: fechaFinGarantia, 
-      descipcionGarantia: data.descripcionGarantia,
-      descripcion: data.DescripcionEquipo,
-      fiEstado: "operacion",
-      fk_sitio: data.ambiente, 
-      fk_tipo_ficha: data.tipo_equipo,
-      marca: data.Marca, 
-      modelo: data.Modelo,
-      fiImagen: imagen,
-      fiTecnica:fichaRespaldo,
-      precio: data.Precio
-    }
-
-    console.log(dataFicha)
-
-    try{
-      const response = await  multiFormData("http://localhost:3000/ficha/registrar",dataFicha, "POST" )
-    
-      const id = response.data.id
-
-      navigate(`/infoMaquina/${id}`)
-    }
-    catch(e){
-      alert("Error al registrar ficha tecnica")
-      console.log(e)
-    } */
-
-
   }
 
   // tomar la imagen del input file, para poder visualizarla y enviarla al back-end
@@ -228,13 +181,7 @@ export const FormFichaTecnica = () => {
           }
         }
 
-
         setVarObligatorias(varObligatoriasObj)
-
-        console.log(varObligatoriasArr)
-        console.log(varObligatoriasObj)
-      
-
         setMostrarFormulario(true)
 
       }catch(error){
@@ -249,10 +196,11 @@ export const FormFichaTecnica = () => {
   return (
     <>
       <form
+      className="mt-10"
         onSubmit={handleSubmit(handleSubmitData)}
       >
         <div className="flex flex-row items-center justify-around mb-20 border-b-2 border-b-green-600 pb-10">
-          <label className="flex flex-row items-center gap-4"> Seleccionar un tipo de ficha
+          <label className="flex flex-row items-center gap-4 " > Seleccionar un tipo de ficha
             <SelectComponent
                 options={tipoEquipo}
                 name="tipo_equipo"
@@ -260,11 +208,12 @@ export const FormFichaTecnica = () => {
                 valueKey="id"
                 textKey="valor"
                 register={register}
+                
             />
           </label>
 
-          <Button  onClick={tipoFicha}  color="success">
-            Siguiente 
+          <Button  onClick={tipoFicha}  className="bg-green-600 text-white">
+            Siguiente <MdNavigateNext />
           </Button>
           
         </div>
@@ -357,7 +306,7 @@ export const FormFichaTecnica = () => {
                     
 
                   </div>
-                  <div className="w-full mt-4">
+                  <div className="w-full mt-[18px]">
                   <SelectComponent
                       options={ambientes}
                       name="ambiente"
@@ -371,18 +320,40 @@ export const FormFichaTecnica = () => {
                 </div>
 
                 <div className="w-full sm:w-2/4 p-2 ml-11">
-                  <div className="flex items-center justify-center w-full h-[284px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
+                  <div className="flex items-center justify-center w-full h-[256px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
                     <img
                       className="h-full w-full object-contain rounded"
                       alt=""
                       src={previewImagen}
                     />
                   </div>
+{/* 
                   <input
                     type="file"
                     onChange={handleFileUpload}
                     accept="image/*"
                     className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "
+                  /> */}
+                  <Controller
+                    name="file"
+                    control={control}
+                    rules={{ required: "La imagen es obligatoria" }}
+                    render={({ field }) => (
+                      <>
+                        <input
+                          type="file"
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleFileUpload(e);
+                          }}
+                          accept="image/*"
+                          className="appearance-none w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                        />
+                        {errors.file && (
+                          <span className="text-red-500">{errors.file.message}</span>
+                        )}
+                      </>
+                    )}
                   />
                 </div>
                 
@@ -401,25 +372,33 @@ export const FormFichaTecnica = () => {
               </div>
 
               {/* recorremos todas las variables de especificas */}              {/* especificas(otros) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
-                {
-                  varEspecificas.map((varEspec) =>(
-                    <div key={varEspec.idVariable}>
-                    <InputForm
-                      errors={errors}
-                      register={register}
-                      tipo={`${varEspec.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
-                      name={`variables.${varEspec.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                      text={`${varEspec.var_nombre}`}
-                    />
+            
+              {
+                varEspecificas.length >0? (                
+                
+                <div>
+                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">Caracteristicas Generales.</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my">
+                    {
+                      
+                      varEspecificas.map((varEspec) =>(
+                        <div key={varEspec.idVariable}>
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          tipo={`${varEspec.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
+                          name={`variables.${varEspec.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                          text={`${varEspec.var_nombre}`}
+                        />
+                        </div>
+                      ))
+                    }
                     </div>
-                  ))
-                }
-              </div>
+                </div>):(<></>)
+              }
 
 
-
+              
               <div className="w-full my-5">
                 <label > Descripcion del equipo</label>
                 <TextAreaComponent
@@ -431,43 +410,46 @@ export const FormFichaTecnica = () => {
               </div>
 
               {/* Especificaciones tecnicas */}
-              <div className="my-14">
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
-
-                <div className="overflow-x-auto">
-                  <table className="min-w-full border-collapse">
-                    <thead>
-                      <tr>
-                        <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">Nombre</th>
-                        <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">Valor</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {varEspTecnicas.map((varEspTecnica ) => (
-                        <tr key={varEspTecnica.idVariable} className="hover:bg-gray-50">
-                          <td className="py-2 px-4 border-b border-gray-300 w-1/4">{varEspTecnica.var_nombre}</td>
-                          <td className="py-2 px-4 border-b border-gray-300">
-                            <InputForm
-                              errors={errors}
-                              register={register}
-                              tipo={`${varEspTecnica.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
-                              name={`variables.${varEspTecnica.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                              text={`${varEspTecnica.var_nombre}`}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-              </div>
-
+              {
+                varEspTecnicas.length>0 ? (
+                  <div className="my-14">
+                    <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border-collapse">
+                        <thead>
+                          <tr>
+                            <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">Nombre</th>
+                            <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">Valor</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {varEspTecnicas.map((varEspTecnica ) => (
+                            <tr key={varEspTecnica.idVariable} className="hover:bg-gray-50">
+                              <td className="py-2 px-4 border-b border-gray-300 w-1/4">{varEspTecnica.var_nombre}</td>
+                              <td className="py-2 px-4 border-b border-gray-300">
+                                <InputForm
+                                  errors={errors}
+                                  register={register}
+                                  tipo={`${varEspTecnica.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
+                                  name={`variables.${varEspTecnica.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                                  text={`${varEspTecnica.var_nombre}`}
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ):(<></>)
+              }
+              
 
               {/* GARANTIA */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Garantia</h3>
-                <div className=" flex flex-col sm:flex-row mt-5 w-full ">
+                <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8" >Informacion Garantia</h3>
+                
+                <div className=" flex flex-col sm:flex-row mt-3 w-full ">
 
                   <div className="w-full sm:w-2/4 p-2  items-center">
 
@@ -491,7 +473,7 @@ export const FormFichaTecnica = () => {
                     </div>
                   </div>
 
-                  <div className="w-full sm:w-2/4 p-2 flex mt-9">
+                  <div className="w-full sm:w-2/4 p-2 flex items-center">
                     <TextAreaComponent
                     errors = {errors}
                     register={register}
@@ -503,47 +485,37 @@ export const FormFichaTecnica = () => {
               </div>
 
 
-
               {/* Secciones */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion relevante</h3>
-                
-                <div>
-                  {
-                    varSecciones.map((varSeccion)=>(
-
-<div className="overflow-x-auto my-14" key={varSeccion.idVariable}>
-  <table className="min-w-full  ">
-    <tbody>
-      <tr>
-        <td className="py-2 px-4 flex justify-between items-center border border-gray-300 rounded-lg">
-          <span className="font-medium text-lg">{varSeccion.var_nombre}</span>
-          <span className="text-sm text-gray-500">{varSeccion.var_descripcion}</span>
-        </td>
-      </tr>
-      <tr>
-        <td className="py-2 ">
-          <TextAreaComponent
-            errors={errors}
-            register={register}
-            name={`variables.${varSeccion.idVariable}`}
-            descripcion={`Descripcion ${varSeccion.var_nombre}`}
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-                    ))
-                  }
-                </div>
-
+                {
+                  varSecciones.map((varSeccion)=>(
+                    <div className="overflow-x-auto my-14" key={varSeccion.idVariable}>
+                      <table className="min-w-full  ">
+                        <tbody>
+                          <tr>
+                            <td className="py-2 px-4 flex justify-between items-center border border-gray-300 rounded-lg">
+                              <span className="font-medium text-lg">{varSeccion.var_nombre}</span>
+                              <span className="text-sm text-gray-500">{varSeccion.var_descripcion}</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 ">
+                              <TextAreaComponent
+                                errors={errors}
+                                register={register}
+                                name={`variables.${varSeccion.idVariable}`}
+                                descripcion={`Descripcion ${varSeccion.var_nombre}`}
+                              />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  ))
+                }
               </div>
-
-
             </div>
-            <ButtonNext color="primary" text="Registrar ficha tecnica" type="submit"/>
+            <ButtonNext text="Registrar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
           </div>
           )
         }
