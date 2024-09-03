@@ -16,7 +16,7 @@ export const UpdateUserAdmin = () => {
     empresa: resultadoUsuario.us_empresa,
     especialidad: resultadoUsuario.us_especialidad,
     rol: resultadoUsuario.rol_nombre,
-    id_rol: resultadoUsuario.idRoles,
+    id_rol: resultadoUsuario.fk_roles,
   };
 
   return (

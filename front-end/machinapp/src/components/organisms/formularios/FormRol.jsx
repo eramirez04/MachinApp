@@ -7,6 +7,7 @@ import {
 import { Button } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const FormRol = () => {
   const { registrarRol } = useRegistrarRol();
@@ -22,6 +23,7 @@ export const FormRol = () => {
 
   const onSubmit = async (data) => {
     await registrarRol(data);
+    toast.warning("Registro exitoso")
     await refreshRol();
     reset();
   };

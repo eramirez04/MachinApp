@@ -10,9 +10,10 @@ import {
 
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Spinner } from "@nextui-org/react";
+import { toast } from "react-toastify";
+import { Button, Spinner } from "@nextui-org/react";
 
 export const FormUserUpdate = ({ userData }) => {
   const { rol, refreshUserLoged } = useAuth();
@@ -21,8 +22,13 @@ export const FormUserUpdate = ({ userData }) => {
   const { t } = useTranslation();
   const user = userData;
 
+  const ADMIN = "Administrador";
+
   const [admin, setAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Inicialmente true
+
+  // manejo de erroes
+  const [errores, setErrors] = useState("");
 
   const [localUser, setLocalUser] = useState({
     id: "",
@@ -65,16 +71,23 @@ export const FormUserUpdate = ({ userData }) => {
       await refreshUserLoged();
 
       if (res) {
-        if (res.data && rol === "Administrador") {
+        if (res.data && rol === ADMIN) {
           navigate("/Panelcontrol");
+          toast.warning(res.data.Mensaje);
         } else {
           navigate("/perfil");
           await refreshUserLoged();
         }
       }
     } catch (error) {
-      console.error(error.response.data);
-      /* updateError || "An error occurred during the update" */
+      let neWerrores = {};
+      if (error.response?.data.error) {
+        error.response.data.error.forEach((element) => {
+          neWerrores[element.path[0]] = element.message;
+        });
+      }
+
+      setErrors(neWerrores);
     }
   };
 
@@ -89,7 +102,7 @@ export const FormUserUpdate = ({ userData }) => {
 
   useEffect(() => {
     const comprobarAdmin = () => {
-      if (rol === "Administrador") {
+      if (rol === ADMIN) {
         setAdmin(true);
         return;
       }
@@ -118,6 +131,22 @@ export const FormUserUpdate = ({ userData }) => {
   }
   return (
     <>
+      {rol === ADMIN && (
+        <>
+          <div className="flex justify-end">
+            <Button color="danger" radius="sm">
+              <Link
+                to="/Panelcontrol"
+                className="h-full w-full flex items-center"
+                type="submit"
+              >
+                Regresar
+              </Link>
+            </Button>
+          </div>
+        </>
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-5 gap-8"
@@ -129,7 +158,7 @@ export const FormUserUpdate = ({ userData }) => {
             className={`rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark`}
           >
             <div
-              className={`border-b border-stroke py-4 px-7 dark:border-strokedark ${V.bg_sena_verde}`}
+              className={`border-b border-stroke py-3 px-5 dark:border-strokedark ${V.bg_sena_verde}`}
             >
               <span className="font-medium text-black dark:text-white">
                 {t("tu_foto")}
@@ -189,7 +218,7 @@ export const FormUserUpdate = ({ userData }) => {
 
         <div className="col-span-5 xl:col-span-3 border">
           <div
-            className={`border-b border-stroke py-4 px-7  ${V.bg_sena_verde}`}
+            className={`border-b border-stroke py-3 px-7  ${V.bg_sena_verde}`}
           >
             <h3 className="font-medium text-black dark:text-white">
               {t("informacion_personal")}
@@ -264,6 +293,9 @@ export const FormUserUpdate = ({ userData }) => {
                         />
                       )}
                     />
+                    {errores.numero_documento && (
+                      <p className="text-red-500">{errores.numero_documento}</p>
+                    )}
                   </div>
                   {admin && (
                     <>
