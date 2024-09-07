@@ -9,6 +9,7 @@ import {
 } from "../../../index";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify"
 
 export const FormUser = () => {
   const { registrarUsuario, loading } = useRegistrarUsuario();
@@ -28,13 +29,14 @@ export const FormUser = () => {
       const res = await registrarUsuario(data);
 
       if (res && res.Mensaje) {
-        alert("Usuario registrado con éxito");
         await refreshDataUser();
         reset();
+        toast.success(res.Mensaje);
         setError("");
         return;
       }
     } catch (error) {
+      console.log(error.response);
       let newErrors = {};
 
       if (error.response?.data.error) {

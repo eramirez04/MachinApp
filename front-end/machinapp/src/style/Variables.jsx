@@ -1,4 +1,5 @@
 import logoSenaVerde from "/logoSenaNaranja.png";
+import logoTic from "/def_LOGOTIC.png"
 
 import {
   HomeIcon,
@@ -52,6 +53,7 @@ export const V = {
   ChevronRightIcon,
   EllipsisHorizontalCircleIcon,
   PencilIcon,
+  logoTic,
   GlobeAltIcon,
 
   Bradius: "sm",

@@ -27,7 +27,7 @@ export const CardStyle = ({imagen, bodyContent, titleCard, subtitle, link, nameL
 
   return (
     <Card radius="">
-      <CardHeader className="pb-2 pt-4 px-5 flex flex-col items-start">
+      <CardHeader className="p-4 flex flex-col items-start">
         <p className="text-xs uppercase font-semibold text-green-600 dark:text-purple-400">
           {subtitle}
         </p>

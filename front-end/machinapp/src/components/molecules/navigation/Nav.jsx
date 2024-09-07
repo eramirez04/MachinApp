@@ -42,10 +42,10 @@ export const Nav = ({ rol }) => {
   }, [submenuOpen]);
 
   return (
-    <nav className="flex gap-6 w-64">
+    <nav className="flex gap-6 w-64  h-screen  border-gray-200">
       <div
-        className={`bg-[white] min-h-screen shadow-md  border-r-4 ${
-          open ? "w-72" : "w-20"
+        className={`min-h-screen bg-white shadow-md  border-r-4 ${
+          open ? "w-full" : "w-20"
         } duration-500 text-black px-4`}
       >
         <div className="py-3 flex justify-end">
@@ -64,7 +64,7 @@ export const Nav = ({ rol }) => {
                     to={menu?.link}
                     className={`${
                       menu?.margin && "mt-96"
-                    } group flex items-center hover:bg-gray-100 border text-sm gap-3.5 font-medium p-3 ${
+                    }  flex border h-12 text-sm gap-3.5 font-medium p-2 items-center    hover:bg-gray-100 rounded-full transition-colors ${
                       V.radius
                     }`}
                     onClick={(e) => {
@@ -74,7 +74,7 @@ export const Nav = ({ rol }) => {
                       }
                     }}
                   >
-                    <div className="p-1 rounded-full group-hover:scale-110 transition-transform duration-200">
+                    <div className=" rounded-full group-hover:scale-110 transition-transform duration-200">
                       <Icons icon={menu.icon} />
                     </div>
                     <span
@@ -87,13 +87,6 @@ export const Nav = ({ rol }) => {
                     >
                       {menu?.name}
                     </span>
-                    <h2
-                      className={`${
-                        open && "hidden"
-                      }  left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
-                    >
-                      {menu?.name}
-                    </h2>
                   </Link>
                   {menu?.submenu && (
                     <div
