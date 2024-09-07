@@ -58,7 +58,7 @@ const RequestUpdate = zod.object({
     .optional(),
   numero_documento: zod
     .string()
-    .min(5, { message: "el numero de documento debe de ser mayor  a 0" }),
+    .min(5, { message: "el numero de documento debe de ser mayor a 5" }),
 
   rol: zod.string().min(1, { message: "rol invalido" }),
   empresa: zod.string().optional(),

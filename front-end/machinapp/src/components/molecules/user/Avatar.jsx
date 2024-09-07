@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const AvatarCom = () => {
-  const { logout, user } = useAuth();
+  const { logout, user, loading } = useAuth();
 
   const ItemsDrop = [
     <>
@@ -44,7 +44,9 @@ export const AvatarCom = () => {
             avatarProps={{
               isBordered: true,
             }}
-            name={`${user.us_nombre} ${user.us_apellidos}`}
+            name={
+              loading ? "cargando" : `${user.us_nombre} ${user.us_apellidos}`
+            }
           />
         }
         dropdown={ItemsDrop}
