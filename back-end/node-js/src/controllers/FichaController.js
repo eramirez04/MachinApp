@@ -1,11 +1,7 @@
 import { query, response } from 'express'
 import { conexion } from '../database/database.js'
-
 import QRCode  from 'qrcode'
-
 import { validationResult } from 'express-validator'
-
-
 import multer from 'multer'
 
 
@@ -56,7 +52,6 @@ export const registrarFicha = async(req, res)=>{
 
         let [respuesta] = await conexion.query(sql)
 
-        console.log(respuesta)
 
         if(respuesta.affectedRows>0){
 
@@ -97,7 +92,6 @@ export const registrarFicha = async(req, res)=>{
         return res.status(500).json({"mensaje":"Error al registrar la ficha, verifique que la Placa SENA sea unica"})
     }
 }
-
 
 
 /*----------------------------------------------------------------Correcto----------------------*/
@@ -399,6 +393,42 @@ export const listarInfoEspecifica = async(req, res)=>{
 
 
 
+/* --------------------------------------------------------------Correcto ---------------------- */
+export const actualizarFichaEsp = async ( req, res)=>{
+
+    try{
+        let {fiEstado, fk_sitio } = req.body
+
+        let idFicha = req.params.idFicha
+    
+
+        let sql
+        let mensaje
+
+        if (fiEstado !== undefined) {
+            sql = `update fichas_maquinas_equipos set fi_estado='${fiEstado}' where idFichas = ${idFicha}`
+            mensaje = "Se actualizó correctamente el estado de la ficha"
+        } else if (fk_sitio !== undefined) {
+            sql = `update fichas_maquinas_equipos set fi_fk_sitios =${fk_sitio} where  idFichas = ${idFicha}`
+            mensaje = "Se actualizó correctamente el sitio de la ficha";
+        } else {
+
+            return res.status(400).json({ mensaje: "No se proporcionaron datos válidos para actualizar" });
+        }
+    
+        let [respuesta] = await conexion.query(sql)
+    
+        if(respuesta.affectedRows>0){
+            return res.status(200).json({"mensaje": mensaje})
+        }
+        else{
+            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
+        }
+    }
+    catch(error){
+        return res.status(500).json({"mensaje":"Error en el servidor".error})
+    }
+}
 
 
 
@@ -408,15 +438,26 @@ export const listarInfoEspecifica = async(req, res)=>{
 export const actualizarFicha = async(req, res)=>{
     try{
         
-        const error = validationResult(req)
-        if(!error.isEmpty()){
-            return res.status(400).json(error)
-        }
-    
-
         let idFicha = req.params.idFicha
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+
+        let {placaSena, fiEstado, fk_sitio} = req.body
+
+        console.log(fiImagen)
+
+        let sql = `update fichas_maquinas_equipos set fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}',  fi_estado = '${fiEstado}',  fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}'`
+
+        let [respuesta] = await conexion.query(sql)
+
+
+        if(respuesta.affectedRows>0){
+            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
+        }
+        else{
+            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
+        }
+
+/*         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
 
         let sql = `update fichas set  fi_fecha = '${fiFecha}', fi_placa_sena = '${placaSena}' , fi_serial='${serial}', fi_fecha_adquisicion='${fechaAdquisicion}', 
         fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_imagen='${fiImagen}',fi_estado = '${fiEstado}' , fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
@@ -429,12 +470,22 @@ export const actualizarFicha = async(req, res)=>{
         }
         else{
             return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        }
+        } */
         
     }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor"})
+        return res.status(500).json({"mensaje":"Error del servidor".error})
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 /* Falta por revisar */
 export const eliminarFicha = async(req, res)=>{

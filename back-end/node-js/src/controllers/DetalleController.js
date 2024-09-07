@@ -84,33 +84,28 @@ export const listarDetalle = async(req, res)=>{
     }
 }
 
-export const actualizarDetalle = async(req, res)=>{
-
-
-    const error = validationResult(req)
-    if(!error.isEmpty()){
-        return res.status(400).json(error)
-    }
-    
+export const actualizarDetalles = async(req, res)=>{
 
     try{
-        let idDetalle = req.params.idDetalle
-        let{detFkFicha, detFkVariable, detValor}= req.body
+        let {detalles} = req.body
 
-        let sql = `update detalles_fichas set det_fk_fichas=${detFkFicha} , det_fk_variable=${detFkVariable}, det_valor='${detValor}' where idDetalle= ${idDetalle}`
 
-        let [respuesta] = await conexion.query(sql)
+        console.log(detalles)
+        for(let i = 0; i<detalles.length; i++){
+            
+            let sql =  `update detalles_fichas set det_valor='${detalles[i].detValor }' where idDetalle =${detalles[i].idDetalle}`
 
-        if(respuesta.affectedRows>0){
-            res.status(200).json({"mensaje":"Se actualizo correctamente"})
+            let [respuesta] = await conexion.query(sql)
+
+            if ( respuesta.affectedRows<0){
+                return res.status(404).json({"mensaje":"Error al actualizar el valor"})
+            }
         }
-        else{
-            res.status(404).json({"mensaje":"No se actualizo correctamente"})
-        }
 
+        return res.status(200).json({"mensaje":"se actualizaron corractamente los valores"})
+    
     }catch(error){
-
-        return res.status(500).json({"mensaje":"Error en el servidor"})
+        return res.status(500).json({"mensaje":"Error en el servidor",error})
     }
 }
 
