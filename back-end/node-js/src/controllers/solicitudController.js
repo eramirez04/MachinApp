@@ -63,3 +63,43 @@ export const obtenerSolicitudes = async (req, res) => {
     return res.status(500).json({ Mensaje: "Error en el servidor", error });
   }
 };
+export const actualizarSolicitudes = async(req, res)=>{
+  try{
+      
+    const resultado = validarSolicitud_Mantenimiento(req.body);
+    if (resultado.error)
+      return res.status(400).json({ error: resultado.error.errors });
+  
+
+      let idSolicitud = req.params.idSolicitud
+
+      let {
+        prioridad,
+        descripcion, 
+        costo_estimado, 
+        obsevaciones, 
+        estado, 
+        temaLegal, 
+        nombre_solicitante,
+        correo_solicitante
+      }= req.body
+
+      let sql = `update solicitud_mantenimiento set  soli_prioridad = '${prioridad}', soli_descripcion_problemas = '${descripcion}' , soli_costo_estimado='${costo_estimado}', soli_observaciones='${obsevaciones}', 
+      soli_estado = '${estado}', temas_legal='${temaLegal}', nombre_solicitante='${nombre_solicitante}',correo_solicitante = '${correo_solicitante}'
+      where idSolicitud = ${idSolicitud}`
+
+
+      let [respuesta] = await conexion.query(sql)
+      console.log(respuesta)
+  
+      if(respuesta.affectedRows>0){
+          return res.status(200).json({"mensaje":"Se actualizo correctamente la solicitud"})
+      }
+      else{
+          return res.status(404).json({"mensaje":"Error al actualizar solicitud"})
+      }
+      
+  }catch(error){
+      return res.status(500).json({"mensaje":"Error del servidor"})
+  }
+}

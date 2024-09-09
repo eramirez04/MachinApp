@@ -1,11 +1,7 @@
 import { query, response } from 'express'
 import { conexion } from '../database/database.js'
-
 import QRCode  from 'qrcode'
-
 import { validationResult } from 'express-validator'
-
-
 import multer from 'multer'
 
 
@@ -27,8 +23,8 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage})
 
 export const cargarImagenFicha = upload.fields([
-    {name:'fiImagen'},
-    {name:'fiTecnica'}
+    {name:'fiImagen', maxCount:1},   
+    {name:'fiTecnica', maxCount:1}
 ])
 
 
@@ -43,10 +39,12 @@ export const registrarFicha = async(req, res)=>{
         }
 
         let { placaSena, fiEstado, fk_sitio, fk_tipo_ficha, }= req.body
-        
+
         //Config documentos a cargar
-        let fiImagen = req.files.fiImagen[0].filename
-        let fiTecnica = req.files.fiTecnica[0].filename
+        let fiImagen =  req.files.fiImagen ?  req.files.fiImagen[0].filename:''      //se valida si se cargo o no un documento, si no se cargo lo reemplara por una cadena vacia
+        
+
+        let fiTecnica = req.files.fiTecnica?  req.files.fiTecnica[0].filename:''
 
         let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) 
         values( '${placaSena}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
@@ -54,63 +52,47 @@ export const registrarFicha = async(req, res)=>{
 
         let [respuesta] = await conexion.query(sql)
 
+
         if(respuesta.affectedRows>0){
 
+            let id = respuesta.insertId  //id de la ficha creada
 
-            // Traemos el id de la ficha que acabamos de registrar para asi mismo redireccionarla en la URL. 
-
-            let idSql = `SELECT idFichas FROM fichas_maquinas_equipos where fi_placa_sena = '${placaSena}'`
+            let data = `http://192.168.1.108:5173/infoMaquinas/${id}`   //poner la url que queramos.
+            let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
+            let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
             
-            const [resultadoID] = await conexion.query(idSql)
+            let nombreImgQR = `${id}-qr.png`
+            QRCode.toFile(filePath,data,{
+                    color:{
+                        dark:'#1f2937',
+                        light: '#FFFFFF'
+                    },
+                    width:300
+                }, function(err){
+                    if (err) throw err 
+                    |   console.log('Código QR generado y guardado como qrcode.png')
+                }
+            )
+
+            let guardarQR = `update fichas_maquinas_equipos set CodigoQR='${nombreImgQR}'  where idFichas=${id}`
             
-            if(resultadoID.length>0){
+            let [respuestaQR] = await conexion.query(guardarQR)
 
-                let id = resultadoID[0].idFichas
-
-                let data = `http://192.168.1.108:5173/infoMaquinas/${id}`   //poner la url que queramos.
-
-                let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
-                let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
-
-                
-                let nombreImgQR = `${id}-qr.png`
-
-                QRCode.toFile(filePath,data,{
-                        color:{
-                            dark:'#000000',
-                            light: '#FFFFFF'
-                        },
-                        width:300
-
-                    }, function(err){
-                        if (err) throw err 
-                        |   console.log('Código QR generado y guardado como qrcode.png');
-                    }
-                )
-
-
-                let guardarQR = `update fichas_maquinas_equipos set CodigoQR='${nombreImgQR}'  where idFichas=${id}`
-
-                let [respuestaQR] = await conexion.query(guardarQR)
-
-                if(respuestaQR.affectedRows>0){
-                    return res.status(200).json({"mensaje":"Se registro la ficha tecnica correctamente", "id": id})
-                }
-                else{
-                    return res.status(404).json({"mensaje":"Error no se genero la ficha tecnica."})
-                }
+            if(respuestaQR.affectedRows>0){
+                return res.status(200).json({"mensaje":"Se registro la ficha tecnica correctamente con QR", "id": id})
             }
             else{
-                res.status(404).json({"mensaje":"No se encontro id de la ficha"})
+                return res.status(404).json({"mensaje":"se genero la ficha tecnica sin QR"})
             }
         }
         else{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
         }
     }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor"+error})
+        return res.status(500).json({"mensaje":"Error al registrar la ficha, verifique que la Placa SENA sea unica"})
     }
 }
+
 
 /*----------------------------------------------------------------Correcto----------------------*/
 export const listarFichas = async(req, res)=>{
@@ -411,6 +393,42 @@ export const listarInfoEspecifica = async(req, res)=>{
 
 
 
+/* --------------------------------------------------------------Correcto ---------------------- */
+export const actualizarFichaEsp = async ( req, res)=>{
+
+    try{
+        let {fiEstado, fk_sitio } = req.body
+
+        let idFicha = req.params.idFicha
+    
+
+        let sql
+        let mensaje
+
+        if (fiEstado !== undefined) {
+            sql = `update fichas_maquinas_equipos set fi_estado='${fiEstado}' where idFichas = ${idFicha}`
+            mensaje = "Se actualizó correctamente el estado de la ficha"
+        } else if (fk_sitio !== undefined) {
+            sql = `update fichas_maquinas_equipos set fi_fk_sitios =${fk_sitio} where  idFichas = ${idFicha}`
+            mensaje = "Se actualizó correctamente el sitio de la ficha";
+        } else {
+
+            return res.status(400).json({ mensaje: "No se proporcionaron datos válidos para actualizar" });
+        }
+    
+        let [respuesta] = await conexion.query(sql)
+    
+        if(respuesta.affectedRows>0){
+            return res.status(200).json({"mensaje": mensaje})
+        }
+        else{
+            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
+        }
+    }
+    catch(error){
+        return res.status(500).json({"mensaje":"Error en el servidor".error})
+    }
+}
 
 
 
@@ -420,15 +438,26 @@ export const listarInfoEspecifica = async(req, res)=>{
 export const actualizarFicha = async(req, res)=>{
     try{
         
-        const error = validationResult(req)
-        if(!error.isEmpty()){
-            return res.status(400).json(error)
-        }
-    
-
         let idFicha = req.params.idFicha
 
-        let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
+
+        let {placaSena, fiEstado, fk_sitio} = req.body
+
+        console.log(fiImagen)
+
+        let sql = `update fichas_maquinas_equipos set fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}',  fi_estado = '${fiEstado}',  fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}'`
+
+        let [respuesta] = await conexion.query(sql)
+
+
+        if(respuesta.affectedRows>0){
+            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
+        }
+        else{
+            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
+        }
+
+/*         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
 
         let sql = `update fichas set  fi_fecha = '${fiFecha}', fi_placa_sena = '${placaSena}' , fi_serial='${serial}', fi_fecha_adquisicion='${fechaAdquisicion}', 
         fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_imagen='${fiImagen}',fi_estado = '${fiEstado}' , fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
@@ -441,12 +470,21 @@ export const actualizarFicha = async(req, res)=>{
         }
         else{
             return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        }
+        } */
         
     }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor"})
+        return res.status(500).json({"mensaje":"Error del servidor".error})
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 /* Falta por revisar */
@@ -472,120 +510,182 @@ export const eliminarFicha = async(req, res)=>{
 
 /* Falta por revisar   ----->  es el resultado de toda la informacion de la ficha*/
 export const listarFichaUnica=async (req, res)=>{
-    
-   try{
+    try{
+
         let idFicha = req.params.idFicha
-
-        let sql = `
+    
+    
+        /* Conusultamos la informacion basica del equipo */
+    
+        let sqlEquipo =  `
         SELECT 
-        idFichas, 
-        fi_fecha,
-        fi_placa_sena,
-        fi_serial,
-        fi_fecha_adquisicion, 
-        fi_fecha_inicio_garantia,
-        fi_fecha_fin_garantia, 
-        fi_descripcion_garantia,
-        fi_imagen,
-        fi_estado,
-        sit_nombre as ubicacion,   
-        fi_fk_tipo_ficha
-        FROM fichas
-        INNER JOIN sitios ON fi_fk_sitios = idAmbientes
-        WHERE idFichas = ${idFicha}`
-
-        const [respuesta] = await conexion.query(sql)
-
-        if (respuesta.length >0){
-
-            //para que me traiga el id y el tipo de la ficha
-            let sqlTipoEquipo = `
-            SELECT 
-            idTipo_ficha,
-            ti_fi_nombre
-            FROM tipo_equipo 
-            INNER JOIN fichas ON fi_fk_tipo_ficha = idTipo_ficha 
-            WHERE idFichas = ${idFicha}`
+            fi_placa_sena, 
+            fi_imagen, 
+            fi_estado, 
+            sit_nombre, 
+            ti_fi_nombre 
+            FROM ambientes
+            INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
+            INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
             
-            const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
-
-
-            // traer las variables de la ficha
-            let detallesql = `
-                SELECT 
-                det_fk_variable
-                FROM detalle
-                WHERE det_fk_fichas = ${idFicha}`
-
-            const[detalles] = await conexion.query(detallesql)
-
-            // for para no repetir variable. 
-            let variables = []
-
-            for (let i = 0; i<detalles.length; i++ ){
-                if (!variables.includes(detalles[i].det_fk_variable)){
-                    variables.push(detalles[i].det_fk_variable)
-                }
-            }
-
-            //hacemos la consulta de los detalles e informacion de esas variables.
-
-            let infoVariables= []
-            for(let i =0; i<variables.length; i++){
-
-                //info de la variable
-                let varsql= `
-                SELECT
+            WHERE idFichas =${idFicha}
+            `
+    
+        const [infoEquipo] = await conexion.query(sqlEquipo)
+    
+    
+        if (infoEquipo.length >0 ){
+    
+            let sqlVariables = `
+            SELECT
+                idDetalle,
+                det_valor,
+                idVariable,
                 var_nombre,
-                var_descripcion
-                FROM variable
-                WHERE idVariable = ${variables[i]}`
+                var_descripcion,
+                var_clase,
+                var_tipoDato
+                FROM detalles_fichas
+                INNER JOIN variable ON det_fk_variable = idVariable
+                WHERE det_fk_fichas = ${idFicha} 
+            `
+        
+            const [varEquipo] = await conexion.query(sqlVariables)
 
-                const[variable] = await conexion.query(varsql)
 
-                //consultamos los detalles de esa variable. 
-                let detSql = `
-                SELECT
-                det_valor
-                FROM detalle
-                WHERE det_fk_variable = ${variables[i]} AND det_fk_fichas = ${idFicha}
-                `
-                const[detallesVar] = await conexion.query(detSql)
-
-                let objVar = {
-                    var_nombre: variable[0].var_nombre,
-                    var_descripcion: variable[0].var_descripcion,
-                    detallesVar: detallesVar
-                }
-
-                infoVariables.push(objVar)
-
-            }
-            
             let objFicha = {
-                idFichas: respuesta[0].idFichas,
-                fi_fecha: respuesta[0].id_fecha,
-                fi_placa_sena: respuesta[0].fi_placa_sena, 
-                fi_serial: respuesta[0].fi_serial,
-                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
-                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
-                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
-                fi_imagen: respuesta[0].fi_imagen, 
-                fi_estado: respuesta[0].fi_estado, 
-                ubicacion: respuesta[0].ubicacion,
-                tipoEquipo,
-                infoVariables
+                infoFicha: infoEquipo,
+                infoVar:varEquipo
             }
+
             return res.status(200).json(objFicha)
 
         }
         else{
-            return res.status(404).json({"mensaje":"No se encontraron fichas."})
+            return res.status(404).json({"mensaje":"No se encontraro la ficha."})
         }
-
-   }catch(error){
-        return res.status(500).json({"mensaje":"Error en el servidor"})
-   }
+    
+    
+        /* consultamos las variables */
+    
+    
+    
+    
+    
+        
+    
+    /*         let idFicha = req.params.idFicha
+    
+            let sql = `
+            SELECT 
+            idFichas, 
+            fi_fecha,
+            fi_placa_sena,
+            fi_serial,
+            fi_fecha_adquisicion, 
+            fi_fecha_inicio_garantia,
+            fi_fecha_fin_garantia, 
+            fi_descripcion_garantia,
+            fi_imagen,
+            fi_estado,
+            sit_nombre as ubicacion,   
+            fi_fk_tipo_ficha
+            FROM fichas
+            INNER JOIN sitios ON fi_fk_sitios = idAmbientes
+            WHERE idFichas = ${idFicha}`
+    
+            const [respuesta] = await conexion.query(sql)
+    
+            if (respuesta.length >0){
+    
+                //para que me traiga el id y el tipo de la ficha
+                let sqlTipoEquipo = `
+                SELECT 
+                idTipo_ficha,
+                ti_fi_nombre
+                FROM tipo_equipo 
+                INNER JOIN fichas ON fi_fk_tipo_ficha = idTipo_ficha 
+                WHERE idFichas = ${idFicha}`
+                
+                const [tipoEquipo] = await conexion.query(sqlTipoEquipo)
+    
+    
+                // traer las variables de la ficha
+                let detallesql = `
+                    SELECT 
+                    det_fk_variable
+                    FROM detalle
+                    WHERE det_fk_fichas = ${idFicha}`
+    
+                const[detalles] = await conexion.query(detallesql)
+    
+                // for para no repetir variable. 
+                let variables = []
+    
+                for (let i = 0; i<detalles.length; i++ ){
+                    if (!variables.includes(detalles[i].det_fk_variable)){
+                        variables.push(detalles[i].det_fk_variable)
+                    }
+                }
+    
+                //hacemos la consulta de los detalles e informacion de esas variables.
+    
+                let infoVariables= []
+                for(let i =0; i<variables.length; i++){
+    
+                    //info de la variable
+                    let varsql= `
+                    SELECT
+                    var_nombre,
+                    var_descripcion
+                    FROM variable
+                    WHERE idVariable = ${variables[i]}`
+    
+                    const[variable] = await conexion.query(varsql)
+    
+                    //consultamos los detalles de esa variable. 
+                    let detSql = `
+                    SELECT
+                    det_valor
+                    FROM detalle
+                    WHERE det_fk_variable = ${variables[i]} AND det_fk_fichas = ${idFicha}
+                    `
+                    const[detallesVar] = await conexion.query(detSql)
+    
+                    let objVar = {
+                        var_nombre: variable[0].var_nombre,
+                        var_descripcion: variable[0].var_descripcion,
+                        detallesVar: detallesVar
+                    }
+    
+                    infoVariables.push(objVar)
+    
+                }
+                
+                let objFicha = {
+                    idFichas: respuesta[0].idFichas,
+                    fi_fecha: respuesta[0].id_fecha,
+                    fi_placa_sena: respuesta[0].fi_placa_sena, 
+                    fi_serial: respuesta[0].fi_serial,
+                    fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
+                    fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
+                    fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
+                    fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia, 
+                    fi_imagen: respuesta[0].fi_imagen, 
+                    fi_estado: respuesta[0].fi_estado, 
+                    ubicacion: respuesta[0].ubicacion,
+                    tipoEquipo,
+                    infoVariables
+                }
+                return res.status(200).json(objFicha)
+    
+            }
+            else{
+                return res.status(404).json({"mensaje":"No se encontraron fichas."})
+            } */
+    
+       }catch(error){
+            return res.status(500).json({"mensaje":"Error en el servidor"})
+       }
 }
 

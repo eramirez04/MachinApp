@@ -228,91 +228,6 @@
 
 /**
  * @swagger
- * /rol/registrar:
- *   post:
- *     summary: Creación de roles
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
- *                 example: "String"
- *               descripcion:
- *                 type: string
- *                 example: "String"
- *     responses:
- *       201:
- *         description: Rol creado exitosamente
- */
-
-/**
- * @swagger
- * /solicitud/registrar:
- *   post:
- *     summary: Creación de solicitudes
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               prioridad:
- *                 type: string
- *                 example: "Alta"
- *               descripcion:
- *                 type: string
- *                 example: "Descripción de la solicitud"
- *               costo_estimado:
- *                 type: string
- *                 example: "1000"
- *               obsevaciones:
- *                 type: string
- *                 example: "Observaciones adicionales"
- *               temaLegal:
- *                 type: string
- *                 example: "Cumple con la ley"
- *               nombre_solicitante:
- *                 type: string
- *                 example: "Juan Perez"
- *               correo_solicitante:
- *                 type: string
- *                 example: "juanperez@example.com"
- *     responses:
- *       201:
- *         description: Solicitud creada exitosamente
- */
-
-/**
- * @swagger
- * /solicitud/equipos:
- *   post:
- *     summary: Tabla intermedia entre equipos y solicitudes
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               fk_solicitud:
- *                 type: string
- *                 example: "1"
- *               fk_ficha:
- *                 type: string
- *                 example: "1"
- *     responses:
- *       201:
- *         description: Relación creada exitosamente
- */
-/**
- * @swagger
  * /sede/registrarsede:
  *   post:
  *     summary: Registrar una nueva sede
@@ -819,6 +734,136 @@
  *       500:
  *         description: Error del servidor
  */
+
+/**
+ * @swagger
+ * ficha/listar:
+ *   get:
+ *     summary: Listar ficha técnica de los equipos
+ *     tags:
+ *       - Ficha Técnica
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               variblesFicha:
+ *                 type: array
+ *                 description: Lista de variables para la ficha técnica
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     idFichas:
+ *                       type: integer
+ *                       example: 1
+ *                     fi_placa_sena:
+ *                       type: string
+ *                       example: "3002SE"
+ *                     fi_estado:
+ *                       type: enum
+ *                       example: "operacion"
+ *                     sit_nombre:
+ *                       type: string
+ *                       example: "Ambiente y14"
+ *                     fi_serial:
+ *                       type: string
+ *                       example: "3RR03"
+ *                     fi_marca:
+ *                       type: string
+ *                       example: "DELL"
+ *                     fi_modelo:
+ *                       type: string
+ *                       example: "3003"
+ *               tipoFicha:
+ *                 type: string
+ *                 description: ID del tipo de ficha técnica
+ *                 example: "2"
+ *     responses:
+ *       200:
+ *         description: Variables de ficha técnica registradas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Mensaje:
+ *                   type: string
+ *                   example: "Variables registradas exitosamente"
+ *                 FichaTecnicaID:
+ *                   type: integer
+ *                   example: 1234
+ *       400:
+ *         description: Error en los datos enviados
+ *       500:
+ *         description: Error del servidor
+ */
+
+/**
+ * @swagger
+ * ficha/listar:
+ *   get:
+ *     summary: Listar ficha técnica de los equipos
+ *     tags:
+ *       - Ficha Técnica
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               variblesFicha:
+ *                 type: array
+ *                 description: Lista de variables para la ficha técnica
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     idFichas:
+ *                       type: integer
+ *                       example: 1
+ *                     fi_placa_sena:
+ *                       type: string
+ *                       example: "3002SE"
+ *                     fi_estado:
+ *                       type: enum
+ *                       example: "operacion"
+ *                     sit_nombre:
+ *                       type: string
+ *                       example: "Ambiente y14"
+ *                     fi_serial:
+ *                       type: string
+ *                       example: "3RR03"
+ *                     fi_marca:
+ *                       type: string
+ *                       example: "DELL"
+ *                     fi_modelo:
+ *                       type: string
+ *                       example: "3003"
+ *               tipoFicha:
+ *                 type: string
+ *                 description: ID del tipo de ficha técnica
+ *                 example: "2"
+ *     responses:
+ *       200:
+ *         description: Variables de ficha técnica registradas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Mensaje:
+ *                   type: string
+ *                   example: "Variables registradas exitosamente"
+ *                 FichaTecnicaID:
+ *                   type: integer
+ *                   example: 1234
+ *       400:
+ *         description: Error en los datos enviados
+ *       500:
+ *         description: Error del servidor
+ */
 /**
  * @swagger
  * /maquina/fichaTecnica/registrarVariables:
@@ -927,4 +972,588 @@
  *                 error:
  *                   type: string
  *                   example: "Datos inválidos o faltantes"
+ */
+/**
+ * @swagger
+ * /maquina/fichaTecnica/registrarVariables:
+ *   post:
+ *     summary: Registra variables para una ficha técnica de una máquina
+ *     tags:
+ *       - Ficha Técnica
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               variblesFicha:
+ *                 type: array
+ *                 description: Lista de variables para la ficha técnica
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     var_nombre:
+ *                       type: string
+ *                       description: Nombre de la variable
+ *                       example: "RAM3"
+ *                     var_descripcion:
+ *                       type: string
+ *                       description: Descripción de la variable
+ *                       example: "Ram del equipo"
+ *                     var_clase:
+ *                       type: string
+ *                       description: Clase o categoría de la variable
+ *                       example: "especificacionesTecnicas"
+ *                     var_tipoDato:
+ *                       type: string
+ *                       description: Tipo de dato de la variable
+ *                       example: "text"
+ *               tipoFicha:
+ *                 type: string
+ *                 description: ID del tipo de ficha técnica
+ *                 example: "2"
+ *     responses:
+ *       200:
+ *         description: Variables de ficha técnica registradas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Mensaje:
+ *                   type: string
+ *                   example: "Variables registradas exitosamente"
+ *                 FichaTecnicaID:
+ *                   type: integer
+ *                   example: 1234
+ *       400:
+ *         description: Error en los datos enviados
+ *       500:
+ *         description: Error del servidor
+ */
+/**
+ * @swagger
+ * /solicitud/registrar:
+ *   post:
+ *     summary: Creación de solicitudes
+ *     tags:
+ *       - Solicitudes
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prioridad:
+ *                 type: string
+ *                 example: "Alta"
+ *               descripcion:
+ *                 type: string
+ *                 example: "Descripción de la solicitud"
+ *               costo_estimado:
+ *                 type: string
+ *                 example: "1000"
+ *               obsevaciones:
+ *                 type: string
+ *                 example: "Observaciones adicionales"
+ *               temaLegal:
+ *                 type: string
+ *                 example: "Cumple con la ley"
+ *               nombre_solicitante:
+ *                 type: string
+ *                 example: "Juan Perez"
+ *               correo_solicitante:
+ *                 type: string
+ *                 example: "juanperez@example.com"
+ *     responses:
+ *       201:
+ *         description: Solicitud creada exitosamente
+ */
+
+/**
+ * @swagger
+ * /solicitud/equipos:
+ *   post:
+ *     summary: Tabla intermedia entre equipos y solicitudes
+ *     tags:
+ *       - Solicitudes
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fk_solicitud:
+ *                 type: string
+ *                 example: "1"
+ *               fk_ficha:
+ *                 type: string
+ *                 example: "1"
+ *     responses:
+ *       201:
+ *         description: Relación creada exitosamente
+ */
+/**
+ * @swagger
+ * /solicitudes/{idSolicitud}:
+ *   put:
+ *     summary: Actualizar una solicitud de mantenimiento
+ *     description: Actualiza los detalles de una solicitud de mantenimiento según el ID de la solicitud.
+ *     tags:
+ *       - Solicitudes
+ *     parameters:
+ *       - name: idSolicitud
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la solicitud de mantenimiento a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prioridad:
+ *                 type: string
+ *                 description: Nivel de prioridad de la solicitud
+ *                 example: "Alta"
+ *               descripcion:
+ *                 type: string
+ *                 description: Descripción del problema
+ *                 example: "Falla en el sistema eléctrico"
+ *               costo_estimado:
+ *                 type: number
+ *                 description: Costo estimado para la reparación
+ *                 example: 1500
+ *               obsevaciones:
+ *                 type: string
+ *                 description: Observaciones adicionales
+ *                 example: "El equipo necesita revisión mensual"
+ *               estado:
+ *                 type: string
+ *                 description: Estado de la solicitud
+ *                 example: "En progreso"
+ *               temaLegal:
+ *                 type: string
+ *                 description: Temas legales asociados a la solicitud
+ *                 example: "Sin temas legales"
+ *               nombre_solicitante:
+ *                 type: string
+ *                 description: Nombre del solicitante
+ *                 example: "Juan Pérez"
+ *               correo_solicitante:
+ *                 type: string
+ *                 description: Correo del solicitante
+ *                 example: "juan.perez@example.com"
+ *     responses:
+ *       200:
+ *         description: Solicitud actualizada exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Se actualizó correctamente la solicitud"
+ *       400:
+ *         description: Error en la validación de los datos enviados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: "El campo 'prioridad' es obligatorio"
+ *       404:
+ *         description: No se encontró la solicitud con el ID proporcionado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Error al actualizar solicitud"
+ *       500:
+ *         description: Error interno del servidor al actualizar la solicitud.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Error del servidor"
+ */
+
+/**
+ * @swagger
+ * /actividades/registrar:
+ *   post:
+ *     summary: Registrar varias actividades
+ *     description: Registra múltiples actividades en la base de datos en una única transacción. Si alguna actividad falla, se revierte la transacción.
+ *     tags:
+ *       - Actividades
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 acti_nombre:
+ *                   type: string
+ *                   description: Nombre de la actividad
+ *                   example: "Revisión de maquinaria"
+ *                 acti_descripcion:
+ *                   type: string
+ *                   description: Descripción de la actividad
+ *                   example: "Revisión periódica de la maquinaria industrial"
+ *                 acti_fecha_realizacion:
+ *                   type: string
+ *                   format: date
+ *                   description: Fecha de realización de la actividad
+ *                   example: "2024-09-01"
+ *                 acti_estado:
+ *                   type: string
+ *                   description: Estado de la actividad. El valor por defecto es 'en ejecucion'.
+ *                   example: "completada"
+ *                 acti_fk_solicitud:
+ *                   type: integer
+ *                   description: ID de la solicitud relacionada con la actividad
+ *                   example: 10
+ *     responses:
+ *       200:
+ *         description: Actividades registradas exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Se registraron correctamente las actividades"
+ *       400:
+ *         description: Error en la validación de los datos de entrada.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "El nombre de la actividad es requerido"
+ *                       param:
+ *                         type: string
+ *                         example: "acti_nombre"
+ *                       location:
+ *                         type: string
+ *                         example: "body"
+ *       500:
+ *         description: Error en el servidor al registrar las actividades.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error en el servidor: Error al registrar una o más actividades"
+ */
+
+/**
+ * @swagger
+ * /ficha/listarPorAmbiente/1:
+ *   get:
+ *     summary: Listar fichas técnicas de los equipos por su ubicación. 
+ *     tags:
+ *       - Ficha Técnica
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               detalles:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     idFichas:
+ *                       type: integer
+ *                       example: 1
+ *                     fi_placa_sena:
+ *                       type: string
+ *                       example: "3002SE"
+ *                     fi_imagen:
+ *                       type: string
+ *                       example: "Captura de pantalla.png"
+ *                     fi_estado:
+ *                       type: enum
+ *                       example: "operacion"
+ *                     ti_fi_nombre:
+ *                       type: string
+ *                       example: "Ficha tecnica PC del 303"
+ *                     fi_serial:
+ *                       type: string
+ *                       example: "3RR03"
+ *                     fi_modelo:
+ *                       type: string
+ *                       example: "3003"
+ *     responses:
+ *       200:
+ *         description: fichas listadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Detalles registrados exitosamente"
+ *       400:
+ *         description: Error en el registro de los detalles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Datos inválidos o faltantes"
+ */
+/**
+ * @swagger
+ * /mantenimiento/listar:
+ *   get:
+ *     summary: Listar información e historial de mantenimiento del equipo seleccionado.
+ *     tags:
+ *       - Mantenimiento
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               detalles:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     idMantenimiento:
+ *                       type: integer
+ *                       example: 1
+ *                     referencia_maquina:
+ *                       type: string
+ *                       example: "3002SE"
+ *                     codigo_mantenimiento:
+ *                       type: string
+ *                       example: "12345"
+ *                     descripcion_mantenimiento:
+ *                       type: string
+ *                       example: "nada"
+ *                     fecha_realizacion:
+ *                       type: date
+ *                       example: "23/8/2024"
+ *                     estado_maquina:
+ *                       type: string
+ *                       example: "en ejecucion"
+ *                     idActividades:
+ *                       type: integer
+ *                       example: 1
+ *                     acti_nombre:
+ *                       type: string
+ *                       example: "cambio de ram"
+ *                     tipo_mantenimiento:
+ *                       type: string
+ *                       example: "correctivo"
+ *                     idFichas:
+ *                       type: integer
+ *                       example: 1
+ *                     estado_ficha:
+ *                       type: string
+ *                       example: "operacion"
+ *     responses:
+ *       200:
+ *         description: mantenimientos listados exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Detalles registrados exitosamente"
+ *       400:
+ *         description: Error en el registro de los detalles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Datos inválidos o faltantes"
+ */
+/**
+ * @swagger
+ * /partes/registrar:
+ *   post:
+ *     summary: Registrar partes de mantenimiento
+ *     description: Registra múltiples partes de mantenimiento asociadas a un mantenimiento específico.
+ *     tags:
+ *       - Partes de Mantenimiento
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 par_fk_mantenimientos:
+ *                   type: integer
+ *                   description: ID del mantenimiento al que está asociada la parte
+ *                   example: 5
+ *                 par_nombre_repuesto:
+ *                   type: string
+ *                   description: Nombre del repuesto o parte del mantenimiento
+ *                   example: "Filtro de aceite"
+ *                 par_costo:
+ *                   type: number
+ *                   format: float
+ *                   description: Costo de la parte
+ *                   example: 150.50
+ *     responses:
+ *       200:
+ *         description: Partes de mantenimiento registradas exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Se registraron las partes de mantenimiento con éxito"
+ *       400:
+ *         description: Error en la solicitud, por ejemplo, si el cuerpo no es un array o está vacío.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Se esperaba un array de partes de mantenimiento."
+ *       404:
+ *         description: No se registraron correctamente las partes de mantenimiento.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "No se registraron las partes de mantenimiento con éxito"
+ *       500:
+ *         description: Error interno del servidor al registrar las partes de mantenimiento.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Error: Error al registrar las partes de mantenimiento"
+ */
+
+/**
+ * @swagger
+ * /roles/registrar:
+ *   post:
+ *     summary: Registrar un nuevo rol
+ *     description: Crea un nuevo rol en el sistema con un nombre y una descripción.
+ *     tags:
+ *       - Roles
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre del rol
+ *                 example: "Administrador"
+ *               descripcion:
+ *                 type: string
+ *                 description: Descripción del rol
+ *                 example: "Tiene acceso a todas las funciones del sistema"
+ *     responses:
+ *       200:
+ *         description: Rol registrado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Rol Registrado con exito"
+ *       400:
+ *         description: Error de validación en los datos enviados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: object
+ *                   example: {
+ *                     "errors": [
+ *                       { "msg": "El campo nombre es obligatorio" }
+ *                     ]
+ *                   }
+ *       404:
+ *         description: Error al registrar el rol o datos faltantes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Mensaje:
+ *                   type: string
+ *                   example: "Usuario no registrado"
+ *       500:
+ *         description: Error interno del servidor al registrar el rol.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Mensaje:
+ *                   type: string
+ *                   example: "Error del servidor"
  */

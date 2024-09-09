@@ -14,7 +14,7 @@ export const PerfilSettings = () => {
     empresa: user.us_empresa,
     especialidad: user.us_especialidad,
     rol: user.rol_nombre,
-    id_rol: user.idRoles,
+    id_rol: user.fk_roles,
   };
 
   return (
