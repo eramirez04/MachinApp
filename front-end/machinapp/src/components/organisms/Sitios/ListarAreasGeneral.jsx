@@ -4,8 +4,11 @@ import { axiosCliente } from "../../../service/api/axios";
 import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
 import { V } from "../../../style";
+import { useTranslation } from "react-i18next";
+
 const BuscarAreasGeneral = () => {
   const [areas, setAreas] = useState([]);
+  const { t } = useTranslation()
 
   useEffect(() => {
     const listarAreaGeneral = async () => {
@@ -26,7 +29,7 @@ const BuscarAreasGeneral = () => {
     const errorMessage = document.createElement("div");
     errorMessage.className =
       "absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold";
-    errorMessage.textContent = "No se encontró imagen";
+    errorMessage.textContent = t('no_imagen');
     parent.appendChild(errorMessage);
   };
 
@@ -34,18 +37,17 @@ const BuscarAreasGeneral = () => {
     <div className="bg-gray-200 min-h-screen">
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className="text-4xl font-extrabold text-center text-white">
-          Centro de Gestión y Desarrollo Sostenible Surcolombiano
+          {t("cgdss")}
         </h1>
         <p className="text-center text-white mt-6 mx-4 md:mx-0">
-          Este centro está ubicado en el departamento del Huila, municipio de
-          Pitalito. Este centro cuenta con dos sedes a día de hoy.
+          {t("centro_descripcion")}
         </p>
       </header>
       <div className="container mx-auto p-4">
         <div className="flex justify-end">
           <Link to={"/Areas/Registrar"}>
             <button className="bg-blue-500 rounded-md p-3 hover:bg-blue-700 mb-5 font-semibold">
-              Registrar nueva
+              {t("registrar_nuevo")}
             </button>
           </Link>
         </div>
@@ -77,7 +79,7 @@ const BuscarAreasGeneral = () => {
                   <Link to={`/Areas/${area.idArea}`}>
                     <ButtonC
                       bgColor="bg-green-400 hover:bg-green-600 text-white"
-                      name="Ingresar"
+                      name={t("ingresar")}
                     />
                   </Link>
                 </div>

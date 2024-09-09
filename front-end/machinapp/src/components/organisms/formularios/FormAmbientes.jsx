@@ -6,8 +6,10 @@ import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useGlobalData } from "../../../index.js";
+import { useTranslation } from "react-i18next";
 
 export const FormAmbientes = () => {
+  const { t } = useTranslation()
   const [areas, setAreas] = useState([]);
   const [tipositios, setTipositios] = useState([]);
   const [fechaRegistro, setFechaRegistro] = useState("")
@@ -42,11 +44,11 @@ export const FormAmbientes = () => {
         "POST"
       );
 
-      alert("Se registró con éxito");
+      alert(t("registro_exitoso"));
 
       navigate("/Ambientes");
     } catch (error) {
-      alert("Error al registrar nuevo ambiente");
+      alert(t("error_registro_ambiente"));
       console.log(error);
     }
   };
@@ -101,7 +103,7 @@ export const FormAmbientes = () => {
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
           <h1 className="text-3xl font-bold text-white">
-            Registrar nuevo Ambiente
+            {t("registro_nuevo_ambiente")}
           </h1>
         </header>
 
@@ -118,11 +120,11 @@ export const FormAmbientes = () => {
             )}
           </div>
 
-          <h2 className="mt-5 text-xl font-semibold">Imagen del ambiente</h2>
+          <h2 className="mt-5 text-xl font-semibold">{t("imagen_ambiente")}</h2>
           <label className="mt-2 w-64 flex flex-col items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow-md tracking-wide uppercase border border-green-600 cursor-pointer hover:bg-green-600">
             <FaUpload className="text-xl" />
             <span className="mt-2 text-base leading-normal">
-              Seleccionar archivo
+              {t("seleccionar_archivo")}
             </span>
             <input
               type="file"
@@ -139,7 +141,7 @@ export const FormAmbientes = () => {
 
           <div className="w-3/4 my-8 p-4 bg-gray-50 rounded-lg shadow-md">
             <h2 className="mt-5 text-2xl font-semibold text-center text-gray-700">
-              Información del ambiente
+              {t("informacion_ambiente")}
             </h2>
 
             <div className="grid grid-cols-2 gap-6 mt-4">
@@ -150,7 +152,7 @@ export const FormAmbientes = () => {
                 name={"Nombre_del_ambiente"}
               />
               <InputDate
-                label="Fecha de Registro: "
+                label={t("fecha_registro")}
                 value={fechaRegistro}
                 onChange={dateRegistro}
               />
@@ -170,7 +172,7 @@ export const FormAmbientes = () => {
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label="Tipo de sitio"
+                label={t("tipo_sitio")}
               />
               <SelectComponent
                 options={dataUser.filter(item => item.rol_nombre === "instructor").map(item => ({
@@ -182,12 +184,12 @@ export const FormAmbientes = () => {
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label="Instructor encargado"
+                label={t("instructor_encargado")}
               />
             </div>
           </div>
           <div className="pb-8">
-            <ButtonNext color="success" text="Registrar Ambiente" type="submit" />
+            <ButtonNext color="success" text={t("registrar_ambiente")} type="submit" />
           </div>
         </div>
       </form>
