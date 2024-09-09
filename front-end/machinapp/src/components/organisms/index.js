@@ -23,4 +23,5 @@ export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 
 
 /*  */
-export {FormFichaTecnicaListUpdate} from "./formularios/FormFichaTecnicaListUpdate"; 
+export {FormFichaTecnicaListUpdate} from "./formularios/FormFichaTecnicaListUpdate"
+export {UpdateEstAmbienteFicha} from "./formularios/UpdateEstAmbienteFicha"

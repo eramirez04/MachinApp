@@ -126,7 +126,7 @@ export const FormFichaTecnica = () => {
 
         const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
           id: item.idAmbientes,
-          valor: item.area_nombre,
+          valor: item.sit_nombre,
         }));
 
         const tipoEquipoArray = tipoMaquinaRes.data.map((item) => ({
