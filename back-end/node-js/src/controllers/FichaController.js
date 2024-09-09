@@ -5,6 +5,10 @@ import { validationResult } from 'express-validator'
 import multer from 'multer'
 
 
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         let destinationPath = 'public/imagenes/ficha'
@@ -220,8 +224,6 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 }
 
 
-
-
 /*----------------------------------------------------------------Correcto----------------------(los mantenimientos van en otro controlador)*/
 export const listarInfoEspecifica = async(req, res)=>{
 
@@ -236,12 +238,25 @@ export const listarInfoEspecifica = async(req, res)=>{
         fi_imagen,
         fi_estado,
         CodigoQR,
+        sit_Nombre, 
+        area_nombre,
+        sede_nombre,
         ficha_respaldo,
         ti_fi_nombre as tipoEquipo
+
+        FROM tipo_equipo
+        INNER JOIN fichas_maquinas_equipos ON idTipo_ficha = fi_fk_tipo_ficha
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        INNER JOIN areas ON sit_fk_areas = idArea
+        INNER JOIN sedes ON area_fk_sedes = idSede
+        WHERE idFichas = ${idFicha}
+
+        `
+        /* 
+        
         FROM fichas_maquinas_equipos
         INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
-        WHERE idFichas = ${idFicha}
-        `
+        WHERE idFichas = ${idFicha} */
 
 
         const[respuesta] = await conexion.query(sqlFicha)
@@ -432,48 +447,62 @@ export const actualizarFichaEsp = async ( req, res)=>{
 
 
 
-
-
 /* Falta por revisar */
 export const actualizarFicha = async(req, res)=>{
-    try{
-        
-        let idFicha = req.params.idFicha
-
-
-        let {placaSena, fiEstado, fk_sitio} = req.body
-
-        console.log(fiImagen)
-
-        let sql = `update fichas_maquinas_equipos set fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}',  fi_estado = '${fiEstado}',  fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}'`
-
-        let [respuesta] = await conexion.query(sql)
-
-
-        if(respuesta.affectedRows>0){
-            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
-        }
-        else{
-            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        }
-
-/*         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
-
-        let sql = `update fichas set  fi_fecha = '${fiFecha}', fi_placa_sena = '${placaSena}' , fi_serial='${serial}', fi_fecha_adquisicion='${fechaAdquisicion}', 
-        fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_imagen='${fiImagen}',fi_estado = '${fiEstado}' , fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
-        where idFichas = ${idFicha}`
     
-        let [respuesta] = await conexion.query(sql)
+    try {
+        let idFicha = req.params.idFicha
+        let { placaSena, fiEstado, fk_sitio } = req.body
 
-        if(respuesta.affectedRows>0){
-            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
+        // Obtener la ruta actual utilizando fileURLToPath y path
+        const __filename = fileURLToPath(import.meta.url)
+        const __dirname = path.dirname(__filename)
+
+        // Consulta previa para obtener las imágenes existentes
+        let [fichaActual] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
+
+        if (!fichaActual || fichaActual.length === 0) {
+            return res.status(404).json({"mensaje": "Ficha no encontrada"})
         }
-        else{
-            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        } */
+
+        let imagenAnterior = fichaActual[0].fi_imagen
+        let tecnicaAnterior = fichaActual[0].ficha_respaldo
+
+        // Nuevas imágenes (si se suben)
+        let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : imagenAnterior;  // Si no se sube una nueva imagen, se mantiene la anterior
+        let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : tecnicaAnterior;  // Lo mismo para la ficha técnica
+
+        console.log() //la que existe
+        console.log(fiImagen)// la que se trae
         
-    }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor".error})
+        // Si hay una nueva imagen, elimina la antigua
+        if (req.files.fiImagen && imagenAnterior) {
+            const imagenPath = path.join(__dirname, 'public/imagenes/ficha/', imagenAnterior);
+            if (fs.existsSync(imagenPath)) {
+                fs.unlinkSync(imagenPath);
+            }
+        }
+
+        // Si hay una nueva ficha técnica, elimina la anterior
+        if (req.files.fiTecnica && tecnicaAnterior) {
+            const tecnicaPath = path.join(__dirname, 'public/fichasTecnicas/FichasRespaldo/', tecnicaAnterior);
+            if (fs.existsSync(tecnicaPath)) {
+                fs.unlinkSync(tecnicaPath);
+            }
+        }
+
+        // Actualización en la base de datos
+        let sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`;
+        let [respuesta] = await conexion.query(sql);
+
+        if (respuesta.affectedRows > 0) {
+            return res.status(200).json({"mensaje": "Se actualizó correctamente la ficha"});
+        } else {
+            return res.status(404).json({"mensaje": "Error al actualizar ficha"});
+        }
+
+    } catch (error) {
+        return res.status(500).json({"mensaje": "Error del servidor: " + error});
     }
 }
 
