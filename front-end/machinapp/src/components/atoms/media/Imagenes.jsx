@@ -1,8 +1,8 @@
 
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-export const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la carpeta public */}
+export const  Imagenes  =  ({rutaImg})  => {   //Pasar ruta a partir de la carpeta public 
 
     let rutaImagen = `http://localhost:3000/${rutaImg}`
 
@@ -11,9 +11,8 @@ export const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la car
     useEffect(() => {
       
         const verificarImagen = async () => {
-          try {
-            console.log(rutaImagen)
-            const response = await fetch(rutaImagen);
+          try {            
+            const response = await fetch(rutaImagen)
 
             if (response.ok) {
                 setEstadoImg(true)
@@ -30,11 +29,11 @@ export const  Imagenes  =  ({rutaImg})  => {   {/* Pasar ruta a partir de la car
       }, [rutaImagen])
 
     return (
-        <>
-            {
-                estadoImg ? (<img className='w-full rounded-2xl'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/noEncontrada.jpg" alt="Imagen" />)
-            }
-        </>
+      <>
+        {
+            estadoImg ? (<img className='w-full rounded-2xl'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/noEncontrada.jpg" alt="Imagen" />)
+        }
+      </>
     )
 }
 

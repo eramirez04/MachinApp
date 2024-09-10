@@ -1,8 +1,11 @@
-import { Icons, menus, V } from "../../../index";
+import { Icons, menus, V, useLenguage } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Select, SelectItem } from "@nextui-org/react";
 
 export const Nav = ({ rol }) => {
   const [open, setOpen] = useState(true);
@@ -11,11 +14,20 @@ export const Nav = ({ rol }) => {
     return saved ? JSON.parse(saved) : {};
   });
 
+  const { onChangeTransalate, lenguage } = useLenguage();
+  const { t } = useTranslation();
+
+  const menuss = useMemo(() => menus(t), [t]);
+
   const handleSubmenuToggle = (name) => {
     setSubmenuOpen((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
+  };
+
+  const handleSelectionChange = (value) => {
+    onChangeTransalate(value.target.value);
   };
 
   useEffect(() => {
@@ -30,10 +42,10 @@ export const Nav = ({ rol }) => {
   }, [submenuOpen]);
 
   return (
-    <nav className="flex gap-6 w-64">
+    <nav className="flex gap-6 w-64  h-screen  border-gray-200">
       <div
-        className={`bg-[white] min-h-screen border shadow-md  ${
-          open ? "w-72" : "w-20"
+        className={`min-h-screen bg-white shadow-md  border-r-4 ${
+          open ? "w-full" : "w-20"
         } duration-500 text-black px-4`}
       >
         <div className="py-3 flex justify-end">
@@ -44,15 +56,15 @@ export const Nav = ({ rol }) => {
           />
         </div>
         <ul className="mt-9 flex flex-col gap-4 relative">
-          {menus?.map(
+          {menuss?.map(
             (menu, i) =>
               (menu.name !== "Panel de control" || rol === "Administrador") && (
                 <li key={i} className="relative">
                   <Link
                     to={menu?.link}
-                    className={` ${
+                    className={`${
                       menu?.margin && "mt-96"
-                    } group flex items-center hover:bg-slate-100 text-sm gap-3.5 font-medium p-4  border ${
+                    }  flex border h-12 text-sm gap-3.5 font-medium p-2 items-center    hover:bg-gray-100 rounded-full transition-colors ${
                       V.radius
                     }`}
                     onClick={(e) => {
@@ -62,7 +74,7 @@ export const Nav = ({ rol }) => {
                       }
                     }}
                   >
-                    <div className="p-1 rounded-full">
+                    <div className=" rounded-full group-hover:scale-110 transition-transform duration-200">
                       <Icons icon={menu.icon} />
                     </div>
                     <span
@@ -75,13 +87,6 @@ export const Nav = ({ rol }) => {
                     >
                       {menu?.name}
                     </span>
-                    <h2
-                      className={`${
-                        open && "hidden"
-                      } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
-                    >
-                      {menu?.name}
-                    </h2>
                   </Link>
                   {menu?.submenu && (
                     <div
@@ -107,6 +112,24 @@ export const Nav = ({ rol }) => {
               )
           )}
         </ul>
+        <Select
+          value={lenguage}
+          aria-label="Seleccionar idioma"
+          label="Elige un idioma"
+          onChange={handleSelectionChange}
+          className="max-w-xs pt-20"
+          variant="bordered"
+          color="primary"
+          size="md"
+          startContent={<Icons icon={V.GlobeAltIcon} />}
+        >
+          <SelectItem key="en" value="en">
+            Inglés
+          </SelectItem>
+          <SelectItem key="es" value="es">
+            Español
+          </SelectItem>
+        </Select>
       </div>
     </nav>
   );

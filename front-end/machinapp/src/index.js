@@ -7,3 +7,6 @@ export * from "./hooks";
 export * from "./style";
 
 export { menus } from "./utils/DataEstadistica";
+
+export { axiosCliente } from "./service/api/axios";
+export { multiFormData } from "./utils/formData"

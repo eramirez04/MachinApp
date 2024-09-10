@@ -7,7 +7,10 @@ import { encriptarContra } from "../../config/bcryptjs.js";
 export class UsuarioModel {
   getAll = async () => {
     return await conexion.query(
-      "select *, rol_nombre from usuarios INNER JOIN roles ON fk_roles = idRoles "
+      `SELECT 
+          usuarios.idUsuarios, usuarios.fk_roles, usuarios.us_nombre, usuarios.us_apellidos, usuarios.us_correo, usuarios.us_numero_documento, usuarios.us_tipo_documento, usuarios.us_especialidad, usuarios.us_empresa, roles.rol_nombre 
+       FROM usuarios
+       INNER JOIN roles ON fk_roles = idRoles;`
     );
   };
 

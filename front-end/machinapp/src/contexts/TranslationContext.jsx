@@ -6,7 +6,7 @@ export const TranslateContext = createContext();
 
 export const TranslateProvider = ({ children }) => {
   const [lenguage, setlenguege] = useState(() => {
-    return localStorage.getItem("lenguage") || "en";
+    return localStorage.getItem("lenguage") || "es";
   });
 
   useEffect(() => {

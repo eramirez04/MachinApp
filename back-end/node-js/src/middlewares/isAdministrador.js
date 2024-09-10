@@ -11,7 +11,6 @@ export const isAdmin = async (req, res, next) => {
         console.error(err);
         return;
       }
-      console.log("", decode.user.rol_nombre);
       if (decode.user.rol_nombre === "Administrador") {
         next();
       } else {

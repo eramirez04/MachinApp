@@ -4,6 +4,7 @@ import { axiosCliente } from '../../../service/api/axios';
 import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
+import { V } from '../../../style';
 
 const BuscarAmbientes = ({ idArea }) => {
   const [ambientes, setAmbientes] = useState([]);
@@ -32,7 +33,7 @@ const BuscarAmbientes = ({ idArea }) => {
 
   return (
     <div className='bg-gray-200 min-h-screen'>
-      <header className='bg-green-500 py-16 shadow-md top-0 z-10'>
+      <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className='text-4xl font-extrabold text-center text-white'>
           Centro de Gestión y Desarrollo Sostenible Surcolombiano
         </h1>
