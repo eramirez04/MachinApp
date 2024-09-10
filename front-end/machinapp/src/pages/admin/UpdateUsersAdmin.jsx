@@ -1,5 +1,4 @@
-import { Layout } from "../../index";
-import { FormUserUpdate } from "../../components/organisms/formularios/FormUserUpdate";
+import { Layout, FormUserUpdate } from "../../index";
 import { useLocation } from "react-router-dom";
 
 export const UpdateUserAdmin = () => {
@@ -17,7 +16,7 @@ export const UpdateUserAdmin = () => {
     empresa: resultadoUsuario.us_empresa,
     especialidad: resultadoUsuario.us_especialidad,
     rol: resultadoUsuario.rol_nombre,
-    id_rol: resultadoUsuario.idRoles,
+    id_rol: resultadoUsuario.fk_roles,
   };
 
   return (

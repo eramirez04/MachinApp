@@ -11,11 +11,11 @@ export const Header = ({ color, contenido }) => {
         className="flex items-center justify-between  lg:px-8"
         aria-label="Global"
       >
-        <div className="flex  shadow-sm lg:flex-1">
-          <figure className=" h-16 w-16 border-gray-300">
+        <div className="flex lg:flex-1">
+          <figure className=" h-16 w-16 ">
             <LazyLoadImage
               src={V.logoSena}
-              className="h-full w-full cursor-fdfdpointer"
+              className="h-full w-full cursor-pointer"
               effect="opacity"
               alt="logo-sena"
             />

@@ -1,5 +1,4 @@
-import { FormUserUpdate } from "../../components/organisms/formularios/FormUserUpdate";
-import { Layout, useAuth } from "../../index";
+import { Layout, useAuth, FormUserUpdate } from "../../index";
 
 export const PerfilSettings = () => {
   const { user } = useAuth();
@@ -15,7 +14,7 @@ export const PerfilSettings = () => {
     empresa: user.us_empresa,
     especialidad: user.us_especialidad,
     rol: user.rol_nombre,
-    id_rol: user.idRoles,
+    id_rol: user.fk_roles,
   };
 
   return (

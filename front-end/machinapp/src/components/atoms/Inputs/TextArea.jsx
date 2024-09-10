@@ -1,12 +1,15 @@
-import Alert from "../feedback/Alert";
+import { Alert } from "../../../index";
 import { Textarea } from "@nextui-org/react";
+/* import { useTranslation } from "react-i18next"; */
 // eslint-disable-next-line react/prop-types
-export const TextAreaComponent = ({ register, errors, name, descripcion }) => {
+export const TextAreaComponent = ({ register, errors, name, descripcion , label}) => {
+/*   const { t } = useTranslation(); */
+
   return (
     <>
       <Textarea
         variant="faded"
-        label="Description"
+        label={label}
         placeholder="Enter your description"
         description={descripcion}
         className=""

@@ -1,13 +1,22 @@
-import { Header, Footer, InputforForm, ModalComponte, V } from "../../index";
-import Login from "../../components/organisms/Login";
+import {
+  Header,
+  Footer,
+  InputforForm,
+  ModalComponte,
+  Login,
+  V,
+  axiosCliente,
+} from "../../index";
+
 import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
-import { axiosCliente } from "../../service/api/axios";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const { t } = useTranslation();
 
   const {
     register,
@@ -66,16 +75,17 @@ export const ResetPassword = () => {
             className="w-full max-w-md flex flex-col gap-5 bg-white p-8 rounded-lg shadow-md"
           >
             <span className="font-semibold text-2xl lg:text-4xl text-custom-green">
-              Restablecer contraseña
+              {t("restablecer_contresena")}
             </span>
             <span className="text-base lg:text-lg">
-              Introduzca su número de documento
+              {t("introduzca_numero_documento")}
             </span>
             <InputforForm
               errors={errors}
               tipo={"number"}
               register={register}
               name={"Documento"}
+              label={t("numero_documento")}
             />
             <Button
               type="submit"
@@ -83,7 +93,7 @@ export const ResetPassword = () => {
               isLoading={loading ? true : false}
               className="text-white bg-blue-600 mt-4"
             >
-              Restablecer
+              {t("restablecer")}
             </Button>
 
             {email && (
