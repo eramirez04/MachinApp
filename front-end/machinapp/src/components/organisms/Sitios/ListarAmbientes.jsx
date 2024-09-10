@@ -60,9 +60,11 @@ const BuscarAmbientes = ({ idArea }) => {
             </Link>
             <div className='p-6'>
               <div className='flex justify-end'>
-                <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
-                  <FaEdit />
-                </button>
+                <Link to={`/Ambientes/Actualizar/${ambiente.idAmbientes}`}>
+                  <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
+                    <FaEdit />
+                  </button>
+                </Link>
               </div>
               <h2 className='text-2xl font-bold text-gray-800'>{ambiente.sit_nombre} ({ambiente.tipo_sitio})</h2>
               <p className='text-gray-700 mt-4'>Instructor {ambiente.instructor_encargado}</p>
