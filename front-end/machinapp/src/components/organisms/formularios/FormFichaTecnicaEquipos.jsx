@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useForm, Controller  } from "react-hook-form"
+import { useForm  } from "react-hook-form"
 import { axiosCliente } from "../../../service/api/axios.js"
 import { useNavigate } from 'react-router-dom'
 import { MdNavigateNext } from "react-icons/md";
@@ -39,7 +39,6 @@ export const FormFichaTecnica = () => {
   const [fichaRespaldo, setFicha] = useState(null)
 
   const {
-    control,
     register,
     formState: { errors },
     handleSubmit,
@@ -327,14 +326,14 @@ export const FormFichaTecnica = () => {
                       src={previewImagen}
                     />
                   </div>
-{/* 
+
                   <input
                     type="file"
                     onChange={handleFileUpload}
                     accept="image/*"
                     className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "
-                  /> */}
-                  <Controller
+                  />
+                 {/*  <Controller
                     name="file"
                     control={control}
                     rules={{ required: "La imagen es obligatoria" }}
@@ -354,7 +353,7 @@ export const FormFichaTecnica = () => {
                         )}
                       </>
                     )}
-                  />
+                  /> */}
                 </div>
                 
               </div>
