@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { SettingsPanelPage } from "../../index";
 import PaneldeControlUsuarios from "../../pages/admin/PaneldeControl";
 import { UpdateUserAdmin } from "../../pages/admin/UpdateUsersAdmin";
 import { useAuth } from "../../hooks/user/useAuth";
@@ -24,6 +24,7 @@ export const AdminRoute = () => {
           </ProtectedRouteAdmin>
         }
       />
+      <Route path="settings/" element={<SettingsPanelPage />} />
     </Routes>
   );
 };

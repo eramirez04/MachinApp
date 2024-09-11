@@ -1,7 +1,6 @@
 import { Icons, menus, V, useLenguage } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -100,9 +99,9 @@ export const Nav = ({ rol }) => {
                         <Link
                           to={submenu?.link}
                           key={j}
-                          className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2`}
+                          className={`text-sm font-medium p-2 hover:shadow-md hover:border-l-4 border-l-green-500 transition-all hover:bg-gray-100 rounded-md flex items-center gap-2`}
                         >
-                          <TbPointFilled size={16} />
+                          {/*  <TbPointFilled size={16} /> */}
                           {submenu?.name}
                         </Link>
                       ))}
