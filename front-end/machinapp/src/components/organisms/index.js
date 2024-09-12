@@ -20,8 +20,14 @@ export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 
 
+// borrar
+export { ChartMaquinas } from "./graficos/MaquinasChart";
+export { MantenimientoGrafico } from "./graficos/MantenimientoGrafico";
+
+
 
 
 /*  */
 export {FormFichaTecnicaListUpdate} from "./formularios/FormFichaTecnicaListUpdate"
 export {UpdateEstAmbienteFicha} from "./formularios/UpdateEstAmbienteFicha"
+

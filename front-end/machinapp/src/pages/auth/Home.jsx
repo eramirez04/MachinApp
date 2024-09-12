@@ -7,6 +7,9 @@ import {
   V,
   Breadcrumb,
   useAuth,
+  ChartMaquinas,
+  MantenimientoGrafico,
+  useMantenimientosQuery,
 } from "../../index.js";
 /* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
 import { Link } from "react-router-dom";
@@ -14,6 +17,7 @@ import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const { dataUser, equiposData, solicitudData } = useGlobalData();
+  const { isLoading, mantenimientos } = useMantenimientosQuery();
   const { rol } = useAuth();
   const { t } = useTranslation();
 
@@ -43,6 +47,9 @@ export const Home = () => {
     },
   ];
 
+  if (isLoading) {
+    return <>cargando</>;
+  }
   return (
     <>
       <Layout titlePage={"Home"}>
@@ -55,13 +62,12 @@ export const Home = () => {
               <CardDataStats
                 key={index}
                 title={value.title}
+                change={value.total}
                 total={value.total}
                 link={
                   <>
                     {rol === "Administrador" ? (
-                      <Link to={value.link}>
-                        <Icons icon={V.ChevronRightIcon} />
-                      </Link>
+                      <Link to={value.link}>Ver</Link>
                     ) : (
                       " "
                     )}
@@ -80,10 +86,14 @@ export const Home = () => {
           {/* Segunda fila con una tarjeta grande que ocupa 2/3 del ancho y una más pequeña */}
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <CardStyle> {/*  <Artboard /> */}</CardStyle>
+              <CardStyle subtitle={"dsss"} titleCard={"sdsds"} footer={"dsdsd"}>
+                <MantenimientoGrafico data={mantenimientos} />
+              </CardStyle>
             </div>
 
-            <CardStyle> {/*   <Artboard /> */}</CardStyle>
+            <CardStyle titleCard={"hola"} subtitle={"sds"}>
+              <ChartMaquinas />
+            </CardStyle>
           </div>
 
           {/* Tercera fila con dos tarjetas de igual tamaño */}

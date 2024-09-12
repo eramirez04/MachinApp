@@ -10,11 +10,12 @@ import {
 
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner, Input } from "@nextui-org/react";
 
+// eslint-disable-next-line react/prop-types
 export const FormUserUpdate = ({ userData }) => {
   const { rol, refreshUserLoged } = useAuth();
   const { roles } = useFetchRoles();
@@ -62,6 +63,7 @@ export const FormUserUpdate = ({ userData }) => {
 
     try {
       /*    const res = await updateUser(data, localUser.id); */
+      console.log(data);
       const res = await multiFormData(
         `user/actualizar/${user.id}`,
         data,
@@ -131,29 +133,13 @@ export const FormUserUpdate = ({ userData }) => {
   }
   return (
     <>
-      {rol === ADMIN && (
-        <>
-          <div className="flex justify-end">
-            <Button color="danger" radius="sm">
-              <Link
-                to="/Panelcontrol"
-                className="h-full w-full flex items-center"
-                type="submit"
-              >
-                Regresar
-              </Link>
-            </Button>
-          </div>
-        </>
-      )}
-
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-5 gap-8"
       >
         {/* aqui va algo, no se que es pero va */}
 
-        <div className="col-span-5 xl:col-span-2">
+        <div className="col-span-5 xl:col-span-2 flex flex-col gap-10">
           <div
             className={`rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark`}
           >
@@ -212,6 +198,28 @@ export const FormUserUpdate = ({ userData }) => {
                   <p>(max, 800 X 800px)</p>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="h-80 w-full border items-center">
+            <div
+              className={`border-b border-stroke py-3 px-5 dark:border-strokedark ${V.bg_sena_verde}`}
+            >
+              <span className="font-medium text-black dark:text-white">
+                {t("tu_foto")}
+              </span>
+            </div>
+            <div className="p-10">
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">
+                Nueva Contraseña
+              </label>
+              <Input
+                {...register("password")}
+                placeholder="Contraseña"
+                autoComplete="off"
+                variant="bordered"
+                radius="sm"
+                size="md"
+              />
             </div>
           </div>
         </div>
