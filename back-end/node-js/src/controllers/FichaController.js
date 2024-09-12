@@ -122,9 +122,11 @@ export const listarFichas = async(req, res)=>{
         idFichas,
         fi_placa_sena,
         fi_estado,
-        sit_nombre
+        sit_nombre,
+        tipo_equipo.ti_fi_nombre AS nombre
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON  idAmbientes  = fi_fk_sitios
+        INNER JOIN tipo_equipo ON tipo_equipo.idTipo_ficha = fichas_maquinas_equipos.fi_fk_tipo_ficha;
         `
         const  [respuesta] = await conexion.query(sql)
 
