@@ -147,7 +147,7 @@ export const actualizarFicha = async(req, res)=>{
     }
 
     const [respuesta] = await conexion.query(sql)
-    return res.json(respuesta)
+    return res.json({"mensaje":"se actualizo con exito la ficha "})
     
   
 }
@@ -420,26 +420,9 @@ export const listarInfoEspecifica = async(req, res)=>{
             tipo_mantenimiento, 
             idSolicitud
             FROM fichas_maquinas_equipos
-            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
-            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
-            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
-            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
-            WHERE idFichas = ${idFicha}
-            `
+            INNER JOIN solicit
+            
 
-            const[mantenimientos] = await conexion.query(sqlMantenimientos)
-    
-            let objInfoEspecifica = {
-                idFichas: respuesta[0].idFichas,
-                fi_placa_sena: respuesta[0].fi_placa_sena, 
-                fi_serial: respuesta[0].fi_serial,
-                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
-                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
-                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
-                fi_descripcion:respuesta[0].fi_descripcion,
-                fi_marca:respuesta[0].fi_marca,
-                fi_modelo:respuesta[0].fi_modelo,
                 CodigoQR:respuesta[0].CodigoQR,
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
@@ -546,7 +529,10 @@ export const listarFichaUnica=async (req, res)=>{
         SELECT 
             fi_placa_sena, 
             fi_imagen, 
-            fi_estado, 
+            ficha_respaldo,
+            fi_estado,
+            idAmbientes,
+            fi_fk_sitios,
             sit_nombre, 
             ti_fi_nombre 
             FROM ambientes
