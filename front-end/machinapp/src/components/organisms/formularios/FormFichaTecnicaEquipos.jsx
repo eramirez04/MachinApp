@@ -101,7 +101,7 @@ export const FormFichaTecnica = () => {
     const archivo = event.target.files[0]
 
     if (archivo) {
-      const previewUrl = URL.createObjectURL(archivo);
+      const previewUrl = URL.createObjectURL(archivo)
       setPreviewImagen(previewUrl)
       setImagen(archivo)
     } else {
