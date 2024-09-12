@@ -25,7 +25,10 @@ import {
   RegistrarArea,
   RegistrarSede,
   RegistrarAmbiente,
-  Editar_Component
+  Editar_Component,
+
+
+  UpdateAndListFichaTecnica
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -80,6 +83,10 @@ export const AppRouter = () => {
             <Route path="/crearTiposFichaTec" element={<ViewFormTipoFicha />} />
             <Route path="/Editar_o_ver" element={<Editar_Component/>} />
             {/*  */}
+
+
+            {/* dddddddddd */}
+            <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica/>}/>
           </Route>
         </Routes>
       </Suspense>
