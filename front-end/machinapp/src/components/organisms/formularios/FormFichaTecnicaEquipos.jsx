@@ -241,10 +241,12 @@ export const FormFichaTecnica = () => {
 
             {/* Contenido */}
             <div>
+              <h3 className="w-full  text-2xl pl-7 my-5 bg-green-600 text-white py-1 " >Informacion Basica</h3>
               <div className=" flex flex-col sm:flex-row mt-5 w-full "> {/* sm:h-96 */}
 
+                
                 <div className="w-full sm:w-2/4 p-2">
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Informacion Basica</h3>
+
                   <div className="grid grid-cols-2 gap-3 ">
                     
 
@@ -318,42 +320,23 @@ export const FormFichaTecnica = () => {
                   </div>
                 </div>
 
-                <div className="w-full sm:w-2/4 p-2 ml-11">
-                  <div className="flex items-center justify-center w-full h-[256px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
+                <div className="w-full sm:w-2/4 p-2 ">
+                  <div className="flex items-center justify-center w-full h-[256px] rounded-md  mt-6  bg-green-600/25"> {/* dark:bg-gray-200 bg-gray-300 */}
                     <img
-                      className="h-full w-full object-contain rounded"
+                      className="h-full w-full object-contain rounded-md "
                       alt=""
                       src={previewImagen}
                     />
                   </div>
 
+
+                  <p>Imagen</p>
                   <input
                     type="file"
                     onChange={handleFileUpload}
                     accept="image/*"
-                    className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "
+                    className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-50 focus:outline-none  "  
                   />
-                 {/*  <Controller
-                    name="file"
-                    control={control}
-                    rules={{ required: "La imagen es obligatoria" }}
-                    render={({ field }) => (
-                      <>
-                        <input
-                          type="file"
-                          onChange={(e) => {
-                            field.onChange(e);
-                            handleFileUpload(e);
-                          }}
-                          accept="image/*"
-                          className="appearance-none w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
-                        />
-                        {errors.file && (
-                          <span className="text-red-500">{errors.file.message}</span>
-                        )}
-                      </>
-                    )}
-                  /> */}
                 </div>
                 
               </div>
@@ -376,8 +359,8 @@ export const FormFichaTecnica = () => {
                 varEspecificas.length >0? (                
                 
                 <div>
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">Caracteristicas Generales.</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my">
+                  <h3 className="w-full text-white bg-green-600 text-2xl pl-7 mt-8 py-1">Caracteristicas Generales.</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-7">
                     {
                       
                       varEspecificas.map((varEspec) =>(
@@ -399,20 +382,22 @@ export const FormFichaTecnica = () => {
 
               
               <div className="w-full my-5">
-                <label > Descripcion del equipo</label>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={`variables.${varObligatorias.idVar6.idVariable}`}
-                  descripcion={'Descripcion general del equipo'}
-                />
+                <label className="text-lg " >Descripcion del equipo</label>
+                <div className="mt-2">
+                  <TextAreaComponent
+                    errors={errors}
+                    register={register}
+                    name={`variables.${varObligatorias.idVar6.idVariable}`}
+                    descripcion={'Descripcion general del equipo'}
+                  />
+                </div>
               </div>
 
               {/* Especificaciones tecnicas */}
               {
                 varEspTecnicas.length>0 ? (
                   <div className="my-14">
-                    <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
+                    <h3 className="w-full text-2xl pl-7 my-5 bg-green-600 py-2 text-white" >Especificaciones tecnicas</h3>
                     <div className="overflow-x-auto">
                       <table className="min-w-full border-collapse">
                         <thead>
@@ -446,7 +431,7 @@ export const FormFichaTecnica = () => {
 
               {/* GARANTIA */}
               <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8" >Informacion Garantia</h3>
+                <h3 className="w-full text-2xl pl-7 mt-8 bg-green-600 py-2 text-white" >Informacion Garantia</h3>
                 
                 <div className=" flex flex-col sm:flex-row mt-3 w-full ">
 
