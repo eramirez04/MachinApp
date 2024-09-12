@@ -67,6 +67,7 @@ export const actualizarSolicitudes = async(req, res)=>{
   try{
       
     const resultado = validarSolicitud_Mantenimiento(req.body);
+    
     if (resultado.error)
       return res.status(400).json({ error: resultado.error.errors });
   

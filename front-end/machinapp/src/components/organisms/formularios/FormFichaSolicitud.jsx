@@ -7,6 +7,7 @@ import {
   TextAreaComponent,
   CardStyle,
   V,
+  FormActividades,
   axiosCliente,
 } from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
@@ -149,7 +150,7 @@ export const FormFichaSolicitud = () => {
     setEquipo(equiposInfor);
     /*     console.log(valuesTable);
     handlesuma(); */
-  }, [equiposData, handlesuma, valuesTable]);
+  }, [equiposData,handlesuma, valuesTable]);
 
   return (
     <>
@@ -258,7 +259,8 @@ export const FormFichaSolicitud = () => {
                 </span>
               </div>
               <div className="flex justify-center items-center h-full">
-                <Input value={handlesuma()} />
+                <Input
+                type="number" />
               </div>
             </div>{" "}
             <Divider />
@@ -349,6 +351,7 @@ export const FormFichaSolicitud = () => {
                           register={register}
                           name={`actividad_${fila.id}`}
                         />
+                        <FormActividades/>
                       </TableCell>
                       <TableCell>
                         <Button

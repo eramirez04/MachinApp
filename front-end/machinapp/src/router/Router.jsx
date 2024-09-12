@@ -27,7 +27,7 @@ import {
   RegistrarAmbiente,
   Editar_Component,
 
-
+  UpdateFormFichaSolicitud,
   UpdateAndListFichaTecnica
 } from "../index";
 
@@ -46,7 +46,12 @@ export const AppRouter = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
+
+
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
+            <Route path="/editar/solicitud" element={<UpdateFormFichaSolicitud/>}/>
+
+
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
