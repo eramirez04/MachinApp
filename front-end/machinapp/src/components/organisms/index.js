@@ -23,6 +23,8 @@ export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 
 export {FormActividades} from "./formularios/FormActividades"
 
+export {Artboard} from "./Paginacentrar"
+
 // solicitudes
 
 export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate"

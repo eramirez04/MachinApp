@@ -7,8 +7,9 @@ import {
   V,
   Breadcrumb,
   useAuth,
+ // Artboard
 } from "../../index.js";
-/* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
+import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -98,7 +99,7 @@ export const Home = () => {
           <div className="mt-6 grid grid-cols-1 gap-6">
             <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark">
               {/* Contenido de la sexta tarjeta */}
-              {/*   <Artboard /> */}
+              <Artboard />
             </div>
           </div>
         </div>
