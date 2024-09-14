@@ -25,7 +25,7 @@ const BuscarAmbientesGeneral = () => {
           tipositio: sitio.tipo_sitio,
           area: sitio.area_nombre,
           municipio: sitio.instructor_encargado,
-          acciones: <FaEdit className="cursor-pointer" />,
+          acciones: <Link to={`/Ambientes/Actualizar/${sitio.idAmbientes}`}><FaEdit className="cursor-pointer" /></Link>,
         }));
         setData(sitios);
       } catch (error) {
