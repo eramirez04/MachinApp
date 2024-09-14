@@ -16,7 +16,7 @@ export const SelectComponent = ({
           {label}
         </label>
         <select
-          id="countries"
+          id={name}
           name={name}
           onChange={onChange}
           {...register(name, {

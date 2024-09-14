@@ -1,7 +1,15 @@
 import { Layout, useAuth, FormUserUpdate } from "../../index";
 
 export const PerfilSettings = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <>
+        <div>cargando</div>
+      </>
+    );
+  }
 
   const newDataUser = {
     id: user.idUsuarios,

@@ -2,6 +2,7 @@ import {
   useAuth,
   useFetchRoles,
   SelectComponent,
+  InputForm,
   InputUpdate,
   V,
   multiFormData,
@@ -26,26 +27,12 @@ export const FormUserUpdate = ({ userData }) => {
   const ADMIN = "Administrador";
 
   const [admin, setAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Inicialmente true
+  const [isLoading, setIsLoading] = useState(false); // Inicialmente true
 
   // manejo de erroes
   const [errores, setErrors] = useState("");
+  const [localUser, setLocalUser] = useState({ imagen: "" });
 
-  const [localUser, setLocalUser] = useState({
-    id: "",
-    correo: "",
-    nombre: "",
-    apellidos: "",
-    numero_documento: "",
-    tipo_documento: "",
-    imagen: "",
-    empresa: "",
-    especialidad: "",
-    rol: "",
-    id_rol: "",
-  });
-
-  // validaciones de los campos de los formularios
   const {
     control,
     handleSubmit,
@@ -62,8 +49,6 @@ export const FormUserUpdate = ({ userData }) => {
     data.tipo_documento = data.tipo_documento || user.tipo_documento;
 
     try {
-      /*    const res = await updateUser(data, localUser.id); */
-      console.log(data);
       const res = await multiFormData(
         `user/actualizar/${user.id}`,
         data,
@@ -82,14 +67,17 @@ export const FormUserUpdate = ({ userData }) => {
         }
       }
     } catch (error) {
+      let errores = error.response.data.mensaje
+        ? { num: error.response.data.mensaje }
+        : "";
+
       let neWerrores = {};
       if (error.response?.data.error) {
         error.response.data.error.forEach((element) => {
           neWerrores[element.path[0]] = element.message;
         });
       }
-
-      setErrors(neWerrores);
+      setErrors(Object.keys(neWerrores).length > 0 ? neWerrores : errores);
     }
   };
 
@@ -101,6 +89,21 @@ export const FormUserUpdate = ({ userData }) => {
       imagen: imagen,
     }));
   };
+  useEffect(() => {
+    if (user) {
+      setIsLoading(true);
+      reset({
+        nombre: user.nombre || "",
+        correo: user.correo || "",
+        numero_documento: user.numero_documento || "",
+        apellidos: user.apellidos || "",
+        imagen: localUser.imagen || user.imagen || "",
+        empresa: user.empresa || "",
+        especialidad: user.especialidad || "",
+      });
+    }
+    setIsLoading(false);
+  }, [user, reset, localUser]);
 
   useEffect(() => {
     const comprobarAdmin = () => {
@@ -113,21 +116,6 @@ export const FormUserUpdate = ({ userData }) => {
     comprobarAdmin();
   }, [rol, admin]);
 
-  useEffect(() => {
-    if (userData) {
-      reset({
-        nombre: user.nombre,
-        correo: user.correo,
-        numero_documento: user.numero_documento,
-        apellidos: user.apellidos,
-        imagen: localUser.imagen || user.imagen,
-        empresa: user.empresa || "",
-        especialidad: user.especialidad,
-      });
-      setIsLoading(false); // Datos cargados, termina la carga
-    }
-  }, [userData, user, reset, localUser]);
-
   if (isLoading) {
     return <div>Cargando datos del usuario...</div>;
   }
@@ -137,8 +125,6 @@ export const FormUserUpdate = ({ userData }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-5 gap-8"
       >
-        {/* aqui va algo, no se que es pero va */}
-
         <div className="col-span-5 xl:col-span-2 flex flex-col gap-10">
           <div
             className={`rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark`}
@@ -240,6 +226,7 @@ export const FormUserUpdate = ({ userData }) => {
                     <Controller
                       name="nombre"
                       control={control}
+                      defaultValue={user?.nombre || ""}
                       rules={{ required: "Correo es obligatorio" }}
                       render={({ field }) => (
                         <InputUpdate
@@ -258,6 +245,7 @@ export const FormUserUpdate = ({ userData }) => {
                       name="apellidos"
                       control={control}
                       rules={{ required: true }}
+                      defaultValue={user?.apellidos || ""}
                       render={({ field }) => (
                         <InputUpdate
                           {...field}
@@ -274,6 +262,7 @@ export const FormUserUpdate = ({ userData }) => {
                   name="correo"
                   control={control}
                   rules={{ required: "Correo es obligatorio" }}
+                  defaultValue={user?.correo || ""}
                   render={({ field }) => (
                     <InputUpdate
                       {...field}
@@ -291,6 +280,7 @@ export const FormUserUpdate = ({ userData }) => {
                       name="numero_documento"
                       control={control}
                       rules={{ required: true }}
+                      defaultValue={user?.numero_documento || ""}
                       render={({ field }) => (
                         <InputUpdate
                           {...field}
@@ -303,6 +293,11 @@ export const FormUserUpdate = ({ userData }) => {
                     />
                     {errores.numero_documento && (
                       <p className="text-red-500">{errores.numero_documento}</p>
+                    )}
+                    {errores.num && (
+                      <>
+                        <p className="text-red-500">{errores.num} </p>
+                      </>
                     )}
                   </div>
                   {admin && (
@@ -321,7 +316,6 @@ export const FormUserUpdate = ({ userData }) => {
                             },
                           ]}
                           name="tipo_documento"
-                          isDi
                           placeholder={t("tipo_documento")}
                           valueKey="idRoles"
                           value={false}
@@ -358,35 +352,19 @@ export const FormUserUpdate = ({ userData }) => {
                   <>
                     <div className="mb-5.5 flex flex-col gap-10 sm:flex-row">
                       <div className="w-full sm:w-1/2">
-                        <Controller
-                          name="empresa"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <InputUpdate
-                              {...field}
-                              errors={errors}
-                              label={t("empresa")}
-                              tipo="text"
-                              isUpdating={true}
-                            />
-                          )}
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          name={"empresa"}
+                          text={t("empresa")}
                         />
                       </div>
                       <div className="w-full sm:w-1/2">
-                        <Controller
-                          name="especialidad"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <InputUpdate
-                              {...field}
-                              errors={errors}
-                              label={t("especialidad")}
-                              tipo="text"
-                              isUpdating={true}
-                            />
-                          )}
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          name={"especialidad"}
+                          text={t("especialidad")}
                         />
                       </div>
                     </div>
