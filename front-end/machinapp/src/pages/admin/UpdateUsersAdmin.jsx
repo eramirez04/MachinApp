@@ -1,10 +1,22 @@
+import { useEffect } from "react";
 import { Layout, FormUserUpdate } from "../../index";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const UpdateUserAdmin = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { resultadoUsuario } = location.state;
+  const resultadoUsuario = location.state?.resultadoUsuario;
+
+  useEffect(() => {
+    if (!resultadoUsuario) {
+      navigate("/Panelcontrol");
+    }
+  }, [resultadoUsuario, navigate]);
+
+  if (!resultadoUsuario) {
+    return <div>Cargando...</div>;
+  }
 
   const DataUser = {
     id: resultadoUsuario.idUsuarios,

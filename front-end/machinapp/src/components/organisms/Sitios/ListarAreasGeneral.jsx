@@ -65,9 +65,11 @@ const BuscarAreasGeneral = () => {
               </div>
               <div className="p-6">
                 <div className="flex justify-end">
-                  <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
-                    <FaEdit />
-                  </button>
+                  <Link to={`/Areas/Actualizar/${area.idArea}`}>
+                    <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
+                      <FaEdit />
+                    </button>
+                  </Link>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800">
                   {area.area_nombre}

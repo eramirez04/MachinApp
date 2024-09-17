@@ -1,7 +1,15 @@
 import { Layout, useAuth, FormUserUpdate } from "../../index";
 
 export const PerfilSettings = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <>
+        <div>cargando</div>
+      </>
+    );
+  }
 
   const newDataUser = {
     id: user.idUsuarios,
@@ -14,7 +22,7 @@ export const PerfilSettings = () => {
     empresa: user.us_empresa,
     especialidad: user.us_especialidad,
     rol: user.rol_nombre,
-    id_rol: user.fk_roles,
+    id_rol: user.idRoles,
   };
 
   return (
