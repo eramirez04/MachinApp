@@ -10,9 +10,9 @@ export const menus = (t) => [
     icon: V.MapIcon,
     submenu: true,
     submenus: [
-      { name: t("sedes"), link: "/Sedes" },
-      { name: t("areas"), link: "/Areas" },
-      { name: t("ambientes"), link: "/Ambientes" },
+      { name: t("sedes"), link: "/Sedes", logo: V.BuildingLibraryIcon },
+      { name: t("areas"), link: "/Areas", logo: V.MapIcon },
+      { name: t("ambientes"), link: "/Ambientes", logo: V.MapIcon },
     ],
   },
   {
@@ -21,9 +21,17 @@ export const menus = (t) => [
     icon: V.DocumentTextIcon,
     submenu: true,
     submenus: [
-      { name: t("registrar_solicitud"), link: "/solicitud/registrar" },
-      { name: t("registrar_mantenimiento"), link: "/crear_ficha_mantenimiento" },
-      { name: t("solicitudes"), link: "/solicitud" },
+      {
+        name: t("registrar_solicitud"),
+        link: "/solicitud/registrar",
+        logo: V.PencilSquareIcon,
+      },
+      {
+        name: t("registrar_mantenimiento"),
+        link: "/crear_ficha_mantenimiento",
+        logo: V.WrenchIcon,
+      },
+      { name: t("solicitudes"), link: "/solicitud", logo: V.DocumentIcon },
     ],
   },
   { name: t("equipo_maquinaria"), link: "/Maquinas", icon: V.ServerIcon },
