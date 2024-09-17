@@ -58,9 +58,9 @@ export const FormUserUpdate = ({ userData }) => {
       await refreshUserLoged();
 
       if (res) {
+        toast.success(res.data.Mensaje);
         if (res.data && rol === ADMIN) {
           navigate("/Panelcontrol");
-          toast.warning(res.data.Mensaje);
         } else {
           navigate("/perfil");
           await refreshUserLoged();

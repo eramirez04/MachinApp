@@ -23,7 +23,7 @@ export const ChartMaquinas = () => {
 
   const option = {
     title: {
-      text: "hola",
+      text: "Equipos totales en el sistema",
       left: "center",
       top: 20,
       textStyle: {
