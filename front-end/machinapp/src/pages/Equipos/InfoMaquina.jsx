@@ -47,48 +47,6 @@ export const InfoMaquina = ()=> {
             
             <div className=" flex justify-center flex-row flex-wrap pt-12 gap-8 mt-11 mb-20 pb-16  border-b-2 border-b-green-600 h-auto">
                 
-                <div className=" flex-1 h-full">
-                    <CardStyle
-                        titleCard = {` ${t('modelo')}: ${maquina.fi_modelo} ` }
-                        subtitle =  {`${t('placaSena')}: ${maquina.fi_placa_sena}`}
-                    >
-                        <div className="w-full flex justify-center">
-                            <div className="w-[350px] flex flex-col justify-center  pb-2 " >
-                                <figure className="w-full grid justify-items-center bg-white   ">
-                                    <Imagenes  rutaImg = {`imagenes/ficha/${maquina.fi_imagen}` } />
-                                </figure>
-                            </div>
-                        </div>
-
-                        <div className="my-8" >
-                            <p><b> {t('descripcionEquipo')}:</b> <br /> {maquina.fi_descripcion} </p>
-                        </div>
-                        <div className="flex flex-col gap-4 my-8 ">
-                            
-                            <ModalComponte
-                                buttonModal={ `${t('actEstadoEquipo')}`}
-                                tittleModal = {`${t('actEstadoEquipo')}`}
-                                componente={<>
-                                <UpdateEstAmbienteFicha dataMaquina={maquina} procesoAct={"EstadoFicha"} buscarInfo={buscarInfo}  />
-                                </>}
-                                variantButton={"bordered"}
-                                colorButton={"warning"}
-                            />
-                            
-                            <ModalComponte
-                                buttonModal={`${t('actAmbienteEquipo')}`}
-                                tittleModal = {`${t('actAmbienteEquipo')}`}
-                                componente={<>
-                                <UpdateEstAmbienteFicha dataMaquina={maquina} procesoAct={"AmbienteFicha"}  buscarInfo={buscarInfo}  />
-                                </>}
-                                variantButton={"bordered"}
-                                colorButton={"warning"}
-                            />
-
-                        </div>
-                    </CardStyle>
-
-                </div>
 
                     
                 <div className="w-[480px] flex-1 ">
@@ -116,13 +74,13 @@ export const InfoMaquina = ()=> {
                                 </span>
                             </Tooltip>
                         </a>
-                        <a href={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`} target="_blank" download>
+{/*                         <a href={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`} target="_blank" download>
                             <Tooltip content={t('fichaRespaldo')} >
                                 <span className="text-3xl cursor-pointer text-zinc-800">
                                     <CiSaveDown1 />
                                 </span>
                             </Tooltip>
-                        </a>
+                        </a> */}
 
                     </div>
 
@@ -182,6 +140,48 @@ export const InfoMaquina = ()=> {
                             </table>
                         </div>
                     </div>
+                </div>
+                <div className=" flex-1 h-full">
+                    <CardStyle
+                        titleCard = {` ${t('modelo')}: ${maquina.fi_modelo} ` }
+                        subtitle =  {`${t('placaSena')}: ${maquina.fi_placa_sena}`}
+                    >
+                        <div className="w-full flex justify-center">
+                            <div className="w-[350px] flex flex-col justify-center  pb-2 " >
+                                <figure className="w-full grid justify-items-center bg-white   ">
+                                    <Imagenes  rutaImg = {`imagenes/ficha/${maquina.fi_imagen}` } />
+                                </figure>
+                            </div>
+                        </div>
+
+                        <div className="my-8" >
+                            <p><b> {t('descripcionEquipo')}:</b> <br /> {maquina.fi_descripcion} </p>
+                        </div>
+                        <div className="flex flex-col gap-4 my-8 ">
+                            
+                            <ModalComponte
+                                buttonModal={ `${t('actEstadoEquipo')}`}
+                                tittleModal = {`${t('actEstadoEquipo')}`}
+                                componente={<>
+                                <UpdateEstAmbienteFicha dataMaquina={maquina} procesoAct={"EstadoFicha"} buscarInfo={buscarInfo}  />
+                                </>}
+                                variantButton={"bordered"}
+                                colorButton={"warning"}
+                            />
+                            
+                            <ModalComponte
+                                buttonModal={`${t('actAmbienteEquipo')}`}
+                                tittleModal = {`${t('actAmbienteEquipo')}`}
+                                componente={<>
+                                <UpdateEstAmbienteFicha dataMaquina={maquina} procesoAct={"AmbienteFicha"}  buscarInfo={buscarInfo}  />
+                                </>}
+                                variantButton={"bordered"}
+                                colorButton={"warning"}
+                            />
+
+                        </div>
+                    </CardStyle>
+
                 </div>
             </div>
             

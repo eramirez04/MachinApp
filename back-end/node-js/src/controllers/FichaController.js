@@ -167,7 +167,8 @@ export const listarFichas = async(req, res)=>{
         tipo_equipo.ti_fi_nombre AS nombre
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON  idAmbientes  = fi_fk_sitios
-        INNER JOIN tipo_equipo ON tipo_equipo.idTipo_ficha = fichas_maquinas_equipos.fi_fk_tipo_ficha;
+        INNER JOIN tipo_equipo ON tipo_equipo.idTipo_ficha = fichas_maquinas_equipos.fi_fk_tipo_ficha
+        WHERE tipo_ficha = "equipo"
         `
         const  [respuesta] = await conexion.query(sql)
 
@@ -191,16 +192,59 @@ export const listarFichas = async(req, res)=>{
 
                 //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
                 for(let j = 0; infoVar.length > j; j++){
-
-                    if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
-                        respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                    
+                        switch(infoVar[j].idVariable){
+                            case 1 :
+                                respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
+                                break
+                            case 2:
+                                respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                                break
+                            case 3:
+                                respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
+                                break
+                            case 4:
+                                respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
+                                break
+                            case 5:
+                                respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
+                                break
+                            case 6:
+                                respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
+                                break
+                            case 7:
+                                respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                                break
+                            case 8:
+                                respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                                break
+                            case 9:
+                                respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
+                                break
+                        }
+                    
+/* 
+                    if(infoVar[j].idVariable == 1){
+                        respuesta[i]["fecha_adquisicion"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
+                        respuesta[i]["serial"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 3){              
+                        respuesta[i]["fecha_inicioGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 4){              
+                        respuesta[i]["fecha_finGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 5){              
+                        respuesta[i]["descripcion_garantia"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 7){
                         respuesta[i]["fi_marca"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 8){
                         respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                    }
+                    } */
                 }
             }
 
@@ -232,7 +276,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
         INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
-        WHERE idAmbientes = ${idAmbiente}
+        WHERE idAmbientes = ${idAmbiente} and tipo_ficha = "equipo"
         `
         const [resuladoFichas] = await conexion.query(sql)
 
