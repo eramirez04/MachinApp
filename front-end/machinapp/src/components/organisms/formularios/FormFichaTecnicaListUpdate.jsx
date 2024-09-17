@@ -3,18 +3,17 @@ import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
 import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent } from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 
 import { useNavigate } from 'react-router-dom'
 
 import { multiFormData } from "../../../utils/formData.js"
-import { use } from "i18next";
 
 
 
 export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
   const idFicha = idMaquina
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
   const navigate = useNavigate()
 
 
@@ -24,7 +23,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
   const {
     control,
-    setValue,
     register,
     reset,
     formState: { errors },
@@ -76,12 +74,12 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
     try{
 
       //actualizamos la informacion basica de la maquina
-      const response = await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
+      /* const response =  */await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
 
 
       //actualizamos la informacion de los detalles. 
-      const actDetalles = await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
-      //navigate(`/infoMaquina/${idFicha}`)
+      /* const actDetalles = */ await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+      navigate(`/infoMaquina/${idFicha}`)
     }
     catch(error){
       console.log(error)

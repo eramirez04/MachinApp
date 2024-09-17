@@ -47,6 +47,7 @@ export const InfoMaquina = ()=> {
             
             <div className=" flex justify-center flex-row flex-wrap pt-12 gap-8 mt-11 mb-20 pb-16  border-b-2 border-b-green-600 h-auto">
                 
+
                     
                 <div className="w-[480px] flex-1 ">
 

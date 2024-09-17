@@ -2,7 +2,6 @@ import { conexion } from '../database/database.js'
 
 import { validationResult } from 'express-validator'
 
-
 export const registrarTipoFicha= async(req, res)=>{
 
     try{
@@ -14,9 +13,9 @@ export const registrarTipoFicha= async(req, res)=>{
         }
 
 
-        let tipoFicha = req.body.tipoFicha
+        let { tipoFicha,tipo_ficha } = req.body
 
-        let sql = `insert into tipo_equipo (ti_fi_nombre) values ('${tipoFicha}')`
+        let sql = `insert into tipo_equipo (ti_fi_nombre, tipo_ficha) values ('${tipoFicha}', '${tipo_ficha}')`
 
         const [respuesta] = await conexion.query(sql)
 
@@ -33,10 +32,11 @@ export const registrarTipoFicha= async(req, res)=>{
     }
 }
 
+
 export const listarTipoFicha = async(req, res)=>{
     try{
-
-        let sql= `SELECT * FROM tipo_equipo `
+        
+        let sql= `SELECT * FROM tipo_equipo WHERE tipo_ficha = "equipo" `
 
         let [respuesta] = await conexion.query(sql)
 

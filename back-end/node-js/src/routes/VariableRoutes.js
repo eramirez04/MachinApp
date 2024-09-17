@@ -19,7 +19,7 @@ rutaVariable.delete('/eliminar/:idVariable', verificar, eliminarVariable)
 /* new */
 rutaVariable.post('/registrarVars',registrarVariasVariables)
 
-rutaVariable.get('/listarVars/:idTipoFicha', listarVarFicha)
+rutaVariable.get('/listarVars/:idTipoFicha/:tipo_ficha', listarVarFicha)
 
 
 
