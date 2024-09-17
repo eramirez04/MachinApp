@@ -3,18 +3,17 @@ import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
 import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent } from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 
 import { useNavigate } from 'react-router-dom'
 
 import { multiFormData } from "../../../utils/formData.js"
-import { use } from "i18next";
 
 
 
 export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
   const idFicha = idMaquina
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
   const navigate = useNavigate()
 
 
@@ -24,7 +23,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
   const {
     control,
-    setValue,
     register,
     reset,
     formState: { errors },
@@ -43,15 +41,14 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
 
   // almacenaran a la informacion de las variables y detalles
-
   const [varEspec, setVarEspec] = useState([])
   const [varEspTecnicas, setVarEspTec ] = useState([])
   const [varSecciones, setVarSecciones ] = useState([])
-  
+  const [varObligatorias, setVarObligatorias] = useState({})
 
 
   const handleSubmitData = async (data) => {
-    console.log(data.infoDetalles)
+
 
     //creamos un objto para actualizar la informacion basica de la maquina o equipo
     let infoFicha = {
@@ -62,22 +59,27 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
       fiTecnica: fichaRes
     }
 
-    //objeto para actualizar detalles
-
-    let detalles = {
-      detalles: data.infoDetalles
+    //objeto que contenga la informacion de los detalles
+    let infoDetalles = {
+      ...data.infoDetalles
     }
+
+    //creamos un array para guardar las clave de los objetos que son los id de los detalles y el valor de estas claves es el valor de dicho detalle. 
+    let detallesBd =  Object.keys(infoDetalles).map(key => ({
+      idDetalle: key, // usa la clave original como idDetalle
+      detValor: infoDetalles[key]
+    }))
+
 
     try{
 
       //actualizamos la informacion basica de la maquina
-      const response = await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
+      /* const response =  */await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
 
 
       //actualizamos la informacion de los detalles. 
-
-      const actDetalles = await axiosCliente.put('detalle/actualizar',detalles )
-      //navigate(`/infoMaquina/${idFicha}`)
+      /* const actDetalles = */ await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+      navigate(`/infoMaquina/${idFicha}`)
     }
     catch(error){
       console.log(error)
@@ -107,7 +109,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         for (let i = 0; i < variables.length; i++) {
           let variable = variables[i] // Obtiene el objeto actual
-          contDetalles[`${variable.idDetalle}`] = variable.det_valor // Asigna la clave y valor al objeto `contenidoForm`
+          contDetalles[`${variable.idDetalle}`] = variable.det_valor // Asigna la clave y valor al objeto contDetalles
         }
 
         let contenidoForm = {...ficha }
@@ -116,14 +118,35 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         reset(contenidoForm)
         
-        console.log(contenidoForm)
-
-
+        //separamos las clases de las variables para poder mapearlas
         setVarEspTec(variables?.filter(item => item.var_clase == "especificacionesTecnicas"))
         setVarSecciones(variables?.filter(item => item.var_clase == "seccion"))
         setVarEspec(variables?.filter(item => item.var_clase == "especifica"))   
         
 
+        //manejo de las variables de clase obligatoria
+
+        let varObligatorias = variables?.filter(item => item.var_clase == "obligatoria")
+
+        const objVarObligatorias = {}
+
+
+        for(let i = 0; i< varObligatorias.length; i++){
+          const variable = varObligatorias[i]
+
+          objVarObligatorias[`idVar${variable.idVariable}`] ={
+            idDetalle: variable.idDetalle,
+            det_valor: variable.det_valor, 
+            var_nombre: variable.var_nombre,
+            var_descripcion: variable.var_descripcion,
+            var_tipoDato: variable.var_tipoDato
+          }
+
+        }
+
+        setVarObligatorias(objVarObligatorias)
+
+        console.log(objVarObligatorias)
 
 
       } catch (error) {
@@ -208,6 +231,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
             </div>
           </div>
 
+{/* contenido */}
           <div>
             <div className="flex flex-col sm:flex-row mt-5 w-full">
               <div className="w-full sm:w-2/4 p-2">
@@ -215,6 +239,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   Información Básica
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
+
                   <Controller
                     name="fi_placa_sena"
                     control={control}
@@ -228,76 +253,219 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                         value={field.value|| ""}
                         onChange={(e) => field.onChange(e.target.value)}
                       />
+                      
                     )}
                   />
+
+                  {/* Serial */}
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar2.idDetalle}`}    /* se accese al objeto idVar2 por que este es el id de la variable serial en la BD */
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar2.var_nombre}`}
+                        tipo={`${varObligatorias.idVar2.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+
+                  {/* precio */}
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar9.idDetalle}`}    /* se accese al objeto idVar2 por que este es el id de la variable serial en la BD */
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar9.var_nombre}`}
+                        tipo={`${varObligatorias.idVar9.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+
+                  {/* Marca */}
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar7.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar7.var_nombre}`}
+                        tipo={`${varObligatorias.idVar7.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+
+                  {/* Modelo */}
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar8.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar8.var_nombre}`}
+                        tipo={`${varObligatorias.idVar8.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+
+                  {/* Fehca de adquisicion */}
+
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar1.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar1.var_nombre}`}
+                        tipo={`${varObligatorias.idVar1.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+
                 </div>
+                <div className="w-full mt-[18px] flex flex-col gap-6 justify-start">
+                  <div>
+                    <SelectComponent
+                        options={ambientes}
+                        name="fi_fk_sitios"
+                        placeholder="Ambiente"
+                        valueKey="id"
+                        textKey="valor"
+                        register={register}
+                        label="Ambiente"
+                    />
+                  </div>
+                  <div>
+                    <SelectComponent 
+                      options={[
+                        {
+                          id: "operacion", 
+                          value: "operacion"
+                        },
+                        {
+                          id: "fuera_de_servicio", 
+                          value: "fuera de servicio"
+                        },
+                        {
+                          id: "en_reparacion", 
+                          value: "En reparacion"
+                        }
+                      ]}
+                      name = "fi_estado"
+                      placeholder="Seleccionar"
+                      valueKey="id"
+                      textKey="value"
+                      register={register}
+                      label="Estado maquina"
+                    />
+                  </div>
+                </div>
+
               </div>
               <div className="w-full sm:w-2/4 p-2">
 
-              {
-                estadoImg ? (
-                  <div className="flex items-center justify-center w-full h-[256px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
-                    <img
-                      className="h-full w-full object-contain rounded"
-                      alt=""
-                      src={previewImagen}
-                    />
+                {
+                  estadoImg ? (
+                    <div className="flex items-center justify-center w-full h-[256px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
+                      <img
+                        className="h-full w-full object-contain rounded"
+                        alt=""
+                        src={previewImagen}
+                      />
+                    </div>
+                  ):(
+                  <div className="flex items-center justify-center w-full   sm:w-full  mt-24">
+                    <Imagenes rutaImg={`imagenes/ficha/${infoFicha.fi_imagen}`}  />
                   </div>
-                ):(
-                <div className="flex items-center justify-center w-full   sm:w-full  mt-24">
-                  <Imagenes rutaImg={`imagenes/ficha/${infoFicha.fi_imagen}`}  />
+                  )
+                }
+                <div>
+                  <p className="mb-2 mt-6">Actualizar imagen</p>
+                  <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
                 </div>
-                )
-              }
-
+                
               </div>
             </div>
-          </div>
 
-            <SelectComponent
-              options={ambientes}
-              name="fi_fk_sitios"
-              placeholder="Ambiente"
-              valueKey="id"
-              textKey="valor"
-              register={register}
-              label="Ambiente"
-            />
-          
-          
-            <SelectComponent 
-              options={[
-                {
-                  id: "operacion", 
-                  value: "operacion"
-                },
-                {
-                  id: "fuera_de_servicio", 
-                  value: "fuera de servicio"
-                },
-                {
-                  id: "en_reparacion", 
-                  value: "En reparacion"
-                }
-              ]}
-              name = "fi_estado"
-              placeholder="Seleccionar"
-              valueKey="id"
-              textKey="value"
-              register={register}
-              label="Estado maquina"
-            />
-
-
-            <p>Actualizar imagen</p>
-            <input type="file" onChange={cargarImagen} className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
+            <div>
               <p>Actualizar ficha tecnica</p>
-            <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
+              <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
+            </div>
+              {/* recorremos todas las variables de especificas */}              {/* especificas(otros) */}
+            
+              {
+                varEspec.length >0? (                
+                
+                <div>
+                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">Caracteristicas Generales.</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my">
+                    {
+                      
+                      varEspec.map((varEspec) =>(
+                        <div key={varEspec.idDetalle}>
+                          <Controller
+                                name={`infoDetalles.${varEspec.idDetalle}`}
+                                control={control}
+                                render={({ field }) => (
+                                  <InputUpdate
+                                    {...field}
+                                    label={`${varEspec.var_nombre}`}
+                                    tipo={`${varEspec.var_tipoDato}`}
+                                    errors={errors}
+                                    isUpdating={true}
+                                    value={field.value|| ""}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                  />
+                                )}
+                          />
+                        </div>
+                      ))
+                    }
+                    </div>
+                </div>):(<></>)
+              }
 
 
 
-{/* Especificaciones tecnicas */}
-          {
+            <div className="w-full my-5">
+                <label > Descripcion del equipo</label>
+                <TextAreaComponent
+                  errors={errors}
+                  register={register}
+                  name={`infoDetalles.${varObligatorias.idVar6.idDetalle}`}
+                  descripcion={'Descripcion general del equipo'}
+                />
+            </div>
+
+
+            {/* Especificaciones tecnicas */}
+            {
             varEspTecnicas.length>0 ? (
               <div className="my-14">
                 <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
@@ -337,9 +505,67 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                 </div>
               </div>
             ):(<></>)
-          }
+            }
 
-{/* Secciones */}
+
+            {/* Garantia */}
+            <div>
+              <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8" >Informacion Garantia</h3>
+              
+              <div className=" flex flex-col sm:flex-row mt-3 w-full ">
+                <div className="w-full sm:w-2/4 p-2  items-center">
+                  <div className="my-3">
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar3.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar3.var_nombre}`}
+                        tipo={`${varObligatorias.idVar3.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />   
+                    )}
+                  />
+                  </div>
+
+                  <div className="my-3">
+
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar4.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar4.var_nombre}`}
+                        tipo={`${varObligatorias.idVar4.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value|| ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                      
+                    )}
+                  />
+                  </div>
+
+                </div>
+                <div className="w-full sm:w-2/4 p-2 flex items-center">
+                  <TextAreaComponent
+                  errors = {errors}
+                  register={register}
+                  name={`infoDetalles.${varObligatorias.idVar5.idDetalle}`}
+                  descripcion={'Descripcion de la garantia'}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Secciones */}
           <div>
             {
               varSecciones.map((varSeccion)=>(
@@ -368,11 +594,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
               ))
             }
           </div>
-
-
-
-
-
           <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
         </div>
       </form>

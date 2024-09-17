@@ -1,7 +1,7 @@
 //import InputForm from "../../atoms/Inputs/InputForm"
 //import {TextAreaComponent} from "../../atoms/Inputs/TextArea"
 import { useForm } from "react-hook-form";
-import { Button } from "@nextui-org/react";
+import { Button, Select, SelectItem } from "@nextui-org/react";
 //import { Icons } from "../../atoms/icons/Icons";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react"
@@ -24,7 +24,7 @@ export const FormTipoFichaTecnica = () => {
 
   const { t } = useTranslation()
 
-  const { register, unregister, formState: { errors }, handleSubmit } = useForm()
+  const { register, unregister, formState: { errors }, handleSubmit, reset } = useForm()
 
   const navigate = useNavigate()
 
@@ -33,6 +33,9 @@ export const FormTipoFichaTecnica = () => {
   const [containersEsp, setContainers] = useState([])
   const [containersTecn, setContainersTecn] = useState([])
   const [containersSecc, setContainersSecc] = useState([])
+
+  // tomar el tipo de ficha, equipo o ambiente
+  const [tipoFicha, settipoFicha] = useState("")
 
 
   // para los ids de los contenedores
@@ -80,6 +83,11 @@ export const FormTipoFichaTecnica = () => {
   //recuperar datos del formulario
   const handleSubmitData = async (data) => {
 
+    /* console.table(data) */
+    data.tipo_ficha = tipoFicha;
+    console.log(data.tipo_ficha);
+    console.log(data)
+
 
     // Filtrar las variables específicas, esto se hace par aque no me traiga arrais basios si hay, como nimino tiene que contener el nombre y el tipo de dato
     const varEspecificasFiltradas = data.varEspecificas?.filter(item => item.var_nombre && item.var_tipoDato)
@@ -112,7 +120,8 @@ export const FormTipoFichaTecnica = () => {
 
       //registramos el tipo de ficha
       const response = await axiosCliente.post("tipoFicha/registrar",{
-        tipoFicha: data.nombreTipoFicha
+        tipoFicha: data.nombreTipoFicha,
+        tipo_ficha: data.tipo_ficha
       })
 
       //capturamos el id del tipo de ficha registrado
@@ -137,10 +146,19 @@ export const FormTipoFichaTecnica = () => {
   }
 
 
+  
+  const handleSelectionChange = (value) => {
+    
+   settipoFicha(value.target.value);
+   console.log( value.target.value)
+   reset(register())
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(handleSubmitData)} className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5 mt-10">
         
+       <div className="flex flex-row justify-between items-center"> 
         <InputForm
           errors={errors}
           register={register}
@@ -148,11 +166,36 @@ export const FormTipoFichaTecnica = () => {
           name={"nombreTipoFicha"}
           text={t("nombreTipoFicha")}
         />
+        <div className="w-52">
+        <Select
+          value={tipoFicha}
+          aria-label="Seleccionar idioma"
+          label="Elige Elemento quiere registrar"
+          onChange={handleSelectionChange}
+          variant="bordered"
+          color="primary"
+          size="md"
+         
+        >
+          <SelectItem key="equipo" value="equipo">
+          Equipo o Maquinaria
+          </SelectItem>
+          <SelectItem key="ambiente" value="ambiente">
+          Ambiente de Formacion
+          </SelectItem>
+        </Select>
+
+        </div>
+        </div>
 
         {/* Variables de clase especifica */}
-        <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
+     {tipoFicha && (<>
+     
+         <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">{t('agregarCaractGene')}</h3>
+          <h3 className="text-xl text-gray-800 mb-10 ">
+            { tipoFicha === "equipo" ?t('agregarCaractGene') : "Dimensiones y Características Físicas" }
+          </h3>
             
           {containersEsp.map((container)  => (
 
@@ -199,13 +242,15 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
         {/* variables de de clase Especificaiones tecnicas */}
 
         <div className="bg-gray-50 p-5 rounded-xl my-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 "> {t('agregarEspeTec')}</h3>
+          <h3 className="text-xl text-gray-800 mb-10 "> 
+          { tipoFicha === "equipo" ?t('agregarEspeTec') : "ACABADOS DEL AMBIENTE DE FORMACIÓN" }
+          </h3>
             
           {containersTecn.map((container)  => (
             <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around">
@@ -250,7 +295,7 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
 
 
@@ -302,8 +347,9 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
+     </>)}
 
         <ButtonNext text={t('registrar')}  type="submit" className={"bg-green-600 text-white w-full"}> </ButtonNext>
 

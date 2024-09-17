@@ -90,7 +90,6 @@ export const actualizarDetalles = async(req, res)=>{
         let {detalles} = req.body
 
 
-        console.log(detalles)
         for(let i = 0; i<detalles.length; i++){
             
             let sql =  `update detalles_fichas set det_valor='${detalles[i].detValor }' where idDetalle =${detalles[i].idDetalle}`
