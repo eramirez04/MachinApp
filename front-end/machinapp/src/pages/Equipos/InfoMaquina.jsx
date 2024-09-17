@@ -74,13 +74,13 @@ export const InfoMaquina = ()=> {
                                 </span>
                             </Tooltip>
                         </a>
-                        <a href={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`} target="_blank" download>
+{/*                         <a href={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`} target="_blank" download>
                             <Tooltip content={t('fichaRespaldo')} >
                                 <span className="text-3xl cursor-pointer text-zinc-800">
                                     <CiSaveDown1 />
                                 </span>
                             </Tooltip>
-                        </a>
+                        </a> */}
 
                     </div>
 
