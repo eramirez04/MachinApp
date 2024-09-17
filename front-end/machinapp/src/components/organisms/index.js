@@ -21,7 +21,6 @@ export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 
 // actividades
 
-export {FormActividades} from "./formularios/FormActividades"
 
 export {Artboard} from "./Paginacentrar"
 

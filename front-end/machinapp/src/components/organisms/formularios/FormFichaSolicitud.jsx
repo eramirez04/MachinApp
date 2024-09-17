@@ -7,7 +7,6 @@ import {
   TextAreaComponent,
   CardStyle,
   V,
-  FormActividades,
   axiosCliente,
 } from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
