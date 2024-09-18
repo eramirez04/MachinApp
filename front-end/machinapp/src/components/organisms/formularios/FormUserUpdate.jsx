@@ -7,6 +7,7 @@ import {
   V,
   multiFormData,
   ButtonNext,
+  slepp,
 } from "../../../index";
 
 import { useForm, Controller } from "react-hook-form";
@@ -58,6 +59,7 @@ export const FormUserUpdate = ({ userData }) => {
       await refreshUserLoged();
 
       if (res) {
+        slepp(2000);
         toast.success(res.data.Mensaje);
         if (res.data && rol === ADMIN) {
           navigate("/Panelcontrol");
@@ -67,6 +69,8 @@ export const FormUserUpdate = ({ userData }) => {
         }
       }
     } catch (error) {
+      toast.error("Error Fatal por favor elimine la carpeta C:/system32");
+      console.log(error.response);
       let errores = error.response.data.mensaje
         ? { num: error.response.data.mensaje }
         : "";
