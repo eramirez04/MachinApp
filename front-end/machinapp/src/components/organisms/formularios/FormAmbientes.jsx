@@ -148,6 +148,7 @@ export const FormAmbientes = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_ambiente"}
+                label={"Nombre del ambiente"}
               />
               <InputDate
                 label="Fecha de Registro: "

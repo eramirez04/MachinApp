@@ -104,36 +104,42 @@ export const FormSedes = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_centro"}
+                label={"Nombre del centro"}
               />
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
                 name={"Nombre_de_la_sede"}
+                label={"Nombre de la sede"}
               />
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
                 name={"Regional"}
+                label={"Regional"}
               />
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
                 name={"Municipio"}
+                label={"Municipio"}
               />
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
                 name={"Direccion"}
+                label={"Dirección"}
               />
               <InputforForm
                 errors={errors}
                 register={register}
                 tipo={"text"}
                 name={"Subdirector"}
+                label={"Subdirector"}
               />
             </div>
           </div>
