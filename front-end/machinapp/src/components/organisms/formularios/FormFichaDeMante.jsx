@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { axiosCliente } from '../../../service/api/axios';
-import { CardStyle } from "../../molecules/content/CardStyle.jsx";
-import { InputforForm } from "../../molecules/form/InputForForm";
+
 import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+
+import { CardStyle, InputforForm, Breadcrumb, axiosCliente } from "../../../index.js";
 
 const Textarea = ({ register, name, placeholder, rows }) => (
   <textarea
@@ -149,196 +149,208 @@ export const FormFichaDeMantenimiento = () => {
     setSelectedFile(event.target.files[0]);
   };
 
+  // Obtener la fecha de hoy en formato YYYY-MM-DD
+  const today = new Date().toISOString().split('T')[0];
+
   return (
-    <ErrorBoundary>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto flex flex-col gap-6 p-4">
-        <div className="flex items-center justify-between mb-4 border p-2">
-          <div className="w-1/4">
-            <Image
-              src="/logoSenaNaranja.png"
-              className="h-16 w-full object-contain"
-            />
+    <div>
+      <Breadcrumb pageName={t("register_maintenance")} />
+      <ErrorBoundary>
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-7xl mx-auto p-8 space-y-8">
+          <div className="flex items-center justify-between mb-8 border p-4 rounded-lg shadow-sm">
+            <div className="w-1/4">
+              <Image
+                src="/logoSenaNaranja.png"
+                className="h-20 w-full object-contain"
+              />
+            </div>
+            <div className="w-1/2 text-center">
+              <h2 className="text-xl font-bold">{t("maintenance_work_order")}</h2>
+            </div>
+            <div className="w-1/4 text-right">
+              <p className="text-sm">{t("management_center")}</p>
+            </div>
           </div>
-          <div className="w-1/2 text-center">
-            <h2 className="text-sm font-bold">{t("maintenance_work_order")}</h2>
-          </div>
-          <div className="w-1/4 text-right">
-            <p className="text-xs">{t("management_center")}</p>
-          </div>
-        </div>
 
-        <CardStyle titleCard={t("maintenance_code")}>
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_codigo_mantenimiento"
-            tipo="text"
-            placeholder={t("enter_maintenance_code")}
-            label={t("enter_maintenance_code")}
-          />
-        </CardStyle>
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
+            <CardStyle titleCard={t("maintenance_code")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="mant_codigo_mantenimiento"
+                tipo="text"
+                placeholder={t("enter_maintenance_code")}
+                label={t("enter_maintenance_code")}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard={t("status")}>
-          <Controller
-            name="mant_estado"
-            control={control}
-            render={({ field }) => (
-              <Select 
-                {...field}
-                placeholder={t("select_status")}
-              >
-                <SelectItem key="Pendiente" value="Pendiente">{t("pending")}</SelectItem>
-                <SelectItem key="En Proceso" value="En Proceso">{t("in_progress")}</SelectItem>
-                <SelectItem key="Completado" value="Completado">{t("completed")}</SelectItem>
-                <SelectItem key="En Espera" value="En Espera">{t("on_hold")}</SelectItem>
-              </Select>
-            )}
-          />
-        </CardStyle>
-
-        <CardStyle titleCard={t("next_date")}>
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_fecha_proxima"
-            tipo="date"
-            placeholder={t("select_next_date")}
-            label={t("select_next_date")}
-          />
-        </CardStyle>
-
-        <CardStyle titleCard={t("maintenance_type")}>
-          <Controller
-            name="fk_tipo_mantenimiento"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
-                  tiposMantenimiento.map((tipo) => (
-                    <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
-                      {tipo.tipo_mantenimiento || t("no_maintenance_type")}
-                    </Radio>
-                  ))
-                ) : (
-                  <p>{t("no_maintenance_types_available")}</p>
+            <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="mant_estado"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                    {...field}
+                    placeholder={t("select_status")}
+                  >
+                    <SelectItem key="Pendiente" value="Pendiente">{t("pending")}</SelectItem>
+                    <SelectItem key="En Proceso" value="En Proceso">{t("in_progress")}</SelectItem>
+                    <SelectItem key="Completado" value="Completado">{t("completed")}</SelectItem>
+                    <SelectItem key="En Espera" value="En Espera">{t("on_hold")}</SelectItem>
+                  </Select>
                 )}
-              </RadioGroup>
-            )}
-          />
-        </CardStyle>
+              />
+            </CardStyle>
 
-        <CardStyle titleCard={t("maintenance_description")}>
-          <Textarea
-            register={register}
-            name="mant_descripcion"
-            placeholder={t("provide_detailed_description")}
-            label={t("provide_detailed_description")}
-            rows={6}
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("next_date")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="mant_fecha_proxima"
+                tipo="date"
+                placeholder={t("select_next_date")}
+                label={t("select_next_date")}
+                min={today}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard={t("work_executed")}>
-          <input type="file" onChange={handleFileChange} />
-          {selectedFile && <p>{t("selected_file")}: {selectedFile.name}</p>}
-          {fileError && <p className="text-red-500">{fileError}</p>}
-        </CardStyle>
+            <CardStyle titleCard={t("maintenance_type")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="fk_tipo_mantenimiento"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup {...field}>
+                    {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
+                      tiposMantenimiento.map((tipo) => (
+                        <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
+                          {tipo.tipo_mantenimiento || t("no_maintenance_type")}
+                        </Radio>
+                      ))
+                    ) : (
+                      <p>{t("no_maintenance_types_available")}</p>
+                    )}
+                  </RadioGroup>
+                )}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard={t("final_cost")}>
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="costo_final"
-            tipo="number"
-            placeholder={t("enter_final_cost")}
-            label={t("enter_final_cost")}
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("maintenance_description")} className="p-6 shadow-md rounded-lg">
+              <Textarea
+                register={register}
+                name="mant_descripcion"
+                placeholder={t("provide_detailed_description")}
+                label={t("provide_detailed_description")}
+                rows={6}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard={t("maintenance_request")}>
-          <Controller
-            name="fk_solicitud_mantenimiento"
-            control={control}
-            render={({ field }) => (
-              <Select 
-                {...field}
-                placeholder={t("seleccione una solicitud pendiente")}
-              >
-                {solicitudes.map((solicitud) => (
-                  <SelectItem key={solicitud.idSolicitud} value={solicitud.idSolicitud.toString()}>
-                    {`ID: ${solicitud.idSolicitud}`}
-                  </SelectItem>
-                ))}
-              </Select>
-            )}
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("work_executed")} className="p-6 shadow-md rounded-lg">
+              <input type="file" onChange={handleFileChange} className="mb-2" />
+              {selectedFile && <p className="text-sm text-gray-600">{t("selected_file")}: {selectedFile.name}</p>}
+              {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+            </CardStyle>
 
-        <CardStyle titleCard={t("parts_used_and_costs")}>
-          <div className="flex justify-end mb-2">
-            <Button
-              color="primary"
-              onClick={() => append({ nombreRepuesto: '', costo: '' })}
-            >
-              <PlusIcon className="h-5 w-5" aria-hidden="true" />
-              {t("add_part")}
-            </Button>
+            <CardStyle titleCard={t("final_cost")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="costo_final"
+                tipo="number"
+                placeholder={t("enter_final_cost")}
+                label={t("enter_final_cost")}
+                min="0"
+                step="0.01"
+              />
+            </CardStyle>
+
+            <CardStyle titleCard={t("maintenance_request")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="fk_solicitud_mantenimiento"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                    {...field}
+                    placeholder={t("seleccione una solicitud pendiente")}
+                  >
+                    {solicitudes.map((solicitud) => (
+                      <SelectItem key={solicitud.idSolicitud} value={solicitud.idSolicitud.toString()}>
+                        {`ID: ${solicitud.idSolicitud}`}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </CardStyle>
           </div>
-          <Table aria-label={t("parts_table")}>
-            <TableHeader>
-              <TableColumn>{t("part_name")}</TableColumn>
-              <TableColumn>{t("cost")}</TableColumn>
-              <TableColumn>{t("actions")}</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {fields.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
-                      errors={errors}
-                      name={`repuestos.${index}.nombreRepuesto`}
-                      tipo="text"
-                      placeholder={t("part_name")}
-                      label={t("part_name")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
-                      errors={errors}
-                      name={`repuestos.${index}.costo`}
-                      tipo="number"
-                      placeholder={t("cost")}
-                      label={t("cost")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                      {t("delete")}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardStyle>
 
-        <Button
-          type="submit"
-          color="success"
-          disabled={isLoading}
-        >
-          {isLoading ? t("registering") : t("register_maintenance")}
-        </Button>
+          <CardStyle titleCard={t("parts_used_and_costs")} className="mt-8 p-6 shadow-md rounded-lg">
+            <div className="flex justify-end mb-4">
+              <Button
+                color="primary"
+                onClick={() => append({ nombreRepuesto: '', costo: '' })}
+              >
+                <PlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                {t("add_part")}
+              </Button>
+            </div>
+            <Table aria-label={t("parts_table")}>
+              <TableHeader>
+                <TableColumn>{t("part_name")}</TableColumn>
+                <TableColumn>{t("cost")}</TableColumn>
+                <TableColumn>{t("actions")}</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {fields.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.nombreRepuesto`}
+                        tipo="text"
+                        placeholder={t("part_name")}
+                        label={t("part_name")}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.costo`}
+                        tipo="number"
+                        placeholder={t("cost")}
+                        label={t("cost")}
+                        min="0"
+                        step="0.01"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        color="error"
+                        onClick={() => remove(index)}
+                      >
+                        <TrashIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                        {t("delete")}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardStyle>
 
-        {/* {error && <p className="text-red-500">{error}</p>} */}
-      </form>
-    </ErrorBoundary>
+          <Button
+            type="submit"
+            color="success"
+            className="mt-8 w-full py-4 text-lg font-semibold"
+            disabled={isLoading}
+          >
+            {isLoading ? t("registering") : t("register_maintenance")}
+          </Button>
+
+          {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+        </form>
+      </ErrorBoundary>
+    </div>
   );
 };
-
-export default FormFichaDeMantenimiento;
