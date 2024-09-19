@@ -126,6 +126,7 @@ export const FormAreas = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_area"}
+                label={"Nombre del área"}
               />
               <SelectComponent
                 options={sedes}

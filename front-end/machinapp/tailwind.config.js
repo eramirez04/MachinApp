@@ -12,7 +12,10 @@ export default {
         "custom-green": "#39A914",
         "custom-blue": "#00324D",
       },
+      fontFamily: {
+        sans: ["Work Sans", "sans-serif"], // Agregas "Work Sans" aquí
+      },
     },
   },
-  plugins: [require("daisyui"), nextui()],
+  plugins: [nextui()],
 };
