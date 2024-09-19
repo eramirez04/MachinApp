@@ -229,7 +229,6 @@ export const actualizarMantenimiento = async (req, res) => {
     }
 
     const {
-      mant_id, // ID del mantenimiento que se va a actualizar
       mant_codigo_mantenimiento,
       mant_estado,
       mant_fecha_proxima,
@@ -239,21 +238,23 @@ export const actualizarMantenimiento = async (req, res) => {
       fk_solicitud_mantenimiento,
     } = req.body;
 
-    // Obtener la ruta del archivo
+    // Obtener la ruta del archivo si existe
     const mant_ficha_soporte = req.file ? req.file.path : null;
+
+    const { idMantenimiento } = req.params;
 
     try {
       // Construir la consulta de actualización
       let sql = `
-          UPDATE mantenimiento SET
-            mant_codigo_mantenimiento = ?,
-            mant_estado = ?,
-            mant_fecha_proxima = ?,
-            fk_tipo_mantenimiento = ?,
-            mant_descripcion = ?,
-            mant_costo_final = ?,
-            fk_solicitud_mantenimiento = ?
-        `;
+        UPDATE mantenimiento SET
+          mant_codigo_mantenimiento = ?,
+          mant_estado = ?,
+          mant_fecha_proxima = ?,
+          fk_tipo_mantenimiento = ?,
+          mant_descripcion = ?,
+          mant_costo_final = ?,
+          fk_solicitud_mantenimiento = ?
+      `;
 
       const params = [
         mant_codigo_mantenimiento,
@@ -265,25 +266,20 @@ export const actualizarMantenimiento = async (req, res) => {
         fk_solicitud_mantenimiento,
       ];
 
-      // Si hay un nuevo archivo PDF, incluirlo en la consulta
       if (mant_ficha_soporte) {
-        sql += `, mant_ficha_soporte = ?`;
+        sql += ', mant_ficha_soporte = ?';
         params.push(mant_ficha_soporte);
       }
 
-      sql += ` WHERE mant_id = ?`;
-      params.push(mant_id);
+      sql += ' WHERE idMantenimiento = ?';
+      params.push(idMantenimiento);
 
       const [resultado] = await conexion.query(sql, params);
 
       if (resultado.affectedRows > 0) {
-        return res
-          .status(200)
-          .json({ mensaje: "Se actualizó el mantenimiento con éxito" });
+        return res.status(200).json({ mensaje: "Mantenimiento actualizado con éxito" });
       } else {
-        return res
-          .status(400)
-          .json({ mensaje: "No se actualizó el mantenimiento" });
+        return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
       }
     } catch (e) {
       return res.status(500).json({ mensaje: "Error: " + e.message });
@@ -309,7 +305,7 @@ export const graficas = async (req, res) => {
         `;
 
     const [result] = await conexion.query(sql);
-    console.log(result);
+    
 
     /* if (result.length === 0) return res.status(404).json({ mensaje: "no" }); */
 
@@ -318,3 +314,78 @@ export const graficas = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+
+export const listarMantenimientoPorId = async (req, res) => {
+  try {
+    const { idMantenimiento } = req.params;
+
+
+    const sql = `
+      SELECT
+          fme.fi_placa_sena AS referencia_maquina,
+          m.idMantenimiento,
+          m.mant_codigo_mantenimiento,
+          m.mant_descripcion,
+          m.mant_estado,
+          m.mant_fecha_proxima,
+          m.mant_costo_final,
+          m.fk_solicitud_mantenimiento, 
+          a.acti_estado,
+          a.idActividades,
+          a.acti_nombre,
+          tm.tipo_mantenimiento,
+          fme.idFichas,
+          fme.fi_estado
+      FROM
+          mantenimiento m
+      LEFT JOIN
+          solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+      LEFT JOIN
+          solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
+      LEFT JOIN
+          fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
+      LEFT JOIN
+          actividades a ON a.acti_fk_solicitud = sm.idSolicitud
+      LEFT JOIN
+          tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+      WHERE
+          m.idMantenimiento = ?
+    `;
+
+    const [result] = await conexion.query(sql, [idMantenimiento]);
+
+    if (result.length > 0) {
+      const mantenimiento = {
+        idMantenimiento: result[0].idMantenimiento,
+        referencia_maquina: result[0].referencia_maquina,
+        codigo_mantenimiento: result[0].mant_codigo_mantenimiento,
+        descripcion_mantenimiento: result[0].mant_descripcion,
+        mant_fecha_proxima: new Date(result[0].mant_fecha_proxima).toLocaleDateString("es-ES"),
+        mant_costo_final: result[0].mant_costo_final,
+
+        fk_solicitud_mantenimiento : result[0].fk_solicitud_mantenimiento ,
+
+        estado_maquina: result[0].acti_estado,
+        idActividades: result[0].idActividades,
+        acti_nombre: result[0].acti_nombre,
+        tipo_mantenimiento: result[0].tipo_mantenimiento,
+        idFichas: result[0].idFichas,
+        estado_ficha: result[0].fi_estado,
+        mant_estado: result[0].mant_estado,
+      };
+
+      res.status(200).json(mantenimiento);
+    } else {
+      res.status(404).json({
+        message: "No se encontró un mantenimiento con ese id.",
+      });
+    }
+  } catch (err) {
+    console.error("Error en listarMantenimientoPorId:", err);
+    res.status(500).json({
+      message: "Error en el controlador listarMantenimientoPorId: " + err.message,
+    });
+  }
+};
+

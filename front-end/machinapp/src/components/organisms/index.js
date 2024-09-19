@@ -19,6 +19,7 @@ export { MantenimientoGeneral } from "./table/MantenimientoGeneral";
 export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 export {FichaTecnicaEquiposPDF} from "./pdfs/FichaTecnicaEquiposPDF"
+export { VistaPDF } from "./pdfs/VistaPDF.jsx";
 
 // borrar
 export { ChartMaquinas } from "./graficos/MaquinasChart";
