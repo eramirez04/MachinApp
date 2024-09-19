@@ -233,11 +233,11 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
 {/* contenido */}
           <div>
-            <div className="flex flex-col sm:flex-row mt-5 w-full">
-              <div className="w-full sm:w-2/4 p-2">
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5">
-                  Información Básica
-                </h3>
+            <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">
+              Información Básica
+            </h3>
+            <div className="flex flex-col lg:flex-row  w-full gap-11 px-4">
+              <div className="w-full lg:w-1/2 ">
                 <div className="grid grid-cols-2 gap-3">
 
                   <Controller
@@ -349,7 +349,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   />
 
                 </div>
-                <div className="w-full mt-[18px] flex flex-col gap-6 justify-start">
+                {/* <div className="w-full mt-[18px] flex flex-col gap-8 justify-start">
                   <div>
                     <SelectComponent
                         options={ambientes}
@@ -385,14 +385,15 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                       label="Estado maquina"
                     />
                   </div>
-                </div>
+                </div> */}
+
 
               </div>
-              <div className="w-full sm:w-2/4 p-2">
+              <div className="w-full lg:w-2/4">
 
                 {
                   estadoImg ? (
-                    <div className="flex items-center justify-center w-full h-[256px] bg-gray-300 rounded sm:w-full dark:bg-gray-700 mt-24">
+                    <div className="flex items-center justify-center w-full h-[256px] bg-gray-200 rounded sm:w-full dark:bg-gray-300 mt-10">
                       <img
                         className="h-full w-full object-contain rounded"
                         alt=""
@@ -400,31 +401,159 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                       />
                     </div>
                   ):(
-                  <div className="flex items-center justify-center w-full   sm:w-full  mt-24">
+                  <div className="flex items-center justify-center w-full   sm:w-full  mt-10">
                     <Imagenes rutaImg={`imagenes/ficha/${infoFicha.fi_imagen}`}  />
                   </div>
                   )
                 }
-                <div>
+{/*                 <div className="border-l-8 border-l-green-600 pl-3">
                   <p className="mb-2 mt-6">Actualizar imagen</p>
                   <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
                 </div>
+
+                <div className="border-l-8 border-l-green-600 pl-3">
+                  <p className="mb-2 mt-6" >Actualizar ficha tecnica</p>
+                  <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
+                </div> */}
+              
+              </div>
+
+            </div>
+
+            <div className="flex flex-col md:flex-row w-full gap-11 mt-5">
+              {/* contenedor para los select */}
+              <div className="w-full md:w-1/2  py-4 pl-4  flex flex-col items-center gap-10 pt-7">
+                  <div className="w-full ">
+                    <SelectComponent
+                        options={ambientes}
+                        name="fi_fk_sitios"
+                        placeholder="Ambiente"
+                        valueKey="id"
+                        textKey="valor"
+                        register={register}
+                        label="Ambiente"
+                    />
+                  </div>
+                  <div className="w-full ">
+                    <SelectComponent 
+                      options={[
+                        {
+                          id: "operacion", 
+                          value: "operacion"
+                        },
+                        {
+                          id: "fuera_de_servicio", 
+                          value: "fuera de servicio"
+                        },
+                        {
+                          id: "en_reparacion", 
+                          value: "En reparacion"
+                        }
+                      ]}
+                      name = "fi_estado"
+                      placeholder="Seleccionar"
+                      valueKey="id"
+                      textKey="value"
+                      register={register}
+                      label="Estado maquina"
+                    />
+                  </div>
                 
+              </div>
+
+              {/* contenedor para los documentos */}
+              <div className="w-full md:w-1/2  flex flex-col pr-4 py-4 items-center gap-7">
+                <div className="border-l-8 border-l-green-600 pl-3 w-full">
+                  <p className="mb-2 mt-2">Actualizar imagen</p>
+                  <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
+                </div>
+
+                <div className="border-l-8 border-l-green-600 pl-3 w-full">
+                  <p className="mb-2 mt-2" >Actualizar ficha tecnica</p>
+                  <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
+                </div>
               </div>
             </div>
 
-            <div>
-              <p>Actualizar ficha tecnica</p>
-              <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 mt-6 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
+
+
+
+
+
+
+
+
+
+            <div className="w-full mt-12 px-4">
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion del equipo</label>
+              <div className="mt-3">
+                <TextAreaComponent
+                  errors={errors}
+                  register={register}
+                  name={`infoDetalles.${varObligatorias.idVar6.idDetalle}`}
+                  descripcion={'Descripcion general del equipo'}
+                />
+              </div>
+            </div>  
+
+            {/* informacion de la garantia  */}
+
+            <div className="w-full mt-12 px-4 pt-6  flex flex-col border-t-1 border-t-green-600">
+              <div className="flex flex-row w-full">
+                <div className="w-full sm:w-1/2 p-2">
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar3.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar3.var_nombre}`}
+                        tipo={`${varObligatorias.idVar3.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />   
+                    )}
+                  />
+                </div>
+                <div className="w-full sm:w-1/2 p-2">
+                  <Controller
+                    name={`infoDetalles.${varObligatorias.idVar4.idDetalle}`}   
+                    control={control}
+                    render={({ field }) => (
+                      <InputUpdate
+                        {...field}
+                        label={`${varObligatorias.idVar4.var_nombre}`}
+                        tipo={`${varObligatorias.idVar4.var_tipoDato}`}
+                        errors={errors}
+                        isUpdating={true}
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="w-full p-2 ">
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion garantia</label>
+                <TextAreaComponent
+                  errors={errors}
+                  register={register}
+                  name={`infoDetalles.${varObligatorias.idVar5.idDetalle}`}
+                  descripcion={'Descripcion de la garantia'}
+                />
+              </div>
             </div>
+
               {/* recorremos todas las variables de especificas */}              {/* especificas(otros) */}
             
               {
                 varEspec.length >0? (                
                 
                 <div>
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">Caracteristicas Generales.</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my">
+                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">Caracteristicas Generales.</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
                     {
                       
                       varEspec.map((varEspec) =>(
@@ -452,24 +581,12 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
               }
 
 
-
-            <div className="w-full my-5">
-                <label > Descripcion del equipo</label>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={`infoDetalles.${varObligatorias.idVar6.idDetalle}`}
-                  descripcion={'Descripcion general del equipo'}
-                />
-            </div>
-
-
             {/* Especificaciones tecnicas */}
             {
             varEspTecnicas.length>0 ? (
               <div className="my-14">
-                <h3 className="w-full text-gray-900 text-2xl pl-7 my-5" >Especificaciones tecnicas</h3>
-                <div className="overflow-x-auto">
+                <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >Especificaciones tecnicas</h3>
+                <div className="overflow-x-auto px-4">
                   <table className="min-w-full border-collapse">
                     <thead>
                       <tr>
@@ -507,73 +624,16 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
             ):(<></>)
             }
 
-
-            {/* Garantia */}
-            <div>
-              <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8" >Informacion Garantia</h3>
-              
-              <div className=" flex flex-col sm:flex-row mt-3 w-full ">
-                <div className="w-full sm:w-2/4 p-2  items-center">
-                  <div className="my-3">
-                  <Controller
-                    name={`infoDetalles.${varObligatorias.idVar3.idDetalle}`}   
-                    control={control}
-                    render={({ field }) => (
-                      <InputUpdate
-                        {...field}
-                        label={`${varObligatorias.idVar3.var_nombre}`}
-                        tipo={`${varObligatorias.idVar3.var_tipoDato}`}
-                        errors={errors}
-                        isUpdating={true}
-                        value={field.value|| ""}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />   
-                    )}
-                  />
-                  </div>
-
-                  <div className="my-3">
-
-                  <Controller
-                    name={`infoDetalles.${varObligatorias.idVar4.idDetalle}`}   
-                    control={control}
-                    render={({ field }) => (
-                      <InputUpdate
-                        {...field}
-                        label={`${varObligatorias.idVar4.var_nombre}`}
-                        tipo={`${varObligatorias.idVar4.var_tipoDato}`}
-                        errors={errors}
-                        isUpdating={true}
-                        value={field.value|| ""}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      
-                    )}
-                  />
-                  </div>
-
-                </div>
-                <div className="w-full sm:w-2/4 p-2 flex items-center">
-                  <TextAreaComponent
-                  errors = {errors}
-                  register={register}
-                  name={`infoDetalles.${varObligatorias.idVar5.idDetalle}`}
-                  descripcion={'Descripcion de la garantia'}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Secciones */}
-          <div>
+            {/* Secciones */}
+            <div className="border-t-4  border-t-green-600">
             {
+              
               varSecciones.map((varSeccion)=>(
-                <div className="overflow-x-auto my-14" key={varSeccion.idDetalle}>
+                <div className="overflow-x-auto my-14 px-4" key={varSeccion.idDetalle}>
                   <table className="min-w-full  ">
                     <tbody>
                       <tr>
-                        <td className="py-2 px-4 flex justify-between items-center border border-gray-300 rounded-lg">
+                        <td className="py-2 px-4 flex justify-between items-center border border-green-600 rounded-lg">
                           <span className="font-medium text-lg">{varSeccion.var_nombre}</span>
                           <span className="text-sm text-gray-500">{varSeccion.var_descripcion}</span>
                         </td>
@@ -593,10 +653,13 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                 </div>
               ))
             }
+            </div>
           </div>
           <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
         </div>
       </form>
+
+
     </>
   )
 }
