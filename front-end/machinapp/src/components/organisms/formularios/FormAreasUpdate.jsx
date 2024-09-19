@@ -1,19 +1,22 @@
 import { ButtonNext, InputforForm, SelectComponent } from "../../../index.js";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 
-export const FormAreas = () => {
+export const FormAreasUpdate = () => {
   const [sedes, setSedes] = useState([]);
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
+  const [areaData, setAreaData] = useState(null);
+  const { id } = useParams();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
   const navigate = useNavigate();
 
@@ -26,16 +29,16 @@ export const FormAreas = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/area/registrararea",
+        `http://localhost:3000/area/editararea/${id}`,
         dataArea,
-        "POST"
+        "PUT"
       );
 
-      alert("Se registró con éxito");
+      alert("Se actualizó con éxito");
 
       navigate("/Areas");
     } catch (error) {
-      alert("Error al registrar nueva área");
+      alert("Error al actualizar el área");
       console.log(error);
     }
   };
@@ -52,10 +55,11 @@ export const FormAreas = () => {
   };
 
   useEffect(() => {
-    const fetchSedes = async () => {
+    const fetchSedesAndArea = async () => {
       try {
-        const [ sedeResponse ] = await Promise.all([
+        const [sedeResponse, areaResponse] = await Promise.all([
           axiosCliente.get("sede/listarsede"),
+          axiosCliente.get(`area/listararea/${id}`),
         ]);
 
         const sedeArray = sedeResponse.data.resultadoSede.map((sede) => ({
@@ -64,12 +68,22 @@ export const FormAreas = () => {
         }));
 
         setSedes(sedeArray);
+        setAreaData(areaResponse.data);
+        reset({
+          Nombre_del_area: areaResponse.data.area_nombre,
+          sede: areaResponse.data.area_fk_sedes,
+        });
+
+        if (areaResponse.data.img) {
+          setPreviewImagen(`http://localhost:3000/imagenes/${areaResponse.data.img}`);
+        }
       } catch (error) {
         console.error("Error: ", error);
       }
     };
-    fetchSedes();
-  }, []);
+
+    fetchSedesAndArea();
+  }, [id, reset]);
 
   return (
     <>
@@ -79,7 +93,7 @@ export const FormAreas = () => {
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
           <h1 className="text-3xl font-bold text-white">
-            Registrar nueva Area
+            Actualizar Área
           </h1>
         </header>
 
@@ -126,7 +140,7 @@ export const FormAreas = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_area"}
-                label={"Nombre del área"}
+                label={"Nombre del area"}
               />
               <SelectComponent
                 options={sedes}
@@ -140,7 +154,7 @@ export const FormAreas = () => {
             </div>
           </div>
           <div className="pb-8">
-            <ButtonNext color="success" text="Registrar Area" type="submit" />
+            <ButtonNext color="success" text="Actualizar Área" type="submit" />
           </div>
         </div>
       </form>

@@ -48,64 +48,66 @@ export const ResetPassword = () => {
 
   return (
     <>
-      <Header
-        color={"bg-white"}
-        contenido={
-          <ModalComponte
-            buttonModal={"Login"}
-            tittleModal={"Iniciar Sesion"}
-            colorButton="primary"
-            componente={<Login />}
-          />
-        }
-      />
-
-      {/*  */}
-      <section className="bg-gray-100 flex flex-col ">
-        <div className="px-10 py-6">
-          <span className="text-4xl font-bold text-gray-800 mb-4"></span>
-          <div className="border-b-8 border-green-600 inline-block w-full"></div>
-        </div>
-
-        {/*   <!-- Imagen visible solo en pantallas grandes (1200px y mayores) --> */}
-
-        <div className="w-full  flex items-center justify-center">
-          <form
-            onSubmit={handleSubmit(handleSubmitData)}
-            className="w-full max-w-md flex flex-col gap-5 bg-white p-8 rounded-lg shadow-md"
-          >
-            <span className="font-semibold text-2xl lg:text-4xl text-custom-green">
-              {t("restablecer_contresena")}
-            </span>
-            <span className="text-base lg:text-lg">
-              {t("introduzca_numero_documento")}
-            </span>
-            <InputforForm
-              errors={errors}
-              tipo={"number"}
-              register={register}
-              name={"Documento"}
-              label={t("numero_documento")}
+      <div className="hw-6/12">
+        <Header
+          color={"bg-white"}
+          contenido={
+            <ModalComponte
+              buttonModal={t("iniciar_sesion")}
+              tittleModal={t("iniciar_sesion")}
+              colorButton="primary"
+              componente={<Login />}
             />
-            <Button
-              type="submit"
-              radius={V.Bradius}
-              isLoading={loading ? true : false}
-              className="text-white bg-blue-600 mt-4"
-            >
-              {t("restablecer")}
-            </Button>
+          }
+        />
 
-            {email && (
-              <div>
-                la nueva contraseña fue enviada al correo:{" "}
-                <span className="font-bold">{email}</span>{" "}
-              </div>
-            )}
-          </form>
-        </div>
-      </section>
-      <Footer />
+        {/*  */}
+        <section className="bg-gray-100 flex flex-col h-screen ">
+          <div className="px-10 py-6">
+            <span className="text-4xl font-bold text-gray-800 mb-4"></span>
+            <div className="border-b-8 border-green-600 inline-block w-full"></div>
+          </div>
+
+          {/*   <!-- Imagen visible solo en pantallas grandes (1200px y mayores) --> */}
+
+          <div className="w-full  flex items-center justify-center">
+            <form
+              onSubmit={handleSubmit(handleSubmitData)}
+              className="w-full max-w-md flex flex-col gap-5 bg-white p-8 rounded-lg shadow-md"
+            >
+              <span className="font-semibold text-2xl lg:text-4xl text-custom-green">
+                {t("restablecer_contresena")}
+              </span>
+              <span className="text-base lg:text-lg">
+                {t("introduzca_numero_documento")}
+              </span>
+              <InputforForm
+                errors={errors}
+                tipo={"number"}
+                register={register}
+                name={"Documento"}
+                label={t("numero_documento")}
+              />
+              <Button
+                type="submit"
+                radius={V.Bradius}
+                isLoading={loading ? true : false}
+                className="text-white bg-blue-600 mt-4"
+              >
+                {t("restablecer")}
+              </Button>
+
+              {email && (
+                <div>
+                  la nueva contraseña fue enviada al correo:{" "}
+                  <span className="font-bold">{email}</span>{" "}
+                </div>
+              )}
+            </form>
+          </div>
+        </section>
+        <Footer />
+      </div>
     </>
   );
 };

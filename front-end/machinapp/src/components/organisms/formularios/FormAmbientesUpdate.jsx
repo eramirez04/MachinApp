@@ -1,29 +1,75 @@
 import { ButtonNext, InputforForm, SelectComponent, InputDate } from "../../../index.js";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useGlobalData } from "../../../index.js";
 
-export const FormAmbientes = () => {
+export const FormAmbientesUpdate = () => {
   const [areas, setAreas] = useState([]);
   const [tipositios, setTipositios] = useState([]);
-  const [fechaRegistro, setFechaRegistro] = useState("")
+  const [fechaRegistro, setFechaRegistro] = useState("");
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
+  const [dataSitio, setDataSitio] = useState(null);
   
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
   
   const navigate = useNavigate();
+  const { id } = useParams(); // Obtener el ID del ambiente desde los parámetros de la URL
 
   // Obtener datos globales
   const { dataUser } = useGlobalData(); // Obtener usuarios desde useGlobalData
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [areaResponse, tipoSitioResponse, sitioResponse] = await Promise.all([
+          axiosCliente.get("area/listararea"),
+          axiosCliente.get("tipositio/listartipositio"),
+          axiosCliente.get(`/sitio/listarsitioporid/${id}`) // Obtener datos del ambiente específico
+        ]);
+
+        const areaArray = areaResponse.data.resultadoArea.map((item) => ({
+          id: item.idArea,
+          valor: item.area_nombre,
+        }));
+        
+        const tipositioArray = tipoSitioResponse.data.map((item) => ({
+          id: item.idTipo_sitio,
+          valor: item.tipo_sitio,
+        }));
+
+        setAreas(areaArray);
+        setTipositios(tipositioArray);
+
+        // Configurar datos del ambiente en el formulario
+        const sitioData = sitioResponse.data;
+        setDataSitio(sitioData);
+        setValue("Nombre_del_ambiente", sitioData.sit_nombre);
+        setValue("area", sitioData.sit_fk_areas);
+        setValue("tipo_sitio", sitioData.sit_fk_tipo_sitio);
+        setValue("instructor", sitioData.sit_fk_usuarios);
+        setFechaRegistro(sitioData.sit_fecha_registro);
+
+        if (sitioData.img) {
+          const previewUrl = `http://localhost:3000/imagenes/${sitioData.img}`; // Ajusta la URL según sea necesario
+          setPreviewImagen(previewUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleSubmitData = async (data) => {
     const dataSitio = {
@@ -36,24 +82,24 @@ export const FormAmbientes = () => {
     };
 
     try {
-      const response = await multiFormData(
-        "http://localhost:3000/sitio/registrarsitio",
+      await multiFormData(
+        `http://localhost:3000/sitio/editarsitio/${id}`, // Endpoint para actualizar
         dataSitio,
-        "POST"
+        "PUT"
       );
 
-      alert("Se registró con éxito");
+      alert("Se actualizó con éxito");
 
       navigate("/Ambientes");
     } catch (error) {
-      alert("Error al registrar nuevo ambiente");
+      alert("Error al actualizar el ambiente");
       console.log(error);
     }
   };
 
   const dateRegistro = (date) => {
     setFechaRegistro(date.target.value);
-  }
+  };
 
   const handleFileUpload = (event) => {
     const archivo = event.target.files[0];
@@ -66,33 +112,6 @@ export const FormAmbientes = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [ areaResponse, tipoSitioResponse ] = await Promise.all([
-          axiosCliente.get("area/listararea"),
-          axiosCliente.get("tipositio/listartipositio"),
-        ]);
-
-        const areaArray = areaResponse.data.resultadoArea.map((item) => ({
-          id: item.idArea,
-          valor: item.area_nombre,
-        }));
-        
-        const tipositioArray = tipoSitioResponse.data.map((item) =>({
-            id: item.idTipo_sitio,
-            valor: item.tipo_sitio,
-        }));
-
-        setAreas(areaArray);
-        setTipositios(tipositioArray);
-      } catch (error) {
-        console.error(error.response);
-      }
-    };
-    fetchData();
-  }, []);
-
   return (
     <>
       <form
@@ -101,7 +120,7 @@ export const FormAmbientes = () => {
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
           <h1 className="text-3xl font-bold text-white">
-            Registrar nuevo Ambiente
+            Actualizar Ambiente
           </h1>
         </header>
 
@@ -188,7 +207,7 @@ export const FormAmbientes = () => {
             </div>
           </div>
           <div className="pb-8">
-            <ButtonNext color="success" text="Registrar Ambiente" type="submit" />
+            <ButtonNext color="success" text="Actualizar Ambiente" type="submit" />
           </div>
         </div>
       </form>

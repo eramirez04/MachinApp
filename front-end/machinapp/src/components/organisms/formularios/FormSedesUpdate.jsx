@@ -1,20 +1,44 @@
 import { ButtonNext, InputforForm } from "../../../index.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { TextAreaComponent } from "../../atoms/Inputs/TextArea.jsx";
 import { FaUpload } from "react-icons/fa";
+import { axiosCliente } from "../../../service/api/axios.js";
 
-export const FormSedes = () => {
+export const FormSedesUpdate = () => {
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const { id } = useParams(); // Obtener el ID de la sede desde los params
+  const { register, formState: { errors }, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSedeData = async () => {
+      try {
+        const response = await axiosCliente.get(`sede/listarsede/${id}`);
+        const sedeData = response.data.resultadoSede;
+        
+        // Asignar los valores actuales al formulario
+        setValue("Nombre_del_centro", sedeData.sede_nombre_centro);
+        setValue("Nombre_de_la_sede", sedeData.sede_nombre);
+        setValue("Regional", sedeData.sede_regional);
+        setValue("Municipio", sedeData.sede_municipio);
+        setValue("Direccion", sedeData.sede_direccion);
+        setValue("Subdirector", sedeData.sede_subdirector);
+        setValue("Descripcion", sedeData.sede_descripcion);
+
+        if (sedeData.img) {
+          setPreviewImagen(`http://localhost:3000/imagenes/${sedeData.img}`);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos de la sede", error);
+      }
+    };
+
+    fetchSedeData();
+  }, [id, setValue]);
 
   const handleSubmitData = async (data) => {
     const dataSede = {
@@ -30,16 +54,15 @@ export const FormSedes = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/sede/registrarsede",
+        `http://localhost:3000/sede/editarsede/${id}`,
         dataSede,
-        "POST"
+        "PUT"
       );
 
-      alert("Se registró con éxito la sede")
-
-      navigate("/Sedes")
+      alert("Se actualizó con éxito la sede");
+      navigate("/Sedes");
     } catch (error) {
-      alert("Error al registrar nueva sede");
+      alert("Error al actualizar la sede");
       console.log(error);
     }
   };
@@ -62,7 +85,7 @@ export const FormSedes = () => {
         className="bg-white shadow-lg border rounded-lg w-full mx-auto"
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
-          <h1 className="text-3xl font-bold text-white">Registrar nueva Sede</h1>
+          <h1 className="text-3xl font-bold text-white">Actualizar Sede</h1>
         </header>
 
         <div className="flex flex-col w-full mt-8 items-center justify-center">
@@ -132,7 +155,7 @@ export const FormSedes = () => {
                 register={register}
                 tipo={"text"}
                 name={"Direccion"}
-                label={"Dirección"}
+                label={"Direccion"}
               />
               <InputforForm
                 errors={errors}
@@ -140,7 +163,7 @@ export const FormSedes = () => {
                 tipo={"text"}
                 name={"Subdirector"}
                 label={"Subdirector"}
-              />
+              />    
             </div>
           </div>
 
@@ -155,11 +178,7 @@ export const FormSedes = () => {
             />
           </div>
           <div className="pb-5">
-            <ButtonNext
-              color="success"
-              text="Registrar sede"
-              type="submit"
-            />
+            <ButtonNext color="success" text="Actualizar Sede" type="submit" />
           </div>
         </div>
       </form>

@@ -7,6 +7,9 @@ import {
   V,
   Breadcrumb,
   useAuth,
+  ChartMaquinas,
+  MantenimientoGrafico,
+  useMantenimientosQuery,
 } from "../../index.js";
 /* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
 import { Link } from "react-router-dom";
@@ -14,6 +17,7 @@ import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const { dataUser, equiposData, solicitudData } = useGlobalData();
+  const { isLoading, mantenimientos } = useMantenimientosQuery();
   const { rol } = useAuth();
   const { t } = useTranslation();
 
@@ -27,22 +31,26 @@ export const Home = () => {
     {
       title: t("total_equipos_sena"),
       total: equiposData.length,
-      icon: V.UsersIcon,
+      icon: V.ComputerDesktopIcon,
       link: "/Maquinas",
     },
     {
       title: t("total_solicitudes_mantenimiento"),
       total: solicitudData.length,
-      icon: V.UsersIcon,
+      icon: V.NewspaperIcon,
+      link: "/solicitud",
     },
     {
-      title: "Total de usuarios",
+      title: "Total de Ambientes de formacion",
       total: dataUser.length,
       icon: V.UsersIcon,
-      link: "/Panelcontrol",
+      link: "/Ambientes",
     },
   ];
 
+  if (isLoading) {
+    return <>cargando</>;
+  }
   return (
     <>
       <Layout titlePage={"Home"}>
@@ -54,14 +62,14 @@ export const Home = () => {
             {dataMap.map((value, index) => (
               <CardDataStats
                 key={index}
+                icon={value.icon}
                 title={value.title}
+                change={value.total}
                 total={value.total}
                 link={
                   <>
                     {rol === "Administrador" ? (
-                      <Link to={value.link}>
-                        <Icons icon={V.ChevronRightIcon} />
-                      </Link>
+                      <Link to={value.link}>Ver</Link>
                     ) : (
                       " "
                     )}
@@ -80,10 +88,23 @@ export const Home = () => {
           {/* Segunda fila con una tarjeta grande que ocupa 2/3 del ancho y una más pequeña */}
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <CardStyle> {/*  <Artboard /> */}</CardStyle>
+              <CardStyle
+                subtitle={"Resumen de Mantenimientos por Categoría"}
+                titleCard={""}
+                footer={"Ver mas"}
+              >
+                <MantenimientoGrafico data={mantenimientos} />
+              </CardStyle>
             </div>
 
-            <CardStyle> {/*   <Artboard /> */}</CardStyle>
+            <CardStyle
+              subtitle={"Resumen de Estado de Máquinas y Equipos"}
+              titleCard={
+                "Clasificación de máquinas y equipos según su estado operativo."
+              }
+            >
+              <ChartMaquinas />
+            </CardStyle>
           </div>
 
           {/* Tercera fila con dos tarjetas de igual tamaño */}
