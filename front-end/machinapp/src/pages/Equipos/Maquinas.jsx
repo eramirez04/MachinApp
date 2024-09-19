@@ -107,7 +107,7 @@ export const Maquinas = () => {
         <div className="pt-3 px-9 mt-8 mb-10">
           <div className='mb-6'>
             <SearchComponent
-                  label={`${t('placaSena')}, ${t('serial')}, ${t('marca')}, ${t('modelo')}`}
+                  label={`${t('placaSena')}, estado`}
                   onSearch={buscarMaquina}
                   className="w-full md:w-auto"
             />
