@@ -31,19 +31,20 @@ export const Home = () => {
     {
       title: t("total_equipos_sena"),
       total: equiposData.length,
-      icon: V.UsersIcon,
+      icon: V.ComputerDesktopIcon,
       link: "/Maquinas",
     },
     {
       title: t("total_solicitudes_mantenimiento"),
       total: solicitudData.length,
-      icon: V.UsersIcon,
+      icon: V.NewspaperIcon,
+      link: "/solicitud",
     },
     {
-      title: "Total de usuarios",
+      title: "Total de Ambientes de formacion",
       total: dataUser.length,
       icon: V.UsersIcon,
-      link: "/Panelcontrol",
+      link: "/Ambientes",
     },
   ];
 
@@ -61,6 +62,7 @@ export const Home = () => {
             {dataMap.map((value, index) => (
               <CardDataStats
                 key={index}
+                icon={value.icon}
                 title={value.title}
                 change={value.total}
                 total={value.total}
@@ -86,12 +88,21 @@ export const Home = () => {
           {/* Segunda fila con una tarjeta grande que ocupa 2/3 del ancho y una más pequeña */}
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <CardStyle subtitle={"dsss"} titleCard={"sdsds"} footer={"dsdsd"}>
+              <CardStyle
+                subtitle={"Resumen de Mantenimientos por Categoría"}
+                titleCard={""}
+                footer={"Ver mas"}
+              >
                 <MantenimientoGrafico data={mantenimientos} />
               </CardStyle>
             </div>
 
-            <CardStyle titleCard={"hola"} subtitle={"sds"}>
+            <CardStyle
+              subtitle={"Resumen de Estado de Máquinas y Equipos"}
+              titleCard={
+                "Clasificación de máquinas y equipos según su estado operativo."
+              }
+            >
               <ChartMaquinas />
             </CardStyle>
           </div>

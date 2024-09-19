@@ -4,16 +4,13 @@ import {
   FormRol,
   FormUser,
   PaginateTable,
-  DropDown,
   SearchComponent,
+  ButtonNext,
   Icons,
   V,
 } from "../../../../index.js";
 import { useTranslation } from "react-i18next";
-
 import { useNavigate } from "react-router-dom";
-
-import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
 export const ListarUsuarios = () => {
@@ -59,14 +56,17 @@ export const ListarUsuarios = () => {
     navigate("/panelcontrol/user", { state: { resultadoUsuario } });
   };
 
+  // esta funcion mustra en la tabla la infomacion de los usuarios
   const handleDataUser = () => {
     setData(true);
   };
 
+  // muestra la informacion de los roles
   const handleDataRol = () => {
     setData(false);
   };
 
+  // filtro para poder buscar a los usuarios
   const handleSearchUsuario = (search) => {
     const filtered = newArrayDataUser.filter((usuario) => {
       return (
@@ -92,16 +92,17 @@ export const ListarUsuarios = () => {
               className="w-full md:w-auto"
             />
             <div className="flex gap-2 flex-wrap justify-center md:justify-end w-full md:w-auto">
-              <Button
-                startContent={<Icons icon={V.UserGroupIcon} />}
+              <ButtonNext
+                type="submit"
                 variant="bordered"
                 color="success"
                 onClick={handleDataUser}
-                className="text-xs md:text-sm"
+                startContent={<Icons icon={V.UserGroupIcon} />}
               >
+                {" "}
                 {t("usuarios")}
-              </Button>
-              <Button
+              </ButtonNext>
+              <ButtonNext
                 startContent={<Icons icon={V.ShieldCheckIcon} />}
                 variant="bordered"
                 color="success"
@@ -109,7 +110,7 @@ export const ListarUsuarios = () => {
                 className="text-xs md:text-sm"
               >
                 Roles
-              </Button>
+              </ButtonNext>
             </div>
             <ModalComponte
               buttonModal={
@@ -145,14 +146,24 @@ export const ListarUsuarios = () => {
                         ...row,
                         acciones: (
                           <>
-                            <Button
+                            {/*  <Button
                               isIconOnly
                               color="warning"
                               onClick={() => handleEdit(row.numero_documento)}
                               variant="faded"
                             >
                               <Icons icon={V.PencilIcon} />{" "}
-                            </Button>
+                            </Button> */}
+                            <ButtonNext
+                              color={"warning"}
+                              variant={"faded"}
+                              type="submit"
+                              isIconOnly={true}
+                              onClick={() => handleEdit(row.numero_documento)}
+                            >
+                              {" "}
+                              <Icons icon={V.PencilIcon} />
+                            </ButtonNext>
                           </>
                         ),
                       }))

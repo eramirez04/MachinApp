@@ -3,18 +3,23 @@ import { useEffect, useMemo } from "react";
 
 // eslint-disable-next-line react/prop-types
 export const MantenimientoGrafico = ({ data }) => {
-  const xAxisData = data.map((item) => `${item.anio}-${item.mes}`);
+  const xAxisData = useMemo(
+    () => [...new Set(data.map((item) => `${item.anio}-${item.mes}`))],
+    [data]
+  );
+
   /*  const seriesData = data.map((item) => item.tota_mantenimientos); */
 
-  const types = [...new Set(data.map((tipo) => tipo.tipo_mantenimiento))];
-
-  console.log(types);
+  const types = useMemo(
+    () => [...new Set(data.map((item) => item.tipo_mantenimiento))],
+    [data]
+  );
 
   const seriesData = types.map((tipo_mantenimiento) => {
     return {
       name: tipo_mantenimiento,
       type: "line",
-      stack: "Total",
+
       data: xAxisData.map((time) => {
         const foundItem = data.find(
           (item) =>
@@ -27,14 +32,27 @@ export const MantenimientoGrafico = ({ data }) => {
   });
 
   const option = {
+    animationDuration: 2000,
     title: {
-      text: "Stacked Line",
+      text: "Mantenimientos por Tipo",
     },
     tooltip: {
       trigger: "axis",
+      order: "valueDesc",
+      axisPointer: {
+        type: "cross",
+        label: {
+          backgroundColor: "#6a7985",
+        },
+      },
     },
     legend: {
-      data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+      data: types,
+    },
+    toolbox: {
+      feature: {
+        saveAsImage: {},
+      },
     },
     grid: {
       left: "3%",
@@ -42,19 +60,18 @@ export const MantenimientoGrafico = ({ data }) => {
       bottom: "3%",
       containLabel: true,
     },
-    toolbox: {
-      feature: {
-        saveAsImage: {},
+    xAxis: [
+      {
+        type: "category",
+        boundaryGap: false,
+        data: xAxisData,
       },
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: xAxisData,
-    },
-    yAxis: {
-      type: "value",
-    },
+    ],
+    yAxis: [
+      {
+        type: "value",
+      },
+    ],
     series: seriesData,
   };
 

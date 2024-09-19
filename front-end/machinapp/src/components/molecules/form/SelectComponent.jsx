@@ -11,8 +11,8 @@ export const SelectComponent = ({
   const props = { ...restProps };
   return (
     <>
-      <div className="max-w-sm mx-auto flex items-center justify-evenly">
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <div className="max-w-sm mx-auto flex flex-col space-y-2">
+        <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
           {label}
         </label>
         <select
@@ -25,9 +25,9 @@ export const SelectComponent = ({
               message: `${name} es requerido`,
             },
           })}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-white border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 block w-full p-2.5 transition-colors duration-150 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
         >
-          <option value=""> {placeholder}</option>
+          <option value="">{placeholder}</option>
           {options.map((item, index) => (
             <option key={index} value={item[props.valueKey]}>
               {item[props.textKey]}

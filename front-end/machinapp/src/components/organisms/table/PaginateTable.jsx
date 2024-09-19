@@ -22,37 +22,46 @@ export const PaginateTable = ({ columns, data, itemsPerPage = 10 }) => {
 
   return (
     <>
-      <div className="flex flex-col w-full ">
-        <Table aria-label="Paginated Data Table">
+      <div className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden">
+        <Table aria-label="Tabla de Datos Paginada" className="h-full">
           <TableHeader>
-            {/* eslint-disable-next-line react/prop-types */}
             {columns.map((column, index) => (
               <TableColumn
                 key={index}
-                className={`${V.bg_sena_verde} ${V.text_white} px-2 sm:px-4`}
+                className={`${V.bg_sena_verde} text-gray-100 px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider`}
               >
                 {column}
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody className="flex gap-36">
+          <TableBody className="divide-y divide-gray-200">
             {data
               .map((row, index) => (
-                <TableRow className="hover:bg-base-200 border-t-2 h-16 " key={index}>
+                <TableRow
+                  className="hover:bg-gray-50 transition-colors duration-200"
+                  key={index}
+                >
                   {Object.values(row).map((cell, cellIndex) => (
-                    <TableCell key={cellIndex}>{cell}</TableCell>
+                    <TableCell
+                      key={cellIndex}
+                      className="px-2 sm:px-4 py-4 whitespace-nowrap text-sm text-gray-900"
+                    >
+                      {cell}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
               .slice(firsIndex, lastIndex)}
           </TableBody>
         </Table>
-        <Paginacion
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          total={totalPersonas}
-          personaPerPage={itemsPerPage}
-        />
+        <div className="py-3 px-4 bg-gray-50">
+          <Paginacion
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            total={totalPersonas}
+            personaPerPage={itemsPerPage}
+          />
+        </div>
       </div>
     </>
   );

@@ -115,18 +115,16 @@ export const registrarVariasVariables = async (req, res)=>{
 
         let {variablesFicha, tipoFicha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
 
-        console.log(variablesFicha)
-        console.log(tipoFicha)
 
 
         let sql 
         for(let i = 0 ;variablesFicha.length>i; i++){
 
             if(variablesFicha[i].var_clase == "obligatoria"){
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}')`
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, ficha) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}',  'equipo')`
             }
             else{
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}')`
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo, ficha ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}', 'equipo')`
             }
             
             const [respuesta] = await conexion.query(sql)
@@ -152,7 +150,7 @@ export const registrarVariasVariables = async (req, res)=>{
 export const listarVarFicha = async (req, res)=>{
 
     try{
-        let idTipoFicha = req.params.idTipoFicha
+        let {idTipoFicha, tipo_ficha} = req.params
 
 
         let sql = `
@@ -164,7 +162,9 @@ export const listarVarFicha = async (req, res)=>{
         var_clase,
         var_tipoDato
         FROM variable
-        WHERE fk_tipo_equipo = ${idTipoFicha} or var_clase = 'obligatoria'
+        WHERE (fk_tipo_equipo = ${idTipoFicha} or var_clase = 'obligatoria')
+            AND variable.ficha = "${tipo_ficha}" 
+            AND var_estado = "activo"; 
         `
 
         const [respuesta] = await conexion.query(sql)
@@ -181,6 +181,4 @@ export const listarVarFicha = async (req, res)=>{
     catch(e){
         return res.status(500).json({"mensaje":"Error del servidor"})
     }
-
-
 }
