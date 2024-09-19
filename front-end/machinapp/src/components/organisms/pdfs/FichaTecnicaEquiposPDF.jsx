@@ -1,8 +1,8 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+//import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 
-export const FichaTecnicaEquiposPDF = ({}) => {
+export const FichaTecnicaEquiposPDF = ( ) => {
 
-
+/* 
     const styles = StyleSheet.create({
         page: {
             padding: 20,
@@ -14,14 +14,14 @@ export const FichaTecnicaEquiposPDF = ({}) => {
             textAlign: 'center',
             marginBottom: 20,
         }
-    })
+    }) */
 
     return (
         <>
-        <Document>
+{/*         <Document>
             <Page size="A4" orientation="landscape" style={styles.page}>
             </Page>
-        </Document>
+        </Document> */}
         </>
     )
 }
