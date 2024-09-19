@@ -18,17 +18,20 @@ export { MantenimientoGeneral } from "./table/MantenimientoGeneral";
 // pdf
 export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
-export {FichaTecnicaEquiposPDF} from "./pdfs/FichaTecnicaEquiposPDF"
+export { FichaTecnicaEquiposPDF } from "./pdfs/FichaTecnicaEquiposPDF";
 export { VistaPDF } from "./pdfs/VistaPDF.jsx";
 
 // borrar
 export { ChartMaquinas } from "./graficos/MaquinasChart";
 export { MantenimientoGrafico } from "./graficos/MantenimientoGrafico";
 
-
-
+export { ExcelMantenimientos } from "./excel/ExcelMantenimientos.jsx";
 
 /*  */
-export {FormFichaTecnicaListUpdate} from "./formularios/FormFichaTecnicaListUpdate"
-export {UpdateEstAmbienteFicha} from "./formularios/UpdateEstAmbienteFicha"
+export { FormFichaTecnicaListUpdate } from "./formularios/FormFichaTecnicaListUpdate";
+export { UpdateEstAmbienteFicha } from "./formularios/UpdateEstAmbienteFicha";
 
+// sitios
+export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";
+
+export { FormAmbientes } from "./formularios/FormAmbientes.jsx";

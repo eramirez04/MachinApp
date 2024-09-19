@@ -1,11 +1,10 @@
-import BuscarAmbientesGeneral from '../../components/organisms/Sitios/ListarAmbientesGeneral'
-import {Layout} from "../../index";
+import { Layout, Breadcrumb, BuscarAmbientesGeneral } from "../../index";
 
-export const AmbientesGeneral=()=>  {
+export const AmbientesGeneral = () => {
   return (
-    <Layout titlePage='Centro'>
-      <BuscarAmbientesGeneral/>
+    <Layout titlePage="Centro">
+      <Breadcrumb pageName={"Ambientes de Formacion"} />
+      <BuscarAmbientesGeneral />
     </Layout>
-  )
-}
-
+  );
+};
