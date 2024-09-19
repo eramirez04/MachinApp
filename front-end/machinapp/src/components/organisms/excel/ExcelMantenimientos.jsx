@@ -2,7 +2,7 @@ import React from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { Button } from "@nextui-org/react";
-import { TableCellsIcon } from '@heroicons/react/24/outline'; // Ícono de Excel
+import { TableCellsIcon } from '@heroicons/react/24/outline'; 
 
 export const ExcelMantenimientos = ({ mantenimientos }) => {
 

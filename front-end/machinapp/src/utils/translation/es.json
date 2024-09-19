@@ -139,5 +139,8 @@
   "registration_success": "Todo registrado con éxito.",
   "registration_error": "Error al registrar el mantenimiento y partes. ",
   "server_error": "Error del servidor",
-  "no_server_response": "No se recibió respuesta del servidor."
+  "no_server_response": "No se recibió respuesta del servidor.",
+  "edit_maintenance": "Editar Mantenimiento",
+  "pdf_descargado_exitosamente": "PDF descargado exitosamente",
+  "mantenimientos_cargados_exitosamente": "Mantenimientos cargados exitosamente"
 }

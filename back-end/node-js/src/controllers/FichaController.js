@@ -147,7 +147,7 @@ export const actualizarFicha = async(req, res)=>{
     }
 
     const [respuesta] = await conexion.query(sql)
-    return res.json(respuesta)
+    return res.json({"mensaje":"se actualizo con exito la ficha "})
     
   
 }
@@ -163,9 +163,12 @@ export const listarFichas = async(req, res)=>{
         idFichas,
         fi_placa_sena,
         fi_estado,
-        sit_nombre
+        sit_nombre,
+        tipo_equipo.ti_fi_nombre AS nombre
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON  idAmbientes  = fi_fk_sitios
+        INNER JOIN tipo_equipo ON tipo_equipo.idTipo_ficha = fichas_maquinas_equipos.fi_fk_tipo_ficha
+        WHERE tipo_ficha = "equipo"
         `
         const  [respuesta] = await conexion.query(sql)
 
@@ -189,16 +192,59 @@ export const listarFichas = async(req, res)=>{
 
                 //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
                 for(let j = 0; infoVar.length > j; j++){
-
-                    if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
-                        respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                    
+                        switch(infoVar[j].idVariable){
+                            case 1 :
+                                respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
+                                break
+                            case 2:
+                                respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                                break
+                            case 3:
+                                respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
+                                break
+                            case 4:
+                                respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
+                                break
+                            case 5:
+                                respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
+                                break
+                            case 6:
+                                respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
+                                break
+                            case 7:
+                                respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                                break
+                            case 8:
+                                respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                                break
+                            case 9:
+                                respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
+                                break
+                        }
+                    
+/* 
+                    if(infoVar[j].idVariable == 1){
+                        respuesta[i]["fecha_adquisicion"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
+                        respuesta[i]["serial"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 3){              
+                        respuesta[i]["fecha_inicioGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 4){              
+                        respuesta[i]["fecha_finGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 5){              
+                        respuesta[i]["descripcion_garantia"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 7){
                         respuesta[i]["fi_marca"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 8){
                         respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                    }
+                    } */
                 }
             }
 
@@ -230,7 +276,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
         INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
-        WHERE idAmbientes = ${idAmbiente}
+        WHERE idAmbientes = ${idAmbiente} and tipo_ficha = "equipo"
         `
         const [resuladoFichas] = await conexion.query(sql)
 
@@ -420,26 +466,9 @@ export const listarInfoEspecifica = async(req, res)=>{
             tipo_mantenimiento, 
             idSolicitud
             FROM fichas_maquinas_equipos
-            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
-            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
-            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
-            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
-            WHERE idFichas = ${idFicha}
-            `
+            INNER JOIN solicit
+            
 
-            const[mantenimientos] = await conexion.query(sqlMantenimientos)
-    
-            let objInfoEspecifica = {
-                idFichas: respuesta[0].idFichas,
-                fi_placa_sena: respuesta[0].fi_placa_sena, 
-                fi_serial: respuesta[0].fi_serial,
-                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
-                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
-                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
-                fi_descripcion:respuesta[0].fi_descripcion,
-                fi_marca:respuesta[0].fi_marca,
-                fi_modelo:respuesta[0].fi_modelo,
                 CodigoQR:respuesta[0].CodigoQR,
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
@@ -546,7 +575,10 @@ export const listarFichaUnica=async (req, res)=>{
         SELECT 
             fi_placa_sena, 
             fi_imagen, 
-            fi_estado, 
+            ficha_respaldo,
+            fi_estado,
+            idAmbientes,
+            fi_fk_sitios,
             sit_nombre, 
             ti_fi_nombre 
             FROM ambientes

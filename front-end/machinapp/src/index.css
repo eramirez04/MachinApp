@@ -2,3 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
+/* fuentes */
+@import "@fontsource/work-sans/600.css";

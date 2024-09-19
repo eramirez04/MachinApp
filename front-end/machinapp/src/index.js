@@ -9,4 +9,5 @@ export * from "./style";
 export { menus } from "./utils/DataEstadistica";
 
 export { axiosCliente } from "./service/api/axios";
-export { multiFormData } from "./utils/formData"
+export { multiFormData } from "./utils/formData";
+export { slepp } from "./utils/sleep";

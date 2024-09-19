@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/react";
 export const InputForm = ({ register, errors, value, name, tipo, onChange, text , disabled }) => {
   return (
     <>
-      <div className="mb-2">
+      <div className="mb-5">
         <div className=" z-0 w-full">
           <label
             htmlFor={name}

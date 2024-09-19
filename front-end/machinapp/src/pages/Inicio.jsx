@@ -30,7 +30,7 @@ export const Inicio = () => {
     <>
       <Toggles onClick={handleSelectIdioma} isSelected={isSelected} />
 
-      <div className="">
+      <div className="h-screen">
         <Header
           color={"bg-white"}
           contenido={
@@ -43,7 +43,7 @@ export const Inicio = () => {
             />
           }
         />
-        <div className="relative overflow-hidden bg-gray-50">
+        <div className="relative overflow-hidden h-screen bg-gray-50">
           <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
             <div className=" mx-auto max-w-7xl  px-4 sm:static sm:px-6 lg:px-8">
               <div className="sm:max-w-lg ">

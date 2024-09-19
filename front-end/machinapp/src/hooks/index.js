@@ -10,3 +10,4 @@ export {
   useFetchSolicitud,
   useSolicitudFichasData,
 } from "./solicitud/Solicitud";
+export { useMantenimientosQuery } from "./useMantenimientos";
