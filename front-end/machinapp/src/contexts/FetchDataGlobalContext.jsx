@@ -13,10 +13,20 @@ export const GlobalDataProvider = ({ children }) => {
     fetcDataUser,
   } = useFetchUserData();
 
-  const { equiposData, loading: loadinDataEquipo } = useFetchEquipo();
+  const {
+    equiposData,
+    loading: loadinDataEquipo,
+    eroresMaquinas,
+    refreshEquipos,
+  } = useFetchEquipo();
+
   const { solicitudData, loading: loadinDataSolicitud } = useFetchSolicitud();
   const { roles, loading: loadingRol, refreshRol } = useFetchRoles();
-  const { ambientes, isLoading: loadinAmbientes } = useFetchAmbientes();
+  const {
+    ambientes,
+    isLoading: loadinAmbientes,
+    refress,
+  } = useFetchAmbientes();
 
   const [loading, setLoading] = useState(true);
 
@@ -49,6 +59,9 @@ export const GlobalDataProvider = ({ children }) => {
     roles,
     refreshRol,
     ambientes,
+    refress,
+    eroresMaquinas,
+    refreshEquipos
   };
 
   return (

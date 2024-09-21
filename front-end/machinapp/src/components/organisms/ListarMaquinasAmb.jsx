@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { CardStyle, Paginacion } from "../../index.js"
 import {axiosCliente} from "../../service/api/axios.js"
+import { toast } from "react-toastify"
 
 
 const ListarMaquinasAmb = ({idAmbiente}) => {
@@ -46,7 +47,8 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                 setMaquinas(response.data) //para que cargue por defecto todos los equipos 
             }
             catch(error){
-                console.error('Error listando maquinas por ambiente ', error)
+                toast.error(error.response.data.mensaje);
+                return;
             }
         }
         buscarMaquinas()

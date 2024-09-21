@@ -4,10 +4,11 @@ import {
   useGlobalData,
   ButtonNext,
   V,
+  Icons,
 } from "../../../index";
 import { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Tooltip } from "@nextui-org/react";
 
 export const BuscarAmbientesGeneral = () => {
   const [data, setData] = useState([]);
@@ -28,8 +29,7 @@ export const BuscarAmbientesGeneral = () => {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      /*    const response = await axiosCliente.get("/sitio/listarsitio"); */
+    const fetchData = () => {
       const sitios = ambientes.map((sitio) => ({
         id: sitio.idAmbientes,
         nombre: sitio.sit_nombre,
@@ -37,9 +37,18 @@ export const BuscarAmbientesGeneral = () => {
         area: sitio.area_nombre,
         municipio: sitio.instructor_encargado,
         acciones: (
-          <Link to={`/Ambientes/Actualizar/${sitio.idAmbientes}`}>
-            <FaEdit className="cursor-pointer" />
-          </Link>
+          <>
+            <ButtonNext isIconOnly color="warning" variant="faded">
+              <Tooltip content="Editar">
+                <Link
+                  to={`/Ambientes/Actualizar/${sitio.idAmbientes}`}
+                  className="flex justify-center items-center h-full w-full"
+                >
+                  <Icons icon={V.PencilIcon} />
+                </Link>
+              </Tooltip>
+            </ButtonNext>
+          </>
         ),
       }));
       setData(sitios);
@@ -69,6 +78,7 @@ export const BuscarAmbientesGeneral = () => {
         <ButtonNext
           type="submit"
           className={`${V.bg_sena_verde} ${V.text_white}`}
+          startContent={<Icons icon={V.PlusIcon} />}
         >
           <Link to={"/Ambientes/Registrar"}>Registrar Nuevo Ambiente</Link>
         </ButtonNext>
@@ -76,10 +86,8 @@ export const BuscarAmbientesGeneral = () => {
       <PaginateTable
         columns={columns}
         data={filtroAmbientes}
-        itemsPerPage={5}
+        itemsPerPage={10}
       />
     </div>
   );
 };
-
-
