@@ -50,8 +50,7 @@ export const FormAmbientes = () => {
 
       /*  navigate("/Ambientes"); */
     } catch (error) {
-      alert("Error al registrar nuevo ambiente");
-      console.log(error.response);
+      toast.error(error.response.data.mensaje);
     }
   };
 

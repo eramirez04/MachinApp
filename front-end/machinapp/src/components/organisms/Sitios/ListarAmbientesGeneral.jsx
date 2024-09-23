@@ -9,9 +9,12 @@ import {
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Tooltip } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 export const BuscarAmbientesGeneral = () => {
   const [data, setData] = useState([]);
+
+  const { t } = useTranslation();
 
   // para poder filtrar los ambientes en la tabla
   const [filtroAmbientes, setFiltroAmbientes] = useState([]);
@@ -21,10 +24,10 @@ export const BuscarAmbientesGeneral = () => {
 
   const columns = [
     "ID",
-    "Nombre",
-    "Tipo de sitio",
-    "Área",
-    "Instructor encargado",
+    t("nombre_aula"),
+    t("tipo_aula"),
+    t("area"),
+    t("profesor_encargado"),
     "Acciones",
   ];
 
@@ -73,14 +76,21 @@ export const BuscarAmbientesGeneral = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Sitios</h1>
       <div className="flex justify-between">
-        <SearchComponent onSearch={filtrarAmbientes} label={"hola"} />
+        <SearchComponent
+          onSearch={filtrarAmbientes}
+          label={`${t("nombre_aula")} ${t("tipo_aula")},${t("area")},${t(
+            "profesor_encargado"
+          )}`}
+        />
 
         <ButtonNext
           type="submit"
           className={`${V.bg_sena_verde} ${V.text_white}`}
           startContent={<Icons icon={V.PlusIcon} />}
         >
-          <Link to={"/Ambientes/Registrar"}>Registrar Nuevo Ambiente</Link>
+          <Link to={"/Ambientes/Registrar"}>
+            {t("registrar_nuevo_ambiente")}
+          </Link>
         </ButtonNext>
       </div>
       <PaginateTable
