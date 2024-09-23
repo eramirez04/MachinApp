@@ -11,3 +11,5 @@ export {
   useSolicitudFichasData,
 } from "./solicitud/Solicitud";
 export { useMantenimientosQuery } from "./useMantenimientos";
+
+export { useFetchAmbientes } from "./useFetchAmbientes";

@@ -53,12 +53,11 @@ export const registrarSitio = async (req, res) => {
 
   try {
     const sql = `
-      INSERT INTO ambientes (sit_nombre, sit_fecha_registro, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO ambientes (sit_nombre, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios)
+      VALUES (?, ?, ?, ?, ?)
     `;
     const [respuesta] = await conexion.query(sql, [
       sit_nombre,
-      sit_fecha_registro,
       img_sitio,
       sit_fk_areas,
       sit_fk_tipo_sitio,

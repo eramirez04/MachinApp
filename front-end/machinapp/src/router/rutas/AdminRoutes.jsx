@@ -30,7 +30,7 @@ export const AdminRoute = () => {
 };
 
 import { Navigate } from "react-router-dom";
-
+/*  eslint-disable-next-line react/prop-types  */
 const ProtectedRouteAdmin = ({ children }) => {
   const { rol } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState(null);

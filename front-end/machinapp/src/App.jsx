@@ -12,7 +12,7 @@ const App = () => {
     <>
       <ToastContainer
         position="bottom-right"
-        theme="colored"
+        theme="light"
         pauseOnHover
         draggable
         autoClose={2000}
