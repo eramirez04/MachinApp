@@ -9,14 +9,13 @@ export const useAxioshttpErrorStatus = () => {
       const { status } = error.response;
       switch (status) {
         case 403:
-          console.error("Forbidden");
           navigate("/");
 
           break;
 
-        case 404:
+       /*  case 404:
           console.error("/not-found");
-          break;
+          break; */
 
         case 500:
           console.error("/server-error");
