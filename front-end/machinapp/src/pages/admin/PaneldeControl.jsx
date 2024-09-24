@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Layout, ListarUsuarios, Breadcrumb } from "../../index";
 
-const PaneldeControlUsuarios = () => {
+export const PaneldeControlUsuarios = () => {
   const { t } = useTranslation();
   return (
     <>
@@ -12,5 +12,3 @@ const PaneldeControlUsuarios = () => {
     </>
   );
 };
-
-export default PaneldeControlUsuarios;
