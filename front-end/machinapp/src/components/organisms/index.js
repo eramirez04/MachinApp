@@ -6,6 +6,7 @@ export { Login } from "./formularios/Login";
 export { Editar_Component } from "./formularios/Editar_mantenimiento";
 export { FormAmbientes } from "./formularios/FormAmbientes.jsx";
 export { FormFichaTecnica } from "./formularios/FormFichaTecnicaEquipos.jsx";
+export { FormFichaSolicitud } from "./formularios/FormFichaSolicitud.jsx";
 
 /*  */
 export { FormFichaTecnicaListUpdate } from "./formularios/FormFichaTecnicaListUpdate";

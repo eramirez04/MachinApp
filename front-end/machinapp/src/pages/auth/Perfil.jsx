@@ -4,7 +4,7 @@
 import { Layout, BuscarUsuario, Breadcrumb } from "../../index.js";
 import { useTranslation } from "react-i18next";
 
-const Perfil = () => {
+export const Perfil = () => {
   const { t } = useTranslation();
   return (
     <>
@@ -20,4 +20,3 @@ const Perfil = () => {
   );
 };
 
-export default Perfil;
