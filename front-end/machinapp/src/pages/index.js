@@ -29,3 +29,6 @@ export { UpdateAndListFichaTecnica } from "./Equipos/UpdateAndListFichaTecnica";
 export { ActualizarAmbientes } from "./Sitios/ActualizarAmbientes";
 export { ActualizarAreas } from "./Sitios/ActualizarAreas";
 export { ActualizarSedes } from "./Sitios/ActualizarSedes";
+
+// errores
+export { Page404 } from "./error/Page404";

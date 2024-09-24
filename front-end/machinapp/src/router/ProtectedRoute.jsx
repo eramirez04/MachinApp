@@ -1,10 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../index";
 
 export const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
+  const { tokenIsValido } = useAuth();
 
   try {
-    if (!token) {
+    if (tokenIsValido === null) {
+      return <>Cargando</>;
+    }
+
+    if (!token || !tokenIsValido) {
       return <Navigate to={"/"} />;
     }
 
@@ -12,8 +18,6 @@ export const ProtectedRoute = () => {
   } catch (error) {
     console.error(error);
   }
-
-  /* console.log("Renderizando el Outlet"); // Declaración de depuración */
 
   return <Outlet />;
 };

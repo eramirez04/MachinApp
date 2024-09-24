@@ -1,8 +1,5 @@
+import { axiosCliente, useAuth } from "../../index";
 import { useState, useEffect } from "react";
-import { axiosCliente } from "../../service/api/axios";
-import { useAuth } from "../../index";
-
-//listar roles
 
 export const useFetchRoles = () => {
   const [roles, setRoles] = useState([]);
@@ -22,7 +19,6 @@ export const useFetchRoles = () => {
     } catch (error) {
       setError(error.response);
       setLoadind(false);
-      throw error;
     } finally {
       setLoadind(false);
     }

@@ -9,7 +9,6 @@ import { encriptarContra } from "../config/bcryptjs.js";
 
 // transporte que contiene la configuracion de envio de correos
 import { transporter } from "../config/email.js";
-import { generarRandom } from "../config/passwordRamdom.js";
 
 // importacion del modelo que hace consultas a la base de datos
 import { UsuarioModel } from "../database/model/usuario.js";
@@ -212,7 +211,7 @@ export const recuperaraContra = async (req, res) => {
         .status(404)
         .json({ estado: false, mensaje: "no se encontro usuario" });
     } else {
-      let newPassword = generarRandom();
+      let newPassword = usuario[0].us_numero_documento;
 
       const result = await transporter.sendMail({
         from: '"MachinApp" <machinappsena@gmail.com>', // sender address
