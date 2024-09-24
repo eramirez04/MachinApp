@@ -169,7 +169,12 @@ export const FormAmbientes = () => {
               />
               <SelectComponent
                 options={dataUser
-                  .filter((item) => item.rol_nombre === "instructor")
+                  .filter((item) =>
+                    item.rol_nombre
+                      .trim()
+                      .toLowerCase()
+                      .startsWith("instructor")
+                  )
                   .map((item) => ({
                     id: item.idUsuarios,
                     valor: item.us_nombre + " " + item.us_apellidos,
@@ -180,7 +185,7 @@ export const FormAmbientes = () => {
                 textKey="valor"
                 register={register}
                 label="Instructor encargado"
-              />
+              />
             </div>
           </div>
           <div className="pb-8">
