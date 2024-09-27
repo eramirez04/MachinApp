@@ -1,7 +1,7 @@
 //import InputForm from "../../atoms/Inputs/InputForm"
 //import {TextAreaComponent} from "../../atoms/Inputs/TextArea"
 import { useForm } from "react-hook-form";
-import { Button } from "@nextui-org/react";
+import { Button, Select, SelectItem } from "@nextui-org/react";
 //import { Icons } from "../../atoms/icons/Icons";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react"
@@ -9,6 +9,8 @@ import { MdDelete } from "react-icons/md";
 import { axiosCliente } from "../../../service/api/axios"
 //import ButtonNext from "../../atoms/buttons/ButtonNext"
 import { useNavigate } from 'react-router-dom'
+
+import { useTranslation } from "react-i18next"
 
 import {
   InputForm,
@@ -20,7 +22,9 @@ import {
 
 export const FormTipoFichaTecnica = () => {
 
-  const { register, unregister, formState: { errors }, handleSubmit } = useForm()
+  const { t } = useTranslation()
+
+  const { register, unregister, formState: { errors }, handleSubmit, reset } = useForm()
 
   const navigate = useNavigate()
 
@@ -29,6 +33,9 @@ export const FormTipoFichaTecnica = () => {
   const [containersEsp, setContainers] = useState([])
   const [containersTecn, setContainersTecn] = useState([])
   const [containersSecc, setContainersSecc] = useState([])
+
+  // tomar el tipo de ficha, equipo o ambiente
+  const [tipoFicha, settipoFicha] = useState("")
 
 
   // para los ids de los contenedores
@@ -76,6 +83,11 @@ export const FormTipoFichaTecnica = () => {
   //recuperar datos del formulario
   const handleSubmitData = async (data) => {
 
+    /* console.table(data) */
+    data.tipo_ficha = tipoFicha;
+    console.log(data.tipo_ficha);
+    console.log(data)
+
 
     // Filtrar las variables específicas, esto se hace par aque no me traiga arrais basios si hay, como nimino tiene que contener el nombre y el tipo de dato
     const varEspecificasFiltradas = data.varEspecificas?.filter(item => item.var_nombre && item.var_tipoDato)
@@ -108,7 +120,8 @@ export const FormTipoFichaTecnica = () => {
 
       //registramos el tipo de ficha
       const response = await axiosCliente.post("tipoFicha/registrar",{
-        tipoFicha: data.nombreTipoFicha
+        tipoFicha: data.nombreTipoFicha,
+        tipo_ficha: data.tipo_ficha
       })
 
       //capturamos el id del tipo de ficha registrado
@@ -133,22 +146,56 @@ export const FormTipoFichaTecnica = () => {
   }
 
 
+  
+  const handleSelectionChange = (value) => {
+    
+   settipoFicha(value.target.value);
+   console.log( value.target.value)
+   reset(register())
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(handleSubmitData)} className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5 mt-10">
         
+       <div className="flex flex-row justify-between items-center"> 
         <InputForm
           errors={errors}
           register={register}
           tipo={"text"}
           name={"nombreTipoFicha"}
-          text={"Nombre del tipo de ficha"}
+          text={t("nombreTipoFicha")}
         />
+        <div className="w-52">
+        <Select
+          value={tipoFicha}
+          aria-label="Seleccionar idioma"
+          label="Elige Elemento quiere registrar"
+          onChange={handleSelectionChange}
+          variant="bordered"
+          color="primary"
+          size="md"
+         
+        >
+          <SelectItem key="equipo" value="equipo">
+          Equipo o Maquinaria
+          </SelectItem>
+          <SelectItem key="ambiente" value="ambiente">
+          Ambiente de Formacion
+          </SelectItem>
+        </Select>
+
+        </div>
+        </div>
 
         {/* Variables de clase especifica */}
-        <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
+     {tipoFicha && (<>
+     
+         <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">Agregar caracteristicas generales</h3>
+          <h3 className="text-xl text-gray-800 mb-10 ">
+            { tipoFicha === "equipo" ?t('agregarCaractGene') : "Dimensiones y Características Físicas" }
+          </h3>
             
           {containersEsp.map((container)  => (
 
@@ -159,7 +206,7 @@ export const FormTipoFichaTecnica = () => {
                 register={register}
                 tipo={"text"}
                 name={`varEspecificas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={"Nombre"}
+                text={t("nombreMa")}
               />
 
               <input type="hidden" name={`varEspecificas[${container.id}].var_clase`} value="especifica" {...register(`varEspecificas[${container.id}].var_clase`)} />
@@ -168,10 +215,10 @@ export const FormTipoFichaTecnica = () => {
               
 
               <div className="flex flex-col">
-                <label htmlFor="">Tipo de dato: </label>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Texto</div>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Numero</div>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Fecha</div>
+                <label htmlFor="">{t("tipoDato")} : </label>
+                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('texto')}</div>
+                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('numero')}</div>
+                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  />{t('fecha')} </div>
                 {errors.varEspecificas && errors.varEspecificas[container.id]?.var_tipoDato && (
                     <p className="text-red-600 text-sm mt-2">{errors.varEspecificas[container.id].var_tipoDato.message}</p>
                 )}
@@ -195,13 +242,15 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
         {/* variables de de clase Especificaiones tecnicas */}
 
         <div className="bg-gray-50 p-5 rounded-xl my-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">Agregar especificaciones tecnicas</h3>
+          <h3 className="text-xl text-gray-800 mb-10 "> 
+          { tipoFicha === "equipo" ?t('agregarEspeTec') : "ACABADOS DEL AMBIENTE DE FORMACIÓN" }
+          </h3>
             
           {containersTecn.map((container)  => (
             <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around">
@@ -211,17 +260,17 @@ export const FormTipoFichaTecnica = () => {
                 register={register}
                 tipo={"text"}
                 name={`varEspTecnicas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={"Nombre"}
+                text={t('nombreMa')}
               />
                
               <input type="hidden" name={`varEspTecnicas[${container.id}].var_clase`} value="especificacionesTecnicas" {...register(`varEspTecnicas[${container.id}].var_clase`)} />
               <input type="hidden" name={`varEspTecnicas[${container.id}].var_descripcion`} value="" {...register(`varEspTecnicas[${container.id}].var_descripcion`)} />
               
               <div className="flex flex-col">
-                <label htmlFor="">Tipo de dato: </label>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Texto</div>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Numero</div>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> Fecha</div>
+                <label htmlFor=""> {t('tipoDato')}</label>
+                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('texto')}</div>
+                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('numero')}</div>
+                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('fecha')}</div>
                 {errors.varEspTecnicas && errors.varEspTecnicas[container.id]?.var_tipoDato && (
                     <p className="text-red-600 text-sm mt-2">{errors.varEspTecnicas[container.id].var_tipoDato.message}</p>
                 )}
@@ -246,7 +295,7 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
 
 
@@ -255,7 +304,7 @@ export const FormTipoFichaTecnica = () => {
 
         <div className="bg-gray-50 p-5 rounded-xl my-10 ">
 
-          <h3 className="text-xl text-gray-800 mb-10 ">Agregar secciones</h3>
+          <h3 className="text-xl text-gray-800 mb-10 ">{t('agregarSeccion')}</h3>
             
           {containersSecc.map((container)  => (
             <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center gap-4 justify-around">
@@ -265,14 +314,14 @@ export const FormTipoFichaTecnica = () => {
                 register={register}
                 tipo={"text"}
                 name={`varSeccion[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={"Nombre"}
+                text={`${t('nombreMa')}`}
               />
 
               <input type="hidden" name={`varSeccion[${container.id}].var_clase`} value="seccion" {...register(`varSeccion[${container.id}].var_clase`)} />
               <input type="hidden" name={`varSeccion[${container.id}].var_tipoDato`} value="text" {...register(`varSeccion[${container.id}].var_tipoDato`)} />
               
               <div className="flex flex-col w-full">
-                <label htmlFor="">Descipcion breve de la seccion:   </label>
+                <label htmlFor="">{t('descripcionSeccion')}  </label>
                 <TextAreaComponent
                   errors={errors}
                   register={register}
@@ -298,10 +347,11 @@ export const FormTipoFichaTecnica = () => {
           >
             <Icons  icon={PlusIcon} />
           </Button>
-        </div>
+        </div> 
 
+     </>)}
 
-        <ButtonNext text={"Registrar"}  type="submit" className={"bg-green-600 text-white w-full"}> </ButtonNext>
+        <ButtonNext text={t('registrar')}  type="submit" className={"bg-green-600 text-white w-full"}> </ButtonNext>
 
       </form>
     </>

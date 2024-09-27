@@ -1,12 +1,4 @@
-import {
-  useLenguage,
-  Footer,
-  Header,
-  ModalComponte,
-  Login,
-  V,
-  Toggles,
-} from "./../index.js";
+import { useLenguage, LayotuInicio, Toggles } from "./../index.js";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -30,20 +22,8 @@ export const Inicio = () => {
     <>
       <Toggles onClick={handleSelectIdioma} isSelected={isSelected} />
 
-      <div className="">
-        <Header
-          color={"bg-white"}
-          contenido={
-            <ModalComponte
-              buttonModal={t("iniciar_sesion")}
-              tittleModal={t("iniciar_sesion")}
-              colorButton={V.BtnRegistrar}
-              size={"sm"}
-              componente={<Login />}
-            />
-          }
-        />
-        <div className="relative overflow-hidden bg-gray-50">
+      <LayotuInicio>
+        <div className="relative overflow-hidden h-screen bg-gray-50">
           <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
             <div className=" mx-auto max-w-7xl  px-4 sm:static sm:px-6 lg:px-8">
               <div className="sm:max-w-lg ">
@@ -119,8 +99,7 @@ export const Inicio = () => {
             </div>
           </div>
         </div>
-      </div>
-      <Footer />
+      </LayotuInicio>
     </>
   );
 };

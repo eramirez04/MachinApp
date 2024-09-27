@@ -1,12 +1,12 @@
 import { Icons, menus, V, useLenguage } from "../../../index";
 import { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { TbPointFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, Tooltip } from "@nextui-org/react";
 
+// eslint-disable-next-line react/prop-types
 export const Nav = ({ rol }) => {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(() => {
@@ -58,7 +58,7 @@ export const Nav = ({ rol }) => {
         <ul className="mt-9 flex flex-col gap-4 relative">
           {menuss?.map(
             (menu, i) =>
-              (menu.name !== "Panel de control" || rol === "Administrador") && (
+              (menu.name !== t("panel_control") || rol === "Administrador") && (
                 <li key={i} className="relative">
                   <Link
                     to={menu?.link}
@@ -90,7 +90,7 @@ export const Nav = ({ rol }) => {
                   </Link>
                   {menu?.submenu && (
                     <div
-                      className={`ml-6 mt-2 flex flex-col gap-2 transition-all duration-500 ease-in-out transform ${
+                      className={`ml-2  mt-2 flex flex-col gap-2 transition-all duration-500 ease-in-out transform ${
                         submenuOpen[menu.name]
                           ? "max-h-40 opacity-100 translate-y-0 pointer-events-auto"
                           : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
@@ -100,10 +100,20 @@ export const Nav = ({ rol }) => {
                         <Link
                           to={submenu?.link}
                           key={j}
-                          className={`text-sm font-medium p-2 hover:shadow-md hover:bg-gray-100 rounded-md flex items-center gap-2`}
+                          className={`text-sm font-medium p-2 hover:shadow-md hover:border-l-4 border-l-green-500 transition-all
+                          hover:bg-gray-100 rounded-md flex items-center gap-1 ${
+                            open ? "" : "border"
+                          } overflow-hidden text-ellipsis whitespace-nowrap`}
                         >
-                          <TbPointFilled size={16} />
-                          {submenu?.name}
+                          {open ? (
+                            <>
+                              <Icons icon={submenu.logo} /> {submenu?.name}
+                            </>
+                          ) : (
+                            <Tooltip content={submenu?.name} color="foreground">
+                               {submenu?.name}
+                            </Tooltip>
+                          )}
                         </Link>
                       ))}
                     </div>

@@ -6,7 +6,6 @@ export const listarTipoMantenimiento=async(req,res) =>{
     try{
         let sql ='select idTipo_mantenimiento, tipo_mantenimiento from tipo_mantenimiento'
         const [result] = await conexion.query(sql);
-        console.log(result.length)
 
     if(result.length>0)res.status(200).json(result);
     else res.status(404).json({"menssage": "no se encontro mantenimiento en la base de datos "});

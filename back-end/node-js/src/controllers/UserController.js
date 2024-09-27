@@ -9,7 +9,6 @@ import { encriptarContra } from "../config/bcryptjs.js";
 
 // transporte que contiene la configuracion de envio de correos
 import { transporter } from "../config/email.js";
-import { generarRandom } from "../config/passwordRamdom.js";
 
 // importacion del modelo que hace consultas a la base de datos
 import { UsuarioModel } from "../database/model/usuario.js";
@@ -90,6 +89,20 @@ export const actualizarUsuario = async (req, res) => {
     const error = validarUsuariosActualizar(req.body);
 
     if (error.error) return res.status(400).json({ error: error.error.errors });
+
+    const [validarNumeroDocumento] = await conexion.query(
+      "SELECT idUsuarios FROM usuarios WHERE us_numero_documento = ?;",
+      [req.body.numero_documento]
+    );
+
+    if (
+      validarNumeroDocumento.length > 0 &&
+      String(validarNumeroDocumento[0].idUsuarios) !== String(req.params.id)
+    ) {
+      return res.status(403).json({
+        mensaje: "Ya existe un usuario con este número de documento.",
+      });
+    }
 
     let id = req.params.id;
 
@@ -198,7 +211,7 @@ export const recuperaraContra = async (req, res) => {
         .status(404)
         .json({ estado: false, mensaje: "no se encontro usuario" });
     } else {
-      let newPassword = generarRandom();
+      let newPassword = usuario[0].us_numero_documento;
 
       const result = await transporter.sendMail({
         from: '"MachinApp" <machinappsena@gmail.com>', // sender address

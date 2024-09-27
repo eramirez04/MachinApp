@@ -5,6 +5,10 @@ import { validationResult } from 'express-validator'
 import multer from 'multer'
 
 
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         let destinationPath = 'public/imagenes/ficha'
@@ -94,6 +98,61 @@ export const registrarFicha = async(req, res)=>{
 }
 
 
+
+export const actualizarFicha = async(req, res)=>{
+
+    let idFicha = req.params.idFicha
+
+    let { placaSena, fiEstado, fk_sitio } = req.body
+
+
+    let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : null  // Se valida si se cargó o no un documento, si no se cargó no se actualiza
+    let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : null
+
+    // Consulta la información actual de la ficha
+    const [dataFicha] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
+
+    // Ruta de las imágenes y documentos técnicos
+    const fichaImagenPath = path.join('public/imagenes/ficha', dataFicha[0].fi_imagen)
+    const fichaTecnicaPath = path.join('public/FichasTecnicas/FichasRespaldo', dataFicha[0].ficha_respaldo)
+
+    // Verifica y elimina la imagen anterior si se está subiendo una nueva
+    if (fiImagen && dataFicha[0].fi_imagen) {
+        if (fs.existsSync(fichaImagenPath)) {
+            fs.unlinkSync(fichaImagenPath)  // Elimina la imagen anterior
+        }
+    }
+
+    // Verifica y elimina la ficha técnica anterior si se está subiendo una nueva
+    if (fiTecnica && dataFicha[0].ficha_respaldo) {
+        if (fs.existsSync(fichaTecnicaPath)) {
+            fs.unlinkSync(fichaTecnicaPath)  // Elimina el documento técnico anterior
+        }
+    }
+
+    // Construcción de la consulta SQL para actualizar la ficha según los archivos subidos
+    let sql
+
+    if (fiImagen && fiTecnica) {  // Se actualizan ambos documentos
+        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+    
+    } else if (fiImagen && fiTecnica == null) {  // Solo se actualiza la imagen
+        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+    
+    } else if (fiTecnica && fiImagen == null) {  // Solo se actualiza el documento técnico
+        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+    
+    } else {  // No se actualizan los documentos, solo otros campos
+        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+    }
+
+    const [respuesta] = await conexion.query(sql)
+    return res.json({"mensaje":"se actualizo con exito la ficha "})
+    
+  
+}
+
+
 /*----------------------------------------------------------------Correcto----------------------*/
 export const listarFichas = async(req, res)=>{
     try{
@@ -104,9 +163,12 @@ export const listarFichas = async(req, res)=>{
         idFichas,
         fi_placa_sena,
         fi_estado,
-        sit_nombre
+        sit_nombre,
+        tipo_equipo.ti_fi_nombre AS nombre
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON  idAmbientes  = fi_fk_sitios
+        INNER JOIN tipo_equipo ON tipo_equipo.idTipo_ficha = fichas_maquinas_equipos.fi_fk_tipo_ficha
+        WHERE tipo_ficha = "equipo"
         `
         const  [respuesta] = await conexion.query(sql)
 
@@ -130,16 +192,59 @@ export const listarFichas = async(req, res)=>{
 
                 //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
                 for(let j = 0; infoVar.length > j; j++){
-
-                    if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
-                        respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                    
+                        switch(infoVar[j].idVariable){
+                            case 1 :
+                                respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
+                                break
+                            case 2:
+                                respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                                break
+                            case 3:
+                                respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
+                                break
+                            case 4:
+                                respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
+                                break
+                            case 5:
+                                respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
+                                break
+                            case 6:
+                                respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
+                                break
+                            case 7:
+                                respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                                break
+                            case 8:
+                                respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                                break
+                            case 9:
+                                respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
+                                break
+                        }
+                    
+/* 
+                    if(infoVar[j].idVariable == 1){
+                        respuesta[i]["fecha_adquisicion"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
+                        respuesta[i]["serial"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 3){              
+                        respuesta[i]["fecha_inicioGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 4){              
+                        respuesta[i]["fecha_finGarantia"] = infoVar[j].det_valor
+                    }
+                    else if(infoVar[j].idVariable == 5){              
+                        respuesta[i]["descripcion_garantia"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 7){
                         respuesta[i]["fi_marca"] = infoVar[j].det_valor
                     }
                     else if(infoVar[j].idVariable == 8){
                         respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                    }
+                    } */
                 }
             }
 
@@ -171,7 +276,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
         FROM ambientes
         INNER JOIN fichas_maquinas_equipos ON idAmbientes = fi_fk_sitios
         INNER JOIN tipo_equipo ON fi_fk_tipo_ficha = idTipo_ficha
-        WHERE idAmbientes = ${idAmbiente}
+        WHERE idAmbientes = ${idAmbiente} and tipo_ficha = "equipo"
         `
         const [resuladoFichas] = await conexion.query(sql)
 
@@ -220,8 +325,6 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 }
 
 
-
-
 /*----------------------------------------------------------------Correcto----------------------(los mantenimientos van en otro controlador)*/
 export const listarInfoEspecifica = async(req, res)=>{
 
@@ -236,12 +339,25 @@ export const listarInfoEspecifica = async(req, res)=>{
         fi_imagen,
         fi_estado,
         CodigoQR,
+        sit_Nombre, 
+        area_nombre,
+        sede_nombre,
         ficha_respaldo,
         ti_fi_nombre as tipoEquipo
+
+        FROM tipo_equipo
+        INNER JOIN fichas_maquinas_equipos ON idTipo_ficha = fi_fk_tipo_ficha
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        INNER JOIN areas ON sit_fk_areas = idArea
+        INNER JOIN sedes ON area_fk_sedes = idSede
+        WHERE idFichas = ${idFicha}
+
+        `
+        /* 
+        
         FROM fichas_maquinas_equipos
         INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
-        WHERE idFichas = ${idFicha}
-        `
+        WHERE idFichas = ${idFicha} */
 
 
         const[respuesta] = await conexion.query(sqlFicha)
@@ -258,7 +374,6 @@ export const listarInfoEspecifica = async(req, res)=>{
         fi_precio
          */
 
-        console.log(respuesta)
         
 
 
@@ -351,26 +466,9 @@ export const listarInfoEspecifica = async(req, res)=>{
             tipo_mantenimiento, 
             idSolicitud
             FROM fichas_maquinas_equipos
-            INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
-            INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
-            INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
-            INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
-            WHERE idFichas = ${idFicha}
-            `
+            INNER JOIN solicit
+            
 
-            const[mantenimientos] = await conexion.query(sqlMantenimientos)
-    
-            let objInfoEspecifica = {
-                idFichas: respuesta[0].idFichas,
-                fi_placa_sena: respuesta[0].fi_placa_sena, 
-                fi_serial: respuesta[0].fi_serial,
-                fi_fecha_adquisicion: respuesta[0].fi_fecha_adquisicion,
-                fi_fecha_inicio_garantia: respuesta[0].fi_fecha_inicio_garantia, 
-                fi_fecha_fin_garantia: respuesta[0].fi_fecha_fin_garantia, 
-                fi_descripcion_garantia: respuesta[0].fi_descripcion_garantia,
-                fi_descripcion:respuesta[0].fi_descripcion,
-                fi_marca:respuesta[0].fi_marca,
-                fi_modelo:respuesta[0].fi_modelo,
                 CodigoQR:respuesta[0].CodigoQR,
                 fi_imagen: respuesta[0].fi_imagen, 
                 fi_estado: respuesta[0].fi_estado,
@@ -434,50 +532,6 @@ export const actualizarFichaEsp = async ( req, res)=>{
 
 
 
-/* Falta por revisar */
-export const actualizarFicha = async(req, res)=>{
-    try{
-        
-        let idFicha = req.params.idFicha
-
-
-        let {placaSena, fiEstado, fk_sitio} = req.body
-
-        console.log(fiImagen)
-
-        let sql = `update fichas_maquinas_equipos set fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}',  fi_estado = '${fiEstado}',  fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}'`
-
-        let [respuesta] = await conexion.query(sql)
-
-
-        if(respuesta.affectedRows>0){
-            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
-        }
-        else{
-            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        }
-
-/*         let {fiFecha, placaSena, serial, fechaAdquisicion, fechaInicioGarantia, fechaFinGarantia, descipcionGarantia,fiImagen, fiEstado, fk_sitio, fk_tipo_ficha}= req.body
-
-        let sql = `update fichas set  fi_fecha = '${fiFecha}', fi_placa_sena = '${placaSena}' , fi_serial='${serial}', fi_fecha_adquisicion='${fechaAdquisicion}', 
-        fi_fecha_inicio_garantia = '${fechaInicioGarantia}', fi_fecha_fin_garantia='${fechaFinGarantia}', fi_descripcion_garantia='${descipcionGarantia}', fi_imagen='${fiImagen}',fi_estado = '${fiEstado}' , fi_fk_sitios=${fk_sitio}, fi_fk_tipo_ficha=${fk_tipo_ficha}
-        where idFichas = ${idFicha}`
-    
-        let [respuesta] = await conexion.query(sql)
-
-        if(respuesta.affectedRows>0){
-            return res.status(200).json({"mensaje":"Se actualizo correctamente la ficha"})
-        }
-        else{
-            return res.status(404).json({"mensaje":"Error al actualizar ficha"})
-        } */
-        
-    }catch(error){
-        return res.status(500).json({"mensaje":"Error del servidor".error})
-    }
-}
-
-
 
 
 
@@ -521,7 +575,10 @@ export const listarFichaUnica=async (req, res)=>{
         SELECT 
             fi_placa_sena, 
             fi_imagen, 
-            fi_estado, 
+            ficha_respaldo,
+            fi_estado,
+            idAmbientes,
+            fi_fk_sitios,
             sit_nombre, 
             ti_fi_nombre 
             FROM ambientes

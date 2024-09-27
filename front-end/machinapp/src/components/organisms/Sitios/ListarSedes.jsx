@@ -1,11 +1,8 @@
+import { axiosCliente, V, ButtonNext, Icons } from "../../../index";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosCliente } from "../../../service/api/axios";
-import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
-import { FormSedes } from "../formularios/FormSedes";
-import { V } from "../../../style";
 
 const BuscarSedes = () => {
   const [sedes, setSedes] = useState([]);
@@ -16,7 +13,7 @@ const BuscarSedes = () => {
         const response = await axiosCliente.get("/sede/listarsede");
         setSedes(response.data.resultadoSede);
       } catch (error) {
-        console.error(error);
+        console.error(error.response.data);
       }
     };
 
@@ -45,12 +42,14 @@ const BuscarSedes = () => {
         </p>
       </header>
       <div className="container mx-auto p-4">
-        <div className="flex justify-end">
-          <Link to={"/Sedes/Registrar"}>
-            <button className="bg-blue-500 rounded-md p-3 hover:bg-blue-700 mb-5 font-semibold">
-              Registrar nueva
-            </button>
-          </Link>
+        <div className="flex justify-end mb-7">
+          <ButtonNext
+            color={"success"}
+            startContent={<Icons icon={V.PlusIcon} />}
+            className={`text-white`}
+          >
+            <Link to={"/Sedes/Registrar"}>Registrar nueva</Link>
+          </ButtonNext>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {sedes.map((sede) => (
@@ -73,21 +72,30 @@ const BuscarSedes = () => {
               </Link>
               <div className="p-6">
                 <div className="flex justify-end">
-                  <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
-                    <FaEdit />
-                  </button>
+                  <Link to={`/Sedes/Actualizar/${sede.idSede}`}>
+                    <button className="text-4xl text-orange-400 hover:cursor-pointer hover:text-orange-500">
+                      <FaEdit />
+                    </button>
+                  </Link>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800">
                   {sede.sede_nombre}
                 </h2>
                 <p className="text-gray-600 mt-2">{sede.sede_nombre_centro}</p>
                 <div className="mt-4 flex justify-end">
-                  <Link to={`/Sedes/${sede.idSede}`}>
-                    <ButtonC
-                      bgColor="bg-green-400 hover:bg-green-600 text-white"
-                      name="Ingresar"
-                    />
-                  </Link>
+                  <ButtonNext
+                    type={"submit"}
+                    color={"success"}
+                    text={" "}
+                    className={"text-white"}
+                  >
+                    <Link
+                      to={`/Sedes/${sede.idSede}`}
+                      className=" h-full w-full flex justify-center items-center"
+                    >
+                      Ingresar
+                    </Link>
+                  </ButtonNext>
                 </div>
               </div>
             </div>

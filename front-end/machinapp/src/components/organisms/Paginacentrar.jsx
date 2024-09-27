@@ -1,20 +1,16 @@
 
 
 
-import Example from '../molecules/Calendario';
+import {Calendario} from '../../index';
 
 
-const Artboard = () => {
-
-
-
+export const Artboard = () => {
 
   return (
     <div className=" px-20">
-        <Example/>
+        <Calendario/>
 
     </div>
   );
 };
 
-export default Artboard;

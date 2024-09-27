@@ -103,3 +103,69 @@ export const actualizarSolicitudes = async(req, res)=>{
       return res.status(500).json({"mensaje":"Error del servidor"})
   }
 }
+
+
+export const listarSolicitudPorId = async (req, res) => {
+  try {
+    const { idSolicitud } = req.params;
+
+    const sql = `
+      SELECT
+          idSolicitud,
+          soli_prioridad,
+          soli_descripcion_problemas,
+          soli_costo_estimado,
+          soli_observaciones,
+          soli_estado,
+          temas_legal,
+          fecha_solicitud,
+          nombre_solicitante,
+          correo_solicitante,
+          acti_nombre,
+          acti_descripcion,
+          fi_placa_sena
+      FROM
+         solicitud_mantenimiento 
+      JOIN 
+          solicitud_has_fichas ON idSolicitud = fk_solicitud
+      JOIN 
+          fichas_maquinas_equipos ON fk_fichas = idFichas
+      JOIN 
+          actividades ON acti_fk_solicitud = idSolicitud
+      WHERE
+          idSolicitud = ?
+    `;
+
+    const [result] = await conexion.query(sql, [idSolicitud]);
+
+    if (result.length > 0) {
+      const mantenimiento = {
+        idSolicitud: result[0].idSolicitud,
+        soli_prioridad: result[0].soli_prioridad,
+        soli_descripcion_problemas: result[0].soli_descripcion_problemas,
+        soli_costo_estimado: result[0].soli_costo_estimado,
+        soli_observaciones: result[0].soli_observaciones,
+        soli_estado: result[0].soli_estado,
+        temas_legal: result[0].temas_legal,
+        fecha_solicitud: result[0].fecha_solicitud,
+        nombre_solicitante: result[0].nombre_solicitante,
+        correo_solicitante: result[0].correo_solicitante,
+        acti_nombre: result[0].acti_nombre,
+        acti_descripcion: result[0].acti_descripcion,
+        fi_placa_sena: result[0].fi_placa_sena
+      };
+
+      res.status(200).json(mantenimiento);
+    } else {
+      res.status(404).json({
+        message: "No se encontró un solicitud con ese id.",
+      });
+    }
+  } catch (err) {
+    console.error("Error en listarSolicitudPorId:", err);
+    res.status(500).json({
+      message: "Error en el controlador listarSolicitudPorId: " + err.message,
+    });
+  }
+};
+

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { axiosCliente } from '../../../service/api/axios';
-import { CardStyle } from "../../molecules/content/CardStyle.jsx";
-import {InputforForm} from "../../molecules/form/InputForForm";
-import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
+
+import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+
+import { CardStyle, InputforForm, Breadcrumb, axiosCliente } from "../../../index.js";
 
 const Textarea = ({ register, name, placeholder, rows }) => (
   <textarea
@@ -39,6 +40,7 @@ class ErrorBoundary extends React.Component {
 }
 
 export const FormFichaDeMantenimiento = () => {
+  const { t } = useTranslation();
   const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       mant_codigo_mantenimiento: '',
@@ -59,9 +61,11 @@ export const FormFichaDeMantenimiento = () => {
   });
 
   const [tiposMantenimiento, setTiposMantenimiento] = useState([]);
+  const [solicitudes, setSolicitudes] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fileError, setFileError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,22 +74,25 @@ export const FormFichaDeMantenimiento = () => {
       try {
         const tiposMantenimientoRes = await axiosCliente.get('tipomantenimiento/listar');
         setTiposMantenimiento(tiposMantenimientoRes.data || []);
+
+        const solicitudesRes = await axiosCliente.get('http://localhost:3000/solicitud/');
+        setSolicitudes(solicitudesRes.data || []);
       } catch (error) {
         console.error("Error al obtener datos:", error);
-        setError("Error al cargar los datos. Por favor, intente de nuevo más tarde.");
+        setError(t("error_loading_data"));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [t]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     setError(null);
+    setFileError(null);
     try {
-      // Registro del mantenimiento
       const formData = new FormData();
       formData.append('mant_codigo_mantenimiento', data.mant_codigo_mantenimiento);
       formData.append('mant_estado', data.mant_estado);
@@ -98,49 +105,37 @@ export const FormFichaDeMantenimiento = () => {
       formData.append('fk_tipo_mantenimiento', data.fk_tipo_mantenimiento);
       formData.append('fk_solicitud_mantenimiento', data.fk_solicitud_mantenimiento);
 
-      /* console.log("Envío de datos de mantenimiento:", Object.fromEntries(formData)); */
-
       const mantenimientoResponse = await axiosCliente.post('mantenimiento/registrar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
 
-      /* console.log("Respuesta de registro de mantenimiento:", mantenimientoResponse.data); */
-
       const mantenimientoId = mantenimientoResponse.data.idMantenimiento;
 
       if (!mantenimientoId) {
-        throw new Error("No se recibió el ID del mantenimiento en la respuesta");
+        throw new Error(t("no_maintenance_id_received"));
       }
 
-      // Registro de partes de mantenimiento
       const partesMantenimiento = data.repuestos.map(repuesto => ({
         par_fk_mantenimientos: mantenimientoId,
         par_nombre_repuesto: repuesto.nombreRepuesto,
         par_costo: repuesto.costo
       }));
 
-      /* console.log("Envío de datos de piezas:", partesMantenimiento);
-      console.log(partesMantenimiento) */
+      await axiosCliente.post('partes_mantenimiento/registrar', partesMantenimiento);
 
-      const partesResponse = await axiosCliente.post('partes_mantenimiento/registrar', partesMantenimiento);
-
-      /* console.log("Respuesta de registro de piezas:", partesResponse.data); */
-
-      // Alerta de éxito
-      alert("Todo registrado con éxito.");
+      alert(t("registration_success"));
 
       reset(); 
       setSelectedFile(null); 
     } catch (error) {
-      console.error("Error registrando mantenimiento y partes:", error);
-      let errorMessage = "Error al registrar el mantenimiento y partes. ";
+      let errorMessage = t("registration_error");
       if (error.response) {
-        errorMessage += `Error del servidor: ${error.response.status} - ${error.response.data.message || error.response.statusText}`;
-        console.error("Error response:", error.response.data);
+        errorMessage += `${t("server_error")}: ${error.response.status} - ${error.response.data.message || error.response.statusText}`;
+        setFileError(error.response.data.mensaje || JSON.stringify(error.response.data));
       } else if (error.request) {
-        errorMessage += "No se recibió respuesta del servidor.";
+        errorMessage += t("no_server_response");
       } else {
         errorMessage += error.message;
       }
@@ -154,171 +149,208 @@ export const FormFichaDeMantenimiento = () => {
     setSelectedFile(event.target.files[0]);
   };
 
+  // Obtener la fecha de hoy en formato YYYY-MM-DD
+  const today = new Date().toISOString().split('T')[0];
+
   return (
-    <ErrorBoundary>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto flex flex-col gap-6 p-4">
-        <div className="flex items-center justify-between mb-4 border p-2">
-          <div className="w-1/4">
-            <Image
-              src="/logoSenaNaranja.png"
-              className="h-16 w-full object-contain"
-              alt="logo-sena"
-            />
+    <div>
+      <Breadcrumb pageName={t("register_maintenance")} />
+      <ErrorBoundary>
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-7xl mx-auto p-8 space-y-8">
+          <div className="flex items-center justify-between mb-8 border p-4 rounded-lg shadow-sm">
+            <div className="w-1/4">
+              <Image
+                src="/logoSenaNaranja.png"
+                className="h-20 w-full object-contain"
+              />
+            </div>
+            <div className="w-1/2 text-center">
+              <h2 className="text-xl font-bold">{t("maintenance_work_order")}</h2>
+            </div>
+            <div className="w-1/4 text-right">
+              <p className="text-sm">{t("management_center")}</p>
+            </div>
           </div>
-          <div className="w-1/2 text-center">
-            <h2 className="text-sm font-bold">SUBSISTEMA DE MANTENIMIENTO Y CONTROL DE MAQUINARIA Y EQUIPO ORDEN DE TRABAJO DE MANTENIMIENTO</h2>
-          </div>
-          <div className="w-1/4 text-right">
-            <p className="text-xs">Centro de gestión y desarrollo sostenible surColombiano</p>
-          </div>
-        </div>
 
-        <CardStyle titleCard="Código de Mantenimiento">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_codigo_mantenimiento"
-            tipo="text"
-            placeholder="Ingrese el código de mantenimiento"
-          />
-        </CardStyle>
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
+            <CardStyle titleCard={t("maintenance_code")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="mant_codigo_mantenimiento"
+                tipo="text"
+                placeholder={t("enter_maintenance_code")}
+                label={t("enter_maintenance_code")}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard="Estado">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_estado"
-            tipo="text"
-            placeholder="Ingrese el estado"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Fecha Próxima">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_fecha_proxima"
-            tipo="date"
-            placeholder="Seleccione la fecha próxima"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Tipo de Mantenimiento">
-          <Controller
-            name="fk_tipo_mantenimiento"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
-                  tiposMantenimiento.map((tipo) => (
-                    <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
-                      {tipo.tipo_mantenimiento || 'Sin tipo de mantenimiento'}
-                    </Radio>
-                  ))
-                ) : (
-                  <p>No hay tipos de mantenimiento disponibles</p>
+            <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="mant_estado"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                    {...field}
+                    placeholder={t("select_status")}
+                  >
+                    <SelectItem key="Pendiente" value="Pendiente">{t("pending")}</SelectItem>
+                    <SelectItem key="En Proceso" value="En Proceso">{t("in_progress")}</SelectItem>
+                    <SelectItem key="Completado" value="Completado">{t("completed")}</SelectItem>
+                    <SelectItem key="En Espera" value="En Espera">{t("on_hold")}</SelectItem>
+                  </Select>
                 )}
-              </RadioGroup>
-            )}
-          />
-        </CardStyle>
+              />
+            </CardStyle>
 
-        <CardStyle titleCard="Descripción del Mantenimiento">
-          <Textarea
-            register={register}
-            name="mant_descripcion"
-            placeholder="Proporcione una descripción detallada del mantenimiento realizado."
-            rows={6}
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("next_date")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="mant_fecha_proxima"
+                tipo="date"
+                placeholder={t("select_next_date")}
+                label={t("select_next_date")}
+                min={today}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard="Trabajo Ejecutado">
-          <input type="file" onChange={handleFileChange} />
-          {selectedFile && <p>Archivo seleccionado: {selectedFile.name}</p>}
-        </CardStyle>
+            <CardStyle titleCard={t("maintenance_type")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="fk_tipo_mantenimiento"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup {...field}>
+                    {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
+                      tiposMantenimiento.map((tipo) => (
+                        <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
+                          {tipo.tipo_mantenimiento || t("no_maintenance_type")}
+                        </Radio>
+                      ))
+                    ) : (
+                      <p>{t("no_maintenance_types_available")}</p>
+                    )}
+                  </RadioGroup>
+                )}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard="Costo Final">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="costo_final"
-            tipo="number"
-            placeholder="Ingrese el costo final"
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("maintenance_description")} className="p-6 shadow-md rounded-lg">
+              <Textarea
+                register={register}
+                name="mant_descripcion"
+                placeholder={t("provide_detailed_description")}
+                label={t("provide_detailed_description")}
+                rows={6}
+              />
+            </CardStyle>
 
-        <CardStyle titleCard="Solicitud de Mantenimiento">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="fk_solicitud_mantenimiento"
-            tipo="text"
-            placeholder="Ingrese la solicitud de mantenimiento"
-          />
-        </CardStyle>
+            <CardStyle titleCard={t("work_executed")} className="p-6 shadow-md rounded-lg">
+              <input type="file" onChange={handleFileChange} className="mb-2" />
+              {selectedFile && <p className="text-sm text-gray-600">{t("selected_file")}: {selectedFile.name}</p>}
+              {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+            </CardStyle>
 
-        <CardStyle titleCard="Repuestos utilizados y costos">
-          <div className="flex justify-end mb-2">
-            <Button
-              color="primary"
-              onClick={() => append({ nombreRepuesto: '', costo: '' })}
-            >
-              <PlusIcon className="h-5 w-5" aria-hidden="true" />
-              Agregar repuesto
-            </Button>
+            <CardStyle titleCard={t("final_cost")} className="p-6 shadow-md rounded-lg">
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="costo_final"
+                tipo="number"
+                placeholder={t("enter_final_cost")}
+                label={t("enter_final_cost")}
+                min="0"
+                step="0.01"
+              />
+            </CardStyle>
+
+            <CardStyle titleCard={t("maintenance_request")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="fk_solicitud_mantenimiento"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                    {...field}
+                    placeholder={t("seleccione una solicitud pendiente")}
+                  >
+                    {solicitudes.map((solicitud) => (
+                      <SelectItem key={solicitud.idSolicitud} value={solicitud.idSolicitud.toString()}>
+                        {`ID: ${solicitud.idSolicitud}`}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </CardStyle>
           </div>
-          <Table aria-label="Tabla de repuestos">
-            <TableHeader>
-              <TableColumn>Nombre del repuesto</TableColumn>
-              <TableColumn>Costo</TableColumn>
-              <TableColumn>Acciones</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {fields.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
-                      errors={errors}
-                      name={`repuestos.${index}.nombreRepuesto`}
-                      tipo="text"
-                      placeholder="Nombre del repuesto"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
-                      errors={errors}
-                      name={`repuestos.${index}.costo`}
-                      tipo="number"
-                      placeholder="Costo"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardStyle>
 
-        <Button
-          type="submit"
-          color="success"
-          disabled={isLoading}
-        >
-          {isLoading ? "Registrando..." : "Registrar Mantenimiento"}
-        </Button>
+          <CardStyle titleCard={t("parts_used_and_costs")} className="mt-8 p-6 shadow-md rounded-lg">
+            <div className="flex justify-end mb-4">
+              <Button
+                color="primary"
+                onClick={() => append({ nombreRepuesto: '', costo: '' })}
+              >
+                <PlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                {t("add_part")}
+              </Button>
+            </div>
+            <Table aria-label={t("parts_table")}>
+              <TableHeader>
+                <TableColumn>{t("part_name")}</TableColumn>
+                <TableColumn>{t("cost")}</TableColumn>
+                <TableColumn>{t("actions")}</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {fields.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.nombreRepuesto`}
+                        tipo="text"
+                        placeholder={t("part_name")}
+                        label={t("part_name")}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.costo`}
+                        tipo="number"
+                        placeholder={t("cost")}
+                        label={t("cost")}
+                        min="0"
+                        step="0.01"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        color="error"
+                        onClick={() => remove(index)}
+                      >
+                        <TrashIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                        {t("delete")}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardStyle>
 
-        {error && <p className="text-red-500">{error}</p>}
-      </form>
-    </ErrorBoundary>
+          <Button
+            type="submit"
+            color="success"
+            className="mt-8 w-full py-4 text-lg font-semibold"
+            disabled={isLoading}
+          >
+            {isLoading ? t("registering") : t("register_maintenance")}
+          </Button>
+
+          {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+        </form>
+      </ErrorBoundary>
+    </div>
   );
 };

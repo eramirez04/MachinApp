@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Input } from "@nextui-org/react";
 
+/*  eslint-disable-next-line react/prop-types  */
 export const SearchComponent = ({ onSearch, label }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const { t } = useTranslation();

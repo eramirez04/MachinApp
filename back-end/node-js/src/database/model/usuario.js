@@ -60,6 +60,7 @@ export class UsuarioModel {
   }
 
   static async actualizarUser(dataUser, idUser, file) {
+    const Id = idUser.toLowerCase();
     const {
       nombre,
       apellidos,
@@ -69,21 +70,33 @@ export class UsuarioModel {
       empresa,
       especialidad,
       rol,
+      password,
     } = dataUser;
 
-    /* // contaseña para encriptar
-    const passwordCrypt = await encriptarContra(contrasenia); */
+    let contraEncriptada = "";
 
-    const Id = idUser.toLowerCase();
+    if (!password) {
+      const [result] = await conexion.query(
+        "select us_contrasenia from usuarios where idUsuarios = ?;",
+        [Id]
+      );
+      contraEncriptada = result[0].us_contrasenia;
+    } else {
+      contraEncriptada = await encriptarContra(password);
+    }
 
     const response = await conexion.query(
       `
       UPDATE usuarios
       SET
-      us_nombre = ?,us_apellidos= ?,us_correo= ? , us_numero_documento = ?,
+      us_nombre = ?,
+      us_apellidos= ?,
+      us_correo= ?,
+      us_numero_documento = ?,
       us_tipo_documento = ?,
       us_empresa= ?,
       us_especialidad = ?,
+      us_contrasenia = ?,
       us_imagen = '${file}',
       fk_roles = ?
       where idUsuarios = ? ;`,
@@ -95,6 +108,7 @@ export class UsuarioModel {
         tipo_documento,
         empresa,
         especialidad,
+        contraEncriptada,
         rol,
         Id,
       ]

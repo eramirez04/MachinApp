@@ -21,7 +21,7 @@ export const useFetchUserData = () => {
   };
 
   useEffect(() => {
-    if (rol === "Administrador" && user) {
+    if (rol.trim().toLowerCase().startsWith("administrador") && user) {
       fetcDataUser();
     }
     return;

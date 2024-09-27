@@ -10,6 +10,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [rol, setRol] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorAuth, setErrorAuth] = useState("");
+
+  const [tokenIsValido, settokenIsValido] = useState(null);
 
   const navigate = useNavigate();
 
@@ -17,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setRol("");
     localStorage.removeItem("token");
+    localStorage.setItem("valido", false);
     navigate("/");
   };
 
@@ -31,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       // si la respuesta es exitosa, redirecciona a la pantalla home, y guarda token en localstorage
       if (response) {
         setLocalStorage(response.data.token);
+        settokenIsValido(true);
         await getDataUser();
         await slepp(1000);
         /*    setLoading(false); */
@@ -47,6 +52,7 @@ export const AuthProvider = ({ children }) => {
   const setLocalStorage = (token) => {
     try {
       window.localStorage.setItem("token", token);
+      window.localStorage.setItem("valido", true);
     } catch (error) {
       console.log(error);
     }
@@ -56,10 +62,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axiosCliente.get("user/listar/me");
       setRol(res.data[0].rol_nombre);
+      settokenIsValido(true);
       setUser(res.data[0]);
     } catch (error) {
+      console.error(error.response);
       if (error && error.response) {
-        console.error(error.response.data);
+        setErrorAuth(error.response);
       }
     }
   };
@@ -70,12 +78,14 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const valido = localStorage.getItem("valido");
+    if (token && valido) {
+      settokenIsValido(true);
       getDataUser();
     } else {
       setUser([]);
     }
-  }, []);
+  }, [tokenIsValido]);
 
   const value = {
     logout,
@@ -84,6 +94,8 @@ export const AuthProvider = ({ children }) => {
     user,
     login,
     loading,
+    errorAuth,
+    tokenIsValido,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

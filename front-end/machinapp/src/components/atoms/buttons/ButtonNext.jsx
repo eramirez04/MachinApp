@@ -11,10 +11,21 @@ export const ButtonNext = ({
   color,
   variant,
   className,
+  isIconOnly,
+  onClick,
   children,
+  startContent,
 }) => {
   return (
-    <Button color={color} type={type} variant={variant} className={className}>
+    <Button
+      color={color}
+      type={type}
+      variant={variant}
+      className={className}
+      isIconOnly={isIconOnly}
+      onClick={onClick}
+      startContent={startContent}
+    >
       {children} {text}
     </Button>
   );
@@ -22,9 +33,12 @@ export const ButtonNext = ({
 
 ButtonNext.propTypes = {
   text: PropTypes.string,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   color: PropTypes.string,
   variant: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.any,
+  isIconOnly: PropTypes.bool,
+  onClick: PropTypes.func,
+  startContent: PropTypes.any,
 };
