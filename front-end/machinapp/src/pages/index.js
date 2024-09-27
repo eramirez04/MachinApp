@@ -29,6 +29,7 @@ export { RegistrarArea } from "./Sitios/RegistrarArea";
 export { RegistrarSede } from "./Sitios/RegistrarSede";
 export { UpdateAndListFichaTecnica } from "./Equipos/UpdateAndListFichaTecnica";
 
+export {UpdateFormFichaSolicitud} from "./fichastecnicas/UpdateFormFichaSolicitud"
 // fichas
 export { Fichas } from "./admin/Fichas";
 export { FichaSolicitudPage } from "./fichastecnicas/ViewFormFichaSolicitudPage";

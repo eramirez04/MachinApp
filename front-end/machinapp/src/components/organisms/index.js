@@ -27,6 +27,19 @@ export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 export { FichaTecnicaEquiposPDF } from "./pdfs/FichaTecnicaEquiposPDF";
 export { VistaPDF } from "./pdfs/VistaPDF.jsx";
 
+
+export { PDFSolicitud } from "./pdfs/PDFSolicitud";
+export { PDFvistaSolicitud } from "./pdfs/PDFvistaSolicitud.jsx";
+
+// actividades
+
+
+export {Artboard} from "./Paginacentrar"
+
+// solicitudes
+
+export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate"
+
 // graficos
 export { ChartMaquinas } from "./graficos/MaquinasChart";
 export { MantenimientoGrafico } from "./graficos/MantenimientoGrafico";

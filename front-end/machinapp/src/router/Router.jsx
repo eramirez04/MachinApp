@@ -30,6 +30,7 @@ import {
   ActualizarAmbientes,
   ActualizarAreas,
   UpdateAndListFichaTecnica,
+  UpdateFormFichaSolicitud,
   ActualizarSedes,
   Page404,
 } from "../index";
@@ -62,7 +63,12 @@ export const AppRouter = () => {
             </Route>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
+
+
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
+            <Route path="/editar/solicitud" element={<UpdateFormFichaSolicitud/>}/>
+
+
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
