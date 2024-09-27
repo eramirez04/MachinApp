@@ -31,7 +31,7 @@ export const MaquinasAmbiente=()=>{
       <>
         <Layout titlePage = { `${Nombreambiente}`}>
             <Breadcrumb pageName={`${Nombreambiente}`} />
-            <div className='mx-10'>
+            <div>
                 <ListarMaquinasAmb idAmbiente={idAmbiente}/>
             </div>
         </Layout>

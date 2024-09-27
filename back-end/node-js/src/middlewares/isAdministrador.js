@@ -11,7 +11,9 @@ export const isAdmin = async (req, res, next) => {
         console.error(err);
         return;
       }
-      if (decode.user.rol_nombre === "Administrador") {
+      if (
+        decode.user.rol_nombre.trim().toLowerCase().startsWith("administrador")
+      ) {
         next();
       } else {
         res.status(403).json({ menseje: "No tienes permiso para esta acción" });
@@ -33,9 +35,12 @@ export const adminAndInstructor = async (req, res, next) => {
         console.error(err);
         return;
       }
-      const adminOrInstru = decode.user.rol_nombre;
+      const adminOrInstru = decode.user.rol_nombre.trim().toLowerCase();
 
-      if (adminOrInstru === "Administrador" || adminOrInstru === "Instructor") {
+      if (
+        adminOrInstru.startsWith("administrador") ||
+        adminOrInstru.startsWith("instructor")
+      ) {
         next();
       } else {
         res.status(403).json({ menseje: "No tienes permiso para esta acción" });

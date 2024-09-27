@@ -1,7 +1,8 @@
+import { Fichas } from "../../index";
 import { Route, Routes } from "react-router-dom";
 
 // paginas
-import Fichas from "../../pages/admin/Fichas";
+
 import { FichaSolicitudPage } from "../../pages/fichastecnicas/ViewFormFichaSolicitudPage";
 
 export const SolicitudRouter = () => {

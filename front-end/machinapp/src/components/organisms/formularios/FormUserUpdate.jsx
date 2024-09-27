@@ -2,19 +2,22 @@ import {
   useAuth,
   useFetchRoles,
   SelectComponent,
+  InputForm,
   InputUpdate,
   V,
   multiFormData,
   ButtonNext,
+  slepp,
 } from "../../../index";
 
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner, Input } from "@nextui-org/react";
 
+// eslint-disable-next-line react/prop-types
 export const FormUserUpdate = ({ userData }) => {
   const { rol, refreshUserLoged } = useAuth();
   const { roles } = useFetchRoles();
@@ -25,26 +28,12 @@ export const FormUserUpdate = ({ userData }) => {
   const ADMIN = "Administrador";
 
   const [admin, setAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Inicialmente true
+  const [isLoading, setIsLoading] = useState(false); // Inicialmente true
 
   // manejo de erroes
   const [errores, setErrors] = useState("");
+  const [localUser, setLocalUser] = useState({ imagen: "" });
 
-  const [localUser, setLocalUser] = useState({
-    id: "",
-    correo: "",
-    nombre: "",
-    apellidos: "",
-    numero_documento: "",
-    tipo_documento: "",
-    imagen: "",
-    empresa: "",
-    especialidad: "",
-    rol: "",
-    id_rol: "",
-  });
-
-  // validaciones de los campos de los formularios
   const {
     control,
     handleSubmit,
@@ -61,7 +50,6 @@ export const FormUserUpdate = ({ userData }) => {
     data.tipo_documento = data.tipo_documento || user.tipo_documento;
 
     try {
-      /*    const res = await updateUser(data, localUser.id); */
       const res = await multiFormData(
         `user/actualizar/${user.id}`,
         data,
@@ -71,23 +59,29 @@ export const FormUserUpdate = ({ userData }) => {
       await refreshUserLoged();
 
       if (res) {
+        slepp(2000);
+        toast.success(res.data.Mensaje);
         if (res.data && rol === ADMIN) {
           navigate("/Panelcontrol");
-          toast.warning(res.data.Mensaje);
         } else {
           navigate("/perfil");
           await refreshUserLoged();
         }
       }
     } catch (error) {
+      toast.error("Error Fatal por favor elimine la carpeta C:/system32");
+      console.log(error.response);
+      let errores = error.response.data.mensaje
+        ? { num: error.response.data.mensaje }
+        : "";
+
       let neWerrores = {};
       if (error.response?.data.error) {
         error.response.data.error.forEach((element) => {
           neWerrores[element.path[0]] = element.message;
         });
       }
-
-      setErrors(neWerrores);
+      setErrors(Object.keys(neWerrores).length > 0 ? neWerrores : errores);
     }
   };
 
@@ -99,6 +93,21 @@ export const FormUserUpdate = ({ userData }) => {
       imagen: imagen,
     }));
   };
+  useEffect(() => {
+    if (user) {
+      setIsLoading(true);
+      reset({
+        nombre: user.nombre || "",
+        correo: user.correo || "",
+        numero_documento: user.numero_documento || "",
+        apellidos: user.apellidos || "",
+        imagen: localUser.imagen || user.imagen || "",
+        empresa: user.empresa || "",
+        especialidad: user.especialidad || "",
+      });
+    }
+    setIsLoading(false);
+  }, [user, reset, localUser]);
 
   useEffect(() => {
     const comprobarAdmin = () => {
@@ -111,49 +120,16 @@ export const FormUserUpdate = ({ userData }) => {
     comprobarAdmin();
   }, [rol, admin]);
 
-  useEffect(() => {
-    if (userData) {
-      reset({
-        nombre: user.nombre,
-        correo: user.correo,
-        numero_documento: user.numero_documento,
-        apellidos: user.apellidos,
-        imagen: localUser.imagen || user.imagen,
-        empresa: user.empresa || "",
-        especialidad: user.especialidad,
-      });
-      setIsLoading(false); // Datos cargados, termina la carga
-    }
-  }, [userData, user, reset, localUser]);
-
   if (isLoading) {
     return <div>Cargando datos del usuario...</div>;
   }
   return (
     <>
-      {rol === ADMIN && (
-        <>
-          <div className="flex justify-end">
-            <Button color="danger" radius="sm">
-              <Link
-                to="/Panelcontrol"
-                className="h-full w-full flex items-center"
-                type="submit"
-              >
-                Regresar
-              </Link>
-            </Button>
-          </div>
-        </>
-      )}
-
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-5 gap-8"
       >
-        {/* aqui va algo, no se que es pero va */}
-
-        <div className="col-span-5 xl:col-span-2">
+        <div className="col-span-5 xl:col-span-2 flex flex-col gap-10">
           <div
             className={`rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark`}
           >
@@ -214,6 +190,28 @@ export const FormUserUpdate = ({ userData }) => {
               </div>
             </div>
           </div>
+          <div className="h-80 w-full border items-center">
+            <div
+              className={`border-b border-stroke py-3 px-5 dark:border-strokedark ${V.bg_sena_verde}`}
+            >
+              <span className="font-medium text-black dark:text-white">
+                {t("tu_foto")}
+              </span>
+            </div>
+            <div className="p-10">
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">
+                Nueva Contraseña
+              </label>
+              <Input
+                {...register("password")}
+                placeholder="Contraseña"
+                autoComplete="off"
+                variant="bordered"
+                radius="sm"
+                size="md"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="col-span-5 xl:col-span-3 border">
@@ -232,6 +230,7 @@ export const FormUserUpdate = ({ userData }) => {
                     <Controller
                       name="nombre"
                       control={control}
+                      defaultValue={user?.nombre || ""}
                       rules={{ required: "Correo es obligatorio" }}
                       render={({ field }) => (
                         <InputUpdate
@@ -250,6 +249,7 @@ export const FormUserUpdate = ({ userData }) => {
                       name="apellidos"
                       control={control}
                       rules={{ required: true }}
+                      defaultValue={user?.apellidos || ""}
                       render={({ field }) => (
                         <InputUpdate
                           {...field}
@@ -266,6 +266,7 @@ export const FormUserUpdate = ({ userData }) => {
                   name="correo"
                   control={control}
                   rules={{ required: "Correo es obligatorio" }}
+                  defaultValue={user?.correo || ""}
                   render={({ field }) => (
                     <InputUpdate
                       {...field}
@@ -283,6 +284,7 @@ export const FormUserUpdate = ({ userData }) => {
                       name="numero_documento"
                       control={control}
                       rules={{ required: true }}
+                      defaultValue={user?.numero_documento || ""}
                       render={({ field }) => (
                         <InputUpdate
                           {...field}
@@ -295,6 +297,11 @@ export const FormUserUpdate = ({ userData }) => {
                     />
                     {errores.numero_documento && (
                       <p className="text-red-500">{errores.numero_documento}</p>
+                    )}
+                    {errores.num && (
+                      <>
+                        <p className="text-red-500">{errores.num} </p>
+                      </>
                     )}
                   </div>
                   {admin && (
@@ -313,7 +320,6 @@ export const FormUserUpdate = ({ userData }) => {
                             },
                           ]}
                           name="tipo_documento"
-                          isDi
                           placeholder={t("tipo_documento")}
                           valueKey="idRoles"
                           value={false}
@@ -350,35 +356,19 @@ export const FormUserUpdate = ({ userData }) => {
                   <>
                     <div className="mb-5.5 flex flex-col gap-10 sm:flex-row">
                       <div className="w-full sm:w-1/2">
-                        <Controller
-                          name="empresa"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <InputUpdate
-                              {...field}
-                              errors={errors}
-                              label={t("empresa")}
-                              tipo="text"
-                              isUpdating={true}
-                            />
-                          )}
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          name={"empresa"}
+                          text={t("empresa")}
                         />
                       </div>
                       <div className="w-full sm:w-1/2">
-                        <Controller
-                          name="especialidad"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <InputUpdate
-                              {...field}
-                              errors={errors}
-                              label={t("especialidad")}
-                              tipo="text"
-                              isUpdating={true}
-                            />
-                          )}
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          name={"especialidad"}
+                          text={t("especialidad")}
                         />
                       </div>
                     </div>

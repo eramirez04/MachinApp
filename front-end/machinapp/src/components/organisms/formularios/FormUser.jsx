@@ -9,7 +9,7 @@ import {
 } from "../../../index";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 export const FormUser = () => {
   const { registrarUsuario, loading } = useRegistrarUsuario();
@@ -36,7 +36,8 @@ export const FormUser = () => {
         return;
       }
     } catch (error) {
-      console.log(error.response);
+      /*  console.log(error); */
+      toast.error("Error en peticion");
       let newErrors = {};
 
       if (error.response?.data.error) {
@@ -164,15 +165,3 @@ export const FormUser = () => {
     </>
   );
 };
-
-/* {
-    nombre: "",
-    apellidos: "",
-    correo: "",
-    numero_documento: "",
-    tipo_documento: "",
-    contrasenia: "",
-    especialidad: "",
-    empresa: "",
-    rol: 4,
-  } */
