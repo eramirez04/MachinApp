@@ -33,17 +33,12 @@ import {
   EllipsisHorizontalCircleIcon,
   PencilIcon,
   GlobeAltIcon,
-<<<<<<< HEAD
-  EyeIcon,
-  
-=======
   BuildingLibraryIcon,
   WrenchIcon,
   DocumentIcon,
   PencilSquareIcon,
   ComputerDesktopIcon,
   NewspaperIcon
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
 } from "@heroicons/react/24/outline";
 
 export const V = {
@@ -75,10 +70,6 @@ export const V = {
   PencilIcon,
   logoTic,
   GlobeAltIcon,
-<<<<<<< HEAD
-  EyeIcon,
-  
-=======
   BuildingOfficeIcon,
   BuildingLibraryIcon,
   WrenchIcon,
@@ -86,7 +77,6 @@ export const V = {
   PencilSquareIcon,
   ComputerDesktopIcon,
   NewspaperIcon,
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
   Bradius: "sm",
 
   btnPrimary: "primary",

@@ -27,17 +27,12 @@ import {
   RegistrarSede,
   RegistrarAmbiente,
   Editar_Component,
-<<<<<<< HEAD
-
-  UpdateFormFichaSolicitud,
-  UpdateAndListFichaTecnica
-=======
   ActualizarAmbientes,
   ActualizarAreas,
   UpdateAndListFichaTecnica,
+  UpdateFormFichaSolicitud,
   ActualizarSedes,
   Page404,
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";

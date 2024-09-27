@@ -2,7 +2,7 @@ import { PaginateTable } from "../table/PaginateTable";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
-import { SearchComponent,Icons, V } from "../../../index.js";
+import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
@@ -21,7 +21,6 @@ export const SolicitudList = ({ DataSolicitud }) => {
       (solicitud) => solicitud.idSolicitud === idSolicitud
     );
 
-    // Navega a la ruta deseada con la información del usuario
     navigate("/editar/solicitud", { state: { resultadoSolictud } });
   };
 
@@ -71,14 +70,12 @@ export const SolicitudList = ({ DataSolicitud }) => {
                             >
                               <Icons icon={V.PencilIcon} />{" "}
                             </Button>
-
-                            <Button
-                              isIconOnly
-                              onClick={() => handleEdit(fila.idSolicitud)}
-                              variant="faded"
+                            <div
+                              className="flex space-x-2"
                             >
-                              <Icons icon={V.EyeIcon} />{" "}
-                            </Button>
+                              <PDFvistaSolicitud item={fila}/>
+                            </div>
+
                 </>
               ),
             }))}

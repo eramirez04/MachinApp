@@ -350,7 +350,6 @@ export const FormFichaSolicitud = () => {
                           register={register}
                           name={`actividad_${fila.id}`}
                         />
-                        <FormActividades/>
                       </TableCell>
                       <TableCell>
                         <Button

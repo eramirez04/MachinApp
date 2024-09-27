@@ -29,9 +29,7 @@ export { RegistrarArea } from "./Sitios/RegistrarArea";
 export { RegistrarSede } from "./Sitios/RegistrarSede";
 export { UpdateAndListFichaTecnica } from "./Equipos/UpdateAndListFichaTecnica";
 
-<<<<<<< HEAD
 export {UpdateFormFichaSolicitud} from "./fichastecnicas/UpdateFormFichaSolicitud"
-=======
 // fichas
 export { Fichas } from "./admin/Fichas";
 export { FichaSolicitudPage } from "./fichastecnicas/ViewFormFichaSolicitudPage";
@@ -40,7 +38,6 @@ export { FichaSolicitudPage } from "./fichastecnicas/ViewFormFichaSolicitudPage"
 export { ActualizarAmbientes } from "./Sitios/ActualizarAmbientes";
 export { ActualizarAreas } from "./Sitios/ActualizarAreas";
 export { ActualizarSedes } from "./Sitios/ActualizarSedes";
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
 
 // errores
 export { Page404 } from "./error/Page404";

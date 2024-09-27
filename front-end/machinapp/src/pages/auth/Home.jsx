@@ -7,13 +7,10 @@ import {
   V,
   Breadcrumb,
   useAuth,
-<<<<<<< HEAD
  // Artboard
-=======
   ChartMaquinas,
   MantenimientoGrafico,
   useMantenimientosQuery,
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
 } from "../../index.js";
 import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
 import { Link } from "react-router-dom";

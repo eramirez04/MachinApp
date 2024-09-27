@@ -25,11 +25,8 @@
     "@react-pdf/renderer": "^3.4.4",
     "@react-stately/data": "^3.11.6",
     "axios": "^1.6.8",
-<<<<<<< HEAD
-=======
     "echarts": "^5.5.1",
     "echarts-for-react": "^3.0.2",
->>>>>>> 120506962e0c50abe667496ce93e0751898a1d1d
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "i18next": "^23.12.2",
