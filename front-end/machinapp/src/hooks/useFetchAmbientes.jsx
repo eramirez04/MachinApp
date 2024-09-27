@@ -1,9 +1,11 @@
+import { axiosCliente, useAuth } from "../index";
 import { useState, useEffect } from "react";
-import { axiosCliente } from "../service/api/axios";
 
 export const useFetchAmbientes = () => {
   const [ambientes, setAmbientes] = useState([]);
   const [isLoading, setLoading] = useState(false);
+
+  const { tokenIsValido } = useAuth();
 
   const obtenerAmbientes = async () => {
     try {
@@ -15,7 +17,6 @@ export const useFetchAmbientes = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -26,8 +27,10 @@ export const useFetchAmbientes = () => {
   };
 
   useEffect(() => {
-    obtenerAmbientes();
-  }, []);
+    if (tokenIsValido) {
+      obtenerAmbientes();
+    }
+  }, [tokenIsValido]);
 
   return {
     refress,
