@@ -55,9 +55,6 @@ serve.use("/solicitudesfichas", solicitud_has_fichas);
 serve.use(LoginRouter);
 serve.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
-serve.use("/documents", (req, res) => {
-  res.render("documentacion.ejs");
-});
 
 serve.listen(port, () => {
   console.log(`servidor escuchando en el http://localhost:${port}`);

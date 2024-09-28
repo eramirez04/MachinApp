@@ -36,9 +36,11 @@ export const registrarTipoFicha= async(req, res)=>{
 export const listarTipoFicha = async(req, res)=>{
     try{
         
-        let sql= `SELECT * FROM tipo_equipo WHERE tipo_ficha = "equipo" `
+        const { tipo_ficha } = req.params;
 
-        let [respuesta] = await conexion.query(sql)
+        let [respuesta] = await conexion.query("SELECT * FROM tipo_equipo WHERE tipo_ficha = ?;",[
+            tipo_ficha
+        ]);
 
         if(respuesta.length>0){
             res.status(200).json(respuesta)

@@ -31,9 +31,10 @@ export const FormAmbientesUpdate = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [areaResponse, tipoSitioResponse, sitioResponse] = await Promise.all([
-          axiosCliente.get("area/listararea"),
-          axiosCliente.get("tipositio/listartipositio"),
+        const [areaResponse, tipoSitioResponse, sitioResponse] =
+          await Promise.all([
+            axiosCliente.get("area/listararea"),
+            axiosCliente.get("tipositio/listartipositio"),
           axiosCliente.get(`/sitio/listarsitioporid/${id}`) // Obtener datos del ambiente específico
         ]);
 

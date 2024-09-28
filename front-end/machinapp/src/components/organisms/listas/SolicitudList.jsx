@@ -1,11 +1,14 @@
 import { PaginateTable } from "../table/PaginateTable";
-import { DropDown } from "../../molecules/navigation/Dropdown";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
-import { SearchComponent } from "../../../index";
+import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
   const [filteredData, setFilteredData] = useState([]);
+
+  const navigate = useNavigate();
   const COLUMNAS = [
     "Prioridad",
     "Costo",
@@ -13,6 +16,13 @@ export const SolicitudList = ({ DataSolicitud }) => {
     "Fecha de la solicitud",
     "Acciones",
   ];
+  const handleEdit = (idSolicitud) => {
+    const resultadoSolictud = DataSolicitud.find(
+      (solicitud) => solicitud.idSolicitud === idSolicitud
+    );
+
+    navigate("/editar/solicitud", { state: { resultadoSolictud } });
+  };
 
   /* eslint-disable-next-line react/prop-types */
   const newArrayDataSolicitud = DataSolicitud.map((item) => {
@@ -51,10 +61,21 @@ export const SolicitudList = ({ DataSolicitud }) => {
               ...fila,
               acciones: (
                 <>
-                  <DropDown
-                    dropdown={["Ver solicitud"]}
-                    DropdownTriggerElement={"..."}
-                  />
+                        <Button
+                              isIconOnly
+                              color="warning"
+                              onClick={() => handleEdit(fila.idSolicitud)}
+                              variant="faded"
+
+                            >
+                              <Icons icon={V.PencilIcon} />{" "}
+                            </Button>
+                            <div
+                              className="flex space-x-2"
+                            >
+                              <PDFvistaSolicitud item={fila}/>
+                            </div>
+
                 </>
               ),
             }))}
