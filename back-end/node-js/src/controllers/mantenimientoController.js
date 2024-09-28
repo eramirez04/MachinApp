@@ -150,6 +150,7 @@ export const listartodosmantenimientos = async (req, res) => {
                 m.mant_descripcion,
                 m.mant_estado,
                 m.mant_fecha_proxima AS mant_fecha_realizacion,
+                m.mant_costo_final,
                 a.acti_estado,
                 a.idActividades,
                 a.acti_nombre,
@@ -188,6 +189,7 @@ export const listartodosmantenimientos = async (req, res) => {
             fecha_realizacion: new Date(
               row.mant_fecha_realizacion
             ).toLocaleDateString("es-ES"), // Formateo de la fecha
+            mant_costo_final: row.mant_costo_final,
             estado_maquina: row.acti_estado,
             idActividades: row.idActividades,
             acti_nombre: row.acti_nombre,
@@ -389,3 +391,51 @@ export const listarMantenimientoPorId = async (req, res) => {
   }
 };
 
+
+export const excelconsultavariables = async (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+        m.idMantenimiento,
+        MAX(fme.fi_placa_sena) AS fi_placa_sena,
+        m.mant_codigo_mantenimiento AS codigo_mantenimiento,
+        MAX(CASE WHEN v.idVariable = 7 THEN df.det_valor END) AS fi_marca,
+        MAX(CASE WHEN v.idVariable = 1 THEN df.det_valor END) AS fi_fecha_adquisicion,
+        m.mant_fecha_proxima AS fecha_realizacion,
+        MAX(CASE WHEN v.idVariable = 9 THEN df.det_valor END) AS fi_precioEquipo,
+        MAX(te.ti_fi_nombre) AS nombre,
+        m.mant_costo_final,
+        m.mant_descripcion AS descripcion_mantenimiento,
+        MAX(tm.tipo_mantenimiento) AS tipo_mantenimiento,
+        MAX(a.sit_nombre) AS sit_nombre,
+        MAX(ar.area_nombre) AS area_nombre,
+        MAX(s.sede_nombre_centro) AS sede_nombre_centro,
+        MAX(s.sede_nombre) AS sede_nombre,
+        MAX(sm.soli_prioridad) AS soli_prioridad,
+        GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
+        SUM(pm.par_costo) AS par_costo_total
+      FROM 
+        mantenimiento m
+        LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+        LEFT JOIN solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
+        LEFT JOIN fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
+        LEFT JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+        LEFT JOIN tipo_equipo te ON fme.fi_fk_tipo_ficha = te.idTipo_ficha
+        LEFT JOIN detalles_fichas df ON fme.idFichas = df.det_fk_fichas
+        LEFT JOIN variable v ON df.det_fk_variable = v.idVariable
+        LEFT JOIN ambientes a ON fme.fi_fk_sitios = a.idAmbientes
+        LEFT JOIN areas ar ON a.sit_fk_areas = ar.idArea
+        LEFT JOIN sedes s ON ar.area_fk_sedes = s.idSede
+        LEFT JOIN partes_mantenimiento pm ON m.idMantenimiento = pm.par_fk_mantenimientos
+      GROUP BY 
+        m.idMantenimiento
+    `;
+    const [resultado] = await conexion.query(sql);
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Error en excelconsultavariables:", error);
+    res.status(500).json({
+      message: "Error en el controlador excelconsultavariables: " + error.message
+    });
+  }
+};

@@ -25,7 +25,7 @@ export const VistaPDF = ({ item }) => {
           Editar
         </Button>
         <PDFDownloadLink
-          document={<GenerarPdf data={item} />}
+          document={<GenerarPdf idMantenimiento={item.idMantenimiento} />}
           fileName={`mantenimiento_${item.idMantenimiento}.pdf`}
         >
           {({loading}) => (
@@ -42,7 +42,7 @@ export const VistaPDF = ({ item }) => {
       </div>
       <div style={{ height: '70vh', width: '100%' }}>
         <PDFViewer style={{ width: "100%", height: "100%" }}>
-          <GenerarPdf data={item} />
+          <GenerarPdf idMantenimiento={item.idMantenimiento} />
         </PDFViewer>
       </div>
     </div>

@@ -142,9 +142,7 @@
   "edit_maintenance": "Edit Maintenance",
   "pdf_descargado_exitosamente": "PDF downloaded successfully",
   "mantenimientos_cargados_exitosamente": "Maintenances loaded successfully",
-  "nombre_aula": "Classroom Name",
-  "tipo_aula": "Classroom Type",
-  "profesor_encargado": "Assigned Teacher",
-  "registrar_nuevo_ambiente": "Register New Classroom",
-  "ambientes_formacion": "Training Classrooms"
+  "select_maintenance_type":"Select a type of maintenance",
+  "update_success":"Maintenance updated",
+  "partes_eliminadas":"Maintenance part removed successfully"
 }
