@@ -66,19 +66,18 @@ export const eliminarParteMantenimiento = async (req, res) => {
 /* funcional */
 export const actualizarParteMantenimiento = async (req, res) => {
     try {
-        // Validar los errores
         const error = validationResult(req);
         if (!error.isEmpty()) {
             return res.status(400).json(error);
         }
 
-        // Eliminar posibles espacios extra en los nombres de las claves
         let { par_fk_mantenimientos, par_nombre_repuesto, par_costo } = req.body;
 
-        // Eliminar espacios en blanco alrededor de los valores
-        par_fk_mantenimientos = par_fk_mantenimientos?.trim();
+        // eliminar espacios en blanco alrededor de los valores de texto
+        par_fk_mantenimientos = par_fk_mantenimientos?.toString().trim();
         par_nombre_repuesto = par_nombre_repuesto?.trim();
-        par_costo = par_costo?.trim();
+
+        par_costo = parseFloat(par_costo);
 
         let id = req.params.id_partes_mantenimiento;
 
@@ -91,14 +90,12 @@ export const actualizarParteMantenimiento = async (req, res) => {
             return res.status(400).json({ mensaje: "El campo 'par_nombre_repuesto' es requerido y debe ser un texto válido" });
         }
 
-        if (!par_costo || isNaN(par_costo)) {
+        if (isNaN(par_costo)) {
             return res.status(400).json({ mensaje: "El campo 'par_costo' es requerido y debe ser un número válido" });
         }
 
-        // Usar consulta SQL con placeholders
         let sql = `UPDATE partes_mantenimiento SET par_fk_mantenimientos = ?, par_nombre_repuesto = ?, par_costo = ? WHERE id_partes_mantenimiento = ?`;
 
-        // Ejecutar la consulta
         const [respuesta] = await conexion.query(sql, [par_fk_mantenimientos, par_nombre_repuesto, par_costo, id]);
 
         // Verificar el resultado de la consulta
@@ -108,7 +105,7 @@ export const actualizarParteMantenimiento = async (req, res) => {
             return res.status(404).json({ mensaje: "No se actualizó" });
         }
     } catch (error) {
-        return res.status(500).json({ mensaje: "Error: " + error.message });
+        return res.status(500).json({ mensaje: "Error en actualizar: " + error.message });
     }
 };
 

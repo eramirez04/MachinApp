@@ -49,7 +49,7 @@ export const MantenimientoGeneral = () => {
             const tiposUnicos = [...new Set(mantenimientosFormateados.map(item => item.tipo_mantenimiento))].filter(Boolean);
             setTipos(tiposUnicos);
 
-            toast.success(t("mantenimientos_cargados_exitosamente"));
+            /* toast.success(t("mantenimientos_cargados_exitosamente")); */
 
         } catch (error) {
             const errorMessage = error.response?.data?.message || t("error_cargar_mantenimientos");
@@ -92,12 +92,11 @@ export const MantenimientoGeneral = () => {
     }, [estadoSeleccionado, tipoSeleccionado]);
 
     const columns = [
-        t('id'), t('referencia'), t('codigo'), t('fecha_proxima'),
+        t('referencia'), t('codigo'), t('fecha_proxima'),
         t('estado_actividad'), t('tipo'), t('nombre_actividad'), t('acciones')
     ];
 
     const data = filteredItems.map(item => ({
-        idMantenimiento: item.idMantenimiento,
         referencia_maquina: item.referencia_maquina,
         codigo_mantenimiento: item.codigo_mantenimiento,
         fecha_realizacion: item.fecha_realizacion,
