@@ -1,8 +1,7 @@
+import { axiosCliente, slepp } from "../index";
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { axiosCliente } from "../service/api/axios";
-import { slepp } from "../utils/sleep";
 
 export const AuthContext = createContext();
 
@@ -11,18 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [rol, setRol] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorAuth, setErrorAuth] = useState("");
-
   const [tokenIsValido, settokenIsValido] = useState(null);
-
   const navigate = useNavigate();
-
-  const logout = () => {
-    setUser(null);
-    setRol("");
-    localStorage.removeItem("token");
-    localStorage.setItem("valido", false);
-    navigate("/");
-  };
 
   const login = async (data) => {
     setLoading(true); // Iniciar carga al hacer login
@@ -52,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   const setLocalStorage = (token) => {
     try {
       window.localStorage.setItem("token", token);
-      window.localStorage.setItem("valido", true);
+      window.localStorage.setItem("valido", "valido");
     } catch (error) {
       console.log(error);
     }
@@ -64,14 +53,24 @@ export const AuthProvider = ({ children }) => {
       setRol(res.data[0].rol_nombre);
       settokenIsValido(true);
       setUser(res.data[0]);
+      return;
     } catch (error) {
-      console.error(error.response);
+      settokenIsValido(false);
       if (error && error.response) {
         setErrorAuth(error.response);
       }
     }
   };
 
+  const logout = () => {
+    setUser(null);
+    setRol("");
+    localStorage.removeItem("token");
+    localStorage.setItem("valido", false);
+    navigate("/");
+  };
+
+  // permite refrescar la informacion 
   const refreshUserLoged = async () => {
     return await getDataUser();
   };
@@ -79,11 +78,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const valido = localStorage.getItem("valido");
-    if (token && valido) {
-      settokenIsValido(true);
+
+    const validarTripleMalparidoTokenn = token.split(".");
+
+    if (validarTripleMalparidoTokenn.length === 3 && valido === "valido") {
       getDataUser();
     } else {
       setUser([]);
+      settokenIsValido(false);
     }
   }, [tokenIsValido]);
 

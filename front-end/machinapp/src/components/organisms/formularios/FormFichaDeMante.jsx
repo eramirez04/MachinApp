@@ -149,7 +149,7 @@ export const FormFichaDeMantenimiento = () => {
     setSelectedFile(event.target.files[0]);
   };
 
-  // Obtener la fecha de hoy en formato YYYY-MM-DD
+  
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -273,8 +273,8 @@ export const FormFichaDeMantenimiento = () => {
                     placeholder={t("seleccione una solicitud pendiente")}
                   >
                     {solicitudes.map((solicitud) => (
-                      <SelectItem key={solicitud.idSolicitud} value={solicitud.idSolicitud.toString()}>
-                        {`ID: ${solicitud.idSolicitud}`}
+                      <SelectItem key={solicitud.idSolicitud} value={solicitud.soli_descripcion_problemas.toString()}>
+                        {`${solicitud.soli_descripcion_problemas}`}
                       </SelectItem>
                     ))}
                   </Select>

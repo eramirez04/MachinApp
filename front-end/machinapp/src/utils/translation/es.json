@@ -142,9 +142,8 @@
   "edit_maintenance": "Editar Mantenimiento",
   "pdf_descargado_exitosamente": "PDF descargado exitosamente",
   "mantenimientos_cargados_exitosamente": "Mantenimientos cargados exitosamente",
-  "nombre_aula": "Nombre del Ambiente",
-  "tipo_aula": "Tipo de Ambiente",
-  "profesor_encargado": "Instructor Encargado",
-  "registrar_nuevo_ambiente": "Registrar Nuevo Ambiente",
-  "ambientes_formacion": "Ambientes de Formación"
+  "select_maintenance_type":"Seleccione un tipo de mantenimiento",
+  "update_success":"Mantenimiento actualizado",
+  "partes_eliminadas":"Parte de mantenimiento eliminada con exito"
+
 }
