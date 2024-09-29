@@ -1,7 +1,7 @@
 import  { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import {Link as LinkNextui} from "@nextui-org/react"
+/* import {Link as LinkNextui} from "@nextui-org/react" */
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
@@ -10,10 +10,13 @@ import { Layout, CardStyle, Imagenes ,BlocInformation, axiosCliente, Breadcrumb,
 import { useTranslation } from "react-i18next"
 
 
+import { Link } from "react-router-dom"
 
-//para el pdf
+
+
+/* //para el pdf
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF} from "../../index.js"
+import {FichaTecnicaEquiposPDF} from "../../index.js" */
 
 /* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
@@ -24,7 +27,7 @@ export const InfoMaquina = ()=> {
 
 
   const [maquina, setInfoMaquina ] = useState([])
-  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
+ /*  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([]) */
   const {idMaquina} = useParams()
 
   const buscarInfo = async ()=>{
@@ -34,7 +37,7 @@ export const InfoMaquina = ()=> {
         setInfoMaquina(response.data)
         console.log(response.data)
       
-        setMantenimientosMaquina(response.data.mantenimientos)
+      /*   setMantenimientosMaquina(response.data.mantenimientos) */
 
     }catch(error){
           console.error('Error listando info de maquinas', error)
@@ -60,12 +63,12 @@ export const InfoMaquina = ()=> {
                         
                         <div className="w-full">
                             
-                            <LinkNextui  isBlock showAnchorIcon href= {`/listarFichaTecnica/${maquina.idFichas}`} color="success">
+                            <Link  to={`/listarFichaTecnica/${maquina.idFichas}`} color="success">
                                {
                                 t('accFichaTec')
                                }
                                 
-                            </LinkNextui>
+                            </Link>
                             
                         </div>
 
