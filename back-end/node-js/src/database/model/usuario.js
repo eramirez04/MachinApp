@@ -81,9 +81,9 @@ export class UsuarioModel {
         [Id]
       );
       contraEncriptada = result[0].us_contrasenia;
+    } else {
+      contraEncriptada = await encriptarContra(password);
     }
-
-    contraEncriptada = await encriptarContra(password);
 
     const response = await conexion.query(
       `

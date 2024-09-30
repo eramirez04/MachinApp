@@ -1,14 +1,22 @@
 import  { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import {Link as LinkNextui} from "@nextui-org/react"
+/* import {Link as LinkNextui} from "@nextui-org/react" */
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
 
 import { Layout, CardStyle, Imagenes ,BlocInformation, axiosCliente, Breadcrumb, ModalComponte,  UpdateEstAmbienteFicha } from "../../index.js"
-
 import { useTranslation } from "react-i18next"
+
+
+import { Link } from "react-router-dom"
+
+
+
+/* //para el pdf
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import {FichaTecnicaEquiposPDF} from "../../index.js" */
 
 /* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
@@ -19,7 +27,7 @@ export const InfoMaquina = ()=> {
 
 
   const [maquina, setInfoMaquina ] = useState([])
-  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
+ /*  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([]) */
   const {idMaquina} = useParams()
 
   const buscarInfo = async ()=>{
@@ -29,7 +37,7 @@ export const InfoMaquina = ()=> {
         setInfoMaquina(response.data)
         console.log(response.data)
       
-        setMantenimientosMaquina(response.data.mantenimientos)
+      /*   setMantenimientosMaquina(response.data.mantenimientos) */
 
     }catch(error){
           console.error('Error listando info de maquinas', error)
@@ -53,17 +61,14 @@ export const InfoMaquina = ()=> {
 
                     <div className=" shadow-sm border-1 border-green-600 rounded-lg shadow-green-500 p-3  gap-4 flex flex-row justify-end">
                         
-{/*                         <a className=" flex justify-self-start text-zinc-800" href="">
-                                Acceder ficha tecnica.
-                        </a> */}
                         <div className="w-full">
                             
-                            <LinkNextui  isBlock showAnchorIcon href= {`/listarFichaTecnica/${maquina.idFichas}`} color="success">
+                            <Link  to={`/listarFichaTecnica/${maquina.idFichas}`} color="success">
                                {
                                 t('accFichaTec')
                                }
                                 
-                            </LinkNextui>
+                            </Link>
                             
                         </div>
 
@@ -188,6 +193,15 @@ export const InfoMaquina = ()=> {
             <div className=" block mx-16 mb-14 ">
                     <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantenimientos')}</h3>
                     {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
+            </div>
+
+
+
+
+            <div>
+                pdf
+
+
             </div>
 
         </Layout>

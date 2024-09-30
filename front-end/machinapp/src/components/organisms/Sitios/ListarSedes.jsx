@@ -1,12 +1,12 @@
+import { axiosCliente, V, ButtonNext, Icons } from "../../../index";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosCliente } from "../../../service/api/axios";
-import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
-import { V } from "../../../style";
+import { useTranslation } from "react-i18next";
 
 const BuscarSedes = () => {
+  const { t } = useTranslation(); // Hook de traducción
   const [sedes, setSedes] = useState([]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const BuscarSedes = () => {
         const response = await axiosCliente.get("/sede/listarsede");
         setSedes(response.data.resultadoSede);
       } catch (error) {
-        console.error(error);
+        console.error(error.response.data);
       }
     };
 
@@ -28,7 +28,7 @@ const BuscarSedes = () => {
     const errorMessage = document.createElement("div");
     errorMessage.className =
       "absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold";
-    errorMessage.textContent = "No se encontró imagen";
+    errorMessage.textContent = t("imageNotFound"); // Texto traducido
     parent.appendChild(errorMessage);
   };
 
@@ -36,20 +36,21 @@ const BuscarSedes = () => {
     <div className="bg-gray-200 min-h-screen">
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className="text-4xl font-extrabold text-center text-white">
-          Centro de Gestión y Desarrollo Sostenible Surcolombiano
+          {t("title")} {/* Título traducido */}
         </h1>
         <p className="text-center text-white mt-6 mx-4 md:mx-0">
-          Este centro está ubicado en el departamento del Huila, municipio de
-          Pitalito. Este centro cuenta con dos sedes a día de hoy.
+          {t("description_centro")} {/* Descripción traducida */}
         </p>
       </header>
       <div className="container mx-auto p-4">
-        <div className="flex justify-end">
-          <Link to={"/Sedes/Registrar"}>
-            <button className="bg-blue-500 rounded-md p-3 hover:bg-blue-700 mb-5 font-semibold">
-              Registrar nueva
-            </button>
-          </Link>
+        <div className="flex justify-end mb-7">
+          <ButtonNext
+            color={"success"}
+            startContent={<Icons icon={V.PlusIcon} />}
+            className={`text-white`}
+          >
+            <Link to={"/Sedes/Registrar"}>{t("registerNew")}</Link>
+          </ButtonNext>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {sedes.map((sede) => (
@@ -83,12 +84,19 @@ const BuscarSedes = () => {
                 </h2>
                 <p className="text-gray-600 mt-2">{sede.sede_nombre_centro}</p>
                 <div className="mt-4 flex justify-end">
-                  <Link to={`/Sedes/${sede.idSede}`}>
-                    <ButtonC
-                      bgColor="bg-green-400 hover:bg-green-600 text-white"
-                      name="Ingresar"
-                    />
-                  </Link>
+                  <ButtonNext
+                    type={"submit"}
+                    color={"success"}
+                    text={" "}
+                    className={"text-white"}
+                  >
+                    <Link
+                      to={`/Sedes/${sede.idSede}`}
+                      className=" h-full w-full flex justify-center items-center"
+                    >
+                      {t("enter_sitios")}
+                    </Link>
+                  </ButtonNext>
                 </div>
               </div>
             </div>

@@ -1,10 +1,11 @@
+import { useGlobalData, axiosCliente } from "../../../index.js";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { axiosCliente } from "../../../service/api/axios.js";
 import { useNavigate } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
 import { Button } from "@nextui-org/button";
 import { Image } from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 import { multiFormData } from "../../../utils/formData.js";
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
@@ -17,24 +18,26 @@ import {
   SelectComponent,
 } from "../../../index.js";
 
-export const FormFichaTecnica = () => {
+export const FormFichaTecnica = ({ tipo_ficha }) => {
   const navigate = useNavigate();
 
+  const { refreshEquipos, ambientes } = useGlobalData();
+
   //select
-  const [ambientes, setAmbientes] = useState([]);
+  const [ambientesFormacion, setAmbientes] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
 
   //funcion para mostrar el formulario
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   //arrais de las variables
-  const [varObligatorias, setVarObligatorias] = useState({})
-  const [varEspTecnicas, setVarEspTecnicas] = useState([])
-  const [varSecciones, setVarSecciones] = useState([])
-  const [varEspecificas, setVarEspecificas] = useState([])
+  const [varObligatorias, setVarObligatorias] = useState({});
+  const [varEspTecnicas, setVarEspTecnicas] = useState([]);
+  const [varSecciones, setVarSecciones] = useState([]);
+  const [varEspecificas, setVarEspecificas] = useState([]);
 
   // abrir el formulario en caso de que sea un formulario para un equipo o maquina
-  const [isEquipo, setIsEquipo] = useState(false)
+  const [isEquipo, setIsEquipo] = useState(false);
 
   // previsua// hookslizar una imagen
   const [previewImagen, setPreviewImagen] = useState(null);
@@ -97,7 +100,7 @@ export const FormFichaTecnica = () => {
         "detalle/registrarDetalles",
         dataVariables
       );
-
+      await refreshEquipos();
       navigate(`/infoMaquina/${idFicha}`);
     } catch (error) {
       alert(error.response?.data.mensaje);
@@ -125,12 +128,11 @@ export const FormFichaTecnica = () => {
   useEffect(() => {
     const fechtData = async () => {
       try {
-        const [ambientesRes, tipoMaquinaRes] = await Promise.all([
-          axiosCliente.get("sitio/listarsitio"),
-          axiosCliente.get("tipoFicha/listar"),
+        const [tipoMaquinaRes] = await Promise.all([
+          axiosCliente.get(`tipoFicha/listar/${tipo_ficha}`),
         ]);
 
-        const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
+        const ambientesArray = ambientes.map((item) => ({
           id: item.idAmbientes,
           valor: item.sit_nombre,
         }));
@@ -148,21 +150,19 @@ export const FormFichaTecnica = () => {
       }
     };
     fechtData();
-  }, []);
+  }, [tipo_ficha, ambientes]);
 
   const tipoFicha = async () => {
-    let idTipoFicha = getValues("tipo_equipo") //traemos solo el valor del input con ese nombre
+    let idTipoFicha = getValues("tipo_equipo"); //traemos solo el valor del input con ese nombre
 
     // tomamos el tipo de ficha, si es un ambiente o un elemento, esto para solo traer las variables de esa ficha
-    let tipo = tipoEquipo.filter((equipo) => equipo.id == idTipoFicha)
-
-    console.log(tipo[0].tipo)
+    let tipo = tipoEquipo.filter((equipo) => equipo.id == idTipoFicha);
 
     if (idTipoFicha != "") {
       try {
         const response = await axiosCliente.get(
           `variable/listarVars/${idTipoFicha}/${tipo[0].tipo}`
-        )
+        );
 
         //traemos todas las variables de ese tipo de ficha
         let variables = response.data.respuesta;
@@ -172,10 +172,10 @@ export const FormFichaTecnica = () => {
           variables?.filter(
             (item) => item.var_clase == "especificacionesTecnicas"
           )
-        )
+        );
         setVarSecciones(
           variables?.filter((item) => item.var_clase == "seccion")
-        )
+        );
         setVarEspecificas(
           variables?.filter((item) => item.var_clase == "especifica")
         );
@@ -184,8 +184,8 @@ export const FormFichaTecnica = () => {
 
         let varObligatoriasArr = variables?.filter(
           (item) => item.var_clase == "obligatoria"
-        )
-        
+        );
+
         // se muestra el formulario para variables de maquinas y elementos
         if (varObligatoriasArr.length > 0) {
           console.log(varObligatoriasArr);
@@ -214,7 +214,7 @@ export const FormFichaTecnica = () => {
         console.error(error.response);
       }
     } else {
-      alert("Seleccionar un tipo de ficha");
+      toast.warning("Seleccione un tipo de ficha");
     }
   };
 
@@ -262,13 +262,13 @@ export const FormFichaTecnica = () => {
 
             {/* Contenido */}
             <div>
-            <h3 className="w-full  text-2xl pl-7 my-5 bg-green-600 text-white py-1 " >Informacion Basica</h3>
+              <h3 className="w-full  text-2xl pl-7 my-5 bg-green-600 text-white py-1 ">
+                Informacion Basica
+              </h3>
               <div className=" flex flex-col sm:flex-row mt-5 w-full ">
                 {" "}
-                
                 {/* sm:h-96 */}
                 <div className="w-full sm:w-2/4 p-2">
-                
                   <div className="grid grid-cols-2 gap-3 ">
                     {isEquipo && (
                       <>
@@ -329,7 +329,7 @@ export const FormFichaTecnica = () => {
                   </div>
                   <div className="w-full mt-[18px]">
                     <SelectComponent
-                      options={ambientes}
+                      options={ambientesFormacion}
                       name="ambiente"
                       placeholder="Ambiente"
                       valueKey="id"
@@ -349,9 +349,7 @@ export const FormFichaTecnica = () => {
                   </div>
 
                   <div className="bg-green-600 ">
-                    <p className="text-white mb-4">
-                      Imagen
-                    </p>
+                    <p className="text-white mb-4">Imagen</p>
                     <input
                       type="file"
                       onChange={handleFileUpload}
@@ -359,7 +357,6 @@ export const FormFichaTecnica = () => {
                       className="appearance-none w-full py-2 px-4 mt-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
                     />
                   </div>
-
                 </div>
               </div>
               <div className="flex items-center justify-center flex-row gap-4 p-4 border-b-1 border-t-1 border-b-green-600  border-t-green-600 rounded-lg  my-14">
@@ -373,17 +370,18 @@ export const FormFichaTecnica = () => {
                 />
               </div>
               <div className="w-full my-5">
-                <label className="text-lg " >Descripcion del equipo</label>
-                  <div className="mt-2">
+                <label className="text-lg ">Descripcion del equipo</label>
+                <div className="mt-2">
+                  {isEquipo && (
                     <TextAreaComponent
                       errors={errors}
                       register={register}
                       name={`variables.${varObligatorias.idVar6.idVariable}`}
-                      descripcion={'Descripcion general del equipo'}
+                      descripcion={"Descripcion general del equipo"}
                     />
+                  )}
                 </div>
               </div>
-
               {/* recorremos todas las variables de especificas */}{" "}
               {/* especificas(otros) */}
               {varEspecificas.length > 0 ? (
@@ -408,7 +406,7 @@ export const FormFichaTecnica = () => {
               ) : (
                 <></>
               )}
-              {varObligatorias.length > 0 && (
+              {isEquipo > 0 && (
                 <div className="w-full my-5">
                   <label> Descripcion del equipo</label>
                   <TextAreaComponent
@@ -465,43 +463,45 @@ export const FormFichaTecnica = () => {
                 <></>
               )}
               {/* GARANTIA */}
+              {isEquipo && (
                 <div>
-                <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8" >Informacion Garantia</h3>
-                
-                <div className=" flex flex-col sm:flex-row mt-3 w-full ">
+                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">
+                    Informacion Garantia
+                  </h3>
 
-                  <div className="w-full sm:w-2/4 p-2  items-center">
+                  <div className=" flex flex-col sm:flex-row mt-3 w-full ">
+                    <div className="w-full sm:w-2/4 p-2  items-center">
+                      <div className="my-3">
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          tipo={`${varObligatorias.idVar3.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
+                          name={`variables.${varObligatorias.idVar3.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                          text={`${varObligatorias.idVar3.var_nombre}`}
+                        />
+                      </div>
+                      <div className="my-3">
+                        <InputForm
+                          errors={errors}
+                          register={register}
+                          tipo={`${varObligatorias.idVar4.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
+                          name={`variables.${varObligatorias.idVar4.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                          text={`${varObligatorias.idVar4.var_nombre}`}
+                        />
+                      </div>
+                    </div>
 
-                    <div className="my-3">
-                      <InputForm
+                    <div className="w-full sm:w-2/4 p-2 flex items-center">
+                      <TextAreaComponent
                         errors={errors}
                         register={register}
-                        tipo={`${varObligatorias.idVar3.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
-                        name={`variables.${varObligatorias.idVar3.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                        text={`${varObligatorias.idVar3.var_nombre}`}
+                        name={`variables.${varObligatorias.idVar5.idVariable}`}
+                        descripcion={"Descripcion de la garantia"}
                       />
                     </div>
-                    <div className="my-3">
-                      <InputForm
-                        errors={errors}
-                        register={register}
-                        tipo={`${varObligatorias.idVar4.var_tipoDato}`}   // aca accedemos al objeto del que queremos traer la informacion
-                        name={`variables.${varObligatorias.idVar4.idVariable}`}  //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                        text={`${varObligatorias.idVar4.var_nombre}`}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="w-full sm:w-2/4 p-2 flex items-center">
-                    <TextAreaComponent
-                    errors = {errors}
-                    register={register}
-                    name={`variables.${varObligatorias.idVar5.idVariable}`}
-                    descripcion={'Descripcion de la garantia'}
-                    />
                   </div>
                 </div>
-              </div>
+              )}
               {/* Secciones */}
               <div>
                 {varSecciones.map((varSeccion) => (

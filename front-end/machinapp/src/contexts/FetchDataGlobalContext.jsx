@@ -1,4 +1,4 @@
-import { useFetchSolicitud, useFetchRoles } from "../index";
+import { useFetchSolicitud, useFetchRoles, useFetchAmbientes } from "../index";
 import { createContext, useState, useEffect } from "react";
 import { useFetchUserData } from "../hooks/user/useFetchUsuarios";
 import { useFetchEquipo } from "../hooks/useFetchEquipos";
@@ -13,9 +13,20 @@ export const GlobalDataProvider = ({ children }) => {
     fetcDataUser,
   } = useFetchUserData();
 
-  const { equiposData, loading: loadinDataEquipo } = useFetchEquipo();
+  const {
+    equiposData,
+    loading: loadinDataEquipo,
+    eroresMaquinas,
+    refreshEquipos,
+  } = useFetchEquipo();
+
   const { solicitudData, loading: loadinDataSolicitud } = useFetchSolicitud();
   const { roles, loading: loadingRol, refreshRol } = useFetchRoles();
+  const {
+    ambientes,
+    isLoading: loadinAmbientes,
+    refress,
+  } = useFetchAmbientes();
 
   const [loading, setLoading] = useState(true);
 
@@ -25,9 +36,19 @@ export const GlobalDataProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(
-      loadinDataUser || loadinDataEquipo || loadinDataSolicitud || loadingRol
+      loadinDataUser ||
+        loadinDataEquipo ||
+        loadinDataSolicitud ||
+        loadingRol ||
+        loadinAmbientes
     );
-  }, [loadinDataUser, loadinDataEquipo, loadinDataSolicitud, loadingRol]);
+  }, [
+    loadinDataUser,
+    loadinDataEquipo,
+    loadinDataSolicitud,
+    loadingRol,
+    loadinAmbientes,
+  ]);
 
   const value = {
     refreshDataUser,
@@ -37,6 +58,10 @@ export const GlobalDataProvider = ({ children }) => {
     solicitudData,
     roles,
     refreshRol,
+    ambientes,
+    refress,
+    eroresMaquinas,
+    refreshEquipos
   };
 
   return (

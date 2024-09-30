@@ -124,7 +124,7 @@ export const registrarVariasVariables = async (req, res)=>{
                 sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, ficha) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}',  'equipo')`
             }
             else{
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo, ficha ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}', 'equipo')`
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo, ficha ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}', 'ambiente')`
             }
             
             const [respuesta] = await conexion.query(sql)

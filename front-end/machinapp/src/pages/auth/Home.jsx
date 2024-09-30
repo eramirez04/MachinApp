@@ -7,16 +7,17 @@ import {
   V,
   Breadcrumb,
   useAuth,
+ // Artboard
   ChartMaquinas,
   MantenimientoGrafico,
   useMantenimientosQuery,
 } from "../../index.js";
-/* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
+import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const Home = () => {
-  const { dataUser, equiposData, solicitudData } = useGlobalData();
+  const { dataUser, equiposData, solicitudData, ambientes } = useGlobalData();
   const { isLoading, mantenimientos } = useMantenimientosQuery();
   const { rol } = useAuth();
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ export const Home = () => {
       total: dataUser.length,
       icon: V.UsersIcon,
       link: "/Panelcontrol",
+      admin: rol,
     },
     {
       title: t("total_equipos_sena"),
@@ -42,7 +44,7 @@ export const Home = () => {
     },
     {
       title: "Total de Ambientes de formacion",
-      total: dataUser.length,
+      total: ambientes.length,
       icon: V.UsersIcon,
       link: "/Ambientes",
     },
@@ -59,30 +61,31 @@ export const Home = () => {
 
         <div className="p-5">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {dataMap.map((value, index) => (
-              <CardDataStats
-                key={index}
-                icon={value.icon}
-                title={value.title}
-                change={value.total}
-                total={value.total}
-                link={
-                  <>
-                    {rol === "Administrador" ? (
-                      <Link to={value.link}>Ver</Link>
-                    ) : (
-                      " "
-                    )}
-                  </>
-                }
-              >
-                <Icons icon={value.icon} />
-              </CardDataStats>
-            ))}
-
-            {/*  <CardStyle />
-          <CardStyle />
-          <CardStyle /> */}
+            {dataMap.map(
+              (value, index) =>
+                (!value.admin ||
+                  (value.admin &&
+                    rol.trim().toLowerCase().startsWith("administrador"))) && (
+                  <CardDataStats
+                    key={index}
+                    icon={value.icon}
+                    title={value.title}
+                    change={value.total}
+                    total={value.total}
+                    link={
+                      <>
+                        {rol === "Administrador" ? (
+                          <Link to={value.link}>Ver</Link>
+                        ) : (
+                          " "
+                        )}
+                      </>
+                    }
+                  >
+                    <Icons icon={value.icon} />
+                  </CardDataStats>
+                )
+            )}
           </div>
 
           {/* Segunda fila con una tarjeta grande que ocupa 2/3 del ancho y una más pequeña */}
@@ -107,19 +110,10 @@ export const Home = () => {
             </CardStyle>
           </div>
 
-          {/* Tercera fila con dos tarjetas de igual tamaño */}
-          {/*   <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark">
-            sff
-          </div>
-          <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark"></div>
-        </div> */}
-
-          {/* Cuarta fila con una tarjeta que ocupa todo el ancho */}
           <div className="mt-6 grid grid-cols-1 gap-6">
             <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark">
               {/* Contenido de la sexta tarjeta */}
-              {/*   <Artboard /> */}
+              <Artboard />
             </div>
           </div>
         </div>

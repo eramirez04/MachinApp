@@ -72,18 +72,75 @@ export const actualizarParteMantenimiento = async (req, res) => {
         }
 
         let { par_fk_mantenimientos, par_nombre_repuesto, par_costo } = req.body;
+
+        // eliminar espacios en blanco alrededor de los valores de texto
+        par_fk_mantenimientos = par_fk_mantenimientos?.toString().trim();
+        par_nombre_repuesto = par_nombre_repuesto?.trim();
+
+        par_costo = parseFloat(par_costo);
+
         let id = req.params.id_partes_mantenimiento;
 
-        let sql = `UPDATE partes_mantenimiento SET par_fk_mantenimientos = '${par_fk_mantenimientos}', par_nombre_repuesto = '${par_nombre_repuesto}', par_costo = '${par_costo}' WHERE id_partes_mantenimiento = ${id}`;
+        // Validaciones individuales para cada campo
+        if (!par_fk_mantenimientos) {
+            return res.status(400).json({ mensaje: "El campo 'par_fk_mantenimientos' es requerido o es inválido" });
+        }
 
-        const [respuesta] = await conexion.query(sql);
+        if (!par_nombre_repuesto || typeof par_nombre_repuesto !== 'string') {
+            return res.status(400).json({ mensaje: "El campo 'par_nombre_repuesto' es requerido y debe ser un texto válido" });
+        }
 
+        if (isNaN(par_costo)) {
+            return res.status(400).json({ mensaje: "El campo 'par_costo' es requerido y debe ser un número válido" });
+        }
+
+        let sql = `UPDATE partes_mantenimiento SET par_fk_mantenimientos = ?, par_nombre_repuesto = ?, par_costo = ? WHERE id_partes_mantenimiento = ?`;
+
+        const [respuesta] = await conexion.query(sql, [par_fk_mantenimientos, par_nombre_repuesto, par_costo, id]);
+
+        // Verificar el resultado de la consulta
         if (respuesta.affectedRows > 0) {
-            return res.status(200).json({ "mensaje": "se actualizó con éxito" });
+            return res.status(200).json({ mensaje: "Se actualizó con éxito" });
         } else {
-            return res.status(404).json({ "mensaje": "no se actualizó" });
+            return res.status(404).json({ mensaje: "No se actualizó" });
         }
     } catch (error) {
-        return res.status(500).json({ "mensaje": "error" + error.message });
+        return res.status(500).json({ mensaje: "Error en actualizar: " + error.message });
+    }
+};
+
+
+export const listarPartesMantenimientoPorIdMantenimiento = async (req, res) => {
+    try {
+        const { idMantenimiento } = req.params;
+
+        const sql = `
+            SELECT
+                pm.id_partes_mantenimiento,
+                pm.par_fk_mantenimientos,
+                pm.par_nombre_repuesto,
+                pm.par_costo
+            FROM
+                partes_mantenimiento pm
+            INNER JOIN
+                mantenimiento m ON pm.par_fk_mantenimientos = m.idMantenimiento
+            WHERE
+                m.idMantenimiento = ?
+        `;
+
+        const [result] = await conexion.query(sql, [idMantenimiento]);
+
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({
+                "mensaje": "No se encontraron partes de mantenimiento para ese id de mantenimiento."
+            });
+        }
+    } catch (err) {
+        console.error("Error en listarPartesMantenimientoPorIdMantenimiento:", err);
+        res.status(500).json({
+            "mensaje": "Error en el controlador listarPartesMantenimientoPorIdMantenimiento: " + err.message
+        });
     }
 };
