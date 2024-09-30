@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { axiosCliente } from "../../../service/api/axios";
 import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
-import { V } from "../../../style";
+import { V, Icons } from "../../../index";
+import { Button } from "@nextui-org/react";
+
 const BuscarAreasGeneral = () => {
   const [areas, setAreas] = useState([]);
 
@@ -42,14 +44,21 @@ const BuscarAreasGeneral = () => {
         </p>
       </header>
       <div className="container mx-auto p-4">
-        <div className="flex justify-end">
-          <Link to={"/Areas/Registrar"}>
-            <button className="bg-blue-500 rounded-md p-3 hover:bg-blue-700 mb-5 font-semibold">
+        <div className="flex justify-end pb-5 ">
+          <Button
+            startContent={<Icons icon={V.PlusIcon} />}
+            className={"bg-green-600 text-white"}
+            type="submit"
+          >
+            <Link
+              to={"/Areas/Registrar"}
+              className="flex justify-center items-center h-full w-full"
+            >
               Registrar nueva
-            </button>
-          </Link>
+            </Link>
+          </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {areas.map((area) => (
             <div
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative"
