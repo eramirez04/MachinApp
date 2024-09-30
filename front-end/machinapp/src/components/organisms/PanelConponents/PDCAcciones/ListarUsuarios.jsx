@@ -33,6 +33,10 @@ export const ListarUsuarios = () => {
     "Acciones",
   ];
 
+  const capitalizarPrimeraLetra = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   // columnas para roles []
   const ColumnsRoles = ["id", "Rol", t("descripcion")];
 
@@ -44,7 +48,7 @@ export const ListarUsuarios = () => {
     correo: item.us_correo,
     tipo_documento: item.us_tipo_documento,
     numero_documento: item.us_numero_documento,
-    rol: item.rol_nombre,
+    rol: capitalizarPrimeraLetra(item.rol_nombre),
   }));
 
   const handleEdit = (id) => {
@@ -146,14 +150,6 @@ export const ListarUsuarios = () => {
                         ...row,
                         acciones: (
                           <>
-                            {/*  <Button
-                              isIconOnly
-                              color="warning"
-                              onClick={() => handleEdit(row.numero_documento)}
-                              variant="faded"
-                            >
-                              <Icons icon={V.PencilIcon} />{" "}
-                            </Button> */}
                             <ButtonNext
                               color={"warning"}
                               variant={"faded"}

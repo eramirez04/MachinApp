@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { registrarMantenimiento, listartodosmantenimientos, actualizarMantenimiento, graficas  } from "../controllers/mantenimientoController.js";
+import { registrarMantenimiento, listartodosmantenimientos, actualizarMantenimiento, graficas, listarMantenimientoPorId, excelconsultavariables  } from "../controllers/mantenimientoController.js";
 
 const mantenimiento= Router();
 
@@ -14,7 +14,10 @@ mantenimiento.post('/registrar', registrarMantenimiento);
 mantenimiento.get('/listar/',/* verificar, */ listartodosmantenimientos);
 
 /* actualizar */
-mantenimiento.put('/Actualizar_mantenimiento/:id', actualizarMantenimiento);
+mantenimiento.put('/Actualizar_mantenimiento/:idMantenimiento', actualizarMantenimiento);
+mantenimiento.get('/listar_por_id/:idMantenimiento', listarMantenimientoPorId);
 mantenimiento.get("/grafica/",graficas);
+
+mantenimiento.get("/excelconsultavariables",excelconsultavariables);
 
 export default mantenimiento

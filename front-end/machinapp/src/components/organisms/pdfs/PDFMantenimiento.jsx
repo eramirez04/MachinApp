@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { axiosCliente } from "../../../index.js";
 
 const styles = StyleSheet.create({
   page: {
@@ -66,7 +68,32 @@ const styles = StyleSheet.create({
   },
 });
 
-export const GenerarPdf = ({ data }) => {
+export const GenerarPdf = ({ idMantenimiento }) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosCliente.get('http://localhost:3000/mantenimiento/excelconsultavariables');
+        const filteredData = response.data.find(item => item.idMantenimiento === idMantenimiento);
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    };
+
+    fetchData();
+  }, [idMantenimiento]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES');
+  };
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -78,8 +105,7 @@ export const GenerarPdf = ({ data }) => {
             <Text>ORDEN DE TRABAJO DE MANTENIMIENTO</Text>
           </View>
           <View style={styles.dateText}>
-            <Text>Fecha</Text>
-            <Text>{new Date().toLocaleDateString()}</Text>
+            <Text>Fecha: {formatDate(new Date().toISOString())}</Text>
           </View>
         </View>
 
@@ -91,10 +117,10 @@ export const GenerarPdf = ({ data }) => {
             <Text style={styles.column}>Aula o Taller</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.column}>{data.regional || ''}</Text>
-            <Text style={styles.column}>{data.sede || ''}</Text>
-            <Text style={styles.column}>{data.unidad_productiva || ''}</Text>
-            <Text style={styles.column}>{data.aula_taller || ''}</Text>
+            <Text style={styles.column}>{data.sede_nombre}</Text>
+            <Text style={styles.column}>{data.sede_nombre_centro}</Text>
+            <Text style={styles.column}>{data.sit_nombre}</Text>
+            <Text style={styles.column}>{data.area_nombre}</Text>
           </View>
         </View>
 
@@ -103,22 +129,12 @@ export const GenerarPdf = ({ data }) => {
           <View style={styles.row}>
             <Text style={styles.column}>Placa sena</Text>
             <Text style={styles.column}>Serial</Text>
-            <Text style={styles.column}>Placa sena</Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.column}>{data.placa_sena1 || ''}</Text>
-            <Text style={styles.column}>{data.serial || ''}</Text>
-            <Text style={styles.column}>{data.placa_sena2 || ''}</Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.column}>Marca</Text>
             <Text style={styles.column}>Modelo</Text>
-            <Text style={styles.column}>Placa sena</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.column}>{data.marca || ''}</Text>
-            <Text style={styles.column}>{data.modelo || ''}</Text>
-            <Text style={styles.column}>{data.placa_sena3 || ''}</Text>
+            <Text style={styles.column}>{data.fi_placa_sena}</Text>
+            <Text style={styles.column}>{data.codigo_mantenimiento}</Text>
+            <Text style={styles.column}>{data.nombre}</Text>
           </View>
         </View>
 
@@ -129,12 +145,12 @@ export const GenerarPdf = ({ data }) => {
             <Text style={styles.column}>PRIORIDAD</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.column}>{data.tipo_reparacion || ''}</Text>
-            <Text style={styles.column}>{data.documento_origen || ''}</Text>
+            <Text style={styles.column}>{data.tipo_mantenimiento}</Text>
+            <Text style={styles.column}>{data.codigo_mantenimiento}</Text>
             <Text style={styles.column}>
-              {data.prioridad === 'Inmediata' ? '☑' : '☐'} Inmediata{'\n'}
-              {data.prioridad === 'Urgente' ? '☑' : '☐'} Urgente{'\n'}
-              {data.prioridad === 'Normal' ? '☑' : '☐'} Normal
+              {data.soli_prioridad === 'inmediata' ? '☑' : '☐'} Inmediata{'\n'}
+              {data.soli_prioridad === 'urgente' ? '☑' : '☐'} Urgente{'\n'}
+              {data.soli_prioridad === 'normal' ? '☑' : '☐'} Normal
             </Text>
           </View>
         </View>
@@ -143,42 +159,36 @@ export const GenerarPdf = ({ data }) => {
           <Text style={styles.greenText}>Trabajo ejecutado</Text>
           <View style={styles.row}>
             <Text style={[styles.column, { flex: 3 }]}>Descripción</Text>
-            <Text style={[styles.column, { flex: 1 }]}>Fecha</Text>
+            <Text style={[styles.column, { flex: 1 }]}>Fecha : {formatDate(data.fecha_realizacion)}</Text>
           </View>
           <View style={styles.textBox}>
-            <Text>{data.descripcion_trabajo || ''}</Text>
+            <Text>{data.descripcion_mantenimiento}</Text>
           </View>
-          <Text style={[styles.column, { textAlign: 'right', marginTop: 5 }]}>{data.fecha_trabajo || ''}</Text>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.greenText}>Descripción del mantenimiento</Text>
           <View style={styles.textBox}>
-            <Text>{data.descripcion_mantenimiento || ''}</Text>
+            <Text>{data.descripcion_mantenimiento}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.greenText}>Repuestos utilizados y costos</Text>
           <View style={styles.row}>
-            <Text style={[styles.column, { flex: 2 }]}>Descripción</Text>
             <Text style={[styles.column, { flex: 2 }]}>Nombre repuesto</Text>
             <Text style={[styles.column, { flex: 1 }]}>Costo</Text>
           </View>
-          {data.repuestos && data.repuestos.map((repuesto, index) => (
-            <View style={styles.row} key={index}>
-              <Text style={[styles.column, { flex: 2 }]}>{repuesto.descripcion || ''}</Text>
-              <Text style={[styles.column, { flex: 2 }]}>{repuesto.nombre || ''}</Text>
-              <Text style={[styles.column, { flex: 1 }]}>{repuesto.costo || ''}</Text>
-            </View>
-          ))}
+          <View style={styles.row}>
+            <Text style={[styles.column, { flex: 2 }]}>{data.par_nombre_repuesto}</Text>
+            <Text style={[styles.column, { flex: 1 }]}>${data.par_costo_total}</Text>
+          </View>
         </View>
 
         <View style={styles.footer}>
-          <Text>COSTO DE REPARACIÓN: ${data.costo_total || ''}</Text>
+          <Text>COSTO DE REPARACIÓN: ${data.mant_costo_final}</Text>
         </View>
       </Page>
     </Document>
   );
 };
-

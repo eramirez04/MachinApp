@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 //proteger las rutas
 import { ProtectedRoute } from "./ProtectedRoute";
+import { ProtegerRutasAdminInstru } from "./rutas/AdminRoutes";
 
 // paginas
 import {
@@ -29,7 +30,9 @@ import {
   ActualizarAmbientes,
   ActualizarAreas,
   UpdateAndListFichaTecnica,
+  UpdateFormFichaSolicitud,
   ActualizarSedes,
+  Page404,
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -41,61 +44,44 @@ export const AppRouter = () => {
     <>
       <Suspense>
         <Routes>
+          <Route path="*" element={<Page404 />} />
           <Route path="/" element={<Inicio />} />
           <Route path="/recuperar" element={<ResetPassword />} />
 
           <Route element={<ProtectedRoute />}>
+            <Route element={<ProtegerRutasAdminInstru />}>
+              <Route path="/Ambientes/Registrar" element={<RegistrarAmbiente />} />
+              <Route path="/Sedes/Registrar" element={<RegistrarSede />} />
+              <Route path="/crearfichaequipos" element={<ViewFormFichaTecnica />} />
+              <Route path="/crearTiposFichaTec" element={<ViewFormTipoFicha />} />
+              <Route path="/crear_ficha_mantenimiento" element={<ViewFormFicha_De_mantenimiento />} />
+              <Route path="/Ambientes/Actualizar/:id" element={<ActualizarAmbientes />} />
+              <Route path="/Areas/Actualizar/:id" element={<ActualizarAreas />} />
+              <Route path="/Sedes/Actualizar/:id" element={<ActualizarSedes />} />
+              <Route path="/Areas/Registrar" element={<RegistrarArea />} />
+              <Route path="/listar_por_id/:idMantenimiento" element={<Editar_Component />} />
+            </Route>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
+
+
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
+            <Route path="/editar/solicitud" element={<UpdateFormFichaSolicitud/>}/>
+
+
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
             <Route path="/Sedes/:idSede" element={<Sedes />} />
             <Route path="/Areas/:idArea" element={<Areas />} />{" "}
-            <Route
-              path="/crearfichaequipos"
-              element={<ViewFormFichaTecnica />}
-            />
             <Route path="/Panelcontrol/*" element={<AdminRoute />} />
-            <Route
-              path="/MaquinasAmb/:idAmbiente"
-              element={<MaquinasAmbiente />}
-            />
+            <Route path="/MaquinasAmb/:idAmbiente" element={<MaquinasAmbiente />}  />
             <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
             <Route path="/Sedes/InfoSede/:idSede" element={<InfoSede />} />
-            <Route
-              path="/Ambientes/InfoAmbiente/:idAmbientes"
-              element={<InfoAmbiente />}
-            />
-            <Route
-              path="/crear_ficha_mantenimiento"
-              element={<ViewFormFicha_De_mantenimiento />}
-            />
+            <Route path="/Ambientes/InfoAmbiente/:idAmbientes" element={<InfoAmbiente />}  />
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
-            <Route
-              path="/Ambientes/Registrar"
-              element={<RegistrarAmbiente />}
-            />
-            <Route path="/Areas/Registrar" element={<RegistrarArea />} />
-            <Route path="/Sedes/Registrar" element={<RegistrarSede />} />
-            {/*  */}
-            <Route path="/crearTiposFichaTec" element={<ViewFormTipoFicha />} />
-            <Route path="/Editar_o_ver" element={<Editar_Component />} />
-            {/*  */}
-            {/* dddddddddd */}
-            <Route
-              path="/listarFichaTecnica/:idMaquina"
-              element={<UpdateAndListFichaTecnica />}
-            />
-            {/* Actualizar sitios */}
-            <Route
-              path="/Ambientes/Actualizar/:id"
-              element={<ActualizarAmbientes />}
-            />
-            <Route path="/Areas/Actualizar/:id" element={<ActualizarAreas />} />
-            <Route path="/Sedes/Actualizar/:id" element={<ActualizarSedes />} />
+            <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica />} />
           </Route>
         </Routes>
       </Suspense>

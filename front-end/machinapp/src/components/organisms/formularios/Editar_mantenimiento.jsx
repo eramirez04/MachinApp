@@ -1,44 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { axiosCliente } from '../../../service/api/axios.js';
-import { CardStyle } from "../../molecules/content/CardStyle.jsx";
-import {InputforForm} from "../../molecules/form/InputForForm.jsx";
-import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { Image } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify';
 
-const Textarea = ({ register, name, placeholder, rows }) => (
-  <textarea
-    {...register(name)}
-    placeholder={placeholder}
-    rows={rows}
-    className="w-full p-2 border rounded"
-  />
-);
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Se detectó un error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Algo salió mal. Intente actualizar la página.</h1>;
-    }
-
-    return this.props.children;
-  }
-}
+import { Layout, CardStyle, InputUpdate, Breadcrumb, axiosCliente, TextAreaComponent, SelectComponent, ButtonNext } from "../../../index.js";
 
 export const Editar_Component = () => {
+  const { t } = useTranslation();
+  const { idMantenimiento } = useParams();
+  const navigate = useNavigate();
   const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       mant_codigo_mantenimiento: '',
@@ -46,10 +19,10 @@ export const Editar_Component = () => {
       mant_fecha_proxima: '',
       mant_descripcion: '',
       mant_ficha_soporte: null,
-      costo_final: '',
+      mant_costo_final: '',
       fk_tipo_mantenimiento: '',
       fk_solicitud_mantenimiento: '',
-      repuestos: [{ nombreRepuesto: '', costo: '' }]
+      repuestos: []
     }
   });
 
@@ -59,92 +32,131 @@ export const Editar_Component = () => {
   });
 
   const [tiposMantenimiento, setTiposMantenimiento] = useState([]);
+  const [solicitudes, setSolicitudes] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [fileError, setFileError] = useState(null);
+  
+  const [partesMantenimiento, setPartesMantenimiento] = useState([]);
+  const [mantenimiento, setMantenimiento] = useState(null);
+
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return '';
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const tiposMantenimientoRes = await axiosCliente.get('tipomantenimiento/listar');
+        const [tiposMantenimientoRes, solicitudesRes] = await Promise.all([
+          axiosCliente.get('tipomantenimiento/listar'),
+          axiosCliente.get('solicitud/')
+        ]);
         setTiposMantenimiento(tiposMantenimientoRes.data || []);
+        setSolicitudes(solicitudesRes.data || []);
+
+        if (idMantenimiento) {
+          const mantenimientoRes = await axiosCliente.get(`mantenimiento/listar_por_id/${idMantenimiento}`);
+          const mantenimientoData = mantenimientoRes.data;
+
+          if (mantenimientoData) {
+            setMantenimiento(mantenimientoData);
+            reset({
+              mant_codigo_mantenimiento: mantenimientoData.codigo_mantenimiento || '',
+              mant_estado: mantenimientoData.mant_estado || '',
+              mant_fecha_proxima: formatDateForInput(mantenimientoData.mant_fecha_proxima) || '',
+              mant_descripcion: mantenimientoData.descripcion_mantenimiento || '',
+              mant_ficha_soporte: mantenimientoData.mant_ficha_soporte || null,
+              mant_costo_final: mantenimientoData.mant_costo_final || '',
+              fk_tipo_mantenimiento: mantenimientoData.tipo_mantenimiento.idTipo_mantenimiento || '',
+              fk_solicitud_mantenimiento: mantenimientoData.fk_solicitud_mantenimiento || '',
+            });
+          }
+
+          const partesRes = await axiosCliente.get(`partes_mantenimiento/listar_por_idmantenimiento/${idMantenimiento}`);
+          const partes = partesRes.data;
+
+          setPartesMantenimiento(partes);
+
+          if (Array.isArray(partes)) {
+            reset(formValues => ({
+              ...formValues,
+              repuestos: partes.map(parte => ({
+                id_partes_mantenimiento: parte.id_partes_mantenimiento,
+                par_fk_mantenimientos: parte.par_fk_mantenimientos,
+                nombreRepuesto: parte.par_nombre_repuesto,
+                costo: parseFloat(parte.par_costo)
+              }))
+            }));
+          }
+        }
       } catch (error) {
         console.error("Error al obtener datos:", error);
-        setError("Error al cargar los datos. Por favor, intente de nuevo más tarde.");
+        setError(t("error_loading_data"));
+        toast.error(t("error_loading_data"));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [t, idMantenimiento, reset]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     setError(null);
+    setFileError(null);
+  
     try {
-      // Registro del mantenimiento
+      // Actualizar el mantenimiento principal
       const formData = new FormData();
-      formData.append('mant_codigo_mantenimiento', data.mant_codigo_mantenimiento);
-      formData.append('mant_estado', data.mant_estado);
-      formData.append('mant_fecha_proxima', data.mant_fecha_proxima);
-      formData.append('mant_descripcion', data.mant_descripcion);
+      Object.keys(data).forEach(key => {
+        if (key !== 'repuestos') {
+          formData.append(key, data[key]);
+        }
+      });
       if (selectedFile) {
         formData.append('mant_ficha_soporte', selectedFile);
       }
-      formData.append('mant_costo_final', data.costo_final);
-      formData.append('fk_tipo_mantenimiento', data.fk_tipo_mantenimiento);
-      formData.append('fk_solicitud_mantenimiento', data.fk_solicitud_mantenimiento);
-
-      console.log("Envío de datos de mantenimiento:", Object.fromEntries(formData));
-
-      const mantenimientoResponse = await axiosCliente.post('mantenimiento/registrar', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+  
+      await axiosCliente.put(`mantenimiento/Actualizar_mantenimiento/${idMantenimiento}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-
-      console.log("Respuesta de registro de mantenimiento:", mantenimientoResponse.data);
-
-      const mantenimientoId = mantenimientoResponse.data.idMantenimiento;
-
-      if (!mantenimientoId) {
-        throw new Error("No se recibió el ID del mantenimiento en la respuesta");
+      // Actualizar partes de mantenimiento
+      for (const repuesto of data.repuestos) {
+        const parteData = {
+          par_fk_mantenimientos: idMantenimiento,
+          par_nombre_repuesto: repuesto.nombreRepuesto,
+          par_costo: parseFloat(repuesto.costo) // Asegúrate de que esto sea un número
+        };
+      
+        if (repuesto.id_partes_mantenimiento) {
+          // Si existe id_partes_mantenimiento, actualizar la parte existente
+          await axiosCliente.put(`partes_mantenimiento/Actualizar/${repuesto.id_partes_mantenimiento}`, parteData);
+        } else {
+          // Si no existe id_partes_mantenimiento, crear una nueva parte
+          await axiosCliente.post(`partes_mantenimiento/registrar`, [parteData]);
+        }
       }
-
-      // Registro de partes de mantenimiento
-      const partesMantenimiento = data.repuestos.map(repuesto => ({
-        par_fk_mantenimientos: mantenimientoId,
-        par_nombre_repuesto: repuesto.nombreRepuesto,
-        par_costo: repuesto.costo
-      }));
-
-      console.log("Envío de datos de piezas:", partesMantenimiento);
-      console.log(partesMantenimiento)
-
-      const partesResponse = await axiosCliente.post('partes_mantenimiento/registrar', partesMantenimiento);
-
-      console.log("Respuesta de registro de piezas:", partesResponse.data);
-
-      // Alerta de éxito
-      alert("Todo registrado con éxito.");
-
-      reset(); 
-      setSelectedFile(null); 
+  
+      toast.success(t("update_success"));
+      navigate('/Historial');
     } catch (error) {
-      console.error("Error registrando mantenimiento y partes:", error);
-      let errorMessage = "Error al registrar el mantenimiento y partes. ";
+      let errorMessage = t("update_error");
       if (error.response) {
-        errorMessage += `Error del servidor: ${error.response.status} - ${error.response.data.message || error.response.statusText}`;
-        console.error("Error response:", error.response.data);
+        errorMessage += `: ${error.response.status} - ${error.response.data.message || error.response.statusText}`;
+        setFileError(error.response.data.mensaje || JSON.stringify(error.response.data));
       } else if (error.request) {
-        errorMessage += "No se recibió respuesta del servidor.";
+        errorMessage += t("no_server_response");
       } else {
         errorMessage += error.message;
       }
       setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -153,172 +165,247 @@ export const Editar_Component = () => {
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+  const handleDeleteParte = async (index, id_partes_mantenimiento) => {
+    try {
+      if (id_partes_mantenimiento) {
+        await axiosCliente.delete(`partes_mantenimiento/eliminar/${id_partes_mantenimiento}`);
+        toast.success(t("partes_eliminadas"));
+      }
+      remove(index);
+    } catch (error) {
+      console.error("Error al eliminar la parte:", error);
+      toast.error(t("error_deleting_part"));
+    }
+  };
+
+  const today = new Date().toISOString().split('T')[0];
+
+  if (isLoading) {
+    return <div>{t("loading")}</div>;
+  }
 
   return (
-    <ErrorBoundary>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto flex flex-col gap-6 p-4">
-        <div className="flex items-center justify-between mb-4 border p-2">
+    <Layout titlePage={t("edit_maintenance")}>
+      <Breadcrumb pageName={t("edit_maintenance")} />
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-7xl mx-auto p-8 space-y-8">
+        <div className="flex items-center justify-between mb-8 border p-4 rounded-lg shadow-sm">
           <div className="w-1/4">
             <Image
               src="/logoSenaNaranja.png"
-              className="h-16 w-full object-contain"
-              alt="logo-sena"
+              className="h-20 w-full object-contain"
             />
           </div>
           <div className="w-1/2 text-center">
-            <h2 className="text-sm font-bold">{/* SUBSISTEMA DE MANTENIMIENTO Y CONTROL DE MAQUINARIA Y EQUIPO ORDEN DE TRABAJO DE MANTENIMIENTO */} editar mantenimientos</h2>
+            <h2 className="text-xl font-bold">{idMantenimiento ? t("edit_maintenance") : t("maintenance_work_order")}</h2>
           </div>
           <div className="w-1/4 text-right">
-            <p className="text-xs">Centro de gestión y desarrollo sostenible surColombiano</p>
+            <p className="text-sm">{t("management_center")}</p>
           </div>
         </div>
 
-        <CardStyle titleCard="Código de Mantenimiento">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_codigo_mantenimiento"
-            tipo="text"
-            placeholder="Ingrese el código de mantenimiento"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Estado">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_estado"
-            tipo="text"
-            placeholder="Ingrese el estado"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Fecha Próxima">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="mant_fecha_proxima"
-            tipo="date"
-            placeholder="Seleccione la fecha próxima"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Tipo de Mantenimiento">
-          <Controller
-            name="fk_tipo_mantenimiento"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
-                  tiposMantenimiento.map((tipo) => (
-                    <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
-                      {tipo.tipo_mantenimiento || 'Sin tipo de mantenimiento'}
-                    </Radio>
-                  ))
-                ) : (
-                  <p>No hay tipos de mantenimiento disponibles</p>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
+          <CardStyle titleCard={t("maintenance_code")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="mant_codigo_mantenimiento"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <InputUpdate
+                  {...field}
+                  label={t("enter_maintenance_code")}
+                  tipo="text"
+                  errors={errors}
+                  isUpdating={true}
+                />
+              )}
+            />
+          </CardStyle>
+          
+          <div>
+            <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
+              <Controller
+                name="mant_estado"
+                control={control}
+                render={({ field }) => (
+                  <SelectComponent
+                    {...field}
+                    options={[
+                      { idMantenimiento: "Pendiente", valor: t("pending") },
+                      { idMantenimiento: "En Proceso", valor: t("in_progress") },
+                      { idMantenimiento: "Completado", valor: t("completed") },
+                      { idMantenimiento: "En Espera", valor: t("on_hold") }
+                    ]}
+                    placeholder={t("select_status")}
+                    valueKey="idMantenimiento"
+                    textKey="valor"
+                    label={t("status")}
+                    register={() => register("mant_estado")}
+                  />
                 )}
-              </RadioGroup>
-            )}
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Descripción del Mantenimiento">
-          <Textarea
-            register={register}
-            name="mant_descripcion"
-            placeholder="Proporcione una descripción detallada del mantenimiento realizado."
-            rows={6}
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Trabajo Ejecutado">
-          <input type="file" onChange={handleFileChange} />
-          {selectedFile && <p>Archivo seleccionado: {selectedFile.name}</p>}
-        </CardStyle>
-
-        <CardStyle titleCard="Costo Final">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="costo_final"
-            tipo="number"
-            placeholder="Ingrese el costo final"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Solicitud de Mantenimiento">
-          <InputforForm
-            register={register}
-            errors={errors}
-            name="fk_solicitud_mantenimiento"
-            tipo="text"
-            placeholder="Ingrese la solicitud de mantenimiento"
-          />
-        </CardStyle>
-
-        <CardStyle titleCard="Repuestos utilizados y costos">
-          <div className="flex justify-end mb-2">
-            <Button
-              color="primary"
-              onClick={() => append({ nombreRepuesto: '', costo: '' })}
-            >
-              <PlusIcon className="h-5 w-5" aria-hidden="true" />
-              Agregar repuesto
-            </Button>
+              />
+            </CardStyle>
           </div>
-          <Table aria-label="Tabla de repuestos">
-            <TableHeader>
-              <TableColumn>Nombre del repuesto</TableColumn>
-              <TableColumn>Costo</TableColumn>
-              <TableColumn>Acciones</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {fields.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
-                      errors={errors}
-                      name={`repuestos.${index}.nombreRepuesto`}
+
+          <CardStyle titleCard={t("next_date")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="mant_fecha_proxima"
+              control={control}
+              render={({ field }) => (
+                <InputUpdate
+                  {...field}
+                  label={t("next_date")}
+                  tipo="date"
+                  errors={errors}
+                  isUpdating={true}
+                  min={today}
+                />
+              )}
+            />
+          </CardStyle>
+
+          <CardStyle titleCard={t("maintenance_description")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="mant_descripcion"
+              control={control}
+              render={({ field }) => (
+                <TextAreaComponent
+                  {...field}
+                  errors={errors}
+                  descripcion={t("maintenance_description")}
+                  label={t("maintenance_description")}
+                  register={() => register("mant_descripcion")}
+                />
+              )}
+            />
+          </CardStyle>
+
+          <CardStyle titleCard={t("maintenance_type")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="fk_tipo_mantenimiento"
+              control={control}
+              rules={{ required: t("select_maintenance_type") }}
+              render={({ field }) => (
+                <>
+                  <SelectComponent
+                    {...field}
+                    options={tiposMantenimiento.map(tipo => ({
+                      idTipo_mantenimiento: tipo.idTipo_mantenimiento,
+                      tipo_mantenimiento: tipo.tipo_mantenimiento
+                    }))}
+                    valueKey="idTipo_mantenimiento"
+                    textKey="tipo_mantenimiento"
+                    placeholder={t("select_maintenance_type")}
+                    label={t("maintenance_type")}
+                    register={() => register("fk_tipo_mantenimiento", { required: t("select_maintenance_type") })}
+                  />
+                  {errors.fk_tipo_mantenimiento && (
+                    <p className="text-red-500 text-sm mt-1">{errors.fk_tipo_mantenimiento.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </CardStyle>
+
+          <CardStyle titleCard={t("maintenance_request")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="fk_solicitud_mantenimiento"
+              control={control}
+              render={({ field }) => (
+                <SelectComponent
+                  {...field}
+                  options={solicitudes.map(solicitud => ({
+                    id: solicitud.idSolicitud,
+                    valor: solicitud.soli_descripcion_problemas
+                  }))}
+              placeholder={t("enter_maintenance_request")}
+              valueKey="id"
+              textKey="valor"
+              label={t("maintenance_request")}
+              register={() => register("fk_solicitud_mantenimiento")}
+                />
+              )}
+            />
+          </CardStyle>
+
+          <CardStyle titleCard={t("work_executed")} className="p-6 shadow-md rounded-lg">
+            <input type="file" onChange={handleFileChange} />
+            
+            {fileError && <p className="text-red-500">{fileError}</p>}
+          </CardStyle>
+
+          <CardStyle titleCard={t("final_cost")} className="p-6 shadow-md rounded-lg">
+            <div>
+              <Controller
+                name="mant_costo_final"
+                control={control}
+                render={({ field }) => (
+                  <InputUpdate
+                    {...field}
+                    label={t("final_cost")}
+                    tipo="number"
+                    errors={errors}
+                    isUpdating={true}
+                  />
+                )}
+              />
+            </div>
+          </CardStyle>
+
+          <CardStyle titleCard={t("parts_used_and_costs")} className="p-6 shadow-md rounded-lg">
+            {fields.map((item, index) => (
+              <div key={item.id_partes_mantenimiento} className="flex items-center space-x-4 mb-4">
+                <Controller
+                  name={`repuestos.${index}.nombreRepuesto`}
+                  control={control}
+                  defaultValue={item.nombreRepuesto || ''}
+                  render={({ field }) => (
+                    <InputUpdate
+                      {...field}
+                      label={t("part_name")}
                       tipo="text"
-                      placeholder="Nombre del repuesto"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <InputforForm
-                      register={register}
                       errors={errors}
-                      name={`repuestos.${index}.costo`}
-                      tipo="number"
-                      placeholder="Costo"
+                      isUpdating={true}
                     />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      color="error"
-                      onClick={() => remove(index)}
-                    >
-                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardStyle>
+                  )}
+                />
+                <Controller
+                  name={`repuestos.${index}.costo`}
+                  control={control}
+                  defaultValue={item.costo || ''}
+                  render={({ field }) => (
+                    <InputUpdate
+                      {...field}
+                      label={t("cost")}
+                      tipo="number"
+                      errors={errors}
+                      isUpdating={true}
+                    />
+                  )}
+                />
+                <ButtonNext
+                  type="button"
+                  text={t("remove")}
+                  className="bg-red-600 text-white"
+                  onClick={() => handleDeleteParte(index, item.id_partes_mantenimiento)}
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </ButtonNext>
+              </div>
+            ))}
+          <ButtonNext
+      type="button"
+      text={t("add_part")}
+      className="bg-blue-600 text-white"
+      onClick={() => append({ nombreRepuesto: '', costo: '' })}
+    >
+      <PlusIcon className="h-5 w-5 mr-2" />
+    </ButtonNext>
+  </CardStyle>
+          {error && <p className="text-red-500">{error}</p>}
 
-        <Button
-          type="submit"
-          color="success"
-          disabled={isLoading}
-        >
-          {isLoading ? "Registrando..." : "Registrar Mantenimiento"}
-        </Button>
-
-        {error && <p className="text-red-500">{error}</p>}
+          <ButtonNext type="submit" text={t("actualizar")} className="bg-green-600 text-white w-full mt-8"/>
+        </div>
       </form>
-    </ErrorBoundary>
+    </Layout>
   );
 };

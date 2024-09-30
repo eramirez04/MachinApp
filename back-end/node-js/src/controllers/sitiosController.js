@@ -26,7 +26,9 @@ export const listarSitio = async (req, res) => {
     const [resultadoSitio] = await conexion.query(sql);
 
     if (resultadoSitio.length > 0) {
-      return res.status(200).json({ mensaje: "Sitios encontrados", resultadoSitio });
+      return res
+        .status(200)
+        .json({ mensaje: "Sitios encontrados", resultadoSitio });
     } else {
       return res.status(404).json({ mensaje: "No se encontraron sitios" });
     }
@@ -41,24 +43,28 @@ export const registrarSitio = async (req, res) => {
     return res.status(400).json({ errores: errors.array() });
   }
 
-  const {
-    sit_nombre,
-    sit_fecha_registro,
-    sit_fk_areas,
-    sit_fk_tipo_sitio,
-    sit_fk_usuarios,
-  } = req.body;
+  const { sit_nombre, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios } =
+    req.body;
+
+  const [consulta] = await conexion.query(
+    "select * from ambientes where  sit_fk_usuarios = ?;",
+    [sit_fk_usuarios]
+  );
+
+
+  if(consulta.length > 0) {
+    return res.status(400).json({mensaje: "Ya existe ambiente asigando al instructor"})
+  }
 
   const img_sitio = req.file ? req.file.originalname : null;
 
   try {
     const sql = `
-      INSERT INTO ambientes (sit_nombre, sit_fecha_registro, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO ambientes (sit_nombre, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios)
+      VALUES (?, ?, ?, ?, ?)
     `;
     const [respuesta] = await conexion.query(sql, [
       sit_nombre,
-      sit_fecha_registro,
       img_sitio,
       sit_fk_areas,
       sit_fk_tipo_sitio,
@@ -66,7 +72,9 @@ export const registrarSitio = async (req, res) => {
     ]);
 
     if (respuesta.affectedRows > 0) {
-      return res.status(200).json({ mensaje: "Sitio registrado correctamente" });
+      return res
+        .status(200)
+        .json({ mensaje: "Sitio registrado correctamente" });
     } else {
       return res.status(400).json({ mensaje: "No se registró el sitio" });
     }
@@ -118,7 +126,9 @@ export const editarSitio = async (req, res) => {
       sit_fk_usuarios = sitioExistente.sit_fk_usuarios,
     } = req.body;
 
-    const img_sitio = req.file ? req.file.originalname : sitioExistente.img_sitio;
+    const img_sitio = req.file
+      ? req.file.originalname
+      : sitioExistente.img_sitio;
 
     const sqlUpdate = `
       UPDATE ambientes 
@@ -164,7 +174,9 @@ export const listarSitioPorId = async (req, res) => {
     const [resultadoSitio] = await conexion.query(sql, [idAmbientes]);
 
     if (resultadoSitio.length > 0) {
-      return res.status(200).json({ mensaje: "Sitio encontrado", resultadoSitio });
+      return res
+        .status(200)
+        .json({ mensaje: "Sitio encontrado", resultadoSitio });
     } else {
       return res.status(404).json({ mensaje: "No se encontró el sitio" });
     }
@@ -188,9 +200,15 @@ export const listarSitiosPorArea = async (req, res) => {
     const [resultadoSitios] = await conexion.query(sql, [idArea]);
 
     if (resultadoSitios.length > 0) {
-      return res.status(200).json({ mensaje: "Sitios encontrados", resultadoSitios });
+      return res
+        .status(200)
+        .json({ mensaje: "Sitios encontrados", resultadoSitios });
     } else {
-      return res.status(404).json({ mensaje: "No se encontraron sitios para el área especificada" });
+      return res
+        .status(404)
+        .json({
+          mensaje: "No se encontraron sitios para el área especificada",
+        });
     }
   } catch (error) {
     return res.status(500).json({ mensaje: "Error en el servidor", error });

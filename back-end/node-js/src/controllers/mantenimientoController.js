@@ -150,6 +150,7 @@ export const listartodosmantenimientos = async (req, res) => {
                 m.mant_descripcion,
                 m.mant_estado,
                 m.mant_fecha_proxima AS mant_fecha_realizacion,
+                m.mant_costo_final,
                 a.acti_estado,
                 a.idActividades,
                 a.acti_nombre,
@@ -188,6 +189,7 @@ export const listartodosmantenimientos = async (req, res) => {
             fecha_realizacion: new Date(
               row.mant_fecha_realizacion
             ).toLocaleDateString("es-ES"), // Formateo de la fecha
+            mant_costo_final: row.mant_costo_final,
             estado_maquina: row.acti_estado,
             idActividades: row.idActividades,
             acti_nombre: row.acti_nombre,
@@ -229,7 +231,6 @@ export const actualizarMantenimiento = async (req, res) => {
     }
 
     const {
-      mant_id, // ID del mantenimiento que se va a actualizar
       mant_codigo_mantenimiento,
       mant_estado,
       mant_fecha_proxima,
@@ -239,21 +240,23 @@ export const actualizarMantenimiento = async (req, res) => {
       fk_solicitud_mantenimiento,
     } = req.body;
 
-    // Obtener la ruta del archivo
+    // Obtener la ruta del archivo si existe
     const mant_ficha_soporte = req.file ? req.file.path : null;
+
+    const { idMantenimiento } = req.params;
 
     try {
       // Construir la consulta de actualización
       let sql = `
-          UPDATE mantenimiento SET
-            mant_codigo_mantenimiento = ?,
-            mant_estado = ?,
-            mant_fecha_proxima = ?,
-            fk_tipo_mantenimiento = ?,
-            mant_descripcion = ?,
-            mant_costo_final = ?,
-            fk_solicitud_mantenimiento = ?
-        `;
+        UPDATE mantenimiento SET
+          mant_codigo_mantenimiento = ?,
+          mant_estado = ?,
+          mant_fecha_proxima = ?,
+          fk_tipo_mantenimiento = ?,
+          mant_descripcion = ?,
+          mant_costo_final = ?,
+          fk_solicitud_mantenimiento = ?
+      `;
 
       const params = [
         mant_codigo_mantenimiento,
@@ -265,25 +268,20 @@ export const actualizarMantenimiento = async (req, res) => {
         fk_solicitud_mantenimiento,
       ];
 
-      // Si hay un nuevo archivo PDF, incluirlo en la consulta
       if (mant_ficha_soporte) {
-        sql += `, mant_ficha_soporte = ?`;
+        sql += ', mant_ficha_soporte = ?';
         params.push(mant_ficha_soporte);
       }
 
-      sql += ` WHERE mant_id = ?`;
-      params.push(mant_id);
+      sql += ' WHERE idMantenimiento = ?';
+      params.push(idMantenimiento);
 
       const [resultado] = await conexion.query(sql, params);
 
       if (resultado.affectedRows > 0) {
-        return res
-          .status(200)
-          .json({ mensaje: "Se actualizó el mantenimiento con éxito" });
+        return res.status(200).json({ mensaje: "Mantenimiento actualizado con éxito" });
       } else {
-        return res
-          .status(400)
-          .json({ mensaje: "No se actualizó el mantenimiento" });
+        return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
       }
     } catch (e) {
       return res.status(500).json({ mensaje: "Error: " + e.message });
@@ -309,12 +307,135 @@ export const graficas = async (req, res) => {
         `;
 
     const [result] = await conexion.query(sql);
-    console.log(result);
+    
 
     /* if (result.length === 0) return res.status(404).json({ mensaje: "no" }); */
 
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json(err);
+  }
+};
+
+
+export const listarMantenimientoPorId = async (req, res) => {
+  try {
+    const { idMantenimiento } = req.params;
+
+
+    const sql = `
+      SELECT
+          fme.fi_placa_sena AS referencia_maquina,
+          m.idMantenimiento,
+          m.mant_codigo_mantenimiento,
+          m.mant_descripcion,
+          m.mant_estado,
+          m.mant_fecha_proxima,
+          m.mant_costo_final,
+          m.fk_solicitud_mantenimiento, 
+          a.acti_estado,
+          a.idActividades,
+          a.acti_nombre,
+          tm.tipo_mantenimiento,
+          fme.idFichas,
+          fme.fi_estado
+      FROM
+          mantenimiento m
+      LEFT JOIN
+          solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+      LEFT JOIN
+          solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
+      LEFT JOIN
+          fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
+      LEFT JOIN
+          actividades a ON a.acti_fk_solicitud = sm.idSolicitud
+      LEFT JOIN
+          tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+      WHERE
+          m.idMantenimiento = ?
+    `;
+
+    const [result] = await conexion.query(sql, [idMantenimiento]);
+
+    if (result.length > 0) {
+      const mantenimiento = {
+        idMantenimiento: result[0].idMantenimiento,
+        referencia_maquina: result[0].referencia_maquina,
+        codigo_mantenimiento: result[0].mant_codigo_mantenimiento,
+        descripcion_mantenimiento: result[0].mant_descripcion,
+        mant_fecha_proxima: new Date(result[0].mant_fecha_proxima).toLocaleDateString("es-ES"),
+        mant_costo_final: result[0].mant_costo_final,
+
+        fk_solicitud_mantenimiento : result[0].fk_solicitud_mantenimiento ,
+
+        estado_maquina: result[0].acti_estado,
+        idActividades: result[0].idActividades,
+        acti_nombre: result[0].acti_nombre,
+        tipo_mantenimiento: result[0].tipo_mantenimiento,
+        idFichas: result[0].idFichas,
+        estado_ficha: result[0].fi_estado,
+        mant_estado: result[0].mant_estado,
+      };
+
+      res.status(200).json(mantenimiento);
+    } else {
+      res.status(404).json({
+        message: "No se encontró un mantenimiento con ese id.",
+      });
+    }
+  } catch (err) {
+    console.error("Error en listarMantenimientoPorId:", err);
+    res.status(500).json({
+      message: "Error en el controlador listarMantenimientoPorId: " + err.message,
+    });
+  }
+};
+
+
+export const excelconsultavariables = async (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+        m.idMantenimiento,
+        MAX(fme.fi_placa_sena) AS fi_placa_sena,
+        m.mant_codigo_mantenimiento AS codigo_mantenimiento,
+        MAX(CASE WHEN v.idVariable = 7 THEN df.det_valor END) AS fi_marca,
+        MAX(CASE WHEN v.idVariable = 1 THEN df.det_valor END) AS fi_fecha_adquisicion,
+        m.mant_fecha_proxima AS fecha_realizacion,
+        MAX(CASE WHEN v.idVariable = 9 THEN df.det_valor END) AS fi_precioEquipo,
+        MAX(te.ti_fi_nombre) AS nombre,
+        m.mant_costo_final,
+        m.mant_descripcion AS descripcion_mantenimiento,
+        MAX(tm.tipo_mantenimiento) AS tipo_mantenimiento,
+        MAX(a.sit_nombre) AS sit_nombre,
+        MAX(ar.area_nombre) AS area_nombre,
+        MAX(s.sede_nombre_centro) AS sede_nombre_centro,
+        MAX(s.sede_nombre) AS sede_nombre,
+        MAX(sm.soli_prioridad) AS soli_prioridad,
+        GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
+        SUM(pm.par_costo) AS par_costo_total
+      FROM 
+        mantenimiento m
+        LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+        LEFT JOIN solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
+        LEFT JOIN fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
+        LEFT JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
+        LEFT JOIN tipo_equipo te ON fme.fi_fk_tipo_ficha = te.idTipo_ficha
+        LEFT JOIN detalles_fichas df ON fme.idFichas = df.det_fk_fichas
+        LEFT JOIN variable v ON df.det_fk_variable = v.idVariable
+        LEFT JOIN ambientes a ON fme.fi_fk_sitios = a.idAmbientes
+        LEFT JOIN areas ar ON a.sit_fk_areas = ar.idArea
+        LEFT JOIN sedes s ON ar.area_fk_sedes = s.idSede
+        LEFT JOIN partes_mantenimiento pm ON m.idMantenimiento = pm.par_fk_mantenimientos
+      GROUP BY 
+        m.idMantenimiento
+    `;
+    const [resultado] = await conexion.query(sql);
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Error en excelconsultavariables:", error);
+    res.status(500).json({
+      message: "Error en el controlador excelconsultavariables: " + error.message
+    });
   }
 };
