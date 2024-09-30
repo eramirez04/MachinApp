@@ -13,39 +13,43 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 
+//para el pdf
+import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
+import {FichaTecnicaEquiposPDF} from "../../index.js"
+import {  Button } from "@nextui-org/react"
 
-/* //para el pdf
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF} from "../../index.js" */
 
 /* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
 
-export const InfoMaquina = ()=> {
+export const InfoMaquina = () => {
 
     const { t } = useTranslation()
 
 
   const [maquina, setInfoMaquina ] = useState([])
+
  /*  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([]) */
+
   const {idMaquina} = useParams()
 
-  const buscarInfo = async ()=>{
-    try{
-        const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
+    const buscarInfo = async ()=>{
+        try{
+            const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
 
         setInfoMaquina(response.data)
-        console.log(response.data)
       
       /*   setMantenimientosMaquina(response.data.mantenimientos) */
 
-    }catch(error){
-          console.error('Error listando info de maquinas', error)
-      }
-  }
-  useEffect(()=>{
-    buscarInfo()
-  }, [])
+        }catch(error){
+            console.error('Error listando info de maquinas', error)
+        }
+    }
+
+    useEffect(()=>{
+        buscarInfo()
+
+    }, [idMaquina])
 
   return (
     <>
@@ -86,7 +90,6 @@ export const InfoMaquina = ()=> {
                                 </span>
                             </Tooltip>
                         </a>
-
                     </div>
 
                     <div className=" my-5 rounded-lg  shadow-sm  shadow-gray-500/50 p-4 " >
@@ -197,9 +200,25 @@ export const InfoMaquina = ()=> {
 
 
 
-
             <div>
-                pdf
+                <PDFDownloadLink
+                    document={<FichaTecnicaEquiposPDF idMaquina = {idMaquina}/>}
+                    fileName={`ficha1.pdf`}
+                >
+                    {({loading }) => (
+                        <Button 
+                            color='success' 
+                            isIconOnly 
+                            size='md' 
+                            className="flex items-center justify-center text-white"
+                            disabled={loading}
+                        >
+                            descargar
+                        </Button>
+                    )}
+                </PDFDownloadLink>
+
+                <PDFViewer style={{width: '100%', height:'100vh'}}><FichaTecnicaEquiposPDF idMaquina = {idMaquina}/></PDFViewer>
 
 
             </div>

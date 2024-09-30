@@ -34,7 +34,6 @@ export const MaquinasAmbiente=()=>{
             <div>
                 <ListarMaquinasAmb idAmbiente={idAmbiente}/>
             </div>
-            <h1>AAAA</h1>
         </Layout>
       </>
     )
