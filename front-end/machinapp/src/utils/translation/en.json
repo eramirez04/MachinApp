@@ -144,5 +144,10 @@
   "mantenimientos_cargados_exitosamente": "Maintenances loaded successfully",
   "select_maintenance_type":"Select a type of maintenance",
   "update_success":"Maintenance updated",
-  "partes_eliminadas":"Maintenance part removed successfully"
+  "partes_eliminadas":"Maintenance part removed successfully",
+  "nombre_aula": "Classroom Name",
+  "tipo_aula": "Classroom Type",
+  "profesor_encargado": "Assigned Teacher",
+  "registrar_nuevo_ambiente": "Register New Classroom",
+  "ambientes_formacion": "Training Classrooms"
 }

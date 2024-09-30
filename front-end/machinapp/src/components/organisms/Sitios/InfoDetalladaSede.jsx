@@ -34,7 +34,7 @@ const InfoDetalladaSede = () => {
   }
 
   return (
-    <div className='bg-gray-200 min-h-screen p-20'>
+    <div className='bg-gray-200 min-h-screen p-4'>
       <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mb-60'>
         <header className='bg-green-500 py-4 px-6 flex justify-between items-center'>
           <h1 className='text-2xl font-extrabold text-white'>Información de la Sede</h1>
@@ -44,7 +44,7 @@ const InfoDetalladaSede = () => {
             </button>
           </Link>
         </header>
-        <div className='relative h-96'>
+        <div className='relative h-80'>
           <img
             src={`http://localhost:3000/imagenes/${sede[0].img_sede}`}
             alt={sede[0].sede_nombre}
@@ -52,7 +52,7 @@ const InfoDetalladaSede = () => {
             onError={handleImageError}
           />
         </div>
-        <div className='p-6'>
+        <div className='p-2'>
           <table className='min-w-full bg-white text-gray-500'>
             {sede.map((detalle, index) => (
               <tbody key={index}>
