@@ -13,39 +13,43 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 
+//para el pdf
+import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
+import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
+import {  Button } from "@nextui-org/react"
 
-/* //para el pdf
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF} from "../../index.js" */
 
 /* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
 
-export const InfoMaquina = ()=> {
+export const InfoMaquina = () => {
 
     const { t } = useTranslation()
 
 
   const [maquina, setInfoMaquina ] = useState([])
+
  /*  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([]) */
+
   const {idMaquina} = useParams()
 
-  const buscarInfo = async ()=>{
-    try{
-        const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
+    const buscarInfo = async ()=>{
+        try{
+            const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
 
         setInfoMaquina(response.data)
-        console.log(response.data)
       
       /*   setMantenimientosMaquina(response.data.mantenimientos) */
 
-    }catch(error){
-          console.error('Error listando info de maquinas', error)
-      }
-  }
-  useEffect(()=>{
-    buscarInfo()
-  }, [])
+        }catch(error){
+            console.error('Error listando info de maquinas', error)
+        }
+    }
+
+    useEffect(()=>{
+        buscarInfo()
+
+    }, [idMaquina])
 
   return (
     <>
@@ -62,14 +66,7 @@ export const InfoMaquina = ()=> {
                     <div className=" shadow-sm border-1 border-green-600 rounded-lg shadow-green-500 p-3  gap-4 flex flex-row justify-end">
                         
                         <div className="w-full">
-                            
-                            <Link  to={`/listarFichaTecnica/${maquina.idFichas}`} color="success">
-                               {
-                                t('accFichaTec')
-                               }
-                                
-                            </Link>
-                            
+                            <VistaFichaTecnica idMaquina={maquina.idFichas} />
                         </div>
 
                         <a href={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`} target="_blank" download>
@@ -86,7 +83,6 @@ export const InfoMaquina = ()=> {
                                 </span>
                             </Tooltip>
                         </a>
-
                     </div>
 
                     <div className=" my-5 rounded-lg  shadow-sm  shadow-gray-500/50 p-4 " >
@@ -195,14 +191,6 @@ export const InfoMaquina = ()=> {
                     {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
             </div>
 
-
-
-
-            <div>
-                pdf
-
-
-            </div>
 
         </Layout>
     </>
