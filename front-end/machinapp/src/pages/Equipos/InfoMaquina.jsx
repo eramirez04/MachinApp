@@ -15,7 +15,7 @@ import { Link } from "react-router-dom"
 
 //para el pdf
 import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF} from "../../index.js"
+import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
 import {  Button } from "@nextui-org/react"
 
 
@@ -66,14 +66,7 @@ export const InfoMaquina = () => {
                     <div className=" shadow-sm border-1 border-green-600 rounded-lg shadow-green-500 p-3  gap-4 flex flex-row justify-end">
                         
                         <div className="w-full">
-                            
-                            <Link  to={`/listarFichaTecnica/${maquina.idFichas}`} color="success">
-                               {
-                                t('accFichaTec')
-                               }
-                                
-                            </Link>
-                            
+                            <VistaFichaTecnica idMaquina={maquina.idFichas} />
                         </div>
 
                         <a href={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`} target="_blank" download>
@@ -198,30 +191,6 @@ export const InfoMaquina = () => {
                     {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
             </div>
 
-
-
-            <div>
-                <PDFDownloadLink
-                    document={<FichaTecnicaEquiposPDF idMaquina = {idMaquina}/>}
-                    fileName={`ficha1.pdf`}
-                >
-                    {({loading }) => (
-                        <Button 
-                            color='success' 
-                            isIconOnly 
-                            size='md' 
-                            className="flex items-center justify-center text-white"
-                            disabled={loading}
-                        >
-                            descargar
-                        </Button>
-                    )}
-                </PDFDownloadLink>
-
-                <PDFViewer style={{width: '100%', height:'100vh'}}><FichaTecnicaEquiposPDF idMaquina = {idMaquina}/></PDFViewer>
-
-
-            </div>
 
         </Layout>
     </>

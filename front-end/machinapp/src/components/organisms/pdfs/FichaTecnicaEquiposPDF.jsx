@@ -91,95 +91,120 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
         paddingLeft: 12,
         paddingVertical: 4, 
         paddingRight: 3,
-        fontSize: 15
+        fontSize: 16
       },
       textoTitulo:{
         color:'#16a34a',
-        borderBottom:'2',
         paddingBottom:'2',
-        borderBottomColor:'#16a34a'
+
       },
       /* seccion de informacion basica */
       containerContent :{
         flexDirection: 'row',
         width:'100%', 
-        gap:9
+        gap:9,
+        borderTop:'2',
+        borderTopColor:'#16a34a',
+        paddingBottom:14
       },
       containerHijo:{
         flex: 1,
-        backgroundColor:'blue'
-      }
-      
-      
-      
-      
-      /* ,
-      containerContenido:{
-        marginTop:2,
-        backgroundColor:'red',
-        width: '100%',
-        height:'31'
-      } */
-        /* 
-        lgContainer: {
-          flexDirection: 'row',
-        },
-                header: {
-          width: '100%',
-         
-          paddingLeft: 28, 
-          paddingVertical: 4, 
-          marginTop: 48, 
-          color: '#ffffff', 
-          backgroundColor: '#666666', 
-        },
-        halfWidth: {
-          width: '100%',
-        },
-        lgHalfWidth: {
-          width: '50%',
-        },
-        grid: {
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 12,
-        },
-        inputBasic:{
-            zIndex: 0, 
-            width: '100%',
-            marginVertical: 3,
-            border: 'solid 1',
-            display: 'flex',
-            flexDirection: 'row',
-            backgroundColor: '#d7dbdd',
-            borderRadius: 6,
-            paddingVertical: 5,
-            paddingHorizontal:8, 
-        },
+        paddingTop:20,
+        paddingBottom:4,
+        gap:3
+      },
+      contenedorInfo:{
+        flexDirection: 'row',
+        width:'100%',
+        paddingVertical:4,
+        paddingLeft:12,
+        flexWrap: 'wrap',
+      },
+      tituloInfo:{
+        fontSize: 14,
+        color:'#303030'
+      },
+      respuestaInfo:{
+        fontSize: 14,
+        color:'#4e4e4e'
+      },
+      contentedorVarios:{
+        flexDirection:'column',
+        width:'100%'
+      },
+      contenedorDes:{
+        flexDirection: 'column',
+        width:'100%',
+        paddingVertical:4,
+        paddingLeft:12,
+        gap:2
+      },
+      subTituloSecc:{
+        fontWeight:700,
+        fontSize: 14,
+        color:'#303030',
+      },
 
-        textoInput:{
-            color:'black',
-            fontSize: 12,
-        },
-        infoRow: {
-          flexDirection: 'row',
-          marginBottom: 5,
-        },
-        label: {
-          width: '40%',
-          fontSize: 12,
-          fontWeight: 'bold',
-        },
-        value: {
-          width: '60%',
-          fontSize: 12,
-        },
-        greenText: {
-            color: 'green',
-            marginBottom: 5,
-            fontSize: 16, 
-        } */
-      })
+      /* Para las caracteristicas generales */
+      contenidoCaractGen: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'start',
+        padding: 10,
+        paddingTop:25,
+        gap:3,
+        borderTop:'2',
+        borderTopColor:'#16a34a',
+      },
+      infoCaractGen: {
+        width: '24%', 
+        marginBottom: 25,
+        justifyContent: 'start',
+        alignItems: 'start',
+        backgroundColor:'#fbfbfb'
+      },
+      tituloCaractGen: {
+        padding:4,
+        paddingVertical:6,
+        backgroundColor:'#c8edc7',
+        fontSize:13
+      },
+      contCaractGen: {
+        padding:4,
+        paddingVertical:10,
+        textAlign: 'left',
+        flexWrap: 'wrap',
+        fontSize:13 
+      },
+
+
+      /* Para las secciones */
+      containerTituloSeccion: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        padding: 10, 
+        backgroundColor: '#f0f0f0',
+        // Eliminamos flexWrap
+    },
+    textoTituloSeccion: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    textoDescripcion: {
+        fontSize: 14,
+        color: '#555',
+        flex: 1, // Permite que ocupe el espacio restante
+        textAlign: 'right',
+        // Modificamos el overflow
+        overflow: 'visible', 
+        // También podrías considerar establecer un ancho máximo
+        maxWidth: '80%', // Ajusta según sea necesario
+    },
+
+
+
+    })
 
 
     return (
@@ -193,83 +218,103 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
 
               <View style={styles.containerContent}>
                 <View style={styles.containerHijo}>
-                  <Text>a</Text>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>Placa SENA: </Text>
+                    <Text style={styles.respuestaInfo}>{infoMaquina.fi_placa_sena}</Text>
+                  </View>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>{varObligatorias?.idVar2?.var_nombre}: </Text>
+                    <Text style={styles.respuestaInfo}>{varObligatorias?.idVar2?.det_valor}</Text>
+                  </View>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>{varObligatorias?.idVar9?.var_nombre}: </Text>
+                    <Text style={styles.respuestaInfo}>{varObligatorias?.idVar9?.det_valor}</Text>
+                  </View>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>{varObligatorias?.idVar7?.var_nombre}: </Text>
+                    <Text style={styles.respuestaInfo}>{varObligatorias?.idVar7?.det_valor}</Text>
+                  </View>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>{varObligatorias?.idVar8?.var_nombre}: </Text>
+                    <Text style={styles.respuestaInfo}>{varObligatorias?.idVar8?.det_valor}</Text>
+                  </View>
+                  <View style={styles.contenedorInfo}>
+                    <Text style={styles.tituloInfo}>{varObligatorias?.idVar1?.var_nombre}: </Text>
+                    <Text style={styles.respuestaInfo}>{varObligatorias?.idVar1?.det_valor}</Text>
+                  </View>
                 </View>
+
                 <View style={styles.containerHijo}>
-                  <Text>b</Text>
+                  <Text>(imagen)</Text>
                 </View>
               </View>
 
+              {/* pendientee---------------------------- */}
+              <View style={styles.contentedorVarios}>
+                <View style={styles.contenedorDes}>
+                  <Text style={styles.subTituloSecc}>{varObligatorias?.idVar6?.var_nombre}</Text>
+                  <Text style={styles.respuestaInfo}>{varObligatorias?.idVar6?.det_valor}</Text>
+                </View>
 
-
-
-            </View>
-
-            <View style={styles.container}> 
-              <View style={styles.containerTitulo}>
-                <Text style={styles.textoTitulo}>Caracteristicas generales</Text>
+                <View style={styles.contenedorDes}>
+                  <Text style={styles.subTituloSecc}>{varObligatorias?.idVar3?.var_nombre}</Text>
+                  <Text style={styles.respuestaInfo}>{varObligatorias?.idVar3?.det_valor}</Text>
+                </View>
+                <View style={styles.contenedorDes}>
+                  <Text style={styles.subTituloSecc}>{varObligatorias?.idVar4?.var_nombre}</Text>
+                  <Text style={styles.respuestaInfo}>{varObligatorias?.idVar4?.det_valor}</Text>
+                </View>
+                <View style={styles.contenedorDes}>
+                  <Text style={styles.subTituloSecc}>{varObligatorias?.idVar5?.var_nombre}</Text>
+                  <Text style={styles.respuestaInfo}>{varObligatorias?.idVar5?.det_valor}</Text>
+                </View>
+                
               </View>
 
-
-
-
             </View>
 
 
+            {/* para las caraceristicas generales */}
+            {
+              varEspec.length>0 ? (
+                <View style={styles.container}> 
+                <View style={styles.containerTitulo}>
+                  <Text style={styles.textoTitulo}>Caracteristicas generales</Text>
+                </View>
+
+                <View style={styles.contenidoCaractGen}>
+                  {
+                    varEspec.map((varEspeci, index)=>(
+                      <View key={index} style={styles.infoCaractGen}>
+                        <Text style={styles.tituloCaractGen}>{varEspeci.var_nombre}</Text>
+                        <Text style={styles.contCaractGen}>{varEspeci.det_valor}</Text>
+                      </View>
+                    ))
+                  }
+                </View>
+
+
+              </View>
+              ):(<></>)
+            }
+
+            {/* para especificaciones tecnicas */}
             <View style={styles.container}> 
               <View style={styles.containerTitulo}>
                 <Text style={styles.textoTitulo}>Especificaciones tecnicas</Text>
               </View>
-
-
-
-
             </View>
 
-
+            {/* para secciones */}
             <View style={styles.container}> 
+              <View style={styles.containerTituloSeccion}>
+                <Text style={styles.textoTituloSeccion}>Seccion 1</Text>
+                <Text style={styles.textoDescripcion}>www</Text>
+              </View>
 
             </View>
 
 
-
-
-                
-              <View style={styles.container}>
-                    <Text style={styles.greenText}>Información Básica</Text>
-                  <View style={[styles.halfWidth, styles.lgHalfWidth]}>
-                    <View style={styles.grid}>
-                        
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Placa SENA : </Text> 
-                            <Text style={styles.textoInput}> {infoMaquina.fi_placa_sena} </Text>
-                        </View>
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Serial : </Text>
-                            <Text style={styles.textoInput}> {varObligatorias?.idVar2?.det_valor}</Text>
-                        </View>
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Precio Equipo : </Text>
-                            <Text style={styles.textoInput}> {varObligatorias?.idVar9?.det_valor}</Text>
-                        </View>
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Marca : </Text>
-                            <Text style={styles.textoInput}> {varObligatorias?.idVar7?.det_valor}</Text>
-                        </View>
-
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Modelo : </Text>
-                            <Text style={styles.textoInput}> {varObligatorias?.idVar8?.det_valor}</Text>
-                        </View>
-
-                        <View style={styles.inputBasic}>
-                            <Text style={styles.label} >Fecha Adquisicion : </Text>
-                            <Text style={styles.textoInput}> {varObligatorias?.idVar1?.det_valor}</Text>
-                        </View>
-
-                    </View>
-                  </View>
-                </View>
 
 
             
