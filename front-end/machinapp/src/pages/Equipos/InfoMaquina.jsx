@@ -5,21 +5,36 @@ import { useState } from "react"
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
+import { Button } from "@nextui-org/react";
+import {  DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
-import { Layout, CardStyle, Imagenes ,BlocInformation, axiosCliente, Breadcrumb, ModalComponte,  UpdateEstAmbienteFicha } from "../../index.js"
+import { 
+    Layout, 
+    CardStyle, 
+    Imagenes,
+    BlocInformation, 
+    axiosCliente, 
+    Breadcrumb, 
+    ModalComponte,  
+    UpdateEstAmbienteFicha,
+    PaginateTable,
+    SearchComponent,
+    VistaFichaTecnica
+
+} from "../../index.js"
 import { useTranslation } from "react-i18next"
-
-
-import { Link } from "react-router-dom"
+//import { Link } from "react-router-dom"
 
 
 //para el pdf
-import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
+/* import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
 import {  Button } from "@nextui-org/react"
+import axios from "axios" 
+
+import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
+*/
 
 
-/* import TablaMantenimientosMa from "../../components/organisms/TablaMantenimientosMa.jsx" */
 
 
 export const InfoMaquina = () => {
@@ -29,17 +44,22 @@ export const InfoMaquina = () => {
 
   const [maquina, setInfoMaquina ] = useState([])
 
- /*  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([]) */
+  const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
 
   const {idMaquina} = useParams()
+
+  const [mantenimientosFil, setMantenimientosFil] = useState([]);
+
 
     const buscarInfo = async ()=>{
         try{
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
+            setInfoMaquina(response.data)
 
-        setInfoMaquina(response.data)
-      
-      /*   setMantenimientosMaquina(response.data.mantenimientos) */
+            const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
+
+            setMantenimientosMaquina(mantenimientos.data)
+            console.log(mantenimientos.data)
 
         }catch(error){
             console.error('Error listando info de maquinas', error)
@@ -50,6 +70,41 @@ export const InfoMaquina = () => {
         buscarInfo()
 
     }, [idMaquina])
+
+    /* Configuracion de la tabla de mantenimientos */
+
+    const columns = [
+        "Codigo",
+        "Nombre solicitante",
+        "Estado",
+        "Costo",
+        "Tipo Mantenimiento",
+        "Soporte",
+        "Pdf"
+    ]
+
+
+    const contentTable = maquinaMantenimientos.map((mantenimiento)=>({
+        codigo_Mantenimiento: mantenimiento.mant_codigo_mantenimiento,
+        nombre_solicitante: mantenimiento.nombre_solicitante,
+        mant_estado: mantenimiento.mant_estado,
+        mant_costo_final: mantenimiento.mant_costo_final,
+        tipo_mantenimiento: mantenimiento.tipo_mantenimiento,
+        mant_ficha_soporte:mantenimiento.mant_ficha_soporte,
+    }))
+
+    const buscarMantenimientos = (search)=>{
+        const filtrarMantenimientos = contentTable.filter((mantenimiento)=>{
+            return (
+                mantenimiento.codigo_Mantenimiento.toLowerCase().includes(search.toLowerCase()) ||
+                mantenimiento.mant_estado.toLowerCase().includes(search.toLowerCase()) ||
+                mantenimiento.tipo_mantenimiento.toLowerCase().includes(search.toLowerCase()) ||
+                mantenimiento.nombre_solicitante.toLowerCase().includes(search.toLowerCase()) 
+            )
+        })
+        setMantenimientosFil(filtrarMantenimientos)
+    }
+
 
   return (
     <>
@@ -149,7 +204,7 @@ export const InfoMaquina = () => {
                     >
                         <div className="w-full flex justify-center">
                             <div className="w-[350px] flex flex-col justify-center  pb-2 " >
-                                <figure className="w-full grid justify-items-center bg-white   ">
+                                <figure className="w-full grid justify-items-center bg-white  max-h-[490px] overflow-hidden">
                                     <Imagenes  rutaImg = {`imagenes/ficha/${maquina.fi_imagen}` } />
                                 </figure>
                             </div>
@@ -187,8 +242,45 @@ export const InfoMaquina = () => {
             </div>
             
             <div className=" block mx-16 mb-14 ">
-                    <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantenimientos')}</h3>
-                    {/* <TablaMantenimientosMa mantenimientos={maquinaMantenimientos}/> */}
+                    <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantenimientos')} del equipo</h3>
+                    
+
+                    <div className="pt-3 px-9 mt-8 mb-10">
+          <div className="mb-6">
+            <SearchComponent
+              label={`codigo, nombre solicitante, tipo, estado`}
+              onSearch={buscarMantenimientos}
+              className="w-full md:w-auto"
+            />
+          </div>
+
+          <PaginateTable
+            columns={columns}
+            data={mantenimientosFil.map((mantenimiento) => ({
+              ...mantenimiento,
+              mant_ficha_soporte: (
+                <>
+                <Button 
+                    color="primary" 
+                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                    className="text-white"
+                >
+                </Button>
+                </>
+              ),
+              Pdf:(
+                <>
+                <Button 
+                    color="success" 
+                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                    className="text-white"
+                >
+                </Button>
+                </>
+              )
+            }))}
+          />
+        </div>
             </div>
 
 
