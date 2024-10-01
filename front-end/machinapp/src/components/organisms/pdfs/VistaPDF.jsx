@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from "@nextui-org/react";
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';

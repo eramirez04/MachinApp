@@ -399,10 +399,7 @@ export const excelconsultavariables = async (req, res) => {
         m.idMantenimiento,
         MAX(fme.fi_placa_sena) AS fi_placa_sena,
         m.mant_codigo_mantenimiento AS codigo_mantenimiento,
-        MAX(CASE WHEN v.idVariable = 7 THEN df.det_valor END) AS fi_marca,
-        MAX(CASE WHEN v.idVariable = 1 THEN df.det_valor END) AS fi_fecha_adquisicion,
         m.mant_fecha_proxima AS fecha_realizacion,
-        MAX(CASE WHEN v.idVariable = 9 THEN df.det_valor END) AS fi_precioEquipo,
         MAX(te.ti_fi_nombre) AS nombre,
         m.mant_costo_final,
         m.mant_descripcion AS descripcion_mantenimiento,
@@ -413,7 +410,7 @@ export const excelconsultavariables = async (req, res) => {
         MAX(s.sede_nombre) AS sede_nombre,
         MAX(sm.soli_prioridad) AS soli_prioridad,
         GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
-        SUM(pm.par_costo) AS par_costo_total
+        SUM(DISTINCT pm.par_costo) AS par_costo_total
       FROM 
         mantenimiento m
         LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
@@ -421,8 +418,6 @@ export const excelconsultavariables = async (req, res) => {
         LEFT JOIN fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
         LEFT JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
         LEFT JOIN tipo_equipo te ON fme.fi_fk_tipo_ficha = te.idTipo_ficha
-        LEFT JOIN detalles_fichas df ON fme.idFichas = df.det_fk_fichas
-        LEFT JOIN variable v ON df.det_fk_variable = v.idVariable
         LEFT JOIN ambientes a ON fme.fi_fk_sitios = a.idAmbientes
         LEFT JOIN areas ar ON a.sit_fk_areas = ar.idArea
         LEFT JOIN sedes s ON ar.area_fk_sedes = s.idSede
@@ -431,7 +426,14 @@ export const excelconsultavariables = async (req, res) => {
         m.idMantenimiento
     `;
     const [resultado] = await conexion.query(sql);
-    res.status(200).json(resultado);
+
+    // Verificación adicional para asegurar que par_costo_total sea correcto
+    const resultadoCorregido = resultado.map(item => ({
+      ...item,
+      par_costo_total: parseFloat(item.par_costo_total)
+    }));
+
+    res.status(200).json(resultadoCorregido);
   } catch (error) {
     console.error("Error en excelconsultavariables:", error);
     res.status(500).json({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { Select, SelectItem, Button } from "@nextui-org/react";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -18,7 +18,7 @@ import {
 
 export const MantenimientoGeneral = () => {
     const { t } = useTranslation();
-    const [mensajeError, setMensajeError] = useState('');
+    const [, setMensajeError] = useState('');
     const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
     const [tipoSeleccionado, setTipoSeleccionado] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
@@ -48,8 +48,6 @@ export const MantenimientoGeneral = () => {
 
             const tiposUnicos = [...new Set(mantenimientosFormateados.map(item => item.tipo_mantenimiento))].filter(Boolean);
             setTipos(tiposUnicos);
-
-            /* toast.success(t("mantenimientos_cargados_exitosamente")); */
 
         } catch (error) {
             const errorMessage = error.response?.data?.message || t("error_cargar_mantenimientos");
@@ -84,7 +82,6 @@ export const MantenimientoGeneral = () => {
         }
 
         setFilteredItems(filtered);
-        /* toast.info(`${filtered.length} ${t("mantenimientos_encontrados")}`); */
     };
 
     useEffect(() => {
@@ -156,7 +153,7 @@ export const MantenimientoGeneral = () => {
                                         document={<MantenimientoGeneralPDF mantenimientos={filteredItems} />}
                                         fileName="mantenimientos.pdf"
                                     >
-                                        {({ blob, url, loading, error }) =>
+                                        {({loading }) =>
                                             loading ? (
                                                 <Button color="primary" disabled>
                                                     {t('cargando')}
