@@ -176,6 +176,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
         setVarSecciones(
           variables?.filter((item) => item.var_clase == "seccion")
         );
+        console.log(variables?.filter((item) => item.var_clase == "seccion"))
         setVarEspecificas(
           variables?.filter((item) => item.var_clase == "especifica")
         );
@@ -406,7 +407,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
               ) : (
                 <></>
               )}
-              {isEquipo > 0 && (
+{/*               {isEquipo > 0 && (
                 <div className="w-full my-5">
                   <label> Descripcion del equipo</label>
                   <TextAreaComponent
@@ -416,7 +417,8 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                     descripcion={"Descripcion general del equipo"}
                   />
                 </div>
-              )}
+              )} */}
+
               {/* Especificaciones tecnicas */}
               {varEspTecnicas.length > 0 ? (
                 <div className="my-14">
