@@ -31,7 +31,7 @@ export const  Imagenes  =  ({rutaImg})  => {   //Pasar ruta a partir de la carpe
     return (
       <>
         {
-            estadoImg ? (<img className='w-full rounded-2xl'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/noEncontrada.jpg" alt="Imagen" />)
+            estadoImg ? (<img className='w-full rounded-2xl object-cover'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/noEncontrada.jpg" alt="Imagen" />)
         }
       </>
     )
