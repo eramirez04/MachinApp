@@ -26,7 +26,7 @@ export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 export { FichaTecnicaEquiposPDF } from "./pdfs/FichaTecnicaEquiposPDF";
 export { VistaPDF } from "./pdfs/VistaPDF.jsx";
-
+export {VistaFichaTecnica} from "./pdfs/VistaFichaTecnica.jsx"
 
 export { PDFSolicitud } from "./pdfs/PDFSolicitud";
 export { PDFvistaSolicitud } from "./pdfs/PDFvistaSolicitud.jsx";

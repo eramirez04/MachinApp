@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -38,8 +38,8 @@ export const Editar_Component = () => {
   const [error, setError] = useState(null);
   const [fileError, setFileError] = useState(null);
   
-  const [partesMantenimiento, setPartesMantenimiento] = useState([]);
-  const [mantenimiento, setMantenimiento] = useState(null);
+  const [, setPartesMantenimiento] = useState([]);
+  const [, setMantenimiento] = useState(null);
 
   const formatDateForInput = (dateString) => {
     if (!dateString) return '';
@@ -96,8 +96,6 @@ export const Editar_Component = () => {
         }
       } catch (error) {
         console.error("Error al obtener datos:", error);
-        setError(t("error_loading_data"));
-        toast.error(t("error_loading_data"));
       } finally {
         setIsLoading(false);
       }
@@ -222,28 +220,30 @@ export const Editar_Component = () => {
           </CardStyle>
           
           <div>
-            <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
-              <Controller
-                name="mant_estado"
-                control={control}
-                render={({ field }) => (
-                  <SelectComponent
-                    {...field}
-                    options={[
-                      { idMantenimiento: "Pendiente", valor: t("pending") },
-                      { idMantenimiento: "En Proceso", valor: t("in_progress") },
-                      { idMantenimiento: "Completado", valor: t("completed") },
-                      { idMantenimiento: "En Espera", valor: t("on_hold") }
-                    ]}
-                    placeholder={t("select_status")}
-                    valueKey="idMantenimiento"
-                    textKey="valor"
-                    label={t("status")}
-                    register={() => register("mant_estado")}
-                  />
-                )}
-              />
-            </CardStyle>
+          <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
+            <Controller
+              name="mant_estado"
+              control={control}
+              render={({ field: { onChange, value, name, ref } }) => (
+                <SelectComponent
+                  options={[
+                    { idMantenimiento: "Pendiente", valor: t("pending") },
+                    { idMantenimiento: "En Proceso", valor: t("in_progress") },
+                    { idMantenimiento: "Completado", valor: t("completed") },
+                    { idMantenimiento: "En Espera", valor: t("on_hold") }
+                  ]}
+                  placeholder={t("select_status")}
+                  valueKey="idMantenimiento"
+                  textKey="valor"
+                  label={t("status")}
+                  onChange={onChange}
+                  value={value}
+                  name={name}
+                  register={() => ({ onChange, value, name, ref })}
+                />
+              )}
+            />
+          </CardStyle>
           </div>
 
           <CardStyle titleCard={t("next_date")} className="p-6 shadow-md rounded-lg">
@@ -284,10 +284,9 @@ export const Editar_Component = () => {
               name="fk_tipo_mantenimiento"
               control={control}
               rules={{ required: t("select_maintenance_type") }}
-              render={({ field }) => (
+              render={({ field: { onChange, value, name, ref } }) => (
                 <>
                   <SelectComponent
-                    {...field}
                     options={tiposMantenimiento.map(tipo => ({
                       idTipo_mantenimiento: tipo.idTipo_mantenimiento,
                       tipo_mantenimiento: tipo.tipo_mantenimiento
@@ -296,7 +295,10 @@ export const Editar_Component = () => {
                     textKey="tipo_mantenimiento"
                     placeholder={t("select_maintenance_type")}
                     label={t("maintenance_type")}
-                    register={() => register("fk_tipo_mantenimiento", { required: t("select_maintenance_type") })}
+                    onChange={onChange}
+                    value={value}
+                    name={name}
+                    register={() => ({ onChange, value, name, ref })}
                   />
                   {errors.fk_tipo_mantenimiento && (
                     <p className="text-red-500 text-sm mt-1">{errors.fk_tipo_mantenimiento.message}</p>
@@ -310,18 +312,20 @@ export const Editar_Component = () => {
             <Controller
               name="fk_solicitud_mantenimiento"
               control={control}
-              render={({ field }) => (
+              render={({ field: { onChange, value, name, ref } }) => (
                 <SelectComponent
-                  {...field}
                   options={solicitudes.map(solicitud => ({
                     id: solicitud.idSolicitud,
                     valor: solicitud.soli_descripcion_problemas
                   }))}
-              placeholder={t("enter_maintenance_request")}
-              valueKey="id"
-              textKey="valor"
-              label={t("maintenance_request")}
-              register={() => register("fk_solicitud_mantenimiento")}
+                  placeholder={t("enter_maintenance_request")}
+                  valueKey="id"
+                  textKey="valor"
+                  label={t("maintenance_request")}
+                  onChange={onChange}
+                  value={value}
+                  name={name}
+                  register={() => ({ onChange, value, name, ref })}
                 />
               )}
             />

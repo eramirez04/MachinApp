@@ -353,30 +353,8 @@ export const listarInfoEspecifica = async(req, res)=>{
         WHERE idFichas = ${idFicha}
 
         `
-        /* 
-        
-        FROM fichas_maquinas_equipos
-        INNER JOIN tipo_equipo ON idTipo_ficha   = fi_fk_tipo_ficha 
-        WHERE idFichas = ${idFicha} */
-
-
         const[respuesta] = await conexion.query(sqlFicha)
-
-        /* 
-        fi_serial,
-        fi_fecha_adquisicion, 
-        fi_fecha_inicio_garantia,
-        fi_fecha_fin_garantia, 
-        fi_descripcion_garantia,
-        fi_descripcion,
-        fi_marca,
-        fi_modelo,
-        fi_precio
-         */
-
         
-
-
         if(respuesta.length > 0 ){
 
             //consultar variables y asignarles una clave
@@ -426,6 +404,7 @@ export const listarInfoEspecifica = async(req, res)=>{
                 }
             }
 
+
             //consultar los mantenimientos
             //buscamos los mantenimientos que se le an echo a esa ficha 
             let sqlMantenimientos = `
@@ -453,31 +432,6 @@ export const listarInfoEspecifica = async(req, res)=>{
             //le envio solo el objeto dentro del array no propiamente el array
             return res.status(200).json(respuesta[0])
            
-   /*  
-            //buscamos los mantenimientos que se le an echo a esa ficha 
-            let sqlMantenimientos = `
-            
-
-            SELECT
-            idMantenimiento,
-            mant_estado,
-            mant_costo_final,
-            mant_ficha_soporte,
-            tipo_mantenimiento, 
-            idSolicitud
-            FROM fichas_maquinas_equipos
-            INNER JOIN solicit
-            
-
-                CodigoQR:respuesta[0].CodigoQR,
-                fi_imagen: respuesta[0].fi_imagen, 
-                fi_estado: respuesta[0].fi_estado,
-                tipoEquipo: respuesta[0].tipoEquipo,
-                ficha_respaldo: respuesta[0].ficha_respaldo,
-                mantenimientos
-            }
-     */
-
     
     
         }else{
@@ -488,6 +442,10 @@ export const listarInfoEspecifica = async(req, res)=>{
         return res.status(500).json({"mensaje":"error en el servidor"+error})
     }   
 }
+
+
+
+
 
 
 
@@ -746,3 +704,44 @@ export const listarFichaUnica=async (req, res)=>{
        }
 }
 
+
+
+
+/* este controlador debe ir en el de mantenimientos */
+export const  listarMantenimientosMaquina = async (req, res)=>{
+
+    try{
+
+        let idFicha = req.params.idFicha
+
+        let sqlMantenimientos = `
+
+        SELECT
+        idMantenimiento,
+        nombre_solicitante,
+        mant_codigo_mantenimiento,
+        mant_estado,
+        mant_costo_final,
+        mant_ficha_soporte,
+        tipo_mantenimiento 
+        FROM fichas_maquinas_equipos
+        INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
+        INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
+        INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
+        INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
+        WHERE idFichas = ${idFicha}
+        `
+
+        const[mantenimientos] = await conexion.query(sqlMantenimientos)
+
+        if (mantenimientos.length > 0){
+            return res.status(200).json(mantenimientos)
+        }
+        else{
+            return res.status(404).json({"mensaje":"No se encontraron mantenimientos para este equipo"})
+        }
+
+    }catch(error){
+        return res.status(500).json({"mensaje":"Error en el servidor"+error})
+    }
+}
