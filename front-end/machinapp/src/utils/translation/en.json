@@ -186,5 +186,6 @@
   "registerEnvironmentButton": "Register Environment",
   "successMessage": "Successfully registered",
   "unknownError": "Unknown error",
-  "contacto": "Contact"
+  "contacto": "Contact",
+  "Fecha_realizacion": "Fecha de Realización"
 }

@@ -38,12 +38,13 @@ const styles = StyleSheet.create({
     borderBottom: 1,
     borderBottomColor: '#eee',
     alignItems: 'center',
-    height: 24,
+    minHeight: 24,
     fontStyle: 'bold',
   },
   column: {
     flex: 1,
     fontSize: 9,
+    padding: 2,
   },
   boldText: {
     fontWeight: 'bold',
@@ -65,6 +66,12 @@ const styles = StyleSheet.create({
     bottom: 30,
     right: 30,
     fontSize: 10,
+  },
+  priorityColumn: {
+    flex: 1,
+    fontSize: 9,
+    padding: 2,
+    lineHeight: 1.5,
   },
 });
 
@@ -105,7 +112,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
             <Text>ORDEN DE TRABAJO DE MANTENIMIENTO</Text>
           </View>
           <View style={styles.dateText}>
-            <Text>Fecha: {formatDate(new Date().toISOString())}</Text>
+            <Text>Fecha actual: {formatDate(new Date().toISOString())}</Text>
           </View>
         </View>
 
@@ -147,11 +154,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
           <View style={styles.row}>
             <Text style={styles.column}>{data.tipo_mantenimiento}</Text>
             <Text style={styles.column}>{data.codigo_mantenimiento}</Text>
-            <Text style={styles.column}>
-              {data.soli_prioridad === 'inmediata' ? '☑' : '☐'} Inmediata{'\n'}
-              {data.soli_prioridad === 'urgente' ? '☑' : '☐'} Urgente{'\n'}
-              {data.soli_prioridad === 'normal' ? '☑' : '☐'} Normal
-            </Text>
+            <Text style={styles.priorityColumn}>{data.soli_prioridad} </Text>
           </View>
         </View>
 
@@ -159,7 +162,10 @@ export const GenerarPdf = ({ idMantenimiento }) => {
           <Text style={styles.greenText}>Trabajo ejecutado</Text>
           <View style={styles.row}>
             <Text style={[styles.column, { flex: 3 }]}>Descripción</Text>
-            <Text style={[styles.column, { flex: 1 }]}>Fecha : {formatDate(data.fecha_realizacion)}</Text>
+            <View style={[styles.column, { flex: 2 }]}>
+              <Text>Fecha : {formatDate(data.man_fecha_realizacion)}</Text>
+              <Text>Proximo mantenimiento : {formatDate(data.mant_fecha_proxima)}</Text>
+            </View>
           </View>
           <View style={styles.textBox}>
             <Text>{data.descripcion_mantenimiento}</Text>

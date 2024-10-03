@@ -286,7 +286,7 @@ export const Editar_Component = () => {
           </CardStyle>
 
 
-          <CardStyle titleCard={"Tecnico de Reparacion"} subtitle={"Opcional"}>
+          <CardStyle titleCard={"Tecnico de Reparacion"}>
               <SelectComponent
                 options={dataUser
                   .filter((item) =>
