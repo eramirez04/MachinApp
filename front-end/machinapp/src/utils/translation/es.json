@@ -186,7 +186,7 @@
   "siteType": "Tipo de Sitio",
   "registerEnvironmentButton": "Registrar Ambiente",
   "successMessage": "Se registró con éxito",
-  "unknownError": "Error desconocido"
-
-
+  "unknownError": "Error desconocido",
+  "contacto": "Contacto",
+  "Fecha_realizacion": "Date of Realization"
 }

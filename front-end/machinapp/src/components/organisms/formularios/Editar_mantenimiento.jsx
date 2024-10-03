@@ -6,10 +6,14 @@ import { Image } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 
-import { Layout, CardStyle, InputUpdate, Breadcrumb, axiosCliente, TextAreaComponent, SelectComponent, ButtonNext } from "../../../index.js";
+import { Layout, CardStyle, InputUpdate, Breadcrumb, axiosCliente, TextAreaComponent, SelectComponent, ButtonNext, useGlobalData } from "../../../index.js";
 
 export const Editar_Component = () => {
   const { t } = useTranslation();
+
+    // para poder obtener los tecnicos que nos trae el api
+    const { dataUser } = useGlobalData();
+
   const { idMantenimiento } = useParams();
   const navigate = useNavigate();
   const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
@@ -62,6 +66,7 @@ export const Editar_Component = () => {
         if (idMantenimiento) {
           const mantenimientoRes = await axiosCliente.get(`mantenimiento/listar_por_id/${idMantenimiento}`);
           const mantenimientoData = mantenimientoRes.data;
+          console.log(mantenimientoData);
 
           if (mantenimientoData) {
             setMantenimiento(mantenimientoData);
@@ -74,6 +79,7 @@ export const Editar_Component = () => {
               mant_costo_final: mantenimientoData.mant_costo_final || '',
               fk_tipo_mantenimiento: mantenimientoData.tipo_mantenimiento.idTipo_mantenimiento || '',
               fk_solicitud_mantenimiento: mantenimientoData.fk_solicitud_mantenimiento || '',
+              tecnico: mantenimientoData.id_tecnico
             });
           }
 
@@ -95,7 +101,7 @@ export const Editar_Component = () => {
           }
         }
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        console.error("Error al obtener datos:", error.response);
       } finally {
         setIsLoading(false);
       }
@@ -279,6 +285,28 @@ export const Editar_Component = () => {
             />
           </CardStyle>
 
+
+          <CardStyle titleCard={"Tecnico de Reparacion"}>
+              <SelectComponent
+                options={dataUser
+                  .filter((item) =>
+                    item.rol_nombre.trim().toLowerCase().startsWith("tecnico")
+                  )
+                  .map((item) => ({
+                    id: item.idUsuarios,
+                    valor: item.us_nombre + " " + item.us_apellidos,
+                  }))}
+                name="tecnico"
+                placeholder={t("instructor_encargado")}
+                valueKey="id"
+                textKey="valor"
+                register={register}
+                label={t("instructor_encargado")}
+                required
+              />
+            </CardStyle>
+
+         
           <CardStyle titleCard={t("maintenance_type")} className="p-6 shadow-md rounded-lg">
             <Controller
               name="fk_tipo_mantenimiento"
