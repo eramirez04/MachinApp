@@ -66,7 +66,7 @@ export const AppRouter = () => {
 
 
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
-            <Route path="/editar/solicitud" element={<UpdateFormFichaSolicitud/>}/>
+            <Route path="/editar/solicitud/:id" element={<UpdateFormFichaSolicitud/>}/>
 
 
             <Route path="/Historial" element={<Historial />} />

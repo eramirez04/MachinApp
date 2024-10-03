@@ -12,7 +12,7 @@ export const PDFvistaSolicitud = ({ item }) => {
       <div className="flex justify-end space-x-2">
 
         <PDFDownloadLink
-          document={<PDFSolicitud data={item} />}
+          document={<PDFSolicitud idSolicitud={item.idSolicitud} />}
           fileName={`solicitud_${item.idSolicitud}.pdf`}
         >
           {({loading}) => (
@@ -29,7 +29,7 @@ export const PDFvistaSolicitud = ({ item }) => {
       </div>
       <div style={{ height: '70vh', width: '100%' }}>
         <PDFViewer style={{ width: "100%", height: "100%" }}>
-          <PDFSolicitud data={item} />
+          <PDFSolicitud idSolicitud={item.idSolicitud} />
         </PDFViewer>
       </div>
     </div>

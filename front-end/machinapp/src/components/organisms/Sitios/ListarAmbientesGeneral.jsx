@@ -40,7 +40,7 @@ export const BuscarAmbientesGeneral = () => {
         area: sitio.area_nombre,
         municipio: sitio.instructor_encargado,
         acciones: (
-          <>
+          <> 
             <ButtonNext isIconOnly color="warning" variant="faded">
               <Tooltip content="Editar">
                 <Link
