@@ -25,6 +25,7 @@ export const FormSedes = () => {
       sede_municipio: data.Municipio,
       sede_subdirector: data.Subdirector,
       sede_direccion: data.Direccion,
+      contacto: data.Contacto,
       img: imagen,
     };
 
@@ -140,6 +141,13 @@ export const FormSedes = () => {
                 tipo={"text"}
                 name={"Subdirector"}
                 label={"Subdirector"}
+              />
+              <InputforForm
+                errors={errors}
+                register={register}
+                tipo={"text"}
+                name={"Contacto"}
+                label={"Contacto de la Sede"}
               />
             </div>
           </div>
