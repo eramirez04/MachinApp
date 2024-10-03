@@ -90,6 +90,10 @@ const InfoDetalladaSede = () => {
                   <td className='py-4 px-6 font-bold'>{t('direccion')}</td>
                   <td className='py-4 px-6'>{detalle.sede_direccion}</td>
                 </tr>
+                <tr className='w-full border-b'>
+                  <td className='py-4 px-6 font-bold'>{t('contacto')}</td>
+                  <td className='py-4 px-6'>{detalle.contacto}</td>
+                </tr>
               </tbody>
             ))}
           </table>

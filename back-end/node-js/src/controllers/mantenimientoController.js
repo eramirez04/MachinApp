@@ -45,6 +45,7 @@ export const registrarMantenimiento = async (req, res) => {
       mant_costo_final,
       fk_tipo_mantenimiento,
       fk_solicitud_mantenimiento,
+      tecnico
     } = req.body;
 
     const mant_ficha_soporte = req.file ? req.file.path : null;
@@ -59,8 +60,9 @@ export const registrarMantenimiento = async (req, res) => {
             mant_descripcion,
             mant_ficha_soporte,
             mant_costo_final,
-            fk_solicitud_mantenimiento
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            fk_solicitud_mantenimiento,
+            fk_tecnico
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
         `;
       const [resultado] = await conexion.query(sql, [
         mant_codigo_mantenimiento,
@@ -71,6 +73,7 @@ export const registrarMantenimiento = async (req, res) => {
         mant_ficha_soporte,
         mant_costo_final,
         fk_solicitud_mantenimiento,
+        tecnico
       ]);
 
       if (resultado.affectedRows > 0) {
@@ -332,7 +335,8 @@ export const listarMantenimientoPorId = async (req, res) => {
           m.mant_estado,
           m.mant_fecha_proxima,
           m.mant_costo_final,
-          m.fk_solicitud_mantenimiento, 
+          m.fk_solicitud_mantenimiento,
+          m.fk_tecnico,
           a.acti_estado,
           a.idActividades,
           a.acti_nombre,
@@ -358,6 +362,8 @@ export const listarMantenimientoPorId = async (req, res) => {
     const [result] = await conexion.query(sql, [idMantenimiento]);
 
     if (result.length > 0) {
+      const [tecnico] = await conexion.query(`select * from usuarios where idUsuarios = ${result[0].fk_tecnico}`)
+
       const mantenimiento = {
         idMantenimiento: result[0].idMantenimiento,
         referencia_maquina: result[0].referencia_maquina,
@@ -365,9 +371,9 @@ export const listarMantenimientoPorId = async (req, res) => {
         descripcion_mantenimiento: result[0].mant_descripcion,
         mant_fecha_proxima: new Date(result[0].mant_fecha_proxima).toLocaleDateString("es-ES"),
         mant_costo_final: result[0].mant_costo_final,
-
-        fk_solicitud_mantenimiento : result[0].fk_solicitud_mantenimiento ,
-
+        fk_solicitud_mantenimiento : result[0].fk_solicitud_mantenimiento,
+        tecnico: tecnico[0].us_nombre + " " + tecnico[0].us_apellidos,
+        id_tecnico: tecnico[0].idUsuarios, 
         estado_maquina: result[0].acti_estado,
         idActividades: result[0].idActividades,
         acti_nombre: result[0].acti_nombre,
@@ -399,10 +405,7 @@ export const excelconsultavariables = async (req, res) => {
         m.idMantenimiento,
         MAX(fme.fi_placa_sena) AS fi_placa_sena,
         m.mant_codigo_mantenimiento AS codigo_mantenimiento,
-        MAX(CASE WHEN v.idVariable = 7 THEN df.det_valor END) AS fi_marca,
-        MAX(CASE WHEN v.idVariable = 1 THEN df.det_valor END) AS fi_fecha_adquisicion,
         m.mant_fecha_proxima AS fecha_realizacion,
-        MAX(CASE WHEN v.idVariable = 9 THEN df.det_valor END) AS fi_precioEquipo,
         MAX(te.ti_fi_nombre) AS nombre,
         m.mant_costo_final,
         m.mant_descripcion AS descripcion_mantenimiento,
@@ -413,7 +416,7 @@ export const excelconsultavariables = async (req, res) => {
         MAX(s.sede_nombre) AS sede_nombre,
         MAX(sm.soli_prioridad) AS soli_prioridad,
         GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
-        SUM(pm.par_costo) AS par_costo_total
+        SUM(DISTINCT pm.par_costo) AS par_costo_total
       FROM 
         mantenimiento m
         LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
@@ -421,8 +424,6 @@ export const excelconsultavariables = async (req, res) => {
         LEFT JOIN fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
         LEFT JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
         LEFT JOIN tipo_equipo te ON fme.fi_fk_tipo_ficha = te.idTipo_ficha
-        LEFT JOIN detalles_fichas df ON fme.idFichas = df.det_fk_fichas
-        LEFT JOIN variable v ON df.det_fk_variable = v.idVariable
         LEFT JOIN ambientes a ON fme.fi_fk_sitios = a.idAmbientes
         LEFT JOIN areas ar ON a.sit_fk_areas = ar.idArea
         LEFT JOIN sedes s ON ar.area_fk_sedes = s.idSede
@@ -431,7 +432,14 @@ export const excelconsultavariables = async (req, res) => {
         m.idMantenimiento
     `;
     const [resultado] = await conexion.query(sql);
-    res.status(200).json(resultado);
+
+    // Verificación adicional para asegurar que par_costo_total sea correcto
+    const resultadoCorregido = resultado.map(item => ({
+      ...item,
+      par_costo_total: parseFloat(item.par_costo_total)
+    }));
+
+    res.status(200).json(resultadoCorregido);
   } catch (error) {
     console.error("Error en excelconsultavariables:", error);
     res.status(500).json({

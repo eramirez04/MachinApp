@@ -185,5 +185,6 @@
   "siteType": "Site Type",
   "registerEnvironmentButton": "Register Environment",
   "successMessage": "Successfully registered",
-  "unknownError": "Unknown error"
+  "unknownError": "Unknown error",
+  "contacto": "Contact"
 }

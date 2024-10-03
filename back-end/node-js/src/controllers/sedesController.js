@@ -47,14 +47,15 @@ export const registrarSede = async (req, res) => {
     sede_municipio,
     sede_direccion,
     sede_subdirector,
+    contacto,
   } = req.body;
 
   const img_sede = req.file ? req.file.originalname : null;
 
   try {
     const sql = `
-      INSERT INTO sedes (sede_nombre_centro, sede_nombre, sede_descripcion, sede_regional, sede_municipio, sede_direccion, sede_subdirector, img_sede)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO sedes (sede_nombre_centro, sede_nombre, sede_descripcion, sede_regional, sede_municipio, sede_direccion, sede_subdirector, contacto, img_sede)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [respuesta] = await conexion.query(sql, [
       sede_nombre_centro,
@@ -64,6 +65,7 @@ export const registrarSede = async (req, res) => {
       sede_municipio,
       sede_direccion,
       sede_subdirector,
+      contacto,
       img_sede,
     ]);
 
@@ -120,13 +122,14 @@ export const editarSede = async (req, res) => {
       sede_municipio = sedeExistente.sede_municipio,
       sede_direccion = sedeExistente.sede_direccion,
       sede_subdirector = sedeExistente.sede_subdirector,
+      contacto = sedeExistente.contacto,
     } = req.body;
 
     const img_sede = req.file ? req.file.originalname : sedeExistente.img_sede;
 
     const sqlUpdate = `
       UPDATE sedes 
-      SET sede_nombre_centro = ?, sede_nombre = ?, sede_descripcion = ?, sede_regional = ?, sede_municipio = ?, sede_direccion = ?, sede_subdirector = ?, img_sede = ?
+      SET sede_nombre_centro = ?, sede_nombre = ?, sede_descripcion = ?, sede_regional = ?, sede_municipio = ?, sede_direccion = ?, sede_subdirector = ?, contacto = ?, img_sede = ?
       WHERE idSede = ?
     `;
     const [respuesta] = await conexion.query(sqlUpdate, [
@@ -137,6 +140,7 @@ export const editarSede = async (req, res) => {
       sede_municipio,
       sede_direccion,
       sede_subdirector,
+      contacto,
       img_sede,
       id,
     ]);
