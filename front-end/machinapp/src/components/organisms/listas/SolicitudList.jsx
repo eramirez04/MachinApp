@@ -1,6 +1,6 @@
 import { PaginateTable } from "../table/PaginateTable";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@nextui-org/react";
+
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
 
@@ -8,21 +8,15 @@ import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
 export const SolicitudList = ({ DataSolicitud }) => {
   const [filteredData, setFilteredData] = useState([]);
 
-  const navigate = useNavigate();
   const COLUMNAS = [
+    "id",
     "Prioridad",
     "Costo",
     "Estado",
     "Fecha de la solicitud",
     "Acciones",
   ];
-  const handleEdit = (idSolicitud) => {
-    const resultadoSolictud = DataSolicitud.find(
-      (solicitud) => solicitud.idSolicitud === idSolicitud
-    );
 
-    navigate("/editar/solicitud", { state: { resultadoSolictud } });
-  };
 
   /* eslint-disable-next-line react/prop-types */
   const newArrayDataSolicitud = DataSolicitud.map((item) => {
@@ -36,6 +30,7 @@ export const SolicitudList = ({ DataSolicitud }) => {
     );
 
     return {
+      idSolicitud:item.idSolicitud,
       prioridad: item.soli_prioridad,
       costo: item.soli_costo_estimado,
       estado: item.soli_estado,
@@ -61,15 +56,12 @@ export const SolicitudList = ({ DataSolicitud }) => {
               ...fila,
               acciones: (
                 <>
-                        <Button
-                              isIconOnly
-                              color="warning"
-                              onClick={() => handleEdit(fila.idSolicitud)}
-                              variant="faded"
-
-                            >
-                              <Icons icon={V.PencilIcon} />{" "}
-                            </Button>
+                <Link
+                  to={`/editar/solicitud/${fila.idSolicitud}`}
+                  className="flex justify-center items-center h-full w-full"
+                >
+                  <Icons icon={V.PencilIcon} />
+                </Link>
                             <div
                               className="flex space-x-2"
                             >
