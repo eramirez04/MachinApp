@@ -4,8 +4,10 @@ import { axiosCliente } from '../../../service/api/axios';
 import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from 'react-icons/fa';
 import { V } from '../../../style';
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const BuscarAreas = ({ idSede }) => {
+  const { t } = useTranslation(); // Usar el hook para obtener la función de traducción
   const [areas, setAreas] = useState([]);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const BuscarAreas = ({ idSede }) => {
     const parent = event.target.parentElement;
     const errorMessage = document.createElement('div');
     errorMessage.className = 'absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold';
-    errorMessage.textContent = 'No se encontró imagen';
+    errorMessage.textContent = t('no_image_found'); // Usar la traducción para el mensaje de error
     parent.appendChild(errorMessage);
   };
 
@@ -34,10 +36,10 @@ const BuscarAreas = ({ idSede }) => {
     <div className='bg-gray-200 min-h-screen'>
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className='text-4xl font-extrabold text-center text-white'>
-          Centro de Gestión y Desarrollo Sostenible Surcolombiano
+          {t('titulo_principal')} {/* Usar la traducción para el título */}
         </h1>
         <p className='text-center text-white mt-6 mx-4 md:mx-0'>
-          Este centro está ubicado en el departamento del Huila, municipio de Pitalito. Este centro cuenta con dos sedes a día de hoy.
+          {t('descripcion_centro')} {/* Usar la traducción para la descripción */}
         </p>
       </header>
       <div className='container mx-auto p-4'>
@@ -67,7 +69,7 @@ const BuscarAreas = ({ idSede }) => {
                 <p className='text-gray-600 mt-2'>{area.sede_nombre}</p>
                 <div className='mt-4 flex justify-end'>
                   <Link to={`/Areas/${area.idArea}`}>
-                    <ButtonC bgColor='bg-green-400 hover:bg-green-600 text-white' name='Ingresar' />
+                    <ButtonC bgColor='bg-green-400 hover:bg-green-600 text-white' name={t('ingresar')} /> {/* Usar traducción para "Ingresar" */}
                   </Link>
                 </div>
               </div>

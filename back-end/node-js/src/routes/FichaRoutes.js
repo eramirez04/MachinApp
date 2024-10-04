@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { registrarFicha, eliminarFicha, actualizarFicha, listarFichas, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha, actualizarFichaEsp} from '../controllers/FichaController.js'
+import { registrarFicha, eliminarFicha, actualizarFicha, listarFichas, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha, actualizarFichaEsp, listarMantenimientosMaquina} from '../controllers/FichaController.js'
 
 import {validar_ficha} from '../../validar/fichas/validationFicha.js'
 
@@ -21,6 +21,6 @@ rutaFicha.get('/listarUnica/:idFicha', /*  verificar, */ listarFichaUnica)
 rutaFicha.get('/listarPorAmbiente/:idAmbiente',  /* verificar, */ listarFichaPorAmbiente)
 rutaFicha.get('/listarInfoEspecifica/:idFicha',  /* verificar, */ listarInfoEspecifica )
 
-
+rutaFicha.get('/listarMantenimientosMaquina/:idFicha', listarMantenimientosMaquina)
 
 export default rutaFicha
