@@ -12,7 +12,6 @@ export const ExcelMantenimientos = () => {
         const fetchData = async () => {
             try {
                 const response = await axiosCliente.get('mantenimiento/excelconsultavariables');
-                console.log('Información recibida:', response.data);
                 setMantenimientosData(response.data);
             } catch (error) {
                 console.error('Error en excel:', error);
