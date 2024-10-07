@@ -4,13 +4,16 @@ import {
   obtenerSolicitudes,
   actualizarSolicitudes,
   listarSolicitudPorId,
+
 } from "../controllers/solicitudController.js";
 
 const solicitudRouter = Router();
 
 solicitudRouter.post("/", registarSolicitud);
 solicitudRouter.get("/", obtenerSolicitudes);
-solicitudRouter.put("/:idSolicitud", actualizarSolicitudes);
-solicitudRouter.get("listarPorId/:idSolicitud",  /* verificar, */ listarSolicitudPorId )
+
+solicitudRouter.put("/actualizar/:idSolicitud", actualizarSolicitudes);
+solicitudRouter.get("/listarPorId/:idSolicitud", listarSolicitudPorId);
+
 
 export default solicitudRouter;

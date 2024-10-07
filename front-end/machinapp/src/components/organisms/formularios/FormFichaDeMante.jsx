@@ -1,11 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 
-import { Image, Button, Radio, RadioGroup, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  Image,
+  Button,
+  Radio,
+  RadioGroup,
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-import { CardStyle, InputforForm, Breadcrumb, axiosCliente } from "../../../index.js";
+import {
+  CardStyle,
+  InputforForm,
+  Breadcrumb,
+  axiosCliente,
+  SelectComponent,
+  useGlobalData,
+} from "../../../index.js";
 
 const Textarea = ({ register, name, placeholder, rows }) => (
   <textarea
@@ -41,23 +61,33 @@ class ErrorBoundary extends React.Component {
 
 export const FormFichaDeMantenimiento = () => {
   const { t } = useTranslation();
-  const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
+  const { dataUser } = useGlobalData();
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      mant_codigo_mantenimiento: '',
-      mant_estado: '',
-      mant_fecha_proxima: '',
-      mant_descripcion: '',
+      mant_codigo_mantenimiento: "",
+      mant_estado: "",
+      mant_fecha_proxima: "",
+      man_fecha_realizacion: "",
+      mant_descripcion: "",
       mant_ficha_soporte: null,
-      costo_final: '',
-      fk_tipo_mantenimiento: '',
-      fk_solicitud_mantenimiento: '',
-      repuestos: [{ nombreRepuesto: '', costo: '' }]
-    }
+      mant_costo_final: "",
+      fk_tipo_mantenimiento: "",
+      fk_solicitud_mantenimiento: "",
+      tecnico: "",
+      repuestos: [{ nombreRepuesto: "", costo: "" }],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "repuestos"
+    name: "repuestos",
   });
 
   const [tiposMantenimiento, setTiposMantenimiento] = useState([]);
@@ -72,10 +102,14 @@ export const FormFichaDeMantenimiento = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const tiposMantenimientoRes = await axiosCliente.get('tipomantenimiento/listar');
+        const tiposMantenimientoRes = await axiosCliente.get(
+          "tipomantenimiento/listar"
+        );
         setTiposMantenimiento(tiposMantenimientoRes.data || []);
 
-        const solicitudesRes = await axiosCliente.get('http://localhost:3000/solicitud/');
+        const solicitudesRes = await axiosCliente.get(
+          "http://localhost:3000/solicitud/"
+        );
         setSolicitudes(solicitudesRes.data || []);
       } catch (error) {
         console.error("Error al obtener datos:", error);
@@ -94,22 +128,28 @@ export const FormFichaDeMantenimiento = () => {
     setFileError(null);
     try {
       const formData = new FormData();
-      formData.append('mant_codigo_mantenimiento', data.mant_codigo_mantenimiento);
-      formData.append('mant_estado', data.mant_estado);
-      formData.append('mant_fecha_proxima', data.mant_fecha_proxima);
-      formData.append('mant_descripcion', data.mant_descripcion);
+      formData.append("mant_codigo_mantenimiento", data.mant_codigo_mantenimiento);
+      formData.append("mant_estado", data.mant_estado);
+      formData.append("mant_fecha_proxima", data.mant_fecha_proxima);
+      formData.append("man_fecha_realizacion", data.man_fecha_realizacion);
+      formData.append("mant_descripcion", data.mant_descripcion);
       if (selectedFile) {
-        formData.append('mant_ficha_soporte', selectedFile);
+        formData.append("mant_ficha_soporte", selectedFile);
       }
-      formData.append('mant_costo_final', data.costo_final);
-      formData.append('fk_tipo_mantenimiento', data.fk_tipo_mantenimiento);
-      formData.append('fk_solicitud_mantenimiento', data.fk_solicitud_mantenimiento);
+      formData.append("mant_costo_final", data.mant_costo_final);
+      formData.append("fk_tipo_mantenimiento", data.fk_tipo_mantenimiento);
+      formData.append("fk_solicitud_mantenimiento", data.fk_solicitud_mantenimiento);
+      formData.append("tecnico", data.tecnico);
 
-      const mantenimientoResponse = await axiosCliente.post('mantenimiento/registrar', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const mantenimientoResponse = await axiosCliente.post(
+        "mantenimiento/registrar",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       const mantenimientoId = mantenimientoResponse.data.idMantenimiento;
 
@@ -117,23 +157,30 @@ export const FormFichaDeMantenimiento = () => {
         throw new Error(t("no_maintenance_id_received"));
       }
 
-      const partesMantenimiento = data.repuestos.map(repuesto => ({
+      const partesMantenimiento = data.repuestos.map((repuesto) => ({
         par_fk_mantenimientos: mantenimientoId,
         par_nombre_repuesto: repuesto.nombreRepuesto,
-        par_costo: repuesto.costo
+        par_costo: parseFloat(repuesto.costo),
       }));
 
-      await axiosCliente.post('partes_mantenimiento/registrar', partesMantenimiento);
+      await axiosCliente.post(
+        "partes_mantenimiento/registrar",
+        partesMantenimiento
+      );
 
       alert(t("registration_success"));
 
-      reset(); 
-      setSelectedFile(null); 
+      reset();
+      setSelectedFile(null);
     } catch (error) {
       let errorMessage = t("registration_error");
       if (error.response) {
-        errorMessage += `${t("server_error")}: ${error.response.status} - ${error.response.data.message || error.response.statusText}`;
-        setFileError(error.response.data.mensaje || JSON.stringify(error.response.data));
+        errorMessage += `${t("server_error")}: ${error.response.status} - ${
+          error.response.data.message || error.response.statusText
+        }`;
+        setFileError(
+          error.response.data.mensaje || JSON.stringify(error.response.data)
+        );
       } else if (error.request) {
         errorMessage += t("no_server_response");
       } else {
@@ -149,14 +196,16 @@ export const FormFichaDeMantenimiento = () => {
     setSelectedFile(event.target.files[0]);
   };
 
-  
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div>
       <Breadcrumb pageName={t("register_maintenance")} />
       <ErrorBoundary>
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-7xl mx-auto p-8 space-y-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="max-w-7xl mx-auto p-8 space-y-8"
+        >
           <div className="flex items-center justify-between mb-8 border p-4 rounded-lg shadow-sm">
             <div className="w-1/4">
               <Image
@@ -165,7 +214,9 @@ export const FormFichaDeMantenimiento = () => {
               />
             </div>
             <div className="w-1/2 text-center">
-              <h2 className="text-xl font-bold">{t("maintenance_work_order")}</h2>
+              <h2 className="text-xl font-bold">
+                {t("maintenance_work_order")}
+              </h2>
             </div>
             <div className="w-1/4 text-right">
               <p className="text-sm">{t("management_center")}</p>
@@ -173,7 +224,10 @@ export const FormFichaDeMantenimiento = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
-            <CardStyle titleCard={t("maintenance_code")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("maintenance_code")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <InputforForm
                 register={register}
                 errors={errors}
@@ -184,25 +238,74 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("status")} className="p-6 shadow-md rounded-lg">
+            <CardStyle titleCard={"Tecnico de mantenimiento"}>
+              <SelectComponent
+                options={dataUser
+                  .filter((item) =>
+                    item.rol_nombre.trim().toLowerCase().startsWith("tecnico")
+                  )
+                  .map((item) => ({
+                    id: item.idUsuarios,
+                    valor: item.us_nombre + " " + item.us_apellidos,
+                  }))}
+                name="tecnico"
+                placeholder={t("instructor_encargado")}
+                valueKey="id"
+                textKey="valor"
+                register={register}
+                label={t("instructor_encargado")}
+                required
+              />
+            </CardStyle>
+
+            <CardStyle
+              titleCard={t("status")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <Controller
                 name="mant_estado"
                 control={control}
                 render={({ field }) => (
-                  <Select 
+                  <Select
                     {...field}
                     placeholder={t("select_status")}
+                    aria-label="hola"
                   >
-                    <SelectItem key="Pendiente" value="Pendiente">{t("pending")}</SelectItem>
-                    <SelectItem key="En Proceso" value="En Proceso">{t("in_progress")}</SelectItem>
-                    <SelectItem key="Completado" value="Completado">{t("completed")}</SelectItem>
-                    <SelectItem key="En Espera" value="En Espera">{t("on_hold")}</SelectItem>
+                    <SelectItem key="Pendiente" value="Pendiente">
+                      {t("pending")}
+                    </SelectItem>
+                    <SelectItem key="En Proceso" value="En Proceso">
+                      {t("in_progress")}
+                    </SelectItem>
+                    <SelectItem key="Completado" value="Completado">
+                      {t("completed")}
+                    </SelectItem>
+                    <SelectItem key="En Espera" value="En Espera">
+                      {t("on_hold")}
+                    </SelectItem>
                   </Select>
                 )}
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("next_date")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("Fecha_realizacion")}
+              className="p-6 shadow-md rounded-lg"
+            >
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="man_fecha_realizacion"
+                tipo="date"
+                placeholder={t("select_next_date")}
+                label={t("select_next_date")}
+              />
+            </CardStyle>
+
+            <CardStyle
+              titleCard={t("next_date")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <InputforForm
                 register={register}
                 errors={errors}
@@ -214,15 +317,21 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("maintenance_type")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("maintenance_type")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <Controller
                 name="fk_tipo_mantenimiento"
                 control={control}
                 render={({ field }) => (
-                  <RadioGroup {...field}>
+                  <RadioGroup {...field} aria-label="grop">
                     {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
                       tiposMantenimiento.map((tipo) => (
-                        <Radio key={tipo.idTipo_mantenimiento} value={tipo.idTipo_mantenimiento.toString()}>
+                        <Radio
+                          key={tipo.idTipo_mantenimiento}
+                          value={tipo.idTipo_mantenimiento.toString()}
+                        >
                           {tipo.tipo_mantenimiento || t("no_maintenance_type")}
                         </Radio>
                       ))
@@ -234,7 +343,10 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("maintenance_description")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("maintenance_description")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <Textarea
                 register={register}
                 name="mant_descripcion"
@@ -244,17 +356,29 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("work_executed")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("work_executed")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <input type="file" onChange={handleFileChange} className="mb-2" />
-              {selectedFile && <p className="text-sm text-gray-600">{t("selected_file")}: {selectedFile.name}</p>}
-              {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+              {selectedFile && (
+                <p className="text-sm text-gray-600">
+                  {t("selected_file")}: {selectedFile.name}
+                </p>
+              )}
+              {fileError && (
+                <p className="text-red-500 text-sm mt-2">{fileError}</p>
+              )}
             </CardStyle>
 
-            <CardStyle titleCard={t("final_cost")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("final_cost")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <InputforForm
                 register={register}
                 errors={errors}
-                name="costo_final"
+                name="mant_costo_final"
                 tipo="number"
                 placeholder={t("enter_final_cost")}
                 label={t("enter_final_cost")}
@@ -263,17 +387,24 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={t("maintenance_request")} className="p-6 shadow-md rounded-lg">
+            <CardStyle
+              titleCard={t("maintenance_request")}
+              className="p-6 shadow-md rounded-lg"
+            >
               <Controller
                 name="fk_solicitud_mantenimiento"
                 control={control}
                 render={({ field }) => (
-                  <Select 
+                  <Select
                     {...field}
                     placeholder={t("seleccione una solicitud pendiente")}
+                    aria-label="solicitudes-mantenimiento"
                   >
                     {solicitudes.map((solicitud) => (
-                      <SelectItem key={solicitud.idSolicitud} value={solicitud.soli_descripcion_problemas.toString()}>
+                      <SelectItem
+                        key={solicitud.idSolicitud}
+                        value={solicitud.soli_descripcion_problemas.toString()}
+                      >
                         {`${solicitud.soli_descripcion_problemas}`}
                       </SelectItem>
                     ))}
@@ -283,11 +414,14 @@ export const FormFichaDeMantenimiento = () => {
             </CardStyle>
           </div>
 
-          <CardStyle titleCard={t("parts_used_and_costs")} className="mt-8 p-6 shadow-md rounded-lg">
+          <CardStyle
+            titleCard={t("parts_used_and_costs")}
+            className="mt-8 p-6 shadow-md rounded-lg"
+          >
             <div className="flex justify-end mb-4">
               <Button
                 color="primary"
-                onClick={() => append({ nombreRepuesto: '', costo: '' })}
+                onClick={() => append({ nombreRepuesto: "", costo: "" })}
               >
                 <PlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
                 {t("add_part")}
@@ -325,11 +459,11 @@ export const FormFichaDeMantenimiento = () => {
                       />
                     </TableCell>
                     <TableCell>
-                      <Button
-                        color="error"
-                        onClick={() => remove(index)}
-                      >
-                        <TrashIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                      <Button color="error" onClick={() => remove(index)}>
+                        <TrashIcon
+                          className="h-5 w-5 mr-2"
+                          aria-hidden="true"
+                        />
                         {t("delete")}
                       </Button>
                     </TableCell>

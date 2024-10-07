@@ -78,8 +78,16 @@ export const FormFichaSolicitud = () => {
       }));
 
       const resfichas = await registrarSolicitudFichas(placasSenaConSolicitud);
+      const activitiesData = {
+        acti_nombre: valuesTable.map(row => data[`nombre_actividad_${row.id}`]),
+        acti_descripcion: valuesTable.map(row => data[`actividad_${row.id}`]),
+        acti_fecha_realizacion: new Date().toISOString().split('T')[0], // Current date
+        acti_fk_solicitud: id
+      };
 
-      if (res && resfichas) {
+      const resActividades = await axiosCliente.post("actividades/registrar", activitiesData);
+
+      if (res && resfichas && resActividades) {
         toast.success("se registro con exito la solicitud del mantenimiento");
         reset();
         setvaluesTable([{ id: 1 }]);
@@ -130,12 +138,7 @@ export const FormFichaSolicitud = () => {
     setInputValues((prevInputValues) => [...prevInputValues, ""]); // Añade un nuevo input vacío
   };
 
-  const handleInputChange = (index, value) => {
-    value = Number(value);
-    const newInputValues = [...inputValues];
-    newInputValues[index] = value;
-    setInputValues(newInputValues);
-  };
+
 
   const handlesuma = useCallback(() => {
     return inputValues.reduce((a, b) => a + b, 0);
@@ -287,22 +290,16 @@ export const FormFichaSolicitud = () => {
                     Equipo
                   </TableColumn>
                   <TableColumn
-                    key="height"
-                    className={`${V.bg_sena_verde} ${V.text_white}`}
-                  >
-                    Placa sena
-                  </TableColumn>
-                  <TableColumn
                     key="mass"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Descripcion del daño
+                    Nombre de la actividad
                   </TableColumn>
                   <TableColumn
                     key="birth_year"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Actividad
+                    Descripcion de la actividad
                   </TableColumn>
                   <TableColumn
                     key={"accion"}
@@ -327,30 +324,23 @@ export const FormFichaSolicitud = () => {
                           label="Seleccione el Equipo"
                         />
                       </TableCell>
-                      <TableCell className="items-center justify-center">
-                        <Input
-                          type="number"
-                          id={`input$${index}`}
-                          size="sm"
-                          onChange={(e) =>
-                            handleInputChange(index, e.target.value)
-                          }
-                        />
-                      </TableCell>
+
                       <TableCell className="flex items-center ">
-                        <TextAreaComponent
-                          errors={errors}
-                          register={register}
-                          name={`obervaciones_${fila.id}`}
-                        />
-                      </TableCell>
-                      <TableCell className="">
-                        <TextAreaComponent
-                          errors={errors}
-                          register={register}
-                          name={`actividad_${fila.id}`}
-                        />
-                      </TableCell>
+                      <TextAreaComponent
+                        errors={errors}
+                        register={register}
+                        name={`nombre_actividad_${fila.id}`}
+                        label="Nombre de la actividad"
+                      />
+                    </TableCell>
+                    <TableCell className="">
+                      <TextAreaComponent
+                        errors={errors}
+                        register={register}
+                        name={`actividad_${fila.id}`}
+                        label="Descripción de la actividad"
+                      />
+                    </TableCell>
                       <TableCell>
                         <Button
                           color="danger"

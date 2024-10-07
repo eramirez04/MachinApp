@@ -12,7 +12,6 @@ export const ExcelMantenimientos = () => {
         const fetchData = async () => {
             try {
                 const response = await axiosCliente.get('mantenimiento/excelconsultavariables');
-                console.log('Información recibida:', response.data);
                 setMantenimientosData(response.data);
             } catch (error) {
                 console.error('Error en excel:', error);
@@ -62,7 +61,7 @@ export const ExcelMantenimientos = () => {
 
         // Combinar celdas y añadir imágenes
         worksheet.mergeCells('A1:D1');
-        worksheet.mergeCells('I1:O1');
+        worksheet.mergeCells('I1:P1');
 
         worksheet.addImage(logoSenaNaranjaId, {
             tl: { col: 0, row: 0 },
@@ -92,6 +91,7 @@ export const ExcelMantenimientos = () => {
             'Placa SENA',
             'Código Mantenimiento',
             'Fecha Realización',
+            'Proximo mantenimiento',
             'Nombre',
             'Costo Final',
             'Descripción Mantenimiento',
@@ -134,7 +134,8 @@ export const ExcelMantenimientos = () => {
                 item.idMantenimiento,
                 item.fi_placa_sena,
                 item.codigo_mantenimiento,
-                `Fecha: ${new Date(item.fecha_realizacion).toLocaleDateString()}`,
+                `Fecha: ${new Date(item.man_fecha_realizacion).toLocaleDateString()}`,
+                `Fecha: ${new Date(item.mant_fecha_proxima).toLocaleDateString()}`,
                 item.nombre,
                 item.mant_costo_final,
                 item.descripcion_mantenimiento,

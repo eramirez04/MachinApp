@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { axiosCliente } from "../../../index.js";
 
@@ -93,7 +93,7 @@ export const MantenimientoGeneralPDF = () => {
     const TableHeader = () => (
         <View style={styles.tableRow} fixed>
             {[
-                'Placa SENA', 'Código Mantenimiento', 'Fecha Realización',
+                'Placa SENA', 'Código Mantenimiento', 'Fecha Realización', 'Proximo mantenimiento',
                 'Nombre', 'Costo Final', 'Descripción Mantenimiento', 'Tipo Mantenimiento',
                 'Sitio', 'Prioridad', 'Nombre Repuesto', 'Costo Total Repuestos'
             ].map((header, index) => (
@@ -115,7 +115,10 @@ export const MantenimientoGeneralPDF = () => {
                         <Text style={styles.tableCell}>{mantenimiento.codigo_mantenimiento}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>{new Date(mantenimiento.fecha_realizacion).toLocaleDateString()}</Text>
+                        <Text style={styles.tableCell}>{new Date(mantenimiento.man_fecha_realizacion).toLocaleDateString()}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>{new Date(mantenimiento.mant_fecha_proxima).toLocaleDateString()}</Text>
                     </View>
                     <View style={styles.tableCol}>
                         <Text style={styles.tableCell}>{mantenimiento.nombre}</Text>

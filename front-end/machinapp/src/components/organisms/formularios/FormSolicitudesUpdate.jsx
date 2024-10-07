@@ -1,358 +1,156 @@
-import {
-    InputforForm,
-    Icons,
-    useGlobalData,
-    SelectComponent,
-    useSolicitudFichasData,
-    TextAreaComponent,
-    CardStyle,
-    V,
-    axiosCliente,
-  } from "../../../index";
-  import { Image, TableCell, TableRow } from "@nextui-org/react";
-  import { useForm } from "react-hook-form";
-  import { useEffect, useState, useCallback } from "react";
-  import { useTranslation } from "react-i18next";
-  import { toast } from "react-toastify";
-  
-  import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    Button,
-    Divider,
-    Input,
-  } from "@nextui-org/react";
-  
-  export const FormSolicitudesUpdate = () => {
-    const { equiposData } = useGlobalData();
-    const { registrarSolicitudFichas } = useSolicitudFichasData();
-    const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
-    const [inputValues, setInputValues] = useState([]);
-    const { t } = useTranslation();
-  
-    // permite almacenar un array, para poder pasarsimport Alert from "../feedback/Alert";elo como propiedad a al componente select
-    const [equipo, setEquipo] = useState([]);
-  
-    // validaciones de los campos de los formularios
-    const {
-      register,
-      formState: { errors },
-      handleSubmit,
-      reset,
-    } = useForm();
-  
-    const prioridad = [
-      { name: "inmediata", descripcion: "" },
-      { name: "urgente", descripcion: "" },
-      { name: "normal", descripcion: "" },
-    ];
-  
-    // enviar datos al servidor
-    const handleSubmitData = async (data) => {
-      // en estar parte se extrea todos  los datos que tenga fi_placa_sena en el array de entrada
-      const placasSena = extraerPlacasSena(data);
-  
-      if (placasSena[0].fk_ficha === "") {
-        toast.error("seleccione un equipo por lo menos");
-        return;
-      }
-  
-      try {
-        const res = await axiosCliente.post("solicitud/", {
-          prioridad: data.prioridad,
-          descripcion: data.Solicitante,
-          costo_estimado: "10000",
-          obsevaciones: data.obervaciones,
-          temaLegal: data.parte_legal,
-          nombre_solicitante: data.Solicitante,
-          correo_solicitante: data.Correo_de_solicitante,
-        });
-  
-        let id = res.data.data_id;
-  
-        const placasSenaConSolicitud = placasSena.map((obj) => ({
-          ...obj,
-          fk_solicitud: id,
-        }));
-  
-        const resfichas = await registrarSolicitudFichas(placasSenaConSolicitud);
-  
-        if (res && resfichas) {
-          toast.success("se registro con exito la solicitud del mantenimiento");
-          reset();
-          setvaluesTable([{ id: 1 }]);
-        }
-      } catch (error) {
-        console.error(error.response.data);
-      }
-    };
-  
-    // tomar el valor seleccionado de un select en especifico, de la tabla dinamica
-    const handleSelectChange = (index, value) => {
-      const updatedValues = [...valuesTable];
-      updatedValues[index].placaSena = value;
-      setvaluesTable(updatedValues);
-    };
-  
-    //
-    const extraerPlacasSena = (data) => {
-      const placas = [];
-  
-      for (const key in data) {
-        // Verifica si la clave empieza con 'fi_placa_sena'
-        if (key.startsWith("fi_placa_sena")) {
-          // Añade el valor correspondiente al array de placas
-          placas.push({ fk_ficha: data[key] });
-        }
-      }
-  
-      return placas;
-    };
-  
-    // elimina una fila en especifico
-    const eliminarFila = (id) => {
-      setvaluesTable(valuesTable.filter((fila) => fila.id !== id));
-    };
-  
-    //añade una nueva fila a la tabla, para poder ingresar un nuevo equipo o maquinaria
-    const handleNewEquipos = () => {
-      if (valuesTable.length >= equiposData.length) {
-        toast.warning("llegaste al limite de equipos en el sistema");
-        return 0;
-      }
-  
-      const nuevaFila = {
-        id: valuesTable[valuesTable.length - 1].id + 1,
-      };
-      setvaluesTable([...valuesTable, nuevaFila]);
-      setInputValues((prevInputValues) => [...prevInputValues, ""]); // Añade un nuevo input vacío
-    };
-  
-    const handleInputChange = (index, value) => {
-      value = Number(value);
-      const newInputValues = [...inputValues];
-      newInputValues[index] = value;888
-      setInputValues(newInputValues);
-    };
-  
-    const handlesuma = useCallback(() => {
-      return inputValues.reduce((a, b) => a + b, 0);
-    }, [inputValues]);
-  
-    useEffect(() => {
-      const equiposInfor = equiposData.map((item) => ({
-        id: item.idFichas,
-        valor: item.fi_placa_sena,
-      }));
-      setEquipo(equiposInfor);
-      /*     console.log(valuesTable);
-      handlesuma(); */
-    }, [equiposData, handlesuma, valuesTable]);
-  
-    return (
-      <>
-        <div className="flex justify-center h-full w-full">
-          <form
-            className="flex flex-col gap-8 w-11/12 pt-12"
-            onSubmit={handleSubmit(handleSubmitData)}
-          >
-            <div className="flex flex-row h-20">
-              <figure className="flex-shrink-0 h-full w-1/3 border flex justify-center items-center">
-                <Image
-                  src={V.logoSena}
-                  className="h-20 w-full object-contain"
-                  alt="logo-sena"
-                />
-              </figure>
-              <div className="flex-grow text-center border px-4 text-base h-full w-1/3 flex items-center justify-center">
-                SOLICITUD DE SERVICIO DE MANTENIMIENTO
-              </div>
-              <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
-                <p className="overflow-hidden overflow-ellipsis text-center">
-                  Centro de Gestión y Desarrollo Sostenible SurColombiano
-                </p>
-              </div>
-            </div>
-            <div className="border flex flex-col gap-4 p-14">
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { Input, Button, Divider } from "@nextui-org/react";
+import { axiosCliente, SelectComponent,ButtonNext } from "../../../index"; // Asegúrate de importar SelectComponent
+import { multiFormData } from "../../../utils/formData.js";
 
-              <Divider />
-              <div className="flex flex-col gap-3">
-                Prioridad
-                <div className=" border-orange-400 inline-block w-24"></div>
-                <SelectComponent
-                  options={prioridad}
+const prioridades = [
+  { id: 'inmediata', valor: 'Inmediata' },
+  { id: 'urgente', valor: 'Urgente' },
+  { id: 'normal', valor: 'Normal' },
+];
+
+const estados = [
+  { id: 'pendiente', valor: 'Pendiente' },
+  { id: 'aprobado', valor: 'Aprobado' },
+  { id: 'finalizado', valor: 'Finalizado' },
+];
+
+export const FormSolicitudesUpdate = () => {
+  const { id } = useParams(); 
+  const [dataSolicitud, setDataSolicitud] = useState(null);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const solicitudesResponse = await axiosCliente.get(`/solicitud/listarPorId/${id}`);
+        const solicitudData = solicitudesResponse.data;
+
+        setDataSolicitud(solicitudData);
+
+        // Configurar los valores en el formulario
+        setValue("prioridad", solicitudData.soli_prioridad || ''); // Asegúrate de que sea una cadena vacía si es undefined
+        setValue("descripcion", solicitudData.soli_descripcion_problemas || '');
+        setValue("costo_estimado", solicitudData.soli_costo_estimado || '');
+        setValue("observaciones", solicitudData.soli_observaciones || '');
+        setValue("estado", solicitudData.soli_estado || '');
+        setValue("temaLegal", solicitudData.temas_legal || '');
+        setValue("nombre_solicitante", solicitudData.nombre_solicitante || '');
+        setValue("correo_solicitante", solicitudData.correo_solicitante || '');
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Error al cargar la solicitud");
+      }
+    };
+
+    fetchData();
+  }, [id, setValue]);
+
+  const handleSubmitData = async (data) => {
+    console.log("Enviando información de solicitud:", data);
+    
+    // Asegúrate de que todos los campos requeridos están presentes
+    const infoSolicitud = {
+        prioridad: data.prioridad || '',  // Usa un valor por defecto
+        descripcion: data.descripcion || '',
+        costo_estimado: data.costo_estimado || '',
+        observaciones: data.observaciones || '',
+        estado: data.estado || '',
+        temaLegal: data.temaLegal || '',
+        nombre_solicitante: data.nombre_solicitante || '',
+        correo_solicitante: data.correo_solicitante || ''
+    };
+    
+    try {
+        await multiFormData(`/solicitud/actualizar/${id}`, infoSolicitud, "PUT");
+        navigate("/solicitud");
+        toast.success("Solicitud actualizada con éxito");
+    } catch (error) {
+        console.error("Error al actualizar:", error.response.data);
+        toast.error("Error al actualizar la solicitud");
+    }
+};
+
+
+  return (
+    <div className="flex justify-center h-full w-full">
+      {dataSolicitud ? (
+        <form className="flex flex-col gap-8 w-11/12 pt-12" onSubmit={handleSubmit(handleSubmitData)}>
+          <div className="border flex flex-col gap-4 p-14">
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Prioridad</label>
+              <SelectComponent
+                  options={prioridades}
                   name="prioridad"
-                  placeholder="Prioridad"
-                  valueKey="name"
-                  textKey="name"
+                  placeholder="Seleccione una prioridad"
+                  valueKey="id"
+                  textKey="valor"
                   register={register}
                   label="Prioridad"
-                />
-              </div>
-              <Divider />
-              <div className="flex flex-col gap-3">
-                Descripcion de la solicitud
-                <div className="border-b-4 border-orange-400 inline-block w-24"></div>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={"descripcion"}
-                  label={t("descripcion")}
-                />
-              </div>
-              <Divider />
-              <div className="flex flex-col gap-3">
-                Parte Legal
-                <div className="border-b-4 border-orange-400 inline-block w-24"></div>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={"parte_legal"}
-                  label={"Temas legales"}
-                />
-              </div>
-              <Divider />
-              <div className="flex flex-col gap-4">
-                Obervaciones
-                <div className="border-b-4 border-orange-400 inline-block w-24"></div>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={"obervaciones"}
-                  label={"Observaciones"}
-                />
-              </div>
-              <Divider />
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-3">
-                  costos
-                  <div className="border-b-4 border-orange-400 inline-block w-24"></div>
-                  <span className="font-semibold">
-                    Precio Total de las reparaciones y de mantenimientos
-                  </span>
-                </div>
-                <div className="flex justify-center items-center h-full">
-                  <Input value={handlesuma()} />
-                </div>
-              </div>{" "}
-              <Divider />
-              <div className="flex justify-end">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  color={V.btnPrimary}
-                  onClick={() => handleNewEquipos()}
-                  radius={V.Bradius}
-                >
-                  <Icons icon={V.PlusIcon} /> Añadir
-                </Button>
-              </div>
-              <div>
-                <Table
-                  aria-label="Example table with client async pagination"
-                  className="bg-red"
-                >
-                  <TableHeader>
-                    <TableColumn
-                      key="name"
-                      className={`${V.bg_sena_verde} ${V.text_white}`}
-                    >
-                      Equipo
-                    </TableColumn>
-                    <TableColumn
-                      key="height"
-                      className={`${V.bg_sena_verde} ${V.text_white}`}
-                    >
-                      Placa sena
-                    </TableColumn>
-                    <TableColumn
-                      key="mass"
-                      className={`${V.bg_sena_verde} ${V.text_white}`}
-                    >
-                      Descripcion del daño
-                    </TableColumn>
-                    <TableColumn
-                      key="birth_year"
-                      className={`${V.bg_sena_verde} ${V.text_white}`}
-                    >
-                      Actividad
-                    </TableColumn>
-                    <TableColumn
-                      key={"accion"}
-                      className={`${V.bg_sena_verde} ${V.text_white}`}
-                    >
-                      Accion
-                    </TableColumn>
-                  </TableHeader>
-  
-                  <TableBody>
-                    {valuesTable.map((fila, index) => (
-                      <TableRow key={fila.id}>
-                        <TableCell>
-                          <SelectComponent
-                            options={equipo}
-                            name={`fi_placa_sena_${fila.id}`}
-                            placeholder="Equipo"
-                            valueKey="id"
-                            textKey="valor"
-                            register={register}
-                            onChange={(val) => handleSelectChange(fila.id, val)}
-                            label="Seleccione el Equipo"
-                          />
-                        </TableCell>
-                        <TableCell className="items-center justify-center">
-                          <Input
-                            type="number"
-                            id={`input$${index}`}
-                            size="sm"
-                            onChange={(e) =>
-                              handleInputChange(index, e.target.value)
-                            }
-                          />
-                        </TableCell>
-                        <TableCell className="flex items-center ">
-                          <TextAreaComponent
-                            errors={errors}
-                            register={register}
-                            name={`obervaciones_${fila.id}`}
-                          />
-                        </TableCell>
-                        <TableCell className="">
-                          <TextAreaComponent
-                            errors={errors}
-                            register={register}
-                            name={`actividad_${fila.id}`}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            color="danger"
-                            isIconOnly
-                            onClick={() => eliminarFila(fila.id)}
-                          >
-                            <Icons icon={V.TrashIcon} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                  rules={{ required: "Seleccione una prioridad" }} // Asegúrate de tener reglas de validación
+              />
             </div>
-  
-            <Button
-              type="submit"
-              size="lg"
-              radius={V.Bradius}
-              className={`${V.btnSecundary} mb-6`}
-            >
-              <span className="text-white font-bold">{t("Actualizar")}</span>
-            </Button>
-          </form>
-        </div>
-      </>
-    );
-  };
-  
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Descripción</label>
+              <Input {...register("descripcion", { required: "Describa el problema" })} />
+              {errors.descripcion && <span>{errors.descripcion.message}</span>}
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Observaciones</label>
+              <Input {...register("observaciones", { required: "Agregue observaciones" })} />
+              {errors.observaciones && <span>{errors.observaciones.message}</span>}
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Estado</label>
+              <SelectComponent
+                options={estados}
+                name="estado"
+                placeholder="Seleccione un estado"
+                valueKey="id"
+                textKey="valor"
+                register={register}
+                label="Estado"
+              />
+              {errors.estado && <span>{errors.estado.message}</span>}
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Tema Legal</label>
+              <Input {...register("temaLegal")} />
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Nombre Solicitante</label>
+              <Input {...register("nombre_solicitante")} />
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-3">
+              <label>Correo Solicitante</label>
+              <Input {...register("correo_solicitante")} />
+            </div>
+            <Divider />
+            <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
+          </div>
+        </form>
+      ) : (
+        <div>Cargando...</div>
+      )}
+    </div>
+  );
+};
+
+export default FormSolicitudesUpdate;
