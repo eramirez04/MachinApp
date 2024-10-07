@@ -113,7 +113,7 @@ export const registrarVariasVariables = async (req, res)=>{
             return res.status(400).json(error)
         }
 
-        let {variablesFicha, tipoFicha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
+        let {variablesFicha, tipoFicha, ficha} = req.body  //variables ficha debe ser un array con la informacion de las variables. 
 
 
 
@@ -124,7 +124,7 @@ export const registrarVariasVariables = async (req, res)=>{
                 sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, ficha) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}',  'equipo')`
             }
             else{
-                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo, ficha ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}', 'ambiente')`
+                sql = ` insert into variable (var_nombre, var_descripcion, var_clase, var_tipoDato, fk_tipo_equipo, ficha ) values('${variablesFicha[i].var_nombre}', '${variablesFicha[i].var_descripcion}', '${variablesFicha[i].var_clase}', '${variablesFicha[i].var_tipoDato}', '${tipoFicha}', '${ficha}')`
             }
             
             const [respuesta] = await conexion.query(sql)
