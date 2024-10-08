@@ -56,18 +56,16 @@ export const SolicitudList = ({ DataSolicitud }) => {
               ...fila,
               acciones: (
                 <>
-                <Link
+                <div className="flex items-center justify-evenly">
+                                  <Link
                   to={`/editar/solicitud/${fila.idSolicitud}`}
-                  className="flex justify-center items-center h-full w-full"
                 >
                   <Icons icon={V.PencilIcon} />
                 </Link>
-                            <div
-                              className="flex space-x-2"
-                            >
-                              <PDFvistaSolicitud item={fila}/>
-                            </div>
 
+                  <PDFvistaSolicitud item={fila}/>
+                  
+                </div>
                 </>
               ),
             }))}
