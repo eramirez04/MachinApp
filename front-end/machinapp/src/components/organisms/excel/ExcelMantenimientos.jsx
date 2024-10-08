@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { Button } from "@nextui-org/react";
 import { TableCellsIcon } from '@heroicons/react/24/outline';
 import { axiosCliente } from "../../../index.js";
+import { useTranslation } from "react-i18next";
 
 export const ExcelMantenimientos = () => {
     const [mantenimientosData, setMantenimientosData] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -128,7 +130,6 @@ export const ExcelMantenimientos = () => {
             column.width = 25;
         });
 
-        // Agregar datos
         mantenimientosData.forEach(item => {
             const row = worksheet.addRow([
                 item.idMantenimiento,
@@ -149,20 +150,17 @@ export const ExcelMantenimientos = () => {
                 item.par_costo_total
             ]);
 
-            // Ajustar alineación de las celdas de datos a la izquierda
             row.eachCell({ includeEmpty: true }, (cell) => {
                 cell.alignment = { horizontal: 'left', vertical: 'middle' };
             });
         });
 
-        // Ajustar altura de las filas de datos
         worksheet.eachRow({ includeEmpty: true }, (row) => {
             if (row.number !== 1 && row.number !== 2) {
                 row.height = 30;
             }
         });
 
-        // Generar el archivo Excel y guardarlo
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
         saveAs(blob, 'mantenimientos.xlsx');
@@ -175,7 +173,7 @@ export const ExcelMantenimientos = () => {
             startContent={<TableCellsIcon className="h-5 w-5" />}
             className="text-white text-xs md:text-sm"
         >
-            Descargar Excel
+            {t('descargar_Excel')}
         </Button>
     );
 };
