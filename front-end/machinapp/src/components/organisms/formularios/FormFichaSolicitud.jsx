@@ -62,14 +62,14 @@ export const FormFichaSolicitud = () => {
     try {
       const res = await axiosCliente.post("solicitud/", {
         prioridad: data.prioridad,
-        descripcion: data.Solicitante,
+        descripcion: data.descripcion,
         costo_estimado: "10000",
         obsevaciones: data.obervaciones,
         temaLegal: data.parte_legal,
         nombre_solicitante: data.Solicitante,
         correo_solicitante: data.Correo_de_solicitante,
       });
-
+      console.log(res);
       let id = res.data.data_id;
 
       const placasSenaConSolicitud = placasSena.map((obj) => ({
@@ -180,8 +180,7 @@ export const FormFichaSolicitud = () => {
           </div>
           <div className="border flex flex-col gap-4 p-14">
             <CardStyle
-              titleCard={"Informacion de solicitante"}
-              subtitle={"dfsdfdf"}
+              subtitle={t("informacion_de_solicitante")}
             >
               <div className="flex gap-5 max-md:inline justify-between">
                 <InputforForm
@@ -194,13 +193,13 @@ export const FormFichaSolicitud = () => {
                   errors={errors}
                   name={"Correo_de_solicitante"}
                   register={register}
-                  label={"Correo del Solicitante"}
+                  label={t("correo_del_solicitante")}
                 />
                 <InputforForm
                   errors={errors}
                   name={"Direccion"}
                   register={register}
-                  label={"Direccion"}
+                  label={t("direccion")}
                 />
               </div>
             </CardStyle>
@@ -219,8 +218,8 @@ export const FormFichaSolicitud = () => {
               />
             </div>
             <Divider />
-            <div className="flex flex-col gap-3">
-              Descripcion de la solicitud
+            <div className="flex flex-col gap-3" >
+              {t("Descripcion_de_la_solicitud")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -237,7 +236,7 @@ export const FormFichaSolicitud = () => {
                 errors={errors}
                 register={register}
                 name={"parte_legal"}
-                label={"Temas legales"}
+                label={t("Temas_legales")}
               />
             </div>
             <Divider />
@@ -248,7 +247,7 @@ export const FormFichaSolicitud = () => {
                 errors={errors}
                 register={register}
                 name={"obervaciones"}
-                label={"Observaciones"}
+                label={t("Observaciones")}
               />
             </div>
             <Divider />
@@ -321,7 +320,7 @@ export const FormFichaSolicitud = () => {
                           textKey="valor"
                           register={register}
                           onChange={(val) => handleSelectChange(fila.id, val)}
-                          label="Seleccione el Equipo"
+                          label={t("Seleccione el Equipo")}
                         />
                       </TableCell>
 
@@ -330,7 +329,7 @@ export const FormFichaSolicitud = () => {
                         errors={errors}
                         register={register}
                         name={`nombre_actividad_${fila.id}`}
-                        label="Nombre de la actividad"
+                        label={t("Nombre de la actividad")}
                       />
                     </TableCell>
                     <TableCell className="">

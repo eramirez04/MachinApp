@@ -152,10 +152,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/solicitud/');
+        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
-        setData(filteredData);
-        console.log('Datos obtenidos:', filteredData); // Para depuración
+        setData(filteredData || {});  // Aquí se asigna un objeto vacío si no hay datos
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
@@ -167,6 +166,7 @@ export const PDFSolicitud = ({idSolicitud}) => {
   if (!data) {
     return null;
   }
+
   const actividades = data.acti_nombres ? data.acti_nombres.split(', ') : [];
   const descripciones = data.acti_descripciones ? data.acti_descripciones.split(', ') : [];
   return(

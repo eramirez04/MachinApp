@@ -1,10 +1,15 @@
+import React from "react";
 import { Alert } from "../../../index";
 import { Textarea } from "@nextui-org/react";
-/* import { useTranslation } from "react-i18next"; */
-// eslint-disable-next-line react/prop-types
-export const TextAreaComponent = ({ register, errors, name, descripcion , label}) => {
-/*   const { t } = useTranslation(); */
 
+export const TextAreaComponent = ({
+  register,
+  errors,
+  name,
+  descripcion,
+  label,
+  ...props
+}) => {
   return (
     <>
       <Textarea
@@ -19,13 +24,14 @@ export const TextAreaComponent = ({ register, errors, name, descripcion , label}
             message: `${name} es obligatorio`,
           },
         })}
+        /*      ref={ref} */
+        {...props}
       />
-      {/* eslint-disable-next-line react/prop-types */}
       {errors[name]?.type === "required" && (
-        // eslint-disable-next-line react/prop-types
         <Alert descripcion={errors[name].message} />
       )}
     </>
   );
 };
-/*  */
+
+TextAreaComponent.displayName = "TextAreaComponent";

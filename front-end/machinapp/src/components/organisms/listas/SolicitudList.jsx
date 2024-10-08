@@ -3,18 +3,20 @@ import { PaginateTable } from "../table/PaginateTable";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
+import { useTranslation } from "react-i18next";
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
   const [filteredData, setFilteredData] = useState([]);
+  const { t } = useTranslation();
 
   const COLUMNAS = [
-    "id",
-    "Prioridad",
-    "Costo",
-    "Estado",
-    "Fecha de la solicitud",
-    "Acciones",
+    "ID",
+    t("Prioridad"),
+    t("Costo"),
+    t("Estado"),
+    t("Fecha de la solicitud"),
+    t("Acciones"),
   ];
 
 
