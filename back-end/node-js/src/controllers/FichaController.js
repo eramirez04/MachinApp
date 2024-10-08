@@ -708,6 +708,7 @@ export const listarFichaUnica=async (req, res)=>{
 
 
 /* este controlador debe ir en el de mantenimientos */
+
 export const  listarMantenimientosMaquina = async (req, res)=>{
 
     try{
@@ -724,14 +725,15 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         mant_costo_final,
         mant_ficha_soporte,
         tipo_mantenimiento 
-        FROM fichas_maquinas_equipos
-        INNER JOIN solicitud_has_fichas ON idFichas = fk_fichas
-        INNER JOIN solicitud_mantenimiento ON fk_solicitud = idSolicitud
-        INNER JOIN mantenimiento ON idSolicitud = fk_solicitud_mantenimiento
-        INNER JOIN tipo_mantenimiento ON fk_tipo_mantenimiento = idTipo_mantenimiento
+        FROM tipo_mantenimiento
+        INNER JOIN mantenimiento ON idTipo_mantenimiento = fk_tipo_mantenimiento
+        INNER JOIN solicitud_mantenimiento ON fk_solicitud_mantenimiento = idSolicitud
+        INNER JOIN solicitud_has_fichas ON idSolicitud = fk_solicitud
+        INNER JOIN fichas_maquinas_equipos ON fk_fichas = idFichas
         WHERE idFichas = ${idFicha}
+        GROUP BY idMantenimiento
         `
-
+        
         const[mantenimientos] = await conexion.query(sqlMantenimientos)
 
         if (mantenimientos.length > 0){

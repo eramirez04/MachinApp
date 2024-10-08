@@ -187,5 +187,10 @@
   "successMessage": "Successfully registered",
   "unknownError": "Unknown error",
   "contacto": "Contact",
-  "Fecha_realizacion": "Fecha de Realización"
+  "Fecha_realizacion": "Date of Realization",
+  "total_mantenimientos": "Total maintenance",
+  "descargar_Excel": "Download Excel",
+  "editar": "edit",
+  "Ver_pdf": "See PDF",
+  "Tecnico_encargado": "Technician in charge"
 }

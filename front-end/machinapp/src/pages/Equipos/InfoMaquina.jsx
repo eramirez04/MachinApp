@@ -41,13 +41,9 @@ export const InfoMaquina = () => {
 
     const { t } = useTranslation()
 
-
   const [maquina, setInfoMaquina ] = useState([])
-
   const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
-
   const {idMaquina} = useParams()
-
   const [mantenimientosFil, setMantenimientosFil] = useState([]);
 
 
@@ -57,9 +53,7 @@ export const InfoMaquina = () => {
             setInfoMaquina(response.data)
 
             const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
-
             setMantenimientosMaquina(mantenimientos.data)
-            console.log(mantenimientos.data)
 
         }catch(error){
             console.error('Error listando info de maquinas', error)
@@ -261,7 +255,7 @@ export const InfoMaquina = () => {
               mant_ficha_soporte: (
                 <>
                 <Button 
-                    color="primary" 
+                    color="default" 
                     startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
                     className="text-white"
                 >

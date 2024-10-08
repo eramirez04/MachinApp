@@ -133,7 +133,8 @@ export const FormTipoFichaTecnica = () => {
 
       let contenidoVar = {
         variablesFicha:variablesFicha,
-        tipoFicha:idTipoFicha
+        tipoFicha:idTipoFicha,
+        ficha: data.tipo_ficha
       }
 
       const responseVar = await axiosCliente.post("variable/registrarVars/", contenidoVar)

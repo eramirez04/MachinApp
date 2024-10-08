@@ -9,12 +9,7 @@ export const BuscarUsuario = () => {
   const { t } = useTranslation();
 
   const newd = {
-    [t("nombre")]: user.us_nombre,
-    [t("apellidos")]: user.us_apellidos,
-    [t("correo")]: user.us_correo,
-    [t("numero_documento")]: user.us_numero_documento,
-    [t("especialidad")]: user.us_especialidad,
-    [t("empresa")]: user.us_empresa,
+ 
   };
 
   const iconArray = {
