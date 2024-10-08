@@ -152,10 +152,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/solicitud/');
+        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
-        setData(filteredData);
-        console.log('Datos obtenidos:', filteredData); // Para depuración
+        setData(filteredData || {});
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
@@ -167,8 +166,38 @@ export const PDFSolicitud = ({idSolicitud}) => {
   if (!data) {
     return null;
   }
+
   const actividades = data.acti_nombres ? data.acti_nombres.split(', ') : [];
   const descripciones = data.acti_descripciones ? data.acti_descripciones.split(', ') : [];
+
+/*   const TableHeader = () => (
+    <View style={styles.tableRow} fixed>
+        {[
+            'Equipo', 'Nombre de la Actividad', 'Descripción de la actividad'
+        ].map((header, index) => (
+            <View key={index} style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{header}</Text>
+            </View>
+        ))}
+    </View>
+); */
+/* const TableContent = ({ data }) => (
+  <>
+      {data.map((actividad, index) => (
+          <View key={index} style={styles.tableRow} wrap={false}>
+              <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{data.fi_placa_sena}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{actividad}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{descripciones[index] || ''}</Text>
+              </View>
+          </View>
+      ))}
+  </>
+); */
   return(
 <Document>
       <Page size="A4" style={styles.page}>
@@ -231,7 +260,11 @@ export const PDFSolicitud = ({idSolicitud}) => {
             <Text>{data.soli_costo_estimado || ''}</Text>
           </View>
         </View>
-
+{/*         <View style={styles.table}>
+                    <TableHeader />
+                    <TableContent data={data} />
+        </View>
+ */}
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <View style={styles.tableCol}>

@@ -2,15 +2,17 @@ import { useContext, useEffect, useState } from 'react';
 import { Button } from "@nextui-org/react";
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import { GenerarPdf } from "../../../index.js";
+import { GenerarPdf } from "./PDFMantenimiento.jsx"; 
 import { ModalComponte } from "../../molecules/index.js";
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../contexts/AuthContext.jsx'; 
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import { useTranslation } from "react-i18next";
 
 export const VistaPDF = ({ item }) => {
   const navigate = useNavigate();
   const { rol } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (item && item.idMantenimiento) {
@@ -24,7 +26,7 @@ export const VistaPDF = ({ item }) => {
     }
   };
 
-  const isAdmin = rol === "Administrador";
+    const isAdmin = rol === "Administrador";
 
   if (isLoading) {
     return <p>Cargando datos del mantenimiento...</p>;
@@ -44,21 +46,22 @@ export const VistaPDF = ({ item }) => {
             className="text-white"
             onClick={handleEdit}
           >
-            Editar
+            {t('editar')}
           </Button>
         )}
         <PDFDownloadLink
           document={<GenerarPdf idMantenimiento={item.idMantenimiento} />}
           fileName={`mantenimiento_${item.idMantenimiento}.pdf`}
+          style={{ textDecoration: 'none' }}
         >
-          {({ loading, error }) => (
+          {({ loading }) => (
             <Button 
               color="success" 
               startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
               className="text-white"
               disabled={loading}
             >
-              {loading ? 'Generando PDF...' : 'Descargar PDF'}
+              {loading ? t('cargando') : t('descargar_pdf')}
             </Button>
           )}
         </PDFDownloadLink>
@@ -73,7 +76,7 @@ export const VistaPDF = ({ item }) => {
 
   return (
     <ModalComponte
-      buttonModal="Ver PDF"
+      buttonModal={t('Ver_pdf')}
       tittleModal={`Vista previa del PDF - ${item.codigo_mantenimiento}`}
       componente={componenteModal}
       size="5xl"

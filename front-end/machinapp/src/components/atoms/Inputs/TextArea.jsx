@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import { Alert } from "../../../index";
 import { Textarea } from "@nextui-org/react";
 
-export const TextAreaComponent = React.forwardRef(({ 
-  register, 
-  errors, 
-  name, 
-  descripcion, 
+export const TextAreaComponent = ({
+  register,
+  errors,
+  name,
+  descripcion,
   label,
-  ...props 
-}, ref) => {
+  ...props
+}) => {
   return (
     <>
       <Textarea
@@ -24,7 +24,7 @@ export const TextAreaComponent = React.forwardRef(({
             message: `${name} es obligatorio`,
           },
         })}
-        ref={ref}
+        /*      ref={ref} */
         {...props}
       />
       {errors[name]?.type === "required" && (
@@ -32,6 +32,6 @@ export const TextAreaComponent = React.forwardRef(({
       )}
     </>
   );
-});
+};
 
-TextAreaComponent.displayName = 'TextAreaComponent';
+TextAreaComponent.displayName = "TextAreaComponent";

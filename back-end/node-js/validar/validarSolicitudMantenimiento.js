@@ -16,7 +16,6 @@ const requestSolicitudMantenimiento = zod.object({
   obsevaciones: zod.string({ required_error: "Campo obligatorio" }),
 });
 
-
 export const validarSolicitud_Mantenimiento = (data) => {
   return requestSolicitudMantenimiento.safeParse(data);
 };

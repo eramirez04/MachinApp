@@ -1,20 +1,23 @@
 import { PaginateTable } from "../table/PaginateTable";
-
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
+import { useTranslation } from "react-i18next";
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
   const [filteredData, setFilteredData] = useState([]);
+  const { rol } = useContext(AuthContext);
+  const { t } = useTranslation();
 
   const COLUMNAS = [
-    "id",
-    "Prioridad",
-    "Costo",
-    "Estado",
-    "Fecha de la solicitud",
-    "Acciones",
+    "ID",
+    t("Prioridad"),
+    t("Costo"),
+    t("Estado"),
+    t("Fecha de la solicitud"),
+    t("Acciones"),
   ];
 
 
@@ -44,7 +47,7 @@ export const SolicitudList = ({ DataSolicitud }) => {
     );
     setFilteredData(filtered);
   };
-
+  const isAdmin = rol === "Administrador";
   return (
     <>
       <div className="min-h-screen p-6 flex flex-col gap-8 ">
@@ -57,11 +60,14 @@ export const SolicitudList = ({ DataSolicitud }) => {
               acciones: (
                 <>
                 <div className="flex items-center justify-evenly">
-                                  <Link
-                  to={`/editar/solicitud/${fila.idSolicitud}`}
-                >
-                  <Icons icon={V.PencilIcon} />
-                </Link>
+                { isAdmin&&(
+                    <Link
+                    to={`/editar/solicitud/${fila.idSolicitud}`}
+                  >
+                    <Icons icon={V.PencilIcon} />
+                  </Link>
+                )}
+
 
                   <PDFvistaSolicitud item={fila}/>
                   
