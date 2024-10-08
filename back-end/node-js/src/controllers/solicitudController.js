@@ -51,7 +51,7 @@ export const registarSolicitud = async (req, res) => {
   }
 };
 
-/* export const obtenerSolicitudes = async (req, res) => {
+export const obtenerSolicitudes = async (req, res) => {
   try {
     const consultaSQL =
       "select * from solicitud_mantenimiento where soli_estado = 'pendiente'";
@@ -62,7 +62,7 @@ export const registarSolicitud = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ Mensaje: "Error en el servidor", error });
   }
-}; */
+};
 /* export const obtenerSolicitudes = async (req, res) => {
   try {
     const consultaSQL = `
@@ -94,7 +94,7 @@ export const registarSolicitud = async (req, res) => {
   }
 }; */
 
-export const obtenerSolicitudes = async (req, res) => {
+export const obtenerSolicitudesPDF = async (req, res) => {
   try {
     const consultaSQL = `
       SELECT DISTINCT
@@ -103,9 +103,7 @@ export const obtenerSolicitudes = async (req, res) => {
         sm.soli_descripcion_problemas,
         sm.soli_costo_estimado,
         sm.soli_observaciones,
-        sm.soli_estado,
         sm.temas_legal,
-        sm.fecha_solicitud,
         sm.nombre_solicitante,
         sm.correo_solicitante,
         fme.fi_placa_sena,
@@ -117,8 +115,8 @@ export const obtenerSolicitudes = async (req, res) => {
       LEFT JOIN actividades a ON sm.idSolicitud = a.acti_fk_solicitud
       WHERE sm.soli_estado = 'pendiente'
       GROUP BY sm.idSolicitud, sm.soli_prioridad, sm.soli_descripcion_problemas, 
-               sm.soli_costo_estimado, sm.soli_observaciones, sm.soli_estado, 
-               sm.temas_legal, sm.fecha_solicitud, sm.nombre_solicitante, 
+               sm.soli_costo_estimado, sm.soli_observaciones,
+               sm.temas_legal, sm.nombre_solicitante, 
                sm.correo_solicitante, fme.fi_placa_sena
     `;
 
