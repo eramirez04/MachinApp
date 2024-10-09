@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent } from "../../../index.js";
+import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent, useGlobalData} from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
 //import { useTranslation } from "react-i18next";
 
@@ -12,6 +12,9 @@ import { multiFormData } from "../../../utils/formData.js"
 
 
 export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
+
+  const { refreshEquipos } = useGlobalData()
+
   const idFicha = idMaquina
   //const { t } = useTranslation()
   const navigate = useNavigate()
@@ -79,6 +82,9 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
       //actualizamos la informacion de los detalles. 
       /* const actDetalles = */ await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+
+      await refreshEquipos()
+
       navigate(`/infoMaquina/${idFicha}`)
     }
     catch(error){
@@ -349,43 +355,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   />
 
                 </div>
-                {/* <div className="w-full mt-[18px] flex flex-col gap-8 justify-start">
-                  <div>
-                    <SelectComponent
-                        options={ambientes}
-                        name="fi_fk_sitios"
-                        placeholder="Ambiente"
-                        valueKey="id"
-                        textKey="valor"
-                        register={register}
-                        label="Ambiente"
-                    />
-                  </div>
-                  <div>
-                    <SelectComponent 
-                      options={[
-                        {
-                          id: "operacion", 
-                          value: "operacion"
-                        },
-                        {
-                          id: "fuera_de_servicio", 
-                          value: "fuera de servicio"
-                        },
-                        {
-                          id: "en_reparacion", 
-                          value: "En reparacion"
-                        }
-                      ]}
-                      name = "fi_estado"
-                      placeholder="Seleccionar"
-                      valueKey="id"
-                      textKey="value"
-                      register={register}
-                      label="Estado maquina"
-                    />
-                  </div>
-                </div> */}
+                
 
 
               </div>
@@ -406,15 +376,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   </div>
                   )
                 }
-{/*                 <div className="border-l-8 border-l-green-600 pl-3">
-                  <p className="mb-2 mt-6">Actualizar imagen</p>
-                  <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
-                </div>
-
-                <div className="border-l-8 border-l-green-600 pl-3">
-                  <p className="mb-2 mt-6" >Actualizar ficha tecnica</p>
-                  <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
-                </div> */}
               
               </div>
 
@@ -625,10 +586,10 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
             }
 
             {/* Secciones */}
-            <div className="border-t-4  border-t-green-600">
+            
             {
-              
-              varSecciones.map((varSeccion)=>(
+              <div className="border-t-4  border-t-green-600">
+              {varSecciones.map((varSeccion)=>(
                 <div className="overflow-x-auto my-14 px-4" key={varSeccion.idDetalle}>
                   <table className="min-w-full  ">
                     <tbody>
@@ -652,8 +613,10 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   </table>
                 </div>
               ))
+              }
+              </div>
             }
-            </div>
+            
           </div>
           <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
         </div>

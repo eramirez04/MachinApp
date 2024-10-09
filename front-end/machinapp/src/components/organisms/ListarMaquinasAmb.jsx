@@ -10,6 +10,8 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
     const [maquinas, setMaquinas] = useState([])
     const [dataMaquinas, setDataMaquinas] = useState([])
 
+    const [noMaquinas, setNoMaquinas] = useState(false)
+    
     //para la paginacion de las cards
     const [currentPage, setCurrentPage] = useState(1)
     const total = maquinas.length
@@ -19,17 +21,17 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
   
 
    const setFueraServicio = () =>{
-    setMaquinas(dataMaquinas?.filter(item =>item.fi_estado == "fuera_de_servicio"))
+    setMaquinas(dataMaquinas?.filter(item =>item?.fi_estado == "fuera_de_servicio"))
     setCurrentPage(1)  //esto para que se me cargue siempre en la primera pagina
    }
 
    const setReparacion =()=>{
-    setMaquinas(dataMaquinas?.filter(item => item.fi_estado == "en_reparacion"))
+    setMaquinas(dataMaquinas?.filter(item => item?.fi_estado == "en_reparacion"))
     setCurrentPage(1)
    }
 
     const setOperacion =() =>{
-        setMaquinas(dataMaquinas?.filter(item => item.fi_estado == "operacion"))
+        setMaquinas(dataMaquinas?.filter(item => item?.fi_estado == "operacion"))
         setCurrentPage(1)
     }
 
@@ -42,13 +44,20 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
         const buscarMaquinas = async () =>{
             try{
                 const response = await axiosCliente.get(`ficha/listarPorAmbiente/${idAmbiente}`)
+
                 
-                setDataMaquinas(response.data)
-                setMaquinas(response.data) //para que cargue por defecto todos los equipos 
+                if (response.data.length > 0) {
+                    setDataMaquinas(response.data)
+                    setMaquinas(response.data) // Para que cargue por defecto todos los equipos
+                    setNoMaquinas(false) // Hay máquinas disponibles
+                } else {
+                    setNoMaquinas(true) // No hay máquinas
+                }
+
             }
             catch(error){
-                toast.error(error.response.data.mensaje);
-                return;
+                toast.error(error.response.data.mensaje)
+                return
             }
         }
         buscarMaquinas()
@@ -90,6 +99,11 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
 
         <div className = ' bg-white text-gray-600 flex flex-wrap flex-row justify-center mt-7 mb-20 gap-6'>
             {
+
+                noMaquinas ? (
+                    <p className="text-gray-500">No se encontraron máquinas en este ambiente.</p>
+                ) : (
+
                 maquinas.map((maquina) =>(
                     <div className="w-[250px]" key= {maquina.idFichas}>
                             <CardStyle 
@@ -109,6 +123,9 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     </div>
                 ))
                 .slice(firsIndex, lastIndex)
+
+
+                )
             }
         </div>
         <Paginacion
