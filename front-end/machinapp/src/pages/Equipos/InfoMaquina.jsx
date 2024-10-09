@@ -7,6 +7,8 @@ import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
 import { Button } from "@nextui-org/react";
 import {  DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { toast } from "react-toastify"
+
 
 import { 
     Layout, 
@@ -23,21 +25,11 @@ import {
 
 } from "../../index.js"
 import { useTranslation } from "react-i18next"
-//import { Link } from "react-router-dom"
-
-
-//para el pdf
-/* import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-import {  Button } from "@nextui-org/react"
-import axios from "axios" 
-
-import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
-*/
-
-
 
 
 export const InfoMaquina = () => {
+
+    const [noMantenimientos, setNoMantenimientos] = useState(false)
 
     const { t } = useTranslation()
 
@@ -52,16 +44,33 @@ export const InfoMaquina = () => {
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
             setInfoMaquina(response.data)
 
+        }catch(error){
+            toast.error(error.response.data.mensaje)
+        }
+    }
+
+    const buscarInfoMantenimientos = async()=>{
+        try{
             const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
-            setMantenimientosMaquina(mantenimientos.data)
+           
+
+            if (mantenimientos.data.lenght > 0){
+                setMantenimientosMaquina(mantenimientos.data)
+                setNoMantenimientos(false)
+
+            }
+            else{
+                setNoMantenimientos(true)
+            }
 
         }catch(error){
-            console.error('Error listando info de maquinas', error)
+            toast.error(error.response.data.mensaje)
         }
     }
 
     useEffect(()=>{
         buscarInfo()
+        buscarInfoMantenimientos()
 
     }, [idMaquina])
 

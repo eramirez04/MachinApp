@@ -188,5 +188,9 @@
   "successMessage": "Se registró con éxito",
   "unknownError": "Error desconocido",
   "contacto": "Contacto",
-  "Fecha_realizacion": "Date of Realization"
+  "Fecha_realizacion": "Fecha de Realización",
+  "total_mantenimientos": "Total de mantenimientos",
+  "descargar_Excel": "Descargar Excel",
+  "Ver_pdf": "Ver PDF",
+  "Tecnico_encargado": "Tecnico encargado"
 }
