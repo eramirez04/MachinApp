@@ -19,13 +19,11 @@ ActivitiesRoutes.get("/listar", listarActividades);
 
 ActivitiesRoutes.post(
   "/registrar",
-  
   validar_actividad,
   registrarActividades
 );
 ActivitiesRoutes.post(
   "/registrarvarias",
-
   validar_actividad,
   registrarVariasActividades
 );

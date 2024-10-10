@@ -13,11 +13,11 @@ export const SolicitudList = ({ DataSolicitud }) => {
 
   const COLUMNAS = [
     "ID",
-    t("Prioridad"),
-    t("Costo"),
-    t("Estado"),
-    t("Fecha de la solicitud"),
-    t("Acciones"),
+    t("priority"),
+    t("cost"),
+    t("estado"),
+    t("date_of_application"),
+    t("acciones"),
   ];
 
 
@@ -50,6 +50,7 @@ export const SolicitudList = ({ DataSolicitud }) => {
   const isAdmin = rol === "Administrador";
   return (
     <>
+
       <div className="min-h-screen p-6 flex flex-col gap-8 ">
         <SearchComponent onSearch={handleSearSolicitud} />
         <div className="w-full overflow-x-auto">

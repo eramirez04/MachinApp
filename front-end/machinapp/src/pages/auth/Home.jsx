@@ -43,7 +43,7 @@ export const Home = () => {
       link: "/solicitud",
     },
     {
-      title: "Total de Ambientes de formacion",
+      title: t("total_maintenance_requests"),
       total: ambientes.length,
       icon: V.UsersIcon,
       link: "/Ambientes",
@@ -92,7 +92,7 @@ export const Home = () => {
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <CardStyle
-                subtitle={"Resumen de Mantenimientos por Categoría"}
+                subtitle={t("maintenance_summary_by_category")}
                 titleCard={""}
                 footer={"Ver mas"}
               >
@@ -101,9 +101,9 @@ export const Home = () => {
             </div>
 
             <CardStyle
-              subtitle={"Resumen de Estado de Máquinas y Equipos"}
-              titleCard={
-                "Clasificación de máquinas y equipos según su estado operativo."
+              subtitle={t("machinery_and_equipment_status_summary")}
+              titleCard={t(
+                "Clasificación de máquinas y equipos según su estado operativo.")
               }
             >
               <ChartMaquinas />
