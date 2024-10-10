@@ -1,12 +1,16 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
 
 // eslint-disable-next-line react/prop-types
 export const MantenimientoGrafico = ({ data }) => {
+  const { t } = useTranslation();
   const xAxisData = useMemo(
     () => [...new Set(data.map((item) => `${item.anio}-${item.mes}`))],
     [data]
   );
+
 
   /*  const seriesData = data.map((item) => item.tota_mantenimientos); */
 
@@ -34,7 +38,7 @@ export const MantenimientoGrafico = ({ data }) => {
   const option = {
     animationDuration: 2000,
     title: {
-      text: "Mantenimientos por Tipo",
+      text: t("maintenance_by_type"),
     },
     tooltip: {
       trigger: "axis",

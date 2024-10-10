@@ -9,7 +9,7 @@ export const  UpdateFormFichaSolicitud = () => {
   return (
     <>
       <Layout>
-        <Breadcrumb pageName={`Solicitud`} />
+        <Breadcrumb pageName={`solicitudes`} />
         <FormSolicitudesUpdate idSolicitud = {idSolicitud}/>
       </Layout>
     

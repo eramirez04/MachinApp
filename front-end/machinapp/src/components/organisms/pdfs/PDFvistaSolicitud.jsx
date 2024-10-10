@@ -4,9 +4,11 @@ import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { PDFSolicitud } from "../../../index.js";
 import { ModalComponte } from "../../molecules/index.js";
+import { useTranslation } from "react-i18next";
+
 
 export const PDFvistaSolicitud = ({ item }) => {
-
+  const { t } = useTranslation();
   const componenteModal = (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-end space-x-2">
@@ -37,7 +39,7 @@ export const PDFvistaSolicitud = ({ item }) => {
 
   return (
     <ModalComponte
-      buttonModal="Ver PDF"
+    buttonModal={t('Ver_pdf')}
       tittleModal={`Vista previa del PDF - ${item.idSolicitud}`}
       componente={componenteModal}
       size="5xl"

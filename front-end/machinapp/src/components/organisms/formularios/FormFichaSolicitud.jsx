@@ -170,30 +170,30 @@ export const FormFichaSolicitud = () => {
               />
             </figure>
             <div className="flex-grow text-center border px-4 text-base h-full w-1/3 flex items-center justify-center">
-              SOLICITUD DE SERVICIO DE MANTENIMIENTO
+            {t("maintenance_service_request")}
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de Gestión y Desarrollo Sostenible SurColombiano
+                {t("management_center")}
               </p>
             </div>
           </div>
           <div className="border flex flex-col gap-4 p-14">
             <CardStyle
-              subtitle={t("informacion_de_solicitante")}
+              subtitle={t("applicant_information")}
             >
               <div className="flex gap-5 max-md:inline justify-between">
                 <InputforForm
                   errors={errors}
                   name={"Solicitante"}
                   register={register}
-                  label={"Nombre del Solicitante"}
+                  label={t("name_of_applicant")}
                 />
                 <InputforForm
                   errors={errors}
                   name={"Correo_de_solicitante"}
                   register={register}
-                  label={t("correo_del_solicitante")}
+                  label={t("applicants_email")}
                 />
                 <InputforForm
                   errors={errors}
@@ -205,21 +205,21 @@ export const FormFichaSolicitud = () => {
             </CardStyle>
             <Divider />
             <div className="flex flex-col gap-3">
-              Prioridad
+              {t("priority")}
               <div className=" border-orange-400 inline-block w-24"></div>
               <SelectComponent
                 options={prioridad}
                 name="prioridad"
-                placeholder="Prioridad"
+                placeholder={t("priority")}
                 valueKey="name"
                 textKey="name"
                 register={register}
-                label="Prioridad"
+                label={t("priority")}
               />
             </div>
             <Divider />
             <div className="flex flex-col gap-3" >
-              {t("Descripcion_de_la_solicitud")}
+              {t("Description_of_the_Request")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -230,33 +230,33 @@ export const FormFichaSolicitud = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-3">
-              Parte Legal
+              {t("Legal_Part")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
                 register={register}
                 name={"parte_legal"}
-                label={t("Temas_legales")}
+                label={t("Legal_Part")}
               />
             </div>
             <Divider />
             <div className="flex flex-col gap-4">
-              Obervaciones
+              {t("Observations")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
                 register={register}
                 name={"obervaciones"}
-                label={t("Observaciones")}
+                label={t("Observations")}
               />
             </div>
             <Divider />
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-3">
-                costos
+                {t("cost")}
                 <div className="border-b-4 border-orange-400 inline-block w-24"></div>
                 <span className="font-semibold">
-                  Precio Total de las reparaciones y de mantenimientos
+                  {t("Total_price_of_repairs_and_maintenance")}
                 </span>
               </div>
               <div className="flex justify-center items-center h-full">
@@ -273,7 +273,7 @@ export const FormFichaSolicitud = () => {
                 onClick={() => handleNewEquipos()}
                 radius={V.Bradius}
               >
-                <Icons icon={V.PlusIcon} /> Añadir
+                <Icons icon={V.PlusIcon} /> {t("Add")}
               </Button>
             </div>
             <div>
@@ -286,25 +286,25 @@ export const FormFichaSolicitud = () => {
                     key="name"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Equipo
+                    {t("Equipment")}
                   </TableColumn>
                   <TableColumn
                     key="mass"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Nombre de la actividad
+                    {t("Name_of_the_activity")}
                   </TableColumn>
                   <TableColumn
                     key="birth_year"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Descripcion de la actividad
+                    {t("Description_of_the_activity")}
                   </TableColumn>
                   <TableColumn
                     key={"accion"}
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Accion
+                    {t("acciones")}
                   </TableColumn>
                 </TableHeader>
 
@@ -315,12 +315,12 @@ export const FormFichaSolicitud = () => {
                         <SelectComponent
                           options={equipo}
                           name={`fi_placa_sena_${fila.id}`}
-                          placeholder="Equipo"
+                          placeholder={t("Equipment")}
                           valueKey="id"
                           textKey="valor"
                           register={register}
                           onChange={(val) => handleSelectChange(fila.id, val)}
-                          label={t("Seleccione el Equipo")}
+                          label={t("Select_the_Equipment")}
                         />
                       </TableCell>
 
@@ -329,7 +329,7 @@ export const FormFichaSolicitud = () => {
                         errors={errors}
                         register={register}
                         name={`nombre_actividad_${fila.id}`}
-                        label={t("Nombre de la actividad")}
+                        label={t("Name_of_the_activity")}
                       />
                     </TableCell>
                     <TableCell className="">
@@ -337,7 +337,7 @@ export const FormFichaSolicitud = () => {
                         errors={errors}
                         register={register}
                         name={`actividad_${fila.id}`}
-                        label="Descripción de la actividad"
+                        label={t("Description_of_the_activity")}
                       />
                     </TableCell>
                       <TableCell>
