@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { multiFormData } from "../../../utils/formData.js";
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
 
+import { useTranslation } from "react-i18next";
+
 // componentes
 import {
   InputForm,
@@ -20,6 +22,8 @@ import {
 
 export const FormFichaTecnica = ({ tipo_ficha }) => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const { refreshEquipos, ambientes } = useGlobalData();
 
@@ -226,11 +230,11 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
         <div className="flex flex-row items-center justify-around mb-20 border-b-2 border-b-green-600 pb-10">
           <label className="flex flex-row items-center gap-4 ">
             {" "}
-            Seleccionar un tipo de ficha
+            {t('selecTipoFicha')}
             <SelectComponent
               options={tipoEquipo}
               name="tipo_equipo"
-              placeholder="Seleccione una opcion"
+              placeholder={t('seleccioneOpcion')}
               valueKey="id"
               textKey="valor"
               register={register}
@@ -238,7 +242,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
           </label>
 
           <Button onClick={tipoFicha} className="bg-green-600 text-white">
-            Siguiente <MdNavigateNext />
+            {t('siguiente')} <MdNavigateNext />
           </Button>
         </div>
         {mostrarFormulario && (
@@ -253,7 +257,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                 />
               </figure>
               <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-                Ficha Tecnica
+                {t('fichaTecnica')}
               </div>
               <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
                 <p className="overflow-hidden overflow-ellipsis text-center">
@@ -265,7 +269,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
             {/* Contenido */}
             <div>
               <h3 className="w-full  text-2xl pl-7 my-5 bg-green-600 text-white py-1 ">
-                Informacion Basica
+                {t('infoBasica')}
               </h3>
               <div className=" flex flex-col sm:flex-row mt-5 w-full gap-4 ">
                 {" "}
@@ -279,7 +283,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={"text"}
                           name={"placaSena"}
-                          text={"Placa SENA "}
+                          text={t('placaSena')}
                         />
 
                         {/* serial */}
@@ -288,7 +292,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar2.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar2.idVariable}`}
-                          text={`${varObligatorias.idVar2.var_nombre}`}
+                          text={t('serial')}
                         />
 
                         {/* precio */}
@@ -297,7 +301,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar9.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar9.idVariable}`}
-                          text={`${varObligatorias.idVar9.var_nombre}`}
+                          text={t('precio')}
                         />
 
                         {/* Marca */}
@@ -306,7 +310,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar7.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar7.idVariable}`}
-                          text={`${varObligatorias.idVar7.var_nombre}`}
+                          text={t('marca')}
                         />
 
                         {/* Modelo */}
@@ -315,7 +319,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar8.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar8.idVariable}`}
-                          text={`${varObligatorias.idVar8.var_nombre}`}
+                          text={t('modelo')}
                         />
 
                         {/* fecha adquicicion */}
@@ -324,7 +328,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar1.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar1.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                          text={`${varObligatorias.idVar1.var_nombre}`}
+                          text={t('fechaAdquisi')}
                         />
                       </>
                     )}
@@ -333,11 +337,11 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                     <SelectComponent
                       options={ambientesFormacion}
                       name="ambiente"
-                      placeholder="Ambiente"
+                      placeholder={t('ambiente')}
                       valueKey="id"
                       textKey="valor"
                       register={register}
-                      label="Ambiente"
+                      label={t('ambiente')}
                     />
                   </div>
                 </div>
@@ -356,7 +360,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                   </div>
 
                   <div className=" mt-9 ">
-                    <p className="text-gray-700 mb-1">Subir imagen (opcional)</p>
+                    <p className="text-gray-700 mb-1">{t('subirImg')}</p>
                     <input
                       type="file"
                       onChange={handleFileUpload}
@@ -369,13 +373,13 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
 
               {isEquipo && (
                 <div className="w-full mt-12">
-                  <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion del equipo</label>
+                  <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('descripcionEquipo')}</label>
                   <div className="mt-3">
                     <TextAreaComponent
                       errors={errors}
                       register={register}
                       name={`variables.${varObligatorias.idVar6.idVariable}`}
-                      descripcion={"Descripcion general del equipo"}
+                      descripcion={t('descripcionEquipo')}
                     />
                   </div>
                 </div> 
@@ -393,7 +397,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                               register={register}
                               tipo={`${varObligatorias.idVar3.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                               name={`variables.${varObligatorias.idVar3.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                              text={`${varObligatorias.idVar3.var_nombre}`}
+                              text={t('fechaInicioGaran')}
                           />
                       </div>
                       <div className="w-full sm:w-1/2 p-2">
@@ -402,24 +406,24 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                               register={register}
                               tipo={`${varObligatorias.idVar4.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                               name={`variables.${varObligatorias.idVar4.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                              text={`${varObligatorias.idVar4.var_nombre}`}
+                              text={t('fechaFinGarantia')}
                             />
                       </div>
                     </div>
                     <div className="w-full p-2 ">
-                    <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion garantia</label>
+                    <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('fechaDescrGarantia')}</label>
                     <TextAreaComponent
                             errors={errors}
                             register={register}
                             name={`variables.${varObligatorias.idVar5.idVariable}`}
-                            descripcion={"Descripcion de la garantia"}
+                            descripcion={t('fechaDescrGarantia')}
                           />
                     </div>
                   </div>
 
                   <div className="flex items-center justify-center flex-row gap-4 p-4 border-b-1 border-t-1 border-b-green-600  border-t-green-600 rounded-lg  my-14">
                     <label className="text-gray-700 ">
-                      Subir ficha técnica de respaldo (opcional):
+                      {t('subirFicha')}
                     </label>
                     <input
                       type="file"
@@ -438,7 +442,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                 varEspecificas.length > 0 ?(                
                 
                 <div>
-                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">Caracteristicas Generales.</h3>
+                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">{t('carGenerales')}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
                     {varEspecificas.map((varEspec) => (
                       <div key={varEspec.idVariable}>
@@ -460,13 +464,13 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
 
               {varEspTecnicas.length > 0 ? (
               <div className="my-14">
-              <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >Especificaciones tecnicas</h3>
+              <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >{t('especTecnicas')}</h3>
               <div className="overflow-x-auto px-4">
                 <table className="min-w-full border-collapse">
                   <thead>
                     <tr>
-                      <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">Nombre</th>
-                      <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">Valor</th>
+                      <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">{t('nombre')}</th>
+                      <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">{t('valor')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -517,7 +521,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                               errors={errors}
                               register={register}
                               name={`variables.${varSeccion.idVariable}`}
-                              descripcion={`Descripcion ${varSeccion.var_nombre}`}
+                              descripcion={`${t('descripcion')} ${varSeccion.var_nombre}`}
                             />
                         </td>
                       </tr>
@@ -532,7 +536,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
 
             </div>
             <ButtonNext
-              text="Registrar ficha tecnica"
+              text={t('registFicha')}
               type="submit"
               className={"bg-green-600 text-white w-full mt-8"}
             />

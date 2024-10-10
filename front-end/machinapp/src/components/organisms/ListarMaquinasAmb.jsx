@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { CardStyle, Paginacion } from "../../index.js"
 import {axiosCliente} from "../../service/api/axios.js"
 import { toast } from "react-toastify"
+import { useTranslation } from "react-i18next"
 
 
 const ListarMaquinasAmb = ({idAmbiente}) => {
@@ -18,7 +19,9 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
 
     const lastIndex = currentPage * 9 
     const firsIndex = lastIndex - 9 
-  
+    
+    
+    const { t } = useTranslation()
 
    const setFueraServicio = () =>{
     setMaquinas(dataMaquinas?.filter(item =>item?.fi_estado == "fuera_de_servicio"))
@@ -72,7 +75,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     onClick={setTotalInfo} 
                     className=" bg-gray-800 text-white py-1 px-3 rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-200 ease-in-out text-sm w-auto"
                 >
-                    Todas las Máquinas
+                    {t('todasMaquinas')}
                 </button>
             </div>
             <div className="flex space-x-2 my-1">
@@ -80,19 +83,19 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     onClick={setOperacion} 
                     className="bg-green-400 text-white py-1 px-3 rounded-md shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200 ease-in-out text-sm w-auto"
                 >
-                    Operación
+                    {t('operacion')}
                 </button>
                 <button 
                     onClick={setFueraServicio} 
                     className="bg-red-400 text-white py-1 px-3 rounded-md shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-200 ease-in-out text-sm w-auto"
                 >
-                    Fuera de servicio
+                    {t('fueraServicio')}
                 </button>
                 <button 
                     onClick={setReparacion} 
                     className="bg-yellow-400 text-white py-1 px-3 rounded-md shadow-sm hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition duration-200 ease-in-out text-sm w-auto"
                 >
-                    En reparación
+                    {t('reparasion')}
                 </button>
             </div>
         </div>
@@ -108,15 +111,15 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     <div className="w-[250px]" key= {maquina.idFichas}>
                             <CardStyle 
                             subtitle={`${maquina.ti_fi_nombre }`}  
-                            titleCard={`Placa:${maquina.fi_placa_sena}`} 
+                            titleCard={`${t('placaSena')}:${maquina.fi_placa_sena}`} 
                             imagen={`imagenes/ficha/${maquina.fi_imagen}`}
                             link={`/infoMaquina/${maquina.idFichas}`}
-                            nameLink="ver mas" >
+                            nameLink={t('verMas')} >
 
                                 <ul>
-                                    <li><b>Serial:</b> {maquina.fi_serial}</li>
-                                    <li><b>Modelo:</b> { maquina.fi_modelo}</li>
-                                    <li><b>Estado:</b> {maquina.fi_estado} </li>
+                                    <li><b>{t('serial')}:</b> {maquina.fi_serial}</li>
+                                    <li><b>{t('modelo')}:</b> { maquina.fi_modelo}</li>
+                                    <li><b>{t('estado')}:</b> {maquina.fi_estado} </li>
                                 </ul>
 
                             </CardStyle>
