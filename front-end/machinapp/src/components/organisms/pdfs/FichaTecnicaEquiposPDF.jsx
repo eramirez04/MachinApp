@@ -158,13 +158,23 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
         color:'#292929',
         backgroundColor:'#f9f9f9'
       },
-      contenedorImagen:{
-        width:'100%',
-        padding:7,
-        paddingRight:25,
-        justifyContent:'center',
-        alignItems:'center',
-        maxHeight:'200'      
+      contenedorImagen:{  
+       display: 'flex',
+       alignItems: 'center',
+       justifyContent: 'center',
+       width: '100%',
+       height: '245px',
+       borderRadius: 6, // equivalente a rounded-md
+       backgroundColor: '#FFFFFF', 
+       paddingHorizontal:5,
+       border:1,
+       borderColor:'#dcdcdc'
+      },
+      imagen:{
+        height: '100%',
+        width: '100%',
+        objectFit: 'contain', // equivalente a object-contain
+        borderRadius: 12 
       },
       garantiaDes:{
         borderLeft: 1,
@@ -218,12 +228,12 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
         borderRadius: 4
       },
       textoTituloSeccion: {
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: 'bold',
           color: '#333',
       },
       textoDescripcion: {
-          fontSize: 14,
+          fontSize: 11,
           color: '#555',
           flex: 1, 
           textAlign: 'right',
@@ -309,7 +319,14 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
       } ,
       gapTable :{
         gap:2
-      }
+      },
+      paddignTopMa:{
+        paddingTop:30,
+      },
+
+
+      /* Para la descripcion del equipo y garantia */
+
 
     })
 
@@ -384,35 +401,30 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
                   </View>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  
-
                 </View>
 
-                <View style={styles.containerHijo}>
+                <View style={[styles.containerHijo , styles.paddignTopMa]}>
                   <View style={styles.contenedorImagen}>
                     {/* <Imagenes rutaImg={`imagenes/ficha/${infoMaquina.fi_imagen}`}/> */}
-                    <Image  src={`http://localhost:3000/imagenes/ficha/${infoMaquina.fi_imagen}`} />
+                    <Image style={styles.imagen}   src={`http://localhost:3000/imagenes/ficha/${infoMaquina.fi_imagen}`} />
                   </View> 
                 </View>
               </View>
 
+
+              {/* Descripcion de equipo */}
+              < View>
+
+              </View>
+
+
+              {/* Garantia */}
+              < View>
               
-              <View style={styles.contentedorVarios}>
+              </View>
+
+              
+{/*               <View style={styles.contentedorVarios}>
                 <View style={styles.contenedorDes}>
                   <Text style={styles.subTituloSecc}>{varObligatorias?.idVar6?.var_nombre}</Text>
                   <Text style={styles.respuestaInfo}>{varObligatorias?.idVar6?.det_valor}</Text>
@@ -442,7 +454,7 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
                     </View>
                   </View>
                 </View>
-              </View>
+              </View> */}
 
             </View>
 
