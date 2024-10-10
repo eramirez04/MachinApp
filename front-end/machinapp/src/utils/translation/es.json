@@ -74,6 +74,7 @@
   "agregarEquipo": "Agregar Maquina",
   "placaSena": "Placa SENA",
   "serial": "Serial",
+  "precio":"Precio",
   "marca": "Marca",
   "modelo": "Modelo",
   "ubicacion": "Ubicacion",
@@ -105,6 +106,45 @@
   "area": "Area",
   "ambiente": "Ambiente",
   "infoGarantia": "Informacion Garantia",
+  "todasMaquinas":"Todas las maquinas",
+  "operacion": "Operación",
+  "fueraServicio":"Fuera de servicio",
+  "reparasion":"En reparación",
+  "verMas":"Ver mas",
+  "equipoMa":"Equipo o maquinaria",
+  "ambienteFor":"Ambiente de Formacion", 
+  "registElemento":"Elige Elemento quiere registrar", 
+  "seleccioneOpcion":"Seleccione una opcion",
+  "siguiente":"Siguiente",
+  "registrarEquipos":"Registrar máquina",
+  "fichaTecnica":"Ficha tecnica",
+  "selecTipoFicha":"Seleccione el tipo de ficha técnica", 
+  "subirImg":"Subir imagen (opcional)", 
+  "subirFicha":"Subir ficha técnica de respaldo (opcional)",
+  "valor":"Valor", 
+  "registFicha":"Registrar ficha técnica",
+  "vistaPdf":"Vista previa del PDF`", 
+
+
+  "infoBasica":"Información básica",
+  "carGenerales":"Características generales",
+  "especTecnicas": "Especificaciones técnicas",
+
+
+  "nombreSolic":"Nombre solicitante",
+  "soporte":"Soporte", 
+  "mantEquipo":"Mantenimiento de máquinas", 
+  "inicioGarantia":"Inicio de la garantía",
+  "finGarantia":"Fin de la garantía",
+  "descripEquipo":"Descripción general del equipo",
+  "descripGarantia":"Descripción de la garantía",
+
+  "region":"Región",
+  "sedeFormacion":"Sede de formación",
+  "unidadProduct":"Unidad de producción",
+  "aula":"Aula",
+
+
 
   "mantenimiento_general": "Mantenimiento General",
   "buscar_por_codigo": "Buscar por código...",

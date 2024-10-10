@@ -58,6 +58,7 @@
   "agregarEquipo": "Add machine",
   "placaSena": "SENA plate",
   "serial": "Series",
+  "precio":"Price",
   "marca": "Brand",
   "modelo": "Model",
   "ubicacion": "Location",
@@ -89,6 +90,49 @@
   "area": "Area",
   "ambiente": "Environment",
   "infoGarantia": "Warranty information",
+  "todasMaquinas": "All machines",
+  "operacion": "operation",
+  "fueraServicio":"out of service",
+  "reparasion":"Under repair",
+  "verMas":"See more",
+  "equipoMa":"Equipment or machinery",
+  "ambienteFor":"Training environment", 
+  "registElemento":"Choose the element you want to register", 
+
+  "seleccioneOpcion":"Select the option", 
+  "siguiente":"Next",
+  "registrarEquipos":"Register machine",
+  "fichaTecnica":"Technical sheet", 
+  "selecTipoFicha":"Select the type of technical sheet",
+  "subirImg":"Upload image (optional)",
+  "subirFicha":"Upload backup technical sheet (optional)",
+  "valor":"Value",
+  "registFicha":"Register technical sheet",
+  "vistaPdf":"PDF Preview",
+  
+  "infoBasica":"Basic information",
+  "carGenerales":"General characteristics",
+  "especTecnicas":"Technical specifications",
+
+
+
+
+  "nombreSolic":"Name of the applicant",
+  "soporte": "support",
+  "mantEquipo":"Machine maintenance",
+  "inicioGarantia":"Start of warranty",
+  "finGarantia":"End of warranty", 
+  "descripEquipo":"Team Overview",
+  "descripGarantia":"Warranty Description",
+
+  "region":"Region",
+  "sedeFormacion":"Training site",
+  "unidadProduct":"Production unit",
+  "aula":"Classroom",
+
+
+
+
 
   "maintenance_service_request":"MAINTENANCE SERVICE REQUEST",
   "applicant_information":"Applicant Information",
