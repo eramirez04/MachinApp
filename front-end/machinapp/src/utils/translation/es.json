@@ -3,7 +3,11 @@
   "description_welcome": "Mantenimiento, Seguridad y Alerta",
   "total_users": "Total de usuarios",
   "total_equipos_sena": "Total de Equipos en el sistema",
-  "total_solicitudes_mantenimiento": "Total de solicitudes de mantenimiento",
+  "total_maintenance_requests": "Total de solicitudes de mantenimiento",
+  "maintenance_summary_by_category":"Resumen de Mantenimientos por Categoría",
+  "machinery_and_equipment_status_summary":"Resumen de Estado de Máquinas y Equipos",
+  "total_teams_in_the_system":"Equipos totales en el sistema",
+  "maintenance_by_type":"Mantenimientos por Tipo",
   "inicio": "Inicio",
   "sitios": "Sitios",
   "mantenimientos": "Mantenimientos",
@@ -46,6 +50,24 @@
   "registrar_rol": "Registrar Rol",
   "nombre_rol": "Nombre del Rol",
   "actualizar": "Actualizar",
+  "Select_the_Equipment":"Seleccione el Equipo",
+
+  "maintenance_service_request":"SOLICITUD DE SERVICIO DE MANTENIMIENTO",
+  "applicant_information":"Información de Solicitante",
+  "name_of_applicant":"Nombre del Solicitante",
+  "applicants_email":"Correo del Solicitante",
+  "Description_of_the_Request":"Descripcion de la Solicitud",
+  "Total_price_of_repairs_and_maintenance":"Precio Total de las reparaciones y de mantenimientos",
+  "Observations":"Observaciones",
+  "Legal_Part":"Parte Legal",
+  "Equipment":"Equipo",
+  "Name_of_the_activity":"Nombre de la actividad",
+  "Description_of_the_activity":"Descripcion de la actividad",
+  "Application":"Solicitud",
+  "priority": "Prioridad ",
+  "date_of_application":"Fecha de la solicitud",
+  "Add":"Añadir",
+
 
   "FichasTecnicas": "Fichas Tecnicas",
   "RegistrarTipoFicha": "Registrar tipo de ficha",
@@ -188,5 +210,9 @@
   "successMessage": "Se registró con éxito",
   "unknownError": "Error desconocido",
   "contacto": "Contacto",
-  "Fecha_realizacion": "Date of Realization"
+  "Fecha_realizacion": "Fecha de Realización",
+  "total_mantenimientos": "Total de mantenimientos",
+  "descargar_Excel": "Descargar Excel",
+  "Ver_pdf": "Ver PDF",
+  "Tecnico_encargado": "Tecnico encargado"
 }

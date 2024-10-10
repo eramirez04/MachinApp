@@ -9,7 +9,6 @@ const requestSolicitudMantenimiento = zod.object({
     },
     { message: "Seleccione un tipo de documento" }
   ),
-
   descripcion: zod.string({ required_error: "Describa el problema" }),
   costo_estimado: zod.string({
     required_error: "Agregue un costo para el (los) mantenimientos",

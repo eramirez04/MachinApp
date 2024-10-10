@@ -50,9 +50,20 @@ export const registrarFicha = async(req, res)=>{
 
         let fiTecnica = req.files.fiTecnica?  req.files.fiTecnica[0].filename:''
 
+/*         let placaSenaBD = placaSena==undefined? null: placaSena  // nos da error si se repite indefinido en la bd 
+
         let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) 
-        values( '${placaSena}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
-    
+        values( '${placaSenaBD}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
+     */
+
+        let sql
+         
+        if (placaSena  == "undefined"){   //es lo que me trae del front end, asi validamos y si es de ambiente la placa sena es null.
+            sql = `insert into fichas_maquinas_equipos ( fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo )  values('${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
+        }
+        else{
+            sql= `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) values( '${placaSena}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
+        }
 
         let [respuesta] = await conexion.query(sql)
 
@@ -93,7 +104,7 @@ export const registrarFicha = async(req, res)=>{
             return res.status(404).json({"mensaje":"Error al registrar ficha"})
         }
     }catch(error){
-        return res.status(500).json({"mensaje":"Error al registrar la ficha, verifique que la Placa SENA sea unica"})
+        return res.status(500).json({"mensaje":"Error al registrar la ficha"+ error})
     }
 }
 
