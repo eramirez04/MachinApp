@@ -44,6 +44,7 @@ export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate"
 export { ChartMaquinas } from "./graficos/MaquinasChart";
 export { MantenimientoGrafico } from "./graficos/MantenimientoGrafico";
 export { ExcelMantenimientos } from "./excel/ExcelMantenimientos.jsx";
+export {ExcelMaquinasMant} from "./excel/ExcelMaquinaMantenimientos.jsx";
 
 // sitios
 export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";

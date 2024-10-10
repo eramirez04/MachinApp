@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { Input, Button, Divider } from "@nextui-org/react";
+import { Input, Divider } from "@nextui-org/react";
 import { axiosCliente, SelectComponent,ButtonNext } from "../../../index"; // Asegúrate de importar SelectComponent
 import { multiFormData } from "../../../utils/formData.js";
 
@@ -10,12 +10,6 @@ const prioridades = [
   { id: 'inmediata', valor: 'Inmediata' },
   { id: 'urgente', valor: 'Urgente' },
   { id: 'normal', valor: 'Normal' },
-];
-
-const estados = [
-  { id: 'pendiente', valor: 'Pendiente' },
-  { id: 'aprobado', valor: 'Aprobado' },
-  { id: 'finalizado', valor: 'Finalizado' },
 ];
 
 export const FormSolicitudesUpdate = () => {
@@ -38,8 +32,8 @@ export const FormSolicitudesUpdate = () => {
 
         setDataSolicitud(solicitudData);
 
-        // Configurar los valores en el formulario
-        setValue("prioridad", solicitudData.soli_prioridad || ''); // Asegúrate de que sea una cadena vacía si es undefined
+
+        setValue("prioridad", solicitudData.soli_prioridad || '');
         setValue("descripcion", solicitudData.soli_descripcion_problemas || '');
         setValue("costo_estimado", solicitudData.soli_costo_estimado || '');
         setValue("observaciones", solicitudData.soli_observaciones || '');
@@ -58,14 +52,12 @@ export const FormSolicitudesUpdate = () => {
 
   const handleSubmitData = async (data) => {
     console.log("Enviando información de solicitud:", data);
-    
-    // Asegúrate de que todos los campos requeridos están presentes
+
     const infoSolicitud = {
-        prioridad: data.prioridad || '',  // Usa un valor por defecto
+        prioridad: data.prioridad || '',  
         descripcion: data.descripcion || '',
         costo_estimado: data.costo_estimado || '',
         observaciones: data.observaciones || '',
-        estado: data.estado || '',
         temaLegal: data.temaLegal || '',
         nombre_solicitante: data.nombre_solicitante || '',
         correo_solicitante: data.correo_solicitante || ''
@@ -113,21 +105,6 @@ export const FormSolicitudesUpdate = () => {
               <Input {...register("observaciones", { required: "Agregue observaciones" })} />
               {errors.observaciones && <span>{errors.observaciones.message}</span>}
             </div>
-            <Divider />
-            <div className="flex flex-col gap-3">
-              <label>Estado</label>
-              <SelectComponent
-                options={estados}
-                name="estado"
-                placeholder="Seleccione un estado"
-                valueKey="id"
-                textKey="valor"
-                register={register}
-                label="Estado"
-              />
-              {errors.estado && <span>{errors.estado.message}</span>}
-            </div>
-            <Divider />
             <div className="flex flex-col gap-3">
               <label>Tema Legal</label>
               <Input {...register("temaLegal")} />

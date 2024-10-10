@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#000000',
+    borderBottomColor: '#e0e0e0',
     paddingBottom: 10,
   },
   logo: {
@@ -23,35 +23,45 @@ const styles = StyleSheet.create({
     height: 50,
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
   },
   subTitle: {
-    fontSize: 8,
+    fontSize: 10,
     textAlign: 'right',
+    color: '#4a4a4a',
   },
-  section: {
-    marginBottom: 15,
+  applicantInfo: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    padding: 15,
+    marginBottom: 20,
   },
-  row: {
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6a1b9a',
+    marginBottom: 10,
+  },
+  infoRow: {
     flexDirection: 'row',
     marginBottom: 10,
   },
-  label: {
+  infoLabel: {
     fontSize: 10,
     fontWeight: 'bold',
     width: '30%',
   },
-  input: {
+  infoInput: {
     flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
     fontSize: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
     paddingBottom: 2,
   },
-  priority: {
+  prioritySection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10,
@@ -78,9 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 5,
-    borderBottomWidth: 2,
-    borderBottomColor: '#FFA500',
-    paddingBottom: 2,
+    color: '#4a4a4a',
   },
   textBox: {
     borderWidth: 1,
@@ -107,54 +115,105 @@ const styles = StyleSheet.create({
     padding: 2,
     fontSize: 10,
   },
+  sectionContainer: {
+    marginBottom: 15,
+  },
+
+  sectionUnderline: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#FFA500',
+    width: '100%',
+    marginBottom: 10,
+  },
+  inputBox: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    padding: 10,
+    minHeight: 60,
+  },
+  inputText: {
+    fontSize: 10,
+    color: '#4a4a4a',
+  },
   table: {
-    display: 'table',
+    display: 'flex',
     width: 'auto',
-    borderStyle: 'solid',
+    borderColor: '#4CAF50',
     borderWidth: 1,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
     marginTop: 10,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#4CAF50',
+    alignItems: 'center',
+    height: 30,
+    textAlign: 'center',
+    fontStyle: 'bold',
+    color: 'white',
   },
   tableRow: {
     flexDirection: 'row',
-    backgroundColor: '#4CAF50',
-  },
-  tableCol: {
-    width: '33.33%',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
+    alignItems: 'center',
+    height: 30,
+    fontStyle: 'normal',
+    color: '#000',
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   tableCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 8,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    padding: 5,
+    borderRightColor: '#e0e0e0',
+    borderRightWidth: 1,
+  },
+  tableCellHeader: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 12,
+    padding: 5,
     color: 'white',
-    padding: 5,
+    borderRightColor: 'white',
+    borderRightWidth: 1,
   },
-  tableDataRow: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+  lastCell: {
+    borderRightWidth: 0,
   },
-  tableDataCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 8,
-    padding: 5,
+  oddRow: {
+    backgroundColor: '#f2f2f2',
+  },
+  evenRow: {
+    backgroundColor: '#ffffff',
   },
 });
 
+const TableHeader = () => (
+  <View style={styles.tableHeader} fixed>
+    <Text style={styles.tableCellHeader}>Equipo</Text>
+    <Text style={styles.tableCellHeader}>Descripción de la Actividad</Text>
+    <Text style={[styles.tableCellHeader, styles.lastCell]}>Nombre de la actividad</Text>
+  </View>
+);
+
+const TableRow = ({ item, index }) => (
+  <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]} wrap={false}>
+    <Text style={styles.tableCell}>{item.equipo}</Text>
+    <Text style={styles.tableCell}>{item.descripcion}</Text>
+    <Text style={[styles.tableCell, styles.lastCell]}>{item.actividad}</Text>
+  </View>
+);
+
+
 export const PDFSolicitud = ({idSolicitud}) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
-        setData(filteredData || {});  // Aquí se asigna un objeto vacío si no hay datos
+        setData(filteredData || {});
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
@@ -169,34 +228,50 @@ export const PDFSolicitud = ({idSolicitud}) => {
 
   const actividades = data.acti_nombres ? data.acti_nombres.split(', ') : [];
   const descripciones = data.acti_descripciones ? data.acti_descripciones.split(', ') : [];
+  const tableData = actividades.map((actividad, index) => ({
+    equipo: data.fi_placa_sena || '',
+    actividad,
+    descripcion: descripciones[index] || '',
+  }));
+  const renderSection = (title, content) => (
+    <View style={styles.sectionContainer}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.sectionUnderline} />
+      <View style={styles.inputBox}>
+        <Text style={styles.inputText}>{content}</Text>
+      </View>
+    </View>
+  );
+
   return(
 <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
+      <View style={styles.header}>
           <Image style={styles.logo} src="/logoSenaNaranja.png" />
-          <Text style={styles.title}>SOLICITUD DE SERVICIO DE MANTENIMIENTO</Text>
-          <Text style={styles.subTitle}>Centro de Gestión y{'\n'}Desarrollo Sostenible{'\n'}Surcolombiano</Text>
+          <Text style={styles.title}>MAINTENANCE SERVICE REQUEST</Text>
+          <Text style={styles.subTitle}>South Colombian Management and{'\n'}Sustainable Development Center</Text>
         </View>
 
-        <View style={styles.section}>
-          <View style={styles.row}>
-            <Text style={styles.label}>Nombre del Solicitante</Text>
-            <Text style={styles.input}>{data.nombre_solicitante}</Text>
+        <View style={styles.applicantInfo}>
+          <Text style={styles.infoTitle}>APPLICANT INFORMATION</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Name of Applicant:</Text>
+            <Text style={styles.infoInput}>{data.nombre_solicitante}</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Correo del Solicitante</Text>
-            <Text style={styles.input}>{data.correo_solicitante}</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Applicant's email:</Text>
+            <Text style={styles.infoInput}>{data.correo_solicitante}</Text>
           </View>
         </View>
 
-        <View style={styles.priority}>
+        <View style={styles.prioritySection}>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'inmediata' && { backgroundColor: 'black' }]} />
-            <Text style={styles.priorityText}>Inmediata</Text>
+            <Text style={styles.priorityText}>Immediate</Text>
           </View>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'urgente' && { backgroundColor: 'black' }]} />
-            <Text style={styles.priorityText}>Urgente</Text>
+            <Text style={styles.priorityText}>Urgent</Text>
           </View>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'normal' && { backgroundColor: 'black' }]} />
@@ -204,26 +279,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Parte Legal</Text>
-          <View style={styles.textBox}>
-            <Text>{data.temas_legal || ''}</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Observaciones</Text>
-          <View style={styles.textBox}>
-            <Text>{data.soli_observaciones || ''}</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Descripción de la solicitud</Text>
-          <View style={styles.textBox}>
-            <Text>{data.soli_descripcion_problemas || ''}</Text>
-          </View>
-        </View>
+        {renderSection('Description of the request', data.soli_descripcion_problemas)}
+        {renderSection('Legal Part', data.temas_legal)}
+        {renderSection('Observations', data.soli_observaciones)}
 
         <View style={styles.costSection}>
           <Text style={styles.costLabel}>COSTO DE REPARACIÓN $</Text>
@@ -233,29 +291,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
         </View>
 
         <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>Equipo</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>Nombre de la Actividad</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>Descripción de la actividad</Text>
-            </View>
-          </View>
-          {actividades.map((actividad, index) => (
-            <View style={styles.tableDataRow} key={index}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableDataCell}>{data.fi_placa_sena || ''}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableDataCell}>{actividad}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableDataCell}>{descripciones[index] || ''}</Text>
-              </View>
-            </View>
+          <TableHeader />
+          {tableData.map((item, index) => (
+            <TableRow key={index} item={item} index={index} />
           ))}
         </View>
       </Page>

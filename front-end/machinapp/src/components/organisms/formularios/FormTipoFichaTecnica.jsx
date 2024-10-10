@@ -171,7 +171,7 @@ export const FormTipoFichaTecnica = () => {
         <Select
           value={tipoFicha}
           aria-label="Seleccionar idioma"
-          label="Elige Elemento quiere registrar"
+          label={t('registElemento')}
           onChange={handleSelectionChange}
           variant="bordered"
           color="primary"
@@ -179,10 +179,10 @@ export const FormTipoFichaTecnica = () => {
          
         >
           <SelectItem key="equipo" value="equipo">
-          Equipo o Maquinaria
+            {t('equipoMa')}
           </SelectItem>
           <SelectItem key="ambiente" value="ambiente">
-          Ambiente de Formacion
+            {t('ambienteFor')}
           </SelectItem>
         </Select>
 

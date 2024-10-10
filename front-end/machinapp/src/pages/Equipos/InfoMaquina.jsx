@@ -7,6 +7,8 @@ import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
 import { Button } from "@nextui-org/react";
 import {  DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { toast } from "react-toastify"
+
 
 import { 
     Layout, 
@@ -19,25 +21,16 @@ import {
     UpdateEstAmbienteFicha,
     PaginateTable,
     SearchComponent,
-    VistaFichaTecnica
+    VistaFichaTecnica,
+    ExcelMaquinasMant
 
 } from "../../index.js"
 import { useTranslation } from "react-i18next"
-//import { Link } from "react-router-dom"
-
-
-//para el pdf
-/* import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-import {  Button } from "@nextui-org/react"
-import axios from "axios" 
-
-import {FichaTecnicaEquiposPDF, VistaFichaTecnica} from "../../index.js"
-*/
-
-
 
 
 export const InfoMaquina = () => {
+
+    const [noMantenimientos, setNoMantenimientos] = useState(false)
 
     const { t } = useTranslation()
 
@@ -52,28 +45,48 @@ export const InfoMaquina = () => {
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
             setInfoMaquina(response.data)
 
+        }catch(error){
+            toast.error(error.response.data.mensaje)
+        }
+    }
+
+    const buscarInfoMantenimientos = async()=>{
+        try{
             const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
+           
             setMantenimientosMaquina(mantenimientos.data)
+           /*  console.log(mantenimientos.data)
+
+            if (mantenimientos.data.lenght > 0){
+
+                console.log("a")
+                setNoMantenimientos(false)
+
+            }
+            else{
+                setNoMantenimientos(true)
+            } */
 
         }catch(error){
-            console.error('Error listando info de maquinas', error)
+            toast.error(error.response.data.mensaje)
         }
     }
 
     useEffect(()=>{
         buscarInfo()
+        buscarInfoMantenimientos()
 
     }, [idMaquina])
 
     /* Configuracion de la tabla de mantenimientos */
 
     const columns = [
-        "Codigo",
-        "Nombre solicitante",
-        "Estado",
-        "Costo",
-        "Tipo Mantenimiento",
-        "Soporte",
+        t('codigo'),
+        t('nombreSolic'),
+        t('estado'),
+        t('cost'),
+        t('maintenance_type'),
+        t('soporte'),
         "Pdf"
     ]
 
@@ -236,48 +249,47 @@ export const InfoMaquina = () => {
             </div>
             
             <div className=" block mx-16 mb-14 ">
-                    <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantenimientos')} del equipo</h3>
+                <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantEquipo')} </h3>
                     
+                    <ExcelMaquinasMant/>
 
-                    <div className="pt-3 px-9 mt-8 mb-10">
-          <div className="mb-6">
-            <SearchComponent
-              label={`codigo, nombre solicitante, tipo, estado`}
-              onSearch={buscarMantenimientos}
-              className="w-full md:w-auto"
-            />
-          </div>
+                <div className="pt-3 px-9 mt-8 mb-10">
+                    <div className="mb-6">
+                        <SearchComponent
+                        label={`${t('codigo')}, ${t('nombreSolic')}, ${t('maintenance_type')}, ${t('estado')}`}
+                        onSearch={buscarMantenimientos}
+                        className="w-full md:w-auto"
+                        />
+                    </div>
 
-          <PaginateTable
-            columns={columns}
-            data={mantenimientosFil.map((mantenimiento) => ({
-              ...mantenimiento,
-              mant_ficha_soporte: (
-                <>
-                <Button 
-                    color="default" 
-                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
-                    className="text-white"
-                >
-                </Button>
-                </>
-              ),
-              Pdf:(
-                <>
-                <Button 
-                    color="success" 
-                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
-                    className="text-white"
-                >
-                </Button>
-                </>
-              )
-            }))}
-          />
-        </div>
+                    <PaginateTable
+                        columns={columns}
+                        data={mantenimientosFil.map((mantenimiento) => ({
+                        ...mantenimiento,
+                        mant_ficha_soporte: (
+                            <>
+                            <Button 
+                                color="default" 
+                                startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                                className="text-white"
+                            >
+                            </Button>
+                            </>
+                        ),
+                        Pdf:(
+                            <>
+                            <Button 
+                                color="success" 
+                                startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                                className="text-white"
+                            >
+                            </Button>
+                            </>
+                        )
+                        }))}
+                    />
+                </div>
             </div>
-
-
         </Layout>
     </>
   )

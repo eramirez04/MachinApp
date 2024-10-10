@@ -4,12 +4,14 @@ import { Listbox, ListboxItem, Button } from "@nextui-org/react";
 
 import { axiosCliente } from "../../../service/api/axios"
 
-import { SelectComponent  } from "../../../index.js"
+import { SelectComponent, useGlobalData  } from "../../../index.js"
 
 
 import { useTranslation } from "react-i18next"
 
 export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) => {
+
+  const { refreshEquipos } = useGlobalData();
   
   const { register, setValue, handleSubmit, reset } = useForm()
 
@@ -39,7 +41,7 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
     try {
       await axiosCliente.patch(`ficha/actualizarFichaEsp/${dataFicha.idFichas}`, data)
 
-      console.log(data)
+      await refreshEquipos()
       setModal(true) // con esto manejamos el botón y el mensaje de actualización 
       buscarInfo() // para recargar la página de infoMaquina
       reset() // resetear el formulario
@@ -77,11 +79,11 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
             <SelectComponent
               options={ambientes}
               name="fk_sitio"
-              placeholder="Ambiente"
+              placeholder={t('ambiente')}
               valueKey="id"
               textKey="valor"
               register={register}
-              label="Ambiente"
+              label={t('ambiente')}
             />
             </div>
         ) : (
@@ -96,13 +98,13 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
                 onSelectionChange={setSelectedKeys}
               >
                 <ListboxItem key="operacion" color="success">
-                  Operacion
+                  {t('operacion')}
                 </ListboxItem>
                 <ListboxItem key="en_reparacion" color="warning">
-                  En reparación
+                  {t('reparasion')}
                 </ListboxItem>
                 <ListboxItem key="fuera_de_servicio" color="danger">
-                  Fuera de servicio
+                  {t('fueraServicio')}
                 </ListboxItem>
               </Listbox>
             </div>
