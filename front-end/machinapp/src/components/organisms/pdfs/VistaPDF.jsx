@@ -26,7 +26,7 @@ export const VistaPDF = ({ item }) => {
     }
   };
 
-    const isAdmin = rol === "Administrador";
+  const isAdmin = rol === "Administrador";
 
   if (isLoading) {
     return <p>Cargando datos del mantenimiento...</p>;

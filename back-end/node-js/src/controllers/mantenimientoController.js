@@ -418,7 +418,10 @@ export const excelconsultavariables = async (req, res) => {
         MAX(s.sede_nombre) AS sede_nombre,
         MAX(sm.soli_prioridad) AS soli_prioridad,
         GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
-        SUM(DISTINCT pm.par_costo) AS par_costo_total
+        (SELECT SUM(pm_inner.par_costo) 
+         FROM partes_mantenimiento pm_inner 
+         WHERE pm_inner.par_fk_mantenimientos = m.idMantenimiento
+        ) AS par_costo_total
       FROM 
         mantenimiento m
         LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
@@ -435,15 +438,12 @@ export const excelconsultavariables = async (req, res) => {
     `;
     const [resultado] = await conexion.query(sql);
     
-
-    // Procesar los resultados para asegurar que los tipos de datos sean correctos
     const resultadoCorregido = resultado.map(item => ({
-      
       ...item,
       mant_fecha_proxima: item.mant_fecha_proxima ? new Date(item.mant_fecha_proxima).toISOString().split('T')[0] : null,
       man_fecha_realizacion: item.man_fecha_realizacion ? new Date(item.man_fecha_realizacion).toISOString().split('T')[0] : null,
       mant_costo_final: parseFloat(item.mant_costo_final),
-      par_costo_total: parseFloat(item.par_costo_total) || 0,
+      par_costo_total: parseFloat(item.par_costo_total),
     }));
 
     res.status(200).json(resultadoCorregido);
