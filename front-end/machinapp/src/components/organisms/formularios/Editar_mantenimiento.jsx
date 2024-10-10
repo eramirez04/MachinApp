@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Image } from "@nextui-org/react";
+import { Image, Button, TableCell, TableRow, Table, TableHeader, TableColumn, TableBody } from "@nextui-org/react";
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 
-import { Layout, CardStyle, InputUpdate, Breadcrumb, axiosCliente, TextAreaComponent, SelectComponent, ButtonNext, useGlobalData } from "../../../index.js";
+import { Layout, CardStyle, InputUpdate, Breadcrumb, axiosCliente, TextAreaComponent, SelectComponent, ButtonNext, useGlobalData, InputforForm } from "../../../index.js";
 
 export const Editar_Component = () => {
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ export const Editar_Component = () => {
         if (idMantenimiento) {
           const mantenimientoRes = await axiosCliente.get(`mantenimiento/listar_por_id/${idMantenimiento}`);
           const mantenimientoData = mantenimientoRes.data;
-          console.log(mantenimientoData);
+       /*    console.log(mantenimientoData); */
 
           if (mantenimientoData) {
             setMantenimiento(mantenimientoData);
@@ -270,23 +270,19 @@ export const Editar_Component = () => {
           </CardStyle>
 
           <CardStyle titleCard={t("maintenance_description")} className="p-6 shadow-md rounded-lg">
-            <Controller
-              name="mant_descripcion"
-              control={control}
-              render={({ field }) => (
+        
                 <TextAreaComponent
-                  {...field}
+              
                   errors={errors}
                   descripcion={t("maintenance_description")}
                   label={t("maintenance_description")}
                   register={() => register("mant_descripcion")}
                 />
-              )}
-            />
+              
           </CardStyle>
 
 
-          <CardStyle titleCard={"Tecnico de Reparacion"} subtitle={"Opcional"}>
+          <CardStyle titleCard={t("Tecnico_encargado")}>
               <SelectComponent
                 options={dataUser
                   .filter((item) =>
@@ -297,11 +293,11 @@ export const Editar_Component = () => {
                     valor: item.us_nombre + " " + item.us_apellidos,
                   }))}
                 name="tecnico"
-                placeholder={t("instructor_encargado")}
+                placeholder={t("Tecnico_encargado")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label={t("instructor_encargado")}
+                label={t("Tecnico_encargado")}
                 required
               />
             </CardStyle>
@@ -383,56 +379,64 @@ export const Editar_Component = () => {
             </div>
           </CardStyle>
 
-          <CardStyle titleCard={t("parts_used_and_costs")} className="p-6 shadow-md rounded-lg">
-            {fields.map((item, index) => (
-              <div key={item.id_partes_mantenimiento} className="flex items-center space-x-4 mb-4">
-                <Controller
-                  name={`repuestos.${index}.nombreRepuesto`}
-                  control={control}
-                  defaultValue={item.nombreRepuesto || ''}
-                  render={({ field }) => (
-                    <InputUpdate
-                      {...field}
-                      label={t("part_name")}
-                      tipo="text"
-                      errors={errors}
-                      isUpdating={true}
-                    />
-                  )}
-                />
-                <Controller
-                  name={`repuestos.${index}.costo`}
-                  control={control}
-                  defaultValue={item.costo || ''}
-                  render={({ field }) => (
-                    <InputUpdate
-                      {...field}
-                      label={t("cost")}
-                      tipo="number"
-                      errors={errors}
-                      isUpdating={true}
-                    />
-                  )}
-                />
-                <ButtonNext
-                  type="button"
-                  text={t("remove")}
-                  className="bg-red-600 text-white"
-                  onClick={() => handleDeleteParte(index, item.id_partes_mantenimiento)}
-                >
-                  <TrashIcon className="h-5 w-5" />
-                </ButtonNext>
-              </div>
-            ))}
-          <ButtonNext
-      type="button"
-      text={t("add_part")}
-      className="bg-blue-600 text-white"
-      onClick={() => append({ nombreRepuesto: '', costo: '' })}
-    >
-      <PlusIcon className="h-5 w-5 mr-2" />
-    </ButtonNext>
-  </CardStyle>
+          <CardStyle
+            titleCard={t("parts_used_and_costs")}
+            className="col-span-2 p-6 shadow-md rounded-lg"
+          >
+            <div className="flex justify-end mb-4">
+              <Button
+                color="primary"
+                onClick={() => append({ nombreRepuesto: "", costo: "" })}
+              >
+                <PlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                {t("add_part")}
+              </Button>
+            </div>
+            <Table aria-label={t("parts_table")}>
+              <TableHeader>
+                <TableColumn>{t("part_name")}</TableColumn>
+                <TableColumn>{t("cost")}</TableColumn>
+                <TableColumn>{t("actions")}</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {fields.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.nombreRepuesto`}
+                        tipo="text"
+                        placeholder={t("part_name")}
+                        label={t("part_name")}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <InputforForm
+                        register={register}
+                        errors={errors}
+                        name={`repuestos.${index}.costo`}
+                        tipo="number"
+                        placeholder={t("cost")}
+                        label={t("cost")}
+                        min="0"
+                        step="0.01"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button color="error" onClick={() => handleDeleteParte(index, item.id_partes_mantenimiento)}>
+                        <TrashIcon
+                          className="h-5 w-5 mr-2"
+                          aria-hidden="true"
+                        />
+                        {t("delete")}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardStyle>
           {error && <p className="text-red-500">{error}</p>}
 
           <ButtonNext type="submit" text={t("actualizar")} className="bg-green-600 text-white w-full mt-8"/>

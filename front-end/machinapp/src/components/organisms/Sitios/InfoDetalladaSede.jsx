@@ -46,12 +46,12 @@ const InfoDetalladaSede = () => {
             </button>
           </Link>
         </header>
-        <div className='relative h-80'>
+        <div className='relative h-96 items-center justify-center flex'>
           <img
             src={`http://localhost:3000/imagenes/${sede[0].img_sede}`}
             alt={sede[0].sede_nombre}
-            className='w-full h-full object-cover'
-            onError={handleImageError}
+            className='h-full'
+            onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
           />
         </div>
         <div className='p-2'>

@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { multiFormData } from "../../../utils/formData.js";
 // -> multiFormData => para poder enviar archivos como imagenes al sevidor
 
+import { useTranslation } from "react-i18next";
+
 // componentes
 import {
   InputForm,
@@ -20,6 +22,8 @@ import {
 
 export const FormFichaTecnica = ({ tipo_ficha }) => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const { refreshEquipos, ambientes } = useGlobalData();
 
@@ -85,7 +89,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
         "http://localhost:3000/ficha/registrar",
         dataFicha,
         "POST"
-      );
+      )
 
       const idFicha = response.data.id;
 
@@ -103,6 +107,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
       await refreshEquipos();
       navigate(`/infoMaquina/${idFicha}`);
     } catch (error) {
+      console.log(error.response)
       alert(error.response?.data.mensaje);
     }
   };
@@ -225,11 +230,11 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
         <div className="flex flex-row items-center justify-around mb-20 border-b-2 border-b-green-600 pb-10">
           <label className="flex flex-row items-center gap-4 ">
             {" "}
-            Seleccionar un tipo de ficha
+            {t('selecTipoFicha')}
             <SelectComponent
               options={tipoEquipo}
               name="tipo_equipo"
-              placeholder="Seleccione una opcion"
+              placeholder={t('seleccioneOpcion')}
               valueKey="id"
               textKey="valor"
               register={register}
@@ -237,7 +242,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
           </label>
 
           <Button onClick={tipoFicha} className="bg-green-600 text-white">
-            Siguiente <MdNavigateNext />
+            {t('siguiente')} <MdNavigateNext />
           </Button>
         </div>
         {mostrarFormulario && (
@@ -252,7 +257,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                 />
               </figure>
               <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-                Ficha Tecnica
+                {t('fichaTecnica')}
               </div>
               <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
                 <p className="overflow-hidden overflow-ellipsis text-center">
@@ -264,9 +269,9 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
             {/* Contenido */}
             <div>
               <h3 className="w-full  text-2xl pl-7 my-5 bg-green-600 text-white py-1 ">
-                Informacion Basica
+                {t('infoBasica')}
               </h3>
-              <div className=" flex flex-col sm:flex-row mt-5 w-full ">
+              <div className=" flex flex-col sm:flex-row mt-5 w-full gap-4 ">
                 {" "}
                 {/* sm:h-96 */}
                 <div className="w-full sm:w-2/4 p-2">
@@ -278,7 +283,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={"text"}
                           name={"placaSena"}
-                          text={"Placa SENA "}
+                          text={t('placaSena')}
                         />
 
                         {/* serial */}
@@ -287,7 +292,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar2.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar2.idVariable}`}
-                          text={`${varObligatorias.idVar2.var_nombre}`}
+                          text={t('serial')}
                         />
 
                         {/* precio */}
@@ -296,7 +301,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar9.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar9.idVariable}`}
-                          text={`${varObligatorias.idVar9.var_nombre}`}
+                          text={t('precio')}
                         />
 
                         {/* Marca */}
@@ -305,7 +310,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar7.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar7.idVariable}`}
-                          text={`${varObligatorias.idVar7.var_nombre}`}
+                          text={t('marca')}
                         />
 
                         {/* Modelo */}
@@ -314,7 +319,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar8.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar8.idVariable}`}
-                          text={`${varObligatorias.idVar8.var_nombre}`}
+                          text={t('modelo')}
                         />
 
                         {/* fecha adquicicion */}
@@ -323,7 +328,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                           register={register}
                           tipo={`${varObligatorias.idVar1.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
                           name={`variables.${varObligatorias.idVar1.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                          text={`${varObligatorias.idVar1.var_nombre}`}
+                          text={t('fechaAdquisi')}
                         />
                       </>
                     )}
@@ -332,65 +337,113 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                     <SelectComponent
                       options={ambientesFormacion}
                       name="ambiente"
-                      placeholder="Ambiente"
+                      placeholder={t('ambiente')}
                       valueKey="id"
                       textKey="valor"
                       register={register}
-                      label="Ambiente"
+                      label={t('ambiente')}
                     />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/4 p-2 ">
-                  <div className="flex items-center justify-center w-full h-[256px] rounded-md  mt-6  bg-green-600/25">
-                    <img
-                      className="h-full w-full object-contain rounded-md"
-                      alt=""
-                      src={previewImagen}
-                    />
+                  <div className=" border-1 border-gray-300 flex items-center justify-center w-full h-[280px] mt-6 rounded-xl px-3 py-3">
+                    {
+                      previewImagen == null? (<></>):(
+                        <img
+                        className="h-full w-full object-contain rounded-md"
+                        alt=""
+                        src={previewImagen}
+                      />
+                      )
+                    }
+
                   </div>
 
-                  <div className="bg-green-600 ">
-                    <p className="text-white mb-4">Imagen</p>
+                  <div className=" mt-9 ">
+                    <p className="text-gray-700 mb-1">{t('subirImg')}</p>
                     <input
                       type="file"
                       onChange={handleFileUpload}
                       accept="image/*"
-                      className="appearance-none w-full py-2 px-4 mt-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                      className="appearance-none w-full py-2 px-4  rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500"
                     />
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-center flex-row gap-4 p-4 border-b-1 border-t-1 border-b-green-600  border-t-green-600 rounded-lg  my-14">
-                <label className="text-gray-700 ">
-                  Subir ficha técnica de respaldo (opcional):
-                </label>
-                <input
-                  type="file"
-                  onChange={cargardocumento}
-                  className="appearance-none py-2 px-4 rounded-lg bg-white text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <div className="w-full my-5">
-                <label className="text-lg ">Descripcion del equipo</label>
-                <div className="mt-2">
-                  {isEquipo && (
+
+              {isEquipo && (
+                <div className="w-full mt-12">
+                  <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('descripcionEquipo')}</label>
+                  <div className="mt-3">
                     <TextAreaComponent
                       errors={errors}
                       register={register}
                       name={`variables.${varObligatorias.idVar6.idVariable}`}
-                      descripcion={"Descripcion general del equipo"}
+                      descripcion={t('descripcionEquipo')}
                     />
-                  )}
-                </div>
-              </div>
-              {/* recorremos todas las variables de especificas */}{" "}
-              {/* especificas(otros) */}
-              {varEspecificas.length > 0 ? (
+                  </div>
+                </div> 
+              )}
+
+
+              {/* GARANTIA NEW */}
+              {isEquipo && (
                 <div>
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">
-                    Caracteristicas Generales.
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my">
+                  <div className="w-full mt-12  pt-6  flex flex-col border-t-1 border-t-green-600">
+                    <div className="flex flex-row w-full">
+                      <div className="w-full sm:w-1/2 p-2">
+                          <InputForm
+                              errors={errors}
+                              register={register}
+                              tipo={`${varObligatorias.idVar3.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
+                              name={`variables.${varObligatorias.idVar3.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                              text={t('fechaInicioGaran')}
+                          />
+                      </div>
+                      <div className="w-full sm:w-1/2 p-2">
+                      <InputForm
+                              errors={errors}
+                              register={register}
+                              tipo={`${varObligatorias.idVar4.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
+                              name={`variables.${varObligatorias.idVar4.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                              text={t('fechaFinGarantia')}
+                            />
+                      </div>
+                    </div>
+                    <div className="w-full p-2 ">
+                    <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('fechaDescrGarantia')}</label>
+                    <TextAreaComponent
+                            errors={errors}
+                            register={register}
+                            name={`variables.${varObligatorias.idVar5.idVariable}`}
+                            descripcion={t('fechaDescrGarantia')}
+                          />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center flex-row gap-4 p-4 border-b-1 border-t-1 border-b-green-600  border-t-green-600 rounded-lg  my-14">
+                    <label className="text-gray-700 ">
+                      {t('subirFicha')}
+                    </label>
+                    <input
+                      type="file"
+                      onChange={cargardocumento}
+                      className="appearance-none py-1 px-4 rounded-lg bg-white text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              )}
+
+
+
+              {/* recorremos todas las variables de especificas */}{" "}
+
+              {
+                varEspecificas.length > 0 ?(                
+                
+                <div>
+                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">{t('carGenerales')}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
                     {varEspecificas.map((varEspec) => (
                       <div key={varEspec.idVariable}>
                         <InputForm
@@ -402,145 +455,88 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
                         />
                       </div>
                     ))}
-                  </div>
-                </div>
-              ) : (
-                <></>
-              )}
-{/*               {isEquipo > 0 && (
-                <div className="w-full my-5">
-                  <label> Descripcion del equipo</label>
-                  <TextAreaComponent
-                    errors={errors}
-                    register={register}
-                    name={`variables.${varObligatorias.idVar6.idVariable}`}
-                    descripcion={"Descripcion general del equipo"}
-                  />
-                </div>
-              )} */}
+                    </div>
+                </div>):(<></>)
+              }
+
 
               {/* Especificaciones tecnicas */}
+
               {varEspTecnicas.length > 0 ? (
-                <div className="my-14">
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 my-5">
-                    Especificaciones tecnicas
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse">
-                      <thead>
-                        <tr>
-                          <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">
-                            Nombre
-                          </th>
-                          <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">
-                            Valor
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {varEspTecnicas.map((varEspTecnica) => (
-                          <tr
-                            key={varEspTecnica.idVariable}
-                            className="hover:bg-gray-50"
-                          >
-                            <td className="py-2 px-4 border-b border-gray-300 w-1/4">
-                              {varEspTecnica.var_nombre}
-                            </td>
-                            <td className="py-2 px-4 border-b border-gray-300">
-                              <InputForm
-                                errors={errors}
-                                register={register}
-                                tipo={`${varEspTecnica.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
-                                name={`variables.${varEspTecnica.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                                text={`${varEspTecnica.var_nombre}`}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div className="my-14">
+              <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >{t('especTecnicas')}</h3>
+              <div className="overflow-x-auto px-4">
+                <table className="min-w-full border-collapse">
+                  <thead>
+                    <tr>
+                      <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">{t('nombre')}</th>
+                      <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">{t('valor')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                    varEspTecnicas.map((varEspTecnica) => (
+                      <tr
+                        key={varEspTecnica.idVariable}
+                        className="hover:bg-gray-50"
+                      >
+                        <td className="py-2 px-4 border-b border-gray-300 w-1/4">
+                          {varEspTecnica.var_nombre}
+                        </td>
+                        <td className="py-2 px-4 border-b border-gray-300">
+                          <InputForm
+                            errors={errors}
+                            register={register}
+                            tipo={`${varEspTecnica.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
+                            name={`variables.${varEspTecnica.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
+                            text={`${varEspTecnica.var_nombre}`}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              </div>
               ) : (
                 <></>
               )}
-              {/* GARANTIA */}
-              {isEquipo && (
-                <div>
-                  <h3 className="w-full text-gray-900 text-2xl pl-7 mt-8">
-                    Informacion Garantia
-                  </h3>
 
-                  <div className=" flex flex-col sm:flex-row mt-3 w-full ">
-                    <div className="w-full sm:w-2/4 p-2  items-center">
-                      <div className="my-3">
-                        <InputForm
-                          errors={errors}
-                          register={register}
-                          tipo={`${varObligatorias.idVar3.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
-                          name={`variables.${varObligatorias.idVar3.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                          text={`${varObligatorias.idVar3.var_nombre}`}
-                        />
-                      </div>
-                      <div className="my-3">
-                        <InputForm
-                          errors={errors}
-                          register={register}
-                          tipo={`${varObligatorias.idVar4.var_tipoDato}`} // aca accedemos al objeto del que queremos traer la informacion
-                          name={`variables.${varObligatorias.idVar4.idVariable}`} //le ponemos variables para que nos agrupe toda la informacion de los input en ese espacio del formulario
-                          text={`${varObligatorias.idVar4.var_nombre}`}
-                        />
-                      </div>
-                    </div>
 
-                    <div className="w-full sm:w-2/4 p-2 flex items-center">
-                      <TextAreaComponent
-                        errors={errors}
-                        register={register}
-                        name={`variables.${varObligatorias.idVar5.idVariable}`}
-                        descripcion={"Descripcion de la garantia"}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Secciones */}
-              <div>
-                {varSecciones.map((varSeccion) => (
-                  <div
-                    className="overflow-x-auto my-14"
-                    key={varSeccion.idVariable}
-                  >
-                    <table className="min-w-full  ">
-                      <tbody>
-                        <tr>
-                          <td className="py-2 px-4 flex justify-between items-center border border-gray-300 rounded-lg">
-                            <span className="font-medium text-lg">
-                              {varSeccion.var_nombre}
-                            </span>
-                            <span className="text-sm text-gray-500">
-                              {varSeccion.var_descripcion}
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 ">
+              {
+              <div className="border-t-4  border-t-green-600">
+              {varSecciones.map((varSeccion)=>(
+                <div className="overflow-x-auto my-14 px-4" key={varSeccion.idVariable}>
+                  <table className="min-w-full  ">
+                    <tbody>
+                      <tr>
+                        <td className="py-2 px-4 flex justify-between items-center border border-green-600 rounded-lg">
+                          <span className="font-medium text-lg">{varSeccion.var_nombre}</span>
+                          <span className="text-sm text-gray-500">{varSeccion.var_descripcion}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 ">
                             <TextAreaComponent
                               errors={errors}
                               register={register}
                               name={`variables.${varSeccion.idVariable}`}
-                              descripcion={`Descripcion ${varSeccion.var_nombre}`}
+                              descripcion={`${t('descripcion')} ${varSeccion.var_nombre}`}
                             />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ))
+              }
               </div>
+            }
+
+
             </div>
             <ButtonNext
-              text="Registrar ficha tecnica"
+              text={t('registFicha')}
               type="submit"
               className={"bg-green-600 text-white w-full mt-8"}
             />

@@ -58,12 +58,12 @@ const BuscarSedes = () => {
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative"
               key={sede.idSede}
             >
-              <div className="relative h-72">
+              <div className="relative h-72 items-center justify-center flex">
                 <img
                   src={`http://localhost:3000/imagenes/${sede.img_sede}`}
                   alt={sede.sede_nombre}
-                  className="w-full h-full object-cover"
-                  onError={handleImageError}
+                  className="h-full"
+                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
                 />
               </div>
               <Link to={`/Sedes/InfoSede/${sede.idSede}`}>

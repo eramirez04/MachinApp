@@ -1,40 +1,67 @@
+import { useContext, useEffect, useState } from 'react';
 import { Button } from "@nextui-org/react";
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import { GenerarPdf } from "../../../index.js";
+import { GenerarPdf } from "./PDFMantenimiento.jsx"; 
 import { ModalComponte } from "../../molecules/index.js";
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import { useTranslation } from "react-i18next";
 
 export const VistaPDF = ({ item }) => {
   const navigate = useNavigate();
+  const { rol } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (item && item.idMantenimiento) {
+      setIsLoading(false);
+    }
+  }, [item]);
 
   const handleEdit = () => {
-    navigate(`/listar_por_id/${item.idMantenimiento}`);
+    if (item && item.idMantenimiento) {
+      navigate(`/listar_por_id/${item.idMantenimiento}`);
+    }
   };
+
+    const isAdmin = rol === "Administrador";
+
+  if (isLoading) {
+    return <p>Cargando datos del mantenimiento...</p>;
+  }
+
+  if (!item || !item.idMantenimiento) {
+    return <p>No se pudo cargar la información del mantenimiento.</p>;
+  }
 
   const componenteModal = (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-end space-x-2">
-        <Button
-          color="warning"
-          startContent={<PencilSquareIcon className="h-5 w-5" />}
-          className="text-white"
-          onClick={handleEdit}
-        >
-          Editar
-        </Button>
+        {isAdmin && (
+          <Button
+            color="warning"
+            startContent={<PencilSquareIcon className="h-5 w-5" />}
+            className="text-white"
+            onClick={handleEdit}
+          >
+            {t('editar')}
+          </Button>
+        )}
         <PDFDownloadLink
           document={<GenerarPdf idMantenimiento={item.idMantenimiento} />}
           fileName={`mantenimiento_${item.idMantenimiento}.pdf`}
+          style={{ textDecoration: 'none' }}
         >
-          {({loading}) => (
+          {({ loading }) => (
             <Button 
               color="success" 
               startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
               className="text-white"
               disabled={loading}
             >
-              Descargar PDF
+              {loading ? t('cargando') : t('descargar_pdf')}
             </Button>
           )}
         </PDFDownloadLink>
@@ -49,13 +76,13 @@ export const VistaPDF = ({ item }) => {
 
   return (
     <ModalComponte
-      buttonModal="Ver PDF"
+      buttonModal={t('Ver_pdf')}
       tittleModal={`Vista previa del PDF - ${item.codigo_mantenimiento}`}
       componente={componenteModal}
       size="5xl"
       variantButton="shadow"
       colorButton="success"
-      classNames= "text-white" 
+      classNames="text-white" 
     />
   );
 };

@@ -99,7 +99,7 @@ export const actualizarUsuario = async (req, res) => {
       validarNumeroDocumento.length > 0 &&
       String(validarNumeroDocumento[0].idUsuarios) !== String(req.params.id)
     ) {
-      return res.status(403).json({
+      return res.status(400).json({
         mensaje: "Ya existe un usuario con este número de documento.",
       });
     }

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { axiosCliente } from "../../../index.js";
+
 
 const styles = StyleSheet.create({
   page: {
@@ -12,7 +14,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    borderBottom: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
     paddingBottom: 10,
   },
   logo: {
@@ -20,208 +23,280 @@ const styles = StyleSheet.create({
     height: 50,
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
   },
   subTitle: {
-    fontSize: 8,
+    fontSize: 10,
     textAlign: 'right',
+    color: '#4a4a4a',
   },
-  section: {
+  applicantInfo: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    padding: 15,
+    marginBottom: 20,
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6a1b9a',
     marginBottom: 10,
   },
-  row: {
+  infoRow: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
-    borderBottomStyle: 'solid',
-    marginBottom: 5,
+    marginBottom: 10,
   },
-  label: {
+  infoLabel: {
     fontSize: 10,
     fontWeight: 'bold',
     width: '30%',
   },
-  input: {
+  infoInput: {
     flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
     fontSize: 10,
-    height: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    paddingBottom: 2,
   },
-  priority: {
+  prioritySection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10,
     borderWidth: 1,
+    borderColor: '#000000',
     borderRadius: 5,
     padding: 5,
   },
   checkbox: {
     width: 10,
     height: 10,
-    border: '1px solid black',
+    borderWidth: 1,
+    borderColor: '#000000',
     marginRight: 5,
   },
   priorityItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    fontSize: 10,
+  },
+  priorityText: {
+    fontSize: 8,
   },
   sectionTitle: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 5,
-    borderBottomWidth: 2,
-    borderBottomColor: '#FF6600',
-    paddingBottom: 2,
+    color: '#4a4a4a',
   },
-  largeInput: {
+  textBox: {
     borderWidth: 1,
-    height: 60,
-    marginBottom: 10,
+    borderColor: '#000000',
+    padding: 5,
+    marginTop: 5,
+    fontSize: 10,
+    minHeight: 40,
   },
   costSection: {
-    alignItems: 'flex-end',
-    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  costLabel: {
+    fontSize: 10,
+    marginRight: 5,
   },
   costInput: {
     borderWidth: 1,
+    borderColor: '#000000',
     width: 100,
-    height: 20,
-    marginLeft: 5,
+    padding: 2,
+    fontSize: 10,
+  },
+  sectionContainer: {
+    marginBottom: 15,
+  },
+
+  sectionUnderline: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#FFA500',
+    width: '100%',
+    marginBottom: 10,
+  },
+  inputBox: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    padding: 10,
+    minHeight: 60,
+  },
+  inputText: {
+    fontSize: 10,
+    color: '#4a4a4a',
   },
   table: {
-    display: 'table',
+    display: 'flex',
     width: 'auto',
-    borderStyle: 'solid',
+    borderColor: '#4CAF50',
     borderWidth: 1,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
     marginTop: 10,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#4CAF50',
+    alignItems: 'center',
+    height: 30,
+    textAlign: 'center',
+    fontStyle: 'bold',
+    color: 'white',
   },
   tableRow: {
     flexDirection: 'row',
-    backgroundColor: '#4CAF50',
-  },
-  tableCol: {
-    width: '25%',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
+    alignItems: 'center',
+    height: 30,
+    fontStyle: 'normal',
+    color: '#000',
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   tableCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 8,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    padding: 5,
+    borderRightColor: '#e0e0e0',
+    borderRightWidth: 1,
+  },
+  tableCellHeader: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 12,
+    padding: 5,
     color: 'white',
+    borderRightColor: 'white',
+    borderRightWidth: 1,
   },
-  tableDataRow: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+  lastCell: {
+    borderRightWidth: 0,
   },
-  tableDataCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 8,
-    color: 'black',
+  oddRow: {
+    backgroundColor: '#f2f2f2',
+  },
+  evenRow: {
+    backgroundColor: '#ffffff',
   },
 });
 
-export const PDFSolicitud = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Image style={styles.logo} src="/logoSenaNaranja.png" />
-        <Text style={styles.title}>SOLICITUD DE SERVICIO DE MANTENIMIENTO</Text>
-        <Text style={styles.subTitle}>Centro de Gestión y{'\n'}Desarrollo Sostenible{'\n'}Surcolombiano</Text>
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.row}>
-          <Text style={styles.label}>Nombre del Solicitante</Text>
-          <Text style={styles.input}></Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Correo del Solicitante</Text>
-          <Text style={styles.input}></Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Dirección</Text>
-          <Text style={styles.input}></Text>
-        </View>
-      </View>
-
-      <View style={styles.priority}>
-        <View style={styles.priorityItem}>
-          <View style={styles.checkbox} />
-          <Text>Inmediata</Text>
-        </View>
-        <View style={styles.priorityItem}>
-          <View style={styles.checkbox} />
-          <Text>Urgente</Text>
-        </View>
-        <View style={styles.priorityItem}>
-          <View style={styles.checkbox} />
-          <Text>Normal</Text>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Parte Legal</Text>
-        <View style={styles.largeInput}></View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Observaciones</Text>
-        <View style={styles.largeInput}></View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Descripción de la solicitud</Text>
-        <View style={styles.largeInput}></View>
-      </View>
-
-      <View style={styles.costSection}>
-        <Text style={{ fontSize: 10 }}>COSTO DE REPARACIÓN $</Text>
-        <View style={styles.costInput}></View>
-      </View>
-
-      <View style={styles.table}>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Equipo</Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Descripción del daño</Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Descripción de la Actividad</Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Nombre de la actividad</Text>
-          </View>
-        </View>
-        <View style={styles.tableDataRow}>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableDataCell}></Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableDataCell}></Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableDataCell}></Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableDataCell}></Text>
-          </View>
-        </View>
-      </View>
-    </Page>
-  </Document>
+const TableHeader = () => (
+  <View style={styles.tableHeader} fixed>
+    <Text style={styles.tableCellHeader}>Equipo</Text>
+    <Text style={styles.tableCellHeader}>Descripción de la Actividad</Text>
+    <Text style={[styles.tableCellHeader, styles.lastCell]}>Nombre de la actividad</Text>
+  </View>
 );
+
+const TableRow = ({ item, index }) => (
+  <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]} wrap={false}>
+    <Text style={styles.tableCell}>{item.equipo}</Text>
+    <Text style={styles.tableCell}>{item.descripcion}</Text>
+    <Text style={[styles.tableCell, styles.lastCell]}>{item.actividad}</Text>
+  </View>
+);
+
+
+export const PDFSolicitud = ({idSolicitud}) => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
+        const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
+        setData(filteredData || {});
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    };
+
+    fetchData();
+  }, [idSolicitud]);
+
+  if (!data) {
+    return null;
+  }
+
+  const actividades = data.acti_nombres ? data.acti_nombres.split(', ') : [];
+  const descripciones = data.acti_descripciones ? data.acti_descripciones.split(', ') : [];
+  const tableData = actividades.map((actividad, index) => ({
+    equipo: data.fi_placa_sena || '',
+    actividad,
+    descripcion: descripciones[index] || '',
+  }));
+  const renderSection = (title, content) => (
+    <View style={styles.sectionContainer}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.sectionUnderline} />
+      <View style={styles.inputBox}>
+        <Text style={styles.inputText}>{content}</Text>
+      </View>
+    </View>
+  );
+
+  return(
+<Document>
+      <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+          <Image style={styles.logo} src="/logoSenaNaranja.png" />
+          <Text style={styles.title}>MAINTENANCE SERVICE REQUEST</Text>
+          <Text style={styles.subTitle}>South Colombian Management and{'\n'}Sustainable Development Center</Text>
+        </View>
+
+        <View style={styles.applicantInfo}>
+          <Text style={styles.infoTitle}>APPLICANT INFORMATION</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Name of Applicant:</Text>
+            <Text style={styles.infoInput}>{data.nombre_solicitante}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Applicant's email:</Text>
+            <Text style={styles.infoInput}>{data.correo_solicitante}</Text>
+          </View>
+        </View>
+
+        <View style={styles.prioritySection}>
+          <View style={styles.priorityItem}>
+            <View style={[styles.checkbox, data.soli_prioridad === 'inmediata' && { backgroundColor: 'black' }]} />
+            <Text style={styles.priorityText}>Immediate</Text>
+          </View>
+          <View style={styles.priorityItem}>
+            <View style={[styles.checkbox, data.soli_prioridad === 'urgente' && { backgroundColor: 'black' }]} />
+            <Text style={styles.priorityText}>Urgent</Text>
+          </View>
+          <View style={styles.priorityItem}>
+            <View style={[styles.checkbox, data.soli_prioridad === 'normal' && { backgroundColor: 'black' }]} />
+            <Text style={styles.priorityText}>Normal</Text>
+          </View>
+        </View>
+
+        {renderSection('Description of the request', data.soli_descripcion_problemas)}
+        {renderSection('Legal Part', data.temas_legal)}
+        {renderSection('Observations', data.soli_observaciones)}
+
+        <View style={styles.costSection}>
+          <Text style={styles.costLabel}>COSTO DE REPARACIÓN $</Text>
+          <View style={styles.costInput}>
+            <Text>{data.soli_costo_estimado || ''}</Text>
+          </View>
+        </View>
+
+        <View style={styles.table}>
+          <TableHeader />
+          {tableData.map((item, index) => (
+            <TableRow key={index} item={item} index={index} />
+          ))}
+        </View>
+      </Page>
+    </Document>
+  );
+};

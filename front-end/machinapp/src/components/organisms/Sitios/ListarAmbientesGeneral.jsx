@@ -40,7 +40,7 @@ export const BuscarAmbientesGeneral = () => {
         area: sitio.area_nombre,
         municipio: sitio.instructor_encargado,
         acciones: (
-          <>
+          <> 
             <ButtonNext isIconOnly color="warning" variant="faded">
               <Tooltip content="Editar">
                 <Link
@@ -74,7 +74,7 @@ export const BuscarAmbientesGeneral = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Sitios</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("sitios")}</h1>
       <div className="flex justify-between">
         <SearchComponent
           onSearch={filtrarAmbientes}

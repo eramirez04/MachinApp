@@ -1,28 +1,25 @@
 import { PaginateTable } from "../table/PaginateTable";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useState,useContext } from "react";
 import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
+import { useTranslation } from "react-i18next";
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
 
 /* eslint-disable-next-line react/prop-types */
 export const SolicitudList = ({ DataSolicitud }) => {
   const [filteredData, setFilteredData] = useState([]);
+  const { rol } = useContext(AuthContext);
+  const { t } = useTranslation();
 
-  const navigate = useNavigate();
   const COLUMNAS = [
-    "Prioridad",
-    "Costo",
-    "Estado",
-    "Fecha de la solicitud",
-    "Acciones",
+    "ID",
+    t("priority"),
+    t("cost"),
+    t("estado"),
+    t("date_of_application"),
+    t("acciones"),
   ];
-  const handleEdit = (idSolicitud) => {
-    const resultadoSolictud = DataSolicitud.find(
-      (solicitud) => solicitud.idSolicitud === idSolicitud
-    );
 
-    navigate("/editar/solicitud", { state: { resultadoSolictud } });
-  };
 
   /* eslint-disable-next-line react/prop-types */
   const newArrayDataSolicitud = DataSolicitud.map((item) => {
@@ -36,6 +33,7 @@ export const SolicitudList = ({ DataSolicitud }) => {
     );
 
     return {
+      idSolicitud:item.idSolicitud,
       prioridad: item.soli_prioridad,
       costo: item.soli_costo_estimado,
       estado: item.soli_estado,
@@ -49,9 +47,10 @@ export const SolicitudList = ({ DataSolicitud }) => {
     );
     setFilteredData(filtered);
   };
-
+  const isAdmin = rol === "Administrador";
   return (
     <>
+
       <div className="min-h-screen p-6 flex flex-col gap-8 ">
         <SearchComponent onSearch={handleSearSolicitud} />
         <div className="w-full overflow-x-auto">
@@ -61,21 +60,19 @@ export const SolicitudList = ({ DataSolicitud }) => {
               ...fila,
               acciones: (
                 <>
-                        <Button
-                              isIconOnly
-                              color="warning"
-                              onClick={() => handleEdit(fila.idSolicitud)}
-                              variant="faded"
+                <div className="flex items-center justify-evenly">
+                { isAdmin&&(
+                    <Link
+                    to={`/editar/solicitud/${fila.idSolicitud}`}
+                  >
+                    <Icons icon={V.PencilIcon} />
+                  </Link>
+                )}
 
-                            >
-                              <Icons icon={V.PencilIcon} />{" "}
-                            </Button>
-                            <div
-                              className="flex space-x-2"
-                            >
-                              <PDFvistaSolicitud item={fila}/>
-                            </div>
 
+                  <PDFvistaSolicitud item={fila}/>
+                  
+                </div>
                 </>
               ),
             }))}

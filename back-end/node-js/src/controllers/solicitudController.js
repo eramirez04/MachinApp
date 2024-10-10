@@ -63,6 +63,83 @@ export const obtenerSolicitudes = async (req, res) => {
     return res.status(500).json({ Mensaje: "Error en el servidor", error });
   }
 };
+export const obtenerSolicitudesPDF = async (req, res) => {
+  try {
+    const consultaSQL = `
+      SELECT 
+        idSolicitud,
+        soli_prioridad,
+        soli_descripcion_problemas,
+        soli_costo_estimado,
+        soli_observaciones,
+        soli_estado,
+        temas_legal,
+        fecha_solicitud,
+        nombre_solicitante,
+        correo_solicitante,
+        fi_placa_sena,
+        GROUP_CONCAT(DISTINCT acti_nombre SEPARATOR ', ') AS acti_nombres,
+        GROUP_CONCAT(DISTINCT acti_descripcion SEPARATOR ', ') AS acti_descripciones
+        FROM solicitud_mantenimiento
+      JOIN solicitud_has_fichas ON solicitud_mantenimiento.idSolicitud = solicitud_has_fichas.fk_solicitud
+      JOIN fichas_maquinas_equipos ON solicitud_has_fichas.fk_fichas = fichas_maquinas_equipos.idFichas
+      JOIN actividades ON solicitud_mantenimiento.idSolicitud = actividades.acti_fk_solicitud
+      GROUP BY 
+        idSolicitud,
+        soli_prioridad,
+        soli_descripcion_problemas,
+        soli_costo_estimado,
+        soli_observaciones,
+        soli_estado,
+        temas_legal,
+        fecha_solicitud,
+        nombre_solicitante,
+        correo_solicitante,
+        fi_placa_sena`
+
+
+    const [resultadoConsulta] = await conexion.query(consultaSQL);
+
+    return res.status(200).json(resultadoConsulta);
+  } catch (error) {
+    return res.status(500).json({ Mensaje: "Error en el servidor", error });
+  }
+}; 
+
+/* export const obtenerSolicitudesPDF = async (req, res) => {
+  try {
+    const consultaSQL = `
+      SELECT DISTINCT
+        idSolicitud,
+        soli_prioridad,
+        soli_descripcion_problemas,
+        soli_costo_estimado,
+        soli_observaciones,
+        temas_legal,
+        nombre_solicitante,
+        correo_solicitante,
+        fi_placa_sena,
+        GROUP_CONCAT(DISTINCT acti_nombre SEPARATOR ', ') AS acti_nombres,
+        GROUP_CONCAT(DISTINCT acti_descripcion SEPARATOR ', ') AS acti_descripciones
+      FROM solicitud_mantenimiento 
+      INNER JOIN solicitud_has_fichas ON idSolicitud = fk_solicitud
+      INNER JOIN fichas_maquinas_equipos ON fk_fichas = idFichas
+      LEFT JOIN actividades ON idSolicitud = acti_fk_solicitud
+      GROUP BY idSolicitud, soli_prioridad, soli_descripcion_problemas, 
+               soli_costo_estimado, soli_observaciones,
+               temas_legal, nombre_solicitante, 
+               correo_solicitante, fi_placa_sena
+    `;
+
+    const [resultadoConsulta] = await conexion.query(consultaSQL);
+
+    return res.status(200).json(resultadoConsulta);
+  } catch (error) {
+    return res.status(500).json({ Mensaje: "Error en el servidor", error });
+  }
+};
+ */
+
 export const actualizarSolicitudes = async(req, res)=>{
   try{
       
@@ -77,17 +154,26 @@ export const actualizarSolicitudes = async(req, res)=>{
         prioridad,
         descripcion, 
         costo_estimado, 
-        obsevaciones, 
-        estado, 
+        observaciones,
         temaLegal, 
         nombre_solicitante,
         correo_solicitante
       }= req.body
-
-      let sql = `update solicitud_mantenimiento set  soli_prioridad = '${prioridad}', soli_descripcion_problemas = '${descripcion}' , soli_costo_estimado='${costo_estimado}', soli_observaciones='${obsevaciones}', 
-      soli_estado = '${estado}', temas_legal='${temaLegal}', nombre_solicitante='${nombre_solicitante}',correo_solicitante = '${correo_solicitante}'
-      where idSolicitud = ${idSolicitud}`
-
+      const estado = "aprobado";
+      let sql = `
+      UPDATE solicitud_mantenimiento 
+      SET  
+        soli_prioridad = '${prioridad}', 
+        soli_descripcion_problemas = '${descripcion}', 
+        soli_costo_estimado = '${costo_estimado}', 
+        soli_observaciones = '${observaciones}', 
+        soli_estado = '${estado}', 
+        temas_legal = '${temaLegal}', 
+        nombre_solicitante = '${nombre_solicitante}', 
+        correo_solicitante = '${correo_solicitante}'
+      WHERE 
+        idSolicitud = ${idSolicitud}
+    `;
 
       let [respuesta] = await conexion.query(sql)
       console.log(respuesta)
@@ -108,7 +194,7 @@ export const actualizarSolicitudes = async(req, res)=>{
 export const listarSolicitudPorId = async (req, res) => {
   try {
     const { idSolicitud } = req.params;
-
+    console.log("ID de la solicitud:", idSolicitud); // Agregar para depurar
     const sql = `
       SELECT
           idSolicitud,

@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         settokenIsValido(true);
         await getDataUser();
         await slepp(1000);
-        /*    setLoading(false); */
+        setLoading(false);
         navigate("/home");
       }
     } catch (error) {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     navigate("/");
   };
 
-  // permite refrescar la informacion 
+  // permite refrescar la informacion
   const refreshUserLoged = async () => {
     return await getDataUser();
   };
@@ -79,9 +79,9 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const valido = localStorage.getItem("valido");
 
-    const validarTripleMalparidoTokenn = token.split(".");
+    /*     const validarTripleMalparidoTokenn = token.split("."); */
 
-    if (validarTripleMalparidoTokenn.length === 3 && valido === "valido") {
+    if (token && valido === "valido") {
       getDataUser();
     } else {
       setUser([]);

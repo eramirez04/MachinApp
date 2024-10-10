@@ -1,9 +1,12 @@
 import { Layout, Breadcrumb, BuscarAmbientesGeneral } from "../../index";
+import { useTranslation } from "react-i18next";
 
 export const AmbientesGeneral = () => {
+  const { t } = useTranslation();
+
   return (
-    <Layout titlePage="Centro">
-      <Breadcrumb pageName={"Ambientes de Formacion"} />
+    <Layout>
+      <Breadcrumb pageName={t("ambientesGeneral")} />
       <BuscarAmbientesGeneral />
     </Layout>
   );

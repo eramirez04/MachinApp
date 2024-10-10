@@ -1,6 +1,8 @@
+// GenerarPdf.jsx
 import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { axiosCliente } from "../../../index.js";
+import axios from 'axios';
+import { useTranslation } from "react-i18next"; 
 
 const styles = StyleSheet.create({
   page: {
@@ -11,7 +13,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     marginBottom: 20,
-    borderBottom: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
     paddingBottom: 10,
   },
   logo: {
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 10,
     width: '70%',
+    paddingLeft: 10,
   },
   dateText: {
     fontSize: 8,
@@ -29,21 +33,23 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 10,
-    border: 1,
+    borderWidth: 1,
+    borderColor: '#000',
     padding: 5,
     borderRadius: 5,
   },
   row: {
     flexDirection: 'row',
-    borderBottom: 1,
+    borderBottomWidth: 1,
     borderBottomColor: '#eee',
     alignItems: 'center',
-    height: 24,
-    fontStyle: 'bold',
+    minHeight: 24,
+    fontWeight: 'bold',
   },
   column: {
     flex: 1,
     fontSize: 9,
+    padding: 2,
   },
   boldText: {
     fontWeight: 'bold',
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   textBox: {
-    border: 1,
+    borderWidth: 1,
     borderColor: '#eee',
     padding: 5,
     minHeight: 40,
@@ -66,19 +72,30 @@ const styles = StyleSheet.create({
     right: 30,
     fontSize: 10,
   },
+  priorityColumn: {
+    flex: 1,
+    fontSize: 9,
+    padding: 2,
+    lineHeight: 1.5,
+  },
 });
 
 export const GenerarPdf = ({ idMantenimiento }) => {
   const [data, setData] = useState(null);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/mantenimiento/excelconsultavariables');
+        const response = await axios.get('http://localhost:3000/mantenimiento/excelconsultavariables');
         const filteredData = response.data.find(item => item.idMantenimiento === idMantenimiento);
         setData(filteredData);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
+        setData(null);
+      } finally {
+        setIsDataLoading(false);
       }
     };
 
@@ -90,8 +107,28 @@ export const GenerarPdf = ({ idMantenimiento }) => {
     return date.toLocaleDateString('es-ES');
   };
 
+  if (isDataLoading) {
+    return (
+      <Document>
+        <Page style={styles.page}>
+          <View style={styles.section}>
+            <Text>{t('loading')}</Text>
+          </View>
+        </Page>
+      </Document>
+    );
+  }
+
   if (!data) {
-    return null; 
+    return (
+      <Document>
+        <Page style={styles.page}>
+          <View style={styles.section}>
+            <Text>{t('error_loading_data')}</Text>
+          </View>
+        </Page>
+      </Document>
+    );
   }
 
   return (
@@ -105,7 +142,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
             <Text>ORDEN DE TRABAJO DE MANTENIMIENTO</Text>
           </View>
           <View style={styles.dateText}>
-            <Text>Fecha: {formatDate(new Date().toISOString())}</Text>
+            <Text>Fecha actual: {formatDate(new Date().toISOString())}</Text>
           </View>
         </View>
 
@@ -147,11 +184,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
           <View style={styles.row}>
             <Text style={styles.column}>{data.tipo_mantenimiento}</Text>
             <Text style={styles.column}>{data.codigo_mantenimiento}</Text>
-            <Text style={styles.column}>
-              {data.soli_prioridad === 'inmediata' ? '☑' : '☐'} Inmediata{'\n'}
-              {data.soli_prioridad === 'urgente' ? '☑' : '☐'} Urgente{'\n'}
-              {data.soli_prioridad === 'normal' ? '☑' : '☐'} Normal
-            </Text>
+            <Text style={styles.priorityColumn}>{data.soli_prioridad}</Text>
           </View>
         </View>
 
@@ -159,15 +192,11 @@ export const GenerarPdf = ({ idMantenimiento }) => {
           <Text style={styles.greenText}>Trabajo ejecutado</Text>
           <View style={styles.row}>
             <Text style={[styles.column, { flex: 3 }]}>Descripción</Text>
-            <Text style={[styles.column, { flex: 1 }]}>Fecha : {formatDate(data.fecha_realizacion)}</Text>
+            <View style={[styles.column, { flex: 2 }]}>
+              <Text>Fecha : {formatDate(data.man_fecha_realizacion)}</Text>
+              <Text>Próximo mantenimiento : {formatDate(data.mant_fecha_proxima)}</Text>
+            </View>
           </View>
-          <View style={styles.textBox}>
-            <Text>{data.descripcion_mantenimiento}</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.greenText}>Descripción del mantenimiento</Text>
           <View style={styles.textBox}>
             <Text>{data.descripcion_mantenimiento}</Text>
           </View>

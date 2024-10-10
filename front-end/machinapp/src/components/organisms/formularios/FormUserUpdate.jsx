@@ -43,6 +43,7 @@ export const FormUserUpdate = ({ userData }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsLoading(true)
     data.rol =
       data.rol === "undefined" || !data.rol
         ? String(user.id_rol)
@@ -59,7 +60,7 @@ export const FormUserUpdate = ({ userData }) => {
       await refreshUserLoged();
 
       if (res) {
-        slepp(2000);
+        await slepp(300);
         toast.success(res.data.Mensaje);
         if (res.data && rol === ADMIN) {
           navigate("/Panelcontrol");
@@ -69,8 +70,10 @@ export const FormUserUpdate = ({ userData }) => {
         }
       }
     } catch (error) {
-      toast.error("Error Fatal por favor elimine la carpeta C:/system32");
-      console.log(error.response);
+      setIsLoading(false);
+
+      toast.error("Error, ya existe usuario con este número de documento");
+      /*       console.log(error.response); */
       let errores = error.response.data.mensaje
         ? { num: error.response.data.mensaje }
         : "";
@@ -380,6 +383,7 @@ export const FormUserUpdate = ({ userData }) => {
                     type="submit"
                     text={" "}
                     className={`${V.text_white} ${V.bg_sena_verde}`}
+                    isLoading={isLoading}
                   >
                     {t("actualizar")}
                   </ButtonNext>

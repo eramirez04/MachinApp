@@ -37,7 +37,7 @@ export const MantenimientoGeneral = () => {
             setMensajeError('');
             const mantenimientosFormateados = response.data.map(mantenimiento => ({
                 ...mantenimiento,
-                mant_fecha_proxima: new Date(mantenimiento.fecha_realizacion).toLocaleDateString('es-ES')
+                mant_fecha_proxima: new Date(mantenimiento.mant_fecha_realizacion).toLocaleDateString('es-ES')
             }));
 
             setAllItems(mantenimientosFormateados);
@@ -89,14 +89,14 @@ export const MantenimientoGeneral = () => {
     }, [estadoSeleccionado, tipoSeleccionado]);
 
     const columns = [
-        t('referencia'), t('codigo'), t('fecha_proxima'),
+        t('referencia'), t('codigo'), t('fecha de realizacion'),
         t('estado_actividad'), t('tipo'), t('nombre_actividad'), t('acciones')
     ];
 
     const data = filteredItems.map(item => ({
         referencia_maquina: item.referencia_maquina,
         codigo_mantenimiento: item.codigo_mantenimiento,
-        fecha_realizacion: item.fecha_realizacion,
+        fecha_realizacion: item.mant_fecha_realizacion,
         estado_maquina: item.estado_maquina,
         tipo_mantenimiento: item.tipo_mantenimiento,
         acti_nombre: item.acti_nombre,

@@ -61,8 +61,6 @@ class ErrorBoundary extends React.Component {
 
 export const FormFichaDeMantenimiento = () => {
   const { t } = useTranslation();
-
-  // para poder obtener los tecnicos que nos trae el api
   const { dataUser } = useGlobalData();
 
   const {
@@ -76,11 +74,13 @@ export const FormFichaDeMantenimiento = () => {
       mant_codigo_mantenimiento: "",
       mant_estado: "",
       mant_fecha_proxima: "",
+      man_fecha_realizacion: "",
       mant_descripcion: "",
       mant_ficha_soporte: null,
-      costo_final: "",
+      mant_costo_final: "",
       fk_tipo_mantenimiento: "",
       fk_solicitud_mantenimiento: "",
+      tecnico: "",
       repuestos: [{ nombreRepuesto: "", costo: "" }],
     },
   });
@@ -128,22 +128,17 @@ export const FormFichaDeMantenimiento = () => {
     setFileError(null);
     try {
       const formData = new FormData();
-      formData.append(
-        "mant_codigo_mantenimiento",
-        data.mant_codigo_mantenimiento
-      );
+      formData.append("mant_codigo_mantenimiento", data.mant_codigo_mantenimiento);
       formData.append("mant_estado", data.mant_estado);
       formData.append("mant_fecha_proxima", data.mant_fecha_proxima);
+      formData.append("man_fecha_realizacion", data.man_fecha_realizacion);
       formData.append("mant_descripcion", data.mant_descripcion);
       if (selectedFile) {
         formData.append("mant_ficha_soporte", selectedFile);
       }
-      formData.append("mant_costo_final", data.costo_final);
+      formData.append("mant_costo_final", data.mant_costo_final);
       formData.append("fk_tipo_mantenimiento", data.fk_tipo_mantenimiento);
-      formData.append(
-        "fk_solicitud_mantenimiento",
-        data.fk_solicitud_mantenimiento
-      );
+      formData.append("fk_solicitud_mantenimiento", data.fk_solicitud_mantenimiento);
       formData.append("tecnico", data.tecnico);
 
       const mantenimientoResponse = await axiosCliente.post(
@@ -165,7 +160,7 @@ export const FormFichaDeMantenimiento = () => {
       const partesMantenimiento = data.repuestos.map((repuesto) => ({
         par_fk_mantenimientos: mantenimientoId,
         par_nombre_repuesto: repuesto.nombreRepuesto,
-        par_costo: repuesto.costo,
+        par_costo: parseFloat(repuesto.costo),
       }));
 
       await axiosCliente.post(
@@ -243,7 +238,7 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={"Tecnico de"} subtitle={"Opcional"}>
+            <CardStyle titleCard={"Tecnico de mantenimiento"}>
               <SelectComponent
                 options={dataUser
                   .filter((item) =>
@@ -290,6 +285,20 @@ export const FormFichaDeMantenimiento = () => {
                     </SelectItem>
                   </Select>
                 )}
+              />
+            </CardStyle>
+
+            <CardStyle
+              titleCard={t("Fecha_realizacion")}
+              className="p-6 shadow-md rounded-lg"
+            >
+              <InputforForm
+                register={register}
+                errors={errors}
+                name="man_fecha_realizacion"
+                tipo="date"
+                placeholder={t("select_next_date")}
+                label={t("select_next_date")}
               />
             </CardStyle>
 
@@ -369,7 +378,7 @@ export const FormFichaDeMantenimiento = () => {
               <InputforForm
                 register={register}
                 errors={errors}
-                name="costo_final"
+                name="mant_costo_final"
                 tipo="number"
                 placeholder={t("enter_final_cost")}
                 label={t("enter_final_cost")}
