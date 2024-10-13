@@ -241,7 +241,7 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={"Tecnico de mantenimiento"}>
+            <CardStyle titleCard={t("Tecnico_encargado")}>
               <SelectComponent
                 options={dataUser
                   .filter((item) =>
@@ -252,11 +252,11 @@ export const FormFichaDeMantenimiento = () => {
                     valor: item.us_nombre + " " + item.us_apellidos,
                   }))}
                 name="tecnico"
-                placeholder={t("instructor_encargado")}
+                placeholder={t("Tecnico_encargado")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label={t("instructor_encargado")}
+                label={t("Tecnico_encargado")}
                 required
               />
             </CardStyle>

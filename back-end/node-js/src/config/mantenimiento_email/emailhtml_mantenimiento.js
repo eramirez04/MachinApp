@@ -1,4 +1,4 @@
-export const emailHtml_mantenimiento = (usuario) => {
+export const emailHtml_mantenimiento = (mantenimiento) => {
     const currentYear = new Date().getFullYear();
   
     let html = `
@@ -6,12 +6,9 @@ export const emailHtml_mantenimiento = (usuario) => {
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Correo Electrónico</title>
+        <title>Recordatorio de Mantenimiento</title>
         <style>
-          /* Fuentes */
             @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-          /* Estilos CSS para el correo */
             body {
                 font-family: 'Roboto', sans-serif;
                 background-color: #f5f5f5;
@@ -36,27 +33,11 @@ export const emailHtml_mantenimiento = (usuario) => {
             .content {
                 padding: 20px;
             }
-            .correo {
-                background-color: #f5f5f5;
-                padding: 20px;
-                text-align: center;
-                border-bottom-left-radius: 5px;
-                border-bottom-right-radius: 5px;
-            }
             .footer {
                 background-color: #333;
                 color: #fff;
                 padding: 20px;
                 text-align: center;
-            }
-
-            .footer-content {
-                max-width: 800px;
-                margin: 0 auto;
-            }
-
-            .footer-content p {
-                margin: 0;
             }
         </style>
     </head>
@@ -66,30 +47,25 @@ export const emailHtml_mantenimiento = (usuario) => {
                 <h1>Recordatorio de Mantenimiento</h1>
             </div>
             <div class="content">
-                <p>Estimado/a ${usuario.us_nombre} ${usuario.us_apellidos},</p>
-                <p>Queremos recordarte que tienes un mantenimiento programado en 7 días para la máquina con referencia ${usuario.referencia_maquina}.</p>
-                <p>A continuación, te proporcionamos los detalles del mantenimiento:</p>
+                <p>Estimado/a ${mantenimiento.us_nombre} ${mantenimiento.us_apellidos},</p>
+                <p>Le recordamos que tiene un mantenimiento programado para los próximos 7 días.</p>
+                <p>Detalles del mantenimiento:</p>
                 <ul>
-                    <li><strong>Código de Mantenimiento:</strong> ${usuario.mant_codigo_mantenimiento}</li>
-                    <li><strong>Descripción:</strong> ${usuario.mant_descripcion}</li>
-                    <li><strong>Fecha de Realización:</strong> ${usuario.mant_fecha_realizacion}</li>
-                    <li><strong>Estado de la Actividad:</strong> ${usuario.acti_estado}</li>
-                    <li><strong>Nombre de la Actividad:</strong> ${usuario.acti_nombre}</li>
-                    <li><strong>Tipo de Mantenimiento:</strong> ${usuario.tipo_mantenimiento}</li>
-                    <li><strong>Fecha de Inicio de Garantía:</strong> ${usuario.fi_fecha_inicio_garantia}</li>
-                    <li><strong>Fecha de Fin de Garantía:</strong> ${usuario.fi_fecha_fin_garantia}</li>
-                    <li><strong>Descripción de la Garantía:</strong> ${usuario.fi_descripcion_garantia}</li>
+                    <li><strong>Código de Mantenimiento:</strong> ${mantenimiento.mant_codigo_mantenimiento}</li>
+                    <li><strong>Máquina:</strong> ${mantenimiento.referencia_maquina} (${mantenimiento.tipo_equipo})</li>
+                    <li><strong>Actividad:</strong> ${mantenimiento.acti_nombre}</li>
+                    <li><strong>Descripción:</strong> ${mantenimiento.acti_descripcion}</li>
+                    <li><strong>Fecha de Mantenimiento:</strong> ${mantenimiento.mant_fecha_proxima}</li>
                 </ul>
-                <p>Por favor, asegúrate de programar este mantenimiento y tomar las medidas necesarias. Si necesitas más información, no dudes en contactarnos.</p>
+                <p>Por favor, asegúrese de estar preparado para este mantenimiento. Si necesita más información, no dude en contactarnos.</p>
             </div>
-            <footer class="footer">
-            <div class="footer-content">
+            <div class="footer">
                 <p>&copy; ${currentYear} MachinApp. 2669959</p>
             </div>
-        </footer>
         </div>
     </body>
     </html>
     `;
     return html;
-};
+  };
+  
