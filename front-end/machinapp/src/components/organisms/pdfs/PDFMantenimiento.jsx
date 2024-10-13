@@ -1,3 +1,4 @@
+// GenerarPdf.jsx
 import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { axiosCliente } from "../../../index.js";
