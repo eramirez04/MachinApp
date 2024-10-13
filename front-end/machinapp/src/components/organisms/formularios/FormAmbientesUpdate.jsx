@@ -6,6 +6,7 @@ import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useGlobalData } from "../../../index.js";
+import { useTranslation } from "react-i18next";
 
 export const FormAmbientesUpdate = () => {
   const [areas, setAreas] = useState([]);
@@ -23,10 +24,11 @@ export const FormAmbientesUpdate = () => {
   } = useForm();
   
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtener el ID del ambiente desde los parámetros de la URL
+  const { id } = useParams();
 
-  // Obtener datos globales
-  const { dataUser } = useGlobalData(); // Obtener usuarios desde useGlobalData
+  const { t } = useTranslation();
+
+  const { dataUser } = useGlobalData(); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +37,7 @@ export const FormAmbientesUpdate = () => {
           await Promise.all([
             axiosCliente.get("area/listararea"),
             axiosCliente.get("tipositio/listartipositio"),
-          axiosCliente.get(`/sitio/listarsitioporid/${id}`) // Obtener datos del ambiente específico
+          axiosCliente.get(`/sitio/listarsitioporid/${id}`)
         ]);
 
         const areaArray = areaResponse.data.resultadoArea.map((item) => ({
@@ -51,7 +53,6 @@ export const FormAmbientesUpdate = () => {
         setAreas(areaArray);
         setTipositios(tipositioArray);
 
-        // Configurar datos del ambiente en el formulario
         const sitioData = sitioResponse.data;
         setDataSitio(sitioData);
         setValue("Nombre_del_ambiente", sitioData.sit_nombre);
@@ -61,7 +62,7 @@ export const FormAmbientesUpdate = () => {
         setFechaRegistro(sitioData.sit_fecha_registro);
 
         if (sitioData.img) {
-          const previewUrl = `http://localhost:3000/imagenes/${sitioData.img}`; // Ajusta la URL según sea necesario
+          const previewUrl = `http://localhost:3000/imagenes/${sitioData.img}`;
           setPreviewImagen(previewUrl);
         }
       } catch (error) {
@@ -70,7 +71,7 @@ export const FormAmbientesUpdate = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, t]);
 
   const handleSubmitData = async (data) => {
     const dataSitio = {
@@ -84,16 +85,15 @@ export const FormAmbientesUpdate = () => {
 
     try {
       await multiFormData(
-        `http://localhost:3000/sitio/editarsitio/${id}`, // Endpoint para actualizar
+        `http://localhost:3000/sitio/editarsitio/${id}`,
         dataSitio,
         "PUT"
       );
 
-      alert("Se actualizó con éxito");
-
+      alert(t("update_sede_success"));
       navigate("/Ambientes");
     } catch (error) {
-      alert("Error al actualizar el ambiente");
+      alert(t("update_sede_error"));
       console.log(error);
     }
   };
@@ -121,7 +121,7 @@ export const FormAmbientesUpdate = () => {
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
           <h1 className="text-3xl font-bold text-white">
-            Actualizar Ambiente
+            {t("update_ambiente")}
           </h1>
         </header>
 
@@ -130,7 +130,7 @@ export const FormAmbientesUpdate = () => {
             {previewImagen ? (
               <img
                 className="h-full w-full object-cover rounded"
-                alt="Preview"
+                alt={t("imagePreview")}
                 src={previewImagen}
               />
             ) : (
@@ -138,11 +138,13 @@ export const FormAmbientesUpdate = () => {
             )}
           </div>
 
-          <h2 className="mt-5 text-xl font-semibold">Imagen del ambiente</h2>
+          <h2 className="mt-5 text-xl font-semibold">
+            {t("imageAmbiente")}
+          </h2>
           <label className="mt-2 w-64 flex flex-col items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow-md tracking-wide uppercase border border-green-600 cursor-pointer hover:bg-green-600">
             <FaUpload className="text-xl" />
             <span className="mt-2 text-base leading-normal">
-              Seleccionar archivo
+              {t("selectFile")}
             </span>
             <input
               type="file"
@@ -159,7 +161,7 @@ export const FormAmbientesUpdate = () => {
 
           <div className="w-3/4 my-8 p-4 bg-gray-50 rounded-lg shadow-md">
             <h2 className="mt-5 text-2xl font-semibold text-center text-gray-700">
-              Información del ambiente
+              {t("ambiente_info")}
             </h2>
 
             <div className="grid grid-cols-2 gap-6 mt-4">
@@ -168,47 +170,47 @@ export const FormAmbientesUpdate = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_ambiente"}
-                label={"Nombre del ambiente"}
+                label={t("environmentName")}
               />
               <InputDate
-                label="Fecha de Registro: "
+                label={t("fechaRegistro")}
                 value={fechaRegistro}
                 onChange={dateRegistro}
               />
               <SelectComponent
                 options={areas}
-                name="area"
-                placeholder="Area"
+                name={"area"}
+                placeholder={t("area")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label="Area"
+                label={t("area")}
               />
               <SelectComponent
                 options={tipositios}
-                name="tipo_sitio"
-                placeholder="Tipo de Sitio"
+                name={"tipo_sitio"}
+                placeholder={t("tipo_sitio")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label="Tipo de sitio"
+                label={t("tipo_sitio")}
               />
               <SelectComponent
                 options={dataUser.filter(item => item.rol_nombre === "instructor").map(item => ({
                   id: item.idUsuarios,
                   valor: item.us_nombre + " " + item.us_apellidos,
                 }))}
-                name="instructor"
-                placeholder="Instructor encargado"
+                name={"instructor"}
+                placeholder={t("instructor_encargado")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label="Instructor encargado"
+                label={t("instructor_encargado")}
               />
             </div>
           </div>
           <div className="pb-8">
-            <ButtonNext color="success" text="Actualizar Ambiente" type="submit" />
+            <ButtonNext color="success" text={t("update_ambiente")} type="submit" />
           </div>
         </div>
       </form>
