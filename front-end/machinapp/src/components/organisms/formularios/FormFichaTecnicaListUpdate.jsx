@@ -77,11 +77,11 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
     try{
 
       //actualizamos la informacion basica de la maquina
-      /* const response =  */await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
+      await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
 
 
       //actualizamos la informacion de los detalles. 
-      /* const actDetalles = */ await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+      await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
 
       await refreshEquipos()
 
@@ -107,7 +107,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         //para info de las variables y detalles
         let variables = response.data.infoVar
-        console.log(variables)
 
         //registramos todos los detalles en  el formulario para poder editarlos , el id del detalle es la clave y el valor es el valor del input.  
 
@@ -152,7 +151,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         setVarObligatorias(objVarObligatorias)
 
-        console.log(objVarObligatorias)
 
 
       } catch (error) {
@@ -363,16 +361,21 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
                 {
                   estadoImg ? (
-                    <div className="flex items-center justify-center w-full h-[256px] bg-gray-200 rounded sm:w-full dark:bg-gray-300 mt-10">
+                    <div className=" border-1 border-gray-300 flex items-center justify-center w-full h-[305px] mt-9 rounded-xl px-3 py-3">
                       <img
-                        className="h-full w-full object-contain rounded"
+                        className="h-full w-full object-contain rounded-md"
                         alt=""
                         src={previewImagen}
                       />
                     </div>
                   ):(
-                  <div className="flex items-center justify-center w-full   sm:w-full  mt-10">
-                    <Imagenes rutaImg={`imagenes/ficha/${infoFicha.fi_imagen}`}  />
+                  <div  className=" border-1 border-gray-300 flex items-center justify-center w-full h-[305px] mt-9 rounded-xl px-3 py-3">
+
+                    <img
+                        className="h-full w-full object-contain rounded-md"
+                        alt=""
+                        src={`http://localhost:3000/imagenes/ficha/${infoFicha.fi_imagen}`}
+                    />
                   </div>
                   )
                 }
@@ -435,15 +438,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
 
             <div className="w-full mt-12 px-4">
               <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion del equipo</label>
