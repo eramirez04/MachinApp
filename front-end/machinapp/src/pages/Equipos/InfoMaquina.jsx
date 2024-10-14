@@ -1,15 +1,14 @@
 import  { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-/* import {Link as LinkNextui} from "@nextui-org/react" */
 import { BiQrScan } from "react-icons/bi"
 import { CiSaveDown1 } from "react-icons/ci"
 import {Tooltip} from "@nextui-org/react"
 import { Button } from "@nextui-org/react";
 import {  DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { toast } from "react-toastify"
-
-
+import { useNavigate } from 'react-router-dom';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { 
     Layout, 
     CardStyle, 
@@ -22,7 +21,8 @@ import {
     PaginateTable,
     SearchComponent,
     VistaFichaTecnica,
-    ExcelMaquinasMant
+    ExcelMaquinasMant,
+    VistaPDF
 
 } from "../../index.js"
 import { useTranslation } from "react-i18next"
@@ -30,7 +30,6 @@ import { useTranslation } from "react-i18next"
 
 export const InfoMaquina = () => {
 
-    const [noMantenimientos, setNoMantenimientos] = useState(false)
 
     const { t } = useTranslation()
 
@@ -38,11 +37,13 @@ export const InfoMaquina = () => {
   const [maquinaMantenimientos, setMantenimientosMaquina ] = useState([])
   const {idMaquina} = useParams()
   const [mantenimientosFil, setMantenimientosFil] = useState([]);
+  const navigate = useNavigate()
 
 
     const buscarInfo = async ()=>{
         try{
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
+            console.log(response.data)
             setInfoMaquina(response.data)
 
         }catch(error){
@@ -53,8 +54,22 @@ export const InfoMaquina = () => {
     const buscarInfoMantenimientos = async()=>{
         try{
             const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
-           
-            setMantenimientosMaquina(mantenimientos.data)
+
+            let dataMantenimientos = mantenimientos.data
+
+            //se hace esto para poder abrir el pdf de los mantenimientos sin problema. 
+            const mantenimientosAct = dataMantenimientos.map(({ mant_codigo_mantenimiento, ...contenido }) => ({
+                codigo_mantenimiento: mant_codigo_mantenimiento, //aqui cambiamos el nombre de la clave
+                ...contenido
+            }))        
+            console.log(mantenimientosAct)
+
+
+            setMantenimientosMaquina(mantenimientosAct)
+
+
+            
+            console.log(mantenimientos.data)
            /*  console.log(mantenimientos.data)
 
             if (mantenimientos.data.lenght > 0){
@@ -73,9 +88,9 @@ export const InfoMaquina = () => {
     }
 
     useEffect(()=>{
+        
         buscarInfo()
         buscarInfoMantenimientos()
-
     }, [idMaquina])
 
     /* Configuracion de la tabla de mantenimientos */
@@ -91,13 +106,20 @@ export const InfoMaquina = () => {
     ]
 
 
+
+
     const contentTable = maquinaMantenimientos.map((mantenimiento)=>({
-        codigo_Mantenimiento: mantenimiento.mant_codigo_mantenimiento,
+        codigo_Mantenimiento: mantenimiento.codigo_mantenimiento,
         nombre_solicitante: mantenimiento.nombre_solicitante,
         mant_estado: mantenimiento.mant_estado,
         mant_costo_final: mantenimiento.mant_costo_final,
         tipo_mantenimiento: mantenimiento.tipo_mantenimiento,
         mant_ficha_soporte:mantenimiento.mant_ficha_soporte,
+        Pdf: (
+            <div className="flex space-x-2">
+                <VistaPDF item={mantenimiento} />
+            </div>
+        )
     }))
 
     const buscarMantenimientos = (search)=>{
@@ -113,6 +135,13 @@ export const InfoMaquina = () => {
     }
 
 
+
+
+
+    const handleEdit =()=>{
+        navigate(`/listarFichaTecnica/${idMaquina}`)
+    }
+    
   return (
     <>
         <Layout titlePage={`${maquina.tipoEquipo}`} > 
@@ -127,8 +156,16 @@ export const InfoMaquina = () => {
 
                     <div className=" shadow-sm border-1 border-green-600 rounded-lg shadow-green-500 p-3  gap-4 flex flex-row justify-end">
                         
-                        <div className="w-full">
+                        <div className="w-full flex align-middle">
                             <VistaFichaTecnica idMaquina={maquina.idFichas} />
+                            <Button
+                                color="warning"
+                                startContent={<PencilSquareIcon className="h-5 w-5" />}
+                                className="text-white ml-4"
+                                onClick={handleEdit}
+                                >
+                                {t('editar')}
+                            </Button>
                         </div>
 
                         <a href={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`} target="_blank" download>
@@ -150,7 +187,7 @@ export const InfoMaquina = () => {
                     <div className=" my-5 rounded-lg  shadow-sm  shadow-gray-500/50 p-4 " >
                         <h3 className=" pl-10 text-lg border-b-1 border-b-green-600 pb-2 text-zinc-800  font-medium"> {t('infoGeneral')}</h3>
                         <div className="grid grid-cols-2 gap-3 mt-3">
-                            <BlocInformation titulo = "Id" contenido={maquina.idFichas} />
+                            <BlocInformation titulo ={t('fechaAdquisi')} contenido={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()} />
                             <BlocInformation titulo = {t('serial')} contenido={maquina.fi_serial} />
                             <BlocInformation titulo = {t('placaSena')} contenido={maquina.fi_placa_sena} />
                             <BlocInformation titulo = {t('marca')} contenido={maquina.fi_marca} />
@@ -162,10 +199,13 @@ export const InfoMaquina = () => {
                     <div className=" my-5 rounded-lg  shadow-sm  shadow-gray-500/50 p-4 " >
                         <h3 className="pl-10 text-lg border-b-1 border-b-green-600 pb-2 text-zinc-800  font-medium"> {t('infoGarantia')}</h3>
                         <div className="grid grid-cols-2 gap-2 mt-3" >
-                            <BlocInformation titulo ={t('fechaAdquisi')} contenido={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()} />
+                            {/* <BlocInformation titulo ={t('fechaAdquisi')} contenido={new Date(maquina.fi_fecha_adquisicion).toLocaleDateString()} /> */}
                             <BlocInformation titulo = {t('fechaInicioGaran')} contenido={new Date(maquina.fi_fecha_inicio_garantia).toLocaleDateString()} />
-                            <BlocInformation className="w-full " titulo ={t('fechaDescrGarantia')} contenido={maquina.fi_descripcion_garantia} />
                             <BlocInformation titulo = {t('fechaFinGarantia')} contenido={new Date(maquina.fi_fecha_fin_garantia).toLocaleDateString()} />
+                        </div>
+                        <div className=" w-full p-2 rounded-lg text-zinc-700 " >
+                            <p className=" mb-1 font-medium "> {t('fechaDescrGarantia')} :</p>
+                            <p>{maquina.fi_descripcion_garantia}</p>
                         </div>
                     </div>
 
@@ -251,9 +291,11 @@ export const InfoMaquina = () => {
             <div className=" block mx-16 mb-14 ">
                 <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2" >{t('mantEquipo')} </h3>
                     
-                    <ExcelMaquinasMant/>
+                    <div className="w-full flex justify-end px-9 ">
+                        <ExcelMaquinasMant  infoMaquina={maquina}  infoMantenimientos={maquinaMantenimientos} />
+                    </div>
 
-                <div className="pt-3 px-9 mt-8 mb-10">
+                <div className="pt-3 px-9 mt-3 mb-10">
                     <div className="mb-6">
                         <SearchComponent
                         label={`${t('codigo')}, ${t('nombreSolic')}, ${t('maintenance_type')}, ${t('estado')}`}
@@ -270,16 +312,6 @@ export const InfoMaquina = () => {
                             <>
                             <Button 
                                 color="default" 
-                                startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
-                                className="text-white"
-                            >
-                            </Button>
-                            </>
-                        ),
-                        Pdf:(
-                            <>
-                            <Button 
-                                color="success" 
                                 startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
                                 className="text-white"
                             >
