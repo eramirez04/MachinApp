@@ -8,6 +8,7 @@ import {
   eliminarActividades,
   actualizarActividades,
   registrarVariasActividades,
+  listarActividadesdeSolicitudes,
 
 } from "../controllers/activitiesController.js";
 
@@ -16,6 +17,9 @@ import { verificar } from "../middlewares/LoginMidleware.js";
 const ActivitiesRoutes = Router();
 
 ActivitiesRoutes.get("/listar", listarActividades);
+
+ActivitiesRoutes.get("/listarSolicitud/:idSolicitud", listarActividadesdeSolicitudes);
+
 
 ActivitiesRoutes.post(
   "/registrar",
@@ -34,8 +38,7 @@ ActivitiesRoutes.delete(
   eliminarActividades
 );
 ActivitiesRoutes.put(
-  "/actualizar/:id_actividades",
-  verificar,
+  "/actualizar/:idActividades",
   validar_actividad,
   actualizarActividades
 );

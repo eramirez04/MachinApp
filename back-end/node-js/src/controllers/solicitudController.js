@@ -206,18 +206,9 @@ export const listarSolicitudPorId = async (req, res) => {
           temas_legal,
           fecha_solicitud,
           nombre_solicitante,
-          correo_solicitante,
-          acti_nombre,
-          acti_descripcion,
-          fi_placa_sena
+          correo_solicitante
       FROM
-         solicitud_mantenimiento 
-      JOIN 
-          solicitud_has_fichas ON idSolicitud = fk_solicitud
-      JOIN 
-          fichas_maquinas_equipos ON fk_fichas = idFichas
-      JOIN 
-          actividades ON acti_fk_solicitud = idSolicitud
+          solicitud_mantenimiento 
       WHERE
           idSolicitud = ?
     `;
@@ -236,15 +227,12 @@ export const listarSolicitudPorId = async (req, res) => {
         fecha_solicitud: result[0].fecha_solicitud,
         nombre_solicitante: result[0].nombre_solicitante,
         correo_solicitante: result[0].correo_solicitante,
-        acti_nombre: result[0].acti_nombre,
-        acti_descripcion: result[0].acti_descripcion,
-        fi_placa_sena: result[0].fi_placa_sena
       };
 
       res.status(200).json(mantenimiento);
     } else {
       res.status(404).json({
-        message: "No se encontró un solicitud con ese id.",
+        message: "No se encontró una solicitud con ese id.",
       });
     }
   } catch (err) {

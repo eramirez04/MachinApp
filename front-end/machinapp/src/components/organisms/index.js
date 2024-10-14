@@ -38,7 +38,7 @@ export {Artboard} from "./Paginacentrar"
 
 // solicitudes
 
-export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate"
+export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate.jsx"
 
 // graficos
 export { ChartMaquinas } from "./graficos/MaquinasChart";
