@@ -355,6 +355,7 @@ export const listarInfoEspecifica = async(req, res)=>{
         sede_nombre,
         sede_regional,
         sede_municipio,
+        sede_direccion,
         ficha_respaldo,
         ti_fi_nombre as tipoEquipo
 
@@ -585,7 +586,15 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         mant_codigo_mantenimiento,
         mant_estado,
         mant_costo_final,
+        man_fecha_realizacion,
+        mant_descripcion, 
         mant_ficha_soporte,
+        mant_fecha_proxima,
+        soli_descripcion_problemas,
+        fecha_solicitud,
+        soli_costo_estimado,
+        fk_tecnico,
+        mant_costo_final,
         tipo_mantenimiento 
         FROM tipo_mantenimiento
         INNER JOIN mantenimiento ON idTipo_mantenimiento = fk_tipo_mantenimiento
@@ -599,6 +608,35 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         const[mantenimientos] = await conexion.query(sqlMantenimientos)
 
         if (mantenimientos.length > 0){
+
+            
+            for (let i = 0; i < mantenimientos.length; i++) {
+                const tecnicoId = mantenimientos[i].fk_tecnico
+
+                // Consulta para obtener los detalles del técnico
+                let sqlTec = `
+                    SELECT
+                        us_nombre,
+                        us_apellidos, 
+                        us_empresa
+                    FROM usuarios
+                    WHERE idUsuarios = ${tecnicoId}
+                `
+
+                const [userTec] = await conexion.query(sqlTec);
+                
+                // Agregamos los detalles del técnico al objeto del mantenimiento
+                if (userTec.length > 0) {
+                    mantenimientos[i].tecnico = {
+                        nombre: userTec[0].us_nombre,
+                        apellidos: userTec[0].us_apellidos,
+                        empresa: userTec[0].us_empresa,
+                    };
+                }
+            }
+            
+
+
             return res.status(200).json(mantenimientos)
         }
         else{

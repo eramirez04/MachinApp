@@ -11,6 +11,7 @@ export { FormFichaSolicitud } from "./formularios/FormFichaSolicitud.jsx";
 /*  */
 export { FormFichaTecnicaListUpdate } from "./formularios/FormFichaTecnicaListUpdate";
 export { UpdateEstAmbienteFicha } from "./formularios/UpdateEstAmbienteFicha";
+export  {FormUpdateVarsTipoFicha} from "./formularios/FormUpdateVarsTipoFicha"
 
 // listas
 export { SolicitudList } from "./listas/SolicitudList";
