@@ -2,6 +2,7 @@ import { useAuth, Icons } from "../../../index";
 import { DropDown } from "../navigation/Dropdown";
 import { User } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   UserCircleIcon,
@@ -11,6 +12,7 @@ import {
 
 export const AvatarCom = () => {
   const { logout, user, loading } = useAuth();
+  const { t } = useTranslation();
 
   const ItemsDrop = [
     <>
@@ -19,18 +21,21 @@ export const AvatarCom = () => {
     </>,
     <>
       <Link to={"/perfil"} className="flex gap-4">
-        <Icons icon={UserCircleIcon} /> <p>Administrar Perfil de usuario</p>
+        <Icons icon={UserCircleIcon} /> <p>{t("administrar_perfil_usuario")}</p>
       </Link>
     </>,
     <>
       <Link className="flex gap-4">
-        <Icons icon={QuestionMarkCircleIcon} /> <p>Help & Feedbackp</p>
+        <Icons icon={QuestionMarkCircleIcon} />{" "}
+        <p>
+          {t("ayuda")} & {t("retroalimentacion")}
+        </p>
       </Link>
     </>,
     <>
       <div className="flex gap-4" onClick={logout}>
         <Icons icon={ArrowRightOnRectangleIcon} />
-        <p> Salir</p>
+        <p> {t("salir")}</p>
       </div>
     </>,
   ];

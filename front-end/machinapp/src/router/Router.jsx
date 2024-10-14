@@ -33,6 +33,7 @@ import {
   UpdateFormFichaSolicitud,
   ActualizarSedes,
   Page404,
+  SettingsPanelPage
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -64,6 +65,7 @@ export const AppRouter = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
 
+            <Route path="/ayuda" element={<SettingsPanelPage />} />
 
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
             <Route path="/editar/solicitud/:id" element={<UpdateFormFichaSolicitud/>}/>

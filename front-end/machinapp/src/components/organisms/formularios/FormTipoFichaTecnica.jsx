@@ -137,7 +137,7 @@ export const FormTipoFichaTecnica = () => {
         ficha: data.tipo_ficha
       }
 
-      const responseVar = await axiosCliente.post("variable/registrarVars/", contenidoVar)
+     await axiosCliente.post("variable/registrarVars/", contenidoVar)
 
       navigate('/maquinas')
 
@@ -157,204 +157,324 @@ export const FormTipoFichaTecnica = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleSubmitData)} className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5 mt-10">
-        
-       <div className="flex flex-row justify-between items-center"> 
-        <InputForm
-          errors={errors}
-          register={register}
-          tipo={"text"}
-          name={"nombreTipoFicha"}
-          text={t("nombreTipoFicha")}
-        />
-        <div className="w-52">
-        <Select
-          value={tipoFicha}
-          aria-label="Seleccionar idioma"
-          label={t('registElemento')}
-          onChange={handleSelectionChange}
-          variant="bordered"
-          color="primary"
-          size="md"
-         
-        >
-          <SelectItem key="equipo" value="equipo">
-            {t('equipoMa')}
-          </SelectItem>
-          <SelectItem key="ambiente" value="ambiente">
-            {t('ambienteFor')}
-          </SelectItem>
-        </Select>
-
-        </div>
+      <form
+        onSubmit={handleSubmit(handleSubmitData)}
+        className="bg-white border rounded-lg md:p-14 w-full sm:w-11/12 mx-auto p-5 mt-10"
+      >
+        <div className="flex flex-row justify-between items-center">
+          <InputForm
+            errors={errors}
+            register={register}
+            tipo={"text"}
+            name={"nombreTipoFicha"}
+            text={t("nombreTipoFicha")}
+          />
+          <div className="w-52">
+            <Select
+              value={tipoFicha}
+              aria-label="Seleccionar idioma"
+              label={t("registElemento")}
+              onChange={handleSelectionChange}
+              variant="bordered"
+              color="primary"
+              size="md"
+            >
+              <SelectItem key="equipo" value="equipo">
+                {t("equipoMa")}
+              </SelectItem>
+              <SelectItem key="ambiente" value="ambiente">
+                {t("ambienteFor")}
+              </SelectItem>
+            </Select>
+          </div>
         </div>
 
         {/* Variables de clase especifica */}
-     {tipoFicha && (<>
-     
-         <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
+        {tipoFicha && (
+          <>
+            <div className="bg-gray-50 p-5 rounded-xl mt-10 ">
+              <h3 className="text-xl text-gray-800 mb-10 ">
+                {tipoFicha === "equipo"
+                  ? t("agregarCaractGene")
+                  : t("dimensiones_y_caracteristicas_fisicas")}
+              </h3>
 
-          <h3 className="text-xl text-gray-800 mb-10 ">
-            { tipoFicha === "equipo" ?t('agregarCaractGene') : "Dimensiones y Características Físicas" }
-          </h3>
-            
-          {containersEsp.map((container)  => (
+              {containersEsp.map((container) => (
+                <div
+                  key={container.id}
+                  className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around"
+                >
+                  <InputForm
+                    errors={errors}
+                    register={register}
+                    tipo={"text"}
+                    name={`varEspecificas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente
+                    text={t("nombreMa")}
+                  />
 
-            <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around">
+                  <input
+                    type="hidden"
+                    name={`varEspecificas[${container.id}].var_clase`}
+                    value="especifica"
+                    {...register(`varEspecificas[${container.id}].var_clase`)}
+                  />
 
-              <InputForm
-                errors={errors}
-                register={register}
-                tipo={"text"}
-                name={`varEspecificas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={t("nombreMa")}
-              />
+                  <input
+                    type="hidden"
+                    name={`varEspecificas[${container.id}].var_descripcion`}
+                    value=""
+                    {...register(
+                      `varEspecificas[${container.id}].var_descripcion`
+                    )}
+                  />
 
-              <input type="hidden" name={`varEspecificas[${container.id}].var_clase`} value="especifica" {...register(`varEspecificas[${container.id}].var_clase`)} />
+                  <div className="flex flex-col">
+                    <label htmlFor="">{t("tipoDato")} : </label>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspecificas[${container.id}].var_tipoDato`}
+                        value="text"
+                        {...register(
+                          `varEspecificas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />{" "}
+                      {t("texto")}
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspecificas[${container.id}].var_tipoDato`}
+                        value="number"
+                        {...register(
+                          `varEspecificas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />{" "}
+                      {t("numero")}
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspecificas[${container.id}].var_tipoDato`}
+                        value="date"
+                        {...register(
+                          `varEspecificas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />
+                      {t("fecha")}{" "}
+                    </div>
+                    {errors.varEspecificas &&
+                      errors.varEspecificas[container.id]?.var_tipoDato && (
+                        <p className="text-red-600 text-sm mt-2">
+                          {
+                            errors.varEspecificas[container.id].var_tipoDato
+                              .message
+                          }
+                        </p>
+                      )}
+                  </div>
 
-              <input type="hidden" name={`varEspecificas[${container.id}].var_descripcion`} value="" {...register(`varEspecificas[${container.id}].var_descripcion`)} />
-              
-
-              <div className="flex flex-col">
-                <label htmlFor="">{t("tipoDato")} : </label>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('texto')}</div>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('numero')}</div>
-                <div><input type="radio" name={`varEspecificas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspecificas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  />{t('fecha')} </div>
-                {errors.varEspecificas && errors.varEspecificas[container.id]?.var_tipoDato && (
-                    <p className="text-red-600 text-sm mt-2">{errors.varEspecificas[container.id].var_tipoDato.message}</p>
-                )}
-              </div>
-
+                  <Button
+                    onClick={() => removeContainerEsp(container.id)}
+                    type="button"
+                    variant="solid"
+                    className="bg-red-600 text-white w-10 "
+                  >
+                    <Icons icon={MdDelete} />
+                  </Button>
+                </div>
+              ))}
               <Button
-                onClick={() => removeContainerEsp(container.id)}
+                onClick={addContainerEsp}
                 type="button"
-                variant="solid"
-                className="bg-red-600 text-white w-10 "
+                color="success"
+                variant="ghost"
               >
-                <Icons icon={MdDelete} />
+                <Icons icon={PlusIcon} />
               </Button>
             </div>
-          ))}
-          <Button 
-            onClick={addContainerEsp}                 
-            type="button"
-            color="success"
-            variant="ghost"
-          >
-            <Icons  icon={PlusIcon} />
-          </Button>
-        </div> 
 
-        {/* variables de de clase Especificaiones tecnicas */}
+            {/* variables de de clase Especificaiones tecnicas */}
 
-        <div className="bg-gray-50 p-5 rounded-xl my-10 ">
+            <div className="bg-gray-50 p-5 rounded-xl my-10 ">
+              <h3 className="text-xl text-gray-800 mb-10 ">
+                {tipoFicha === "equipo"
+                  ? t("agregarEspeTec")
+                  : t("acabados_del_ambiente_de_formacion")}
+              </h3>
 
-          <h3 className="text-xl text-gray-800 mb-10 "> 
-          { tipoFicha === "equipo" ?t('agregarEspeTec') : "ACABADOS DEL AMBIENTE DE FORMACIÓN" }
-          </h3>
-            
-          {containersTecn.map((container)  => (
-            <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around">
+              {containersTecn.map((container) => (
+                <div
+                  key={container.id}
+                  className="border p-4 mb-4 rounded-md flex flex-row items-center justify-around"
+                >
+                  <InputForm
+                    errors={errors}
+                    register={register}
+                    tipo={"text"}
+                    name={`varEspTecnicas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente
+                    text={t("nombreMa")}
+                  />
 
-              <InputForm
-                errors={errors}
-                register={register}
-                tipo={"text"}
-                name={`varEspTecnicas[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={t('nombreMa')}
-              />
-               
-              <input type="hidden" name={`varEspTecnicas[${container.id}].var_clase`} value="especificacionesTecnicas" {...register(`varEspTecnicas[${container.id}].var_clase`)} />
-              <input type="hidden" name={`varEspTecnicas[${container.id}].var_descripcion`} value="" {...register(`varEspTecnicas[${container.id}].var_descripcion`)} />
-              
-              <div className="flex flex-col">
-                <label htmlFor=""> {t('tipoDato')}</label>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="text"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('texto')}</div>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="number"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('numero')}</div>
-                <div><input type="radio" name={`varEspTecnicas[${container.id}].var_tipoDato`} value="date"  {...register(`varEspTecnicas[${container.id}].var_tipoDato`, { required: "Seleccione un tipo de dato" })}  /> {t('fecha')}</div>
-                {errors.varEspTecnicas && errors.varEspTecnicas[container.id]?.var_tipoDato && (
-                    <p className="text-red-600 text-sm mt-2">{errors.varEspTecnicas[container.id].var_tipoDato.message}</p>
-                )}
+                  <input
+                    type="hidden"
+                    name={`varEspTecnicas[${container.id}].var_clase`}
+                    value="especificacionesTecnicas"
+                    {...register(`varEspTecnicas[${container.id}].var_clase`)}
+                  />
+                  <input
+                    type="hidden"
+                    name={`varEspTecnicas[${container.id}].var_descripcion`}
+                    value=""
+                    {...register(
+                      `varEspTecnicas[${container.id}].var_descripcion`
+                    )}
+                  />
 
-              </div>
+                  <div className="flex flex-col">
+                    <label htmlFor=""> {t("tipoDato")}</label>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspTecnicas[${container.id}].var_tipoDato`}
+                        value="text"
+                        {...register(
+                          `varEspTecnicas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />{" "}
+                      {t("texto")}
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspTecnicas[${container.id}].var_tipoDato`}
+                        value="number"
+                        {...register(
+                          `varEspTecnicas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />{" "}
+                      {t("numero")}
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name={`varEspTecnicas[${container.id}].var_tipoDato`}
+                        value="date"
+                        {...register(
+                          `varEspTecnicas[${container.id}].var_tipoDato`,
+                          { required: "Seleccione un tipo de dato" }
+                        )}
+                      />{" "}
+                      {t("fecha")}
+                    </div>
+                    {errors.varEspTecnicas &&
+                      errors.varEspTecnicas[container.id]?.var_tipoDato && (
+                        <p className="text-red-600 text-sm mt-2">
+                          {
+                            errors.varEspTecnicas[container.id].var_tipoDato
+                              .message
+                          }
+                        </p>
+                      )}
+                  </div>
 
+                  <Button
+                    onClick={() => removeContainerTecn(container.id)}
+                    type="button"
+                    variant="solid"
+                    className="bg-red-600 text-white w-10 "
+                  >
+                    <Icons icon={MdDelete} />
+                  </Button>
+                </div>
+              ))}
               <Button
-                onClick={() => removeContainerTecn(container.id)}
+                onClick={addContainerTecn}
                 type="button"
-                variant="solid"
-                className="bg-red-600 text-white w-10 "
+                color="success"
+                variant="ghost"
               >
-                <Icons icon={MdDelete} />
+                <Icons icon={PlusIcon} />
               </Button>
             </div>
-          ))}
-          <Button 
-            onClick={addContainerTecn}                 
-            type="button"
-            color="success"
-            variant="ghost"
-          >
-            <Icons  icon={PlusIcon} />
-          </Button>
-        </div> 
 
+            {/* variables de de clase seccion*/}
 
+            <div className="bg-gray-50 p-5 rounded-xl my-10 ">
+              <h3 className="text-xl text-gray-800 mb-10 ">
+                {t("agregarSeccion")}
+              </h3>
 
+              {containersSecc.map((container) => (
+                <div
+                  key={container.id}
+                  className="border p-4 mb-4 rounded-md flex flex-row items-center gap-4 justify-around"
+                >
+                  <InputForm
+                    errors={errors}
+                    register={register}
+                    tipo={"text"}
+                    name={`varSeccion[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente
+                    text={`${t("nombreMa")}`}
+                  />
 
-        {/* variables de de clase seccion*/}
+                  <input
+                    type="hidden"
+                    name={`varSeccion[${container.id}].var_clase`}
+                    value="seccion"
+                    {...register(`varSeccion[${container.id}].var_clase`)}
+                  />
+                  <input
+                    type="hidden"
+                    name={`varSeccion[${container.id}].var_tipoDato`}
+                    value="text"
+                    {...register(`varSeccion[${container.id}].var_tipoDato`)}
+                  />
 
-        <div className="bg-gray-50 p-5 rounded-xl my-10 ">
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="">{t("descripcionSeccion")} </label>
+                    <TextAreaComponent
+                      errors={errors}
+                      register={register}
+                      name={`varSeccion[${container.id}].var_descripcion`}
+                    />
+                  </div>
 
-          <h3 className="text-xl text-gray-800 mb-10 ">{t('agregarSeccion')}</h3>
-            
-          {containersSecc.map((container)  => (
-            <div key={container.id} className="border p-4 mb-4 rounded-md flex flex-row items-center gap-4 justify-around">
-
-              <InputForm
-                errors={errors}
-                register={register}
-                tipo={"text"}
-                name={`varSeccion[${container.id}].var_nombre`} // se guarda de esta forma para que nos guarde cada informacion del contenedor en un objeto diferente y en una clave diferente 
-                text={`${t('nombreMa')}`}
-              />
-
-              <input type="hidden" name={`varSeccion[${container.id}].var_clase`} value="seccion" {...register(`varSeccion[${container.id}].var_clase`)} />
-              <input type="hidden" name={`varSeccion[${container.id}].var_tipoDato`} value="text" {...register(`varSeccion[${container.id}].var_tipoDato`)} />
-              
-              <div className="flex flex-col w-full">
-                <label htmlFor="">{t('descripcionSeccion')}  </label>
-                <TextAreaComponent
-                  errors={errors}
-                  register={register}
-                  name={`varSeccion[${container.id}].var_descripcion`}
-                />
-              </div>
-            
+                  <Button
+                    onClick={() => removeContainerSecc(container.id)}
+                    type="button"
+                    variant="solid"
+                    className="bg-red-600 text-white w-10 "
+                  >
+                    <Icons icon={MdDelete} />
+                  </Button>
+                </div>
+              ))}
               <Button
-                onClick={() => removeContainerSecc(container.id)}
+                onClick={addContainerSecc}
                 type="button"
-                variant="solid"
-                className="bg-red-600 text-white w-10 "
+                color="success"
+                variant="ghost"
               >
-                <Icons icon={MdDelete} />
+                <Icons icon={PlusIcon} />
               </Button>
             </div>
-          ))}
-          <Button 
-            onClick={ addContainerSecc}                 
-            type="button"
-            color="success"
-            variant="ghost"
-          >
-            <Icons  icon={PlusIcon} />
-          </Button>
-        </div> 
+          </>
+        )}
 
-     </>)}
-
-        <ButtonNext text={t('registrar')}  type="submit" className={"bg-green-600 text-white w-full"}> </ButtonNext>
-
+        <ButtonNext
+          text={t("registrar")}
+          type="submit"
+          className={"bg-green-600 text-white w-full"}
+        >
+          {" "}
+        </ButtonNext>
       </form>
     </>
-  )
+  );
 }
