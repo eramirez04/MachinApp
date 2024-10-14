@@ -8,6 +8,7 @@ import {
   multiFormData,
   ButtonNext,
   slepp,
+  tipoDocumentoData
 } from "../../../index";
 
 import { useForm, Controller } from "react-hook-form";
@@ -48,7 +49,7 @@ export const FormUserUpdate = ({ userData }) => {
       data.rol === "undefined" || !data.rol
         ? String(user.id_rol)
         : String(data.rol);
-    data.tipo_documento = data.tipo_documento || user.tipo_documento;
+   // data.tipo_documento = data.tipo_documento || user.tipo_documento;
 
     try {
       const res = await multiFormData(
@@ -107,10 +108,12 @@ export const FormUserUpdate = ({ userData }) => {
         imagen: localUser.imagen || user.imagen || "",
         empresa: user.empresa || "",
         especialidad: user.especialidad || "",
+        rol: user.id_rol || "",
+        tipo_documento: user.tipo_documento
       });
     }
     setIsLoading(false);
-  }, [user, reset, localUser]);
+  }, [user, reset, localUser, roles]);
 
   useEffect(() => {
     const comprobarAdmin = () => {
@@ -203,11 +206,11 @@ export const FormUserUpdate = ({ userData }) => {
             </div>
             <div className="p-10">
               <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">
-                Nueva Contraseña
+                {t("nueva_contrasena")}
               </label>
               <Input
                 {...register("password")}
-                placeholder="Contraseña"
+                placeholder={t("contrasena")}
                 autoComplete="off"
                 variant="bordered"
                 radius="sm"
@@ -311,22 +314,12 @@ export const FormUserUpdate = ({ userData }) => {
                     <>
                       <div className="w-full sm:w-1/2 flex justify-center items-center">
                         <SelectComponent
-                          options={[
-                            {
-                              value: "cedula de ciudadania",
-                            },
-                            {
-                              value: "tarjeta identidad",
-                            },
-                            {
-                              value: "cedula extranjeria",
-                            },
-                          ]}
+                          options={tipoDocumentoData}
                           name="tipo_documento"
                           placeholder={t("tipo_documento")}
-                          valueKey="idRoles"
+                          valueKey="value"
                           value={false}
-                          textKey="value"
+                          textKey="view"
                           register={register}
                           label={t("tipo_documento")}
                         />
@@ -343,12 +336,12 @@ export const FormUserUpdate = ({ userData }) => {
                         <SelectComponent
                           options={roles}
                           name="rol"
-                          placeholder="Rol"
+                          placeholder={t("rol")}
                           valueKey="idRoles"
                           value={false}
                           textKey="rol_nombre"
                           register={register}
-                          label="Rol"
+                          label={t("rol")}
                         />
                       </div>
                     </>

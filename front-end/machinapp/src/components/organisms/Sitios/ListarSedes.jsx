@@ -63,7 +63,9 @@ const BuscarSedes = () => {
                   src={`http://localhost:3000/imagenes/${sede.img_sede}`}
                   alt={sede.sede_nombre}
                   className="h-full"
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) =>
+                    (e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`)
+                  }
                 />
               </div>
               <Link to={`/Sedes/InfoSede/${sede.idSede}`}>
@@ -94,7 +96,7 @@ const BuscarSedes = () => {
                       to={`/Sedes/${sede.idSede}`}
                       className=" h-full w-full flex justify-center items-center"
                     >
-                      {t("enter_sitios")}
+                      {t("ingresar")}
                     </Link>
                   </ButtonNext>
                 </div>
