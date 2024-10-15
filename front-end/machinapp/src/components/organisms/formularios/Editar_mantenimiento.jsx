@@ -137,7 +137,7 @@ export const Editar_Component = () => {
           par_nombre_repuesto: repuesto.nombreRepuesto,
           par_costo: parseFloat(repuesto.costo) // Asegúrate de que esto sea un número
         };
-      
+        console.log(parteData)
         if (repuesto.id_partes_mantenimiento) {
           // Si existe id_partes_mantenimiento, actualizar la parte existente
           await axiosCliente.put(`partes_mantenimiento/Actualizar/${repuesto.id_partes_mantenimiento}`, parteData);

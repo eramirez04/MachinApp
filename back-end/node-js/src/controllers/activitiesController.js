@@ -31,30 +31,31 @@ export const listarActividades= async (req,res)=>{
 export const listarActividadesdeSolicitudes = async (req, res) => {     
     try {
         const { idSolicitud } = req.params;
+
         let sql = `SELECT 
                     idActividades,
                     acti_nombre,
                     acti_descripcion 
                    FROM actividades 
-                   JOIN solicitud_mantenimiento ON idSolicitud = acti_fk_solicitud
-                   WHERE idSolicitud = ?`;
+                   WHERE acti_fk_solicitud = ?`;
 
         const [resultadoActividad] = await conexion.query(sql, [idSolicitud]);
 
         if (resultadoActividad.length > 0) {
             res.status(200).json({
-                "Mensaje": "adctividad encontrado",
+                "Mensaje": "Actividad encontrado",
                 resultadoActividad
             });
         } else {
             return res.status(404).json({
-                "Mensaje": "No se encontraron adctividad"
+                "Mensaje": "No se encontraron actividades"
             });
         }
     } catch (err) {
-        res.status(500).json({ "message": "error en el servidor: " + err });
+        res.status(500).json({ "message": "Error en el servidor: " + err });
     }
-};
+}; 
+
 
 
 //registrar por defecto las actividades
@@ -185,11 +186,9 @@ export const eliminarActividades= async (req,res)=>{
 }
 
 
-
 export const actualizarActividades = async (req, res) => {
     try {
         const error = validationResult(req);
-
         if (!error.isEmpty()) {
             return res.status(400).json(error);
         }
@@ -197,21 +196,26 @@ export const actualizarActividades = async (req, res) => {
         let { acti_nombre, acti_descripcion } = req.body;
         let id = req.params.idActividades;
 
-        let sql = `UPDATE actividades SET 
-        acti_nombre='${acti_nombre}', 
-        acti_descripcion='${acti_descripcion}' 
-        WHERE idActividades=${id}`;
+        console.log("ID de actividad:", id); // Verifica que el ID sea correcto
 
-        const [respuesta] = await conexion.query(sql);
+        let sql = `UPDATE actividades SET acti_nombre = ?, acti_descripcion = ? WHERE idActividades = ?`;
+        const [respuesta] = await conexion.query(sql, [acti_nombre, acti_descripcion, id]);
+
+        console.log("Respuesta de la base de datos:", respuesta); // Para verificar qué se devuelve
 
         if (respuesta.affectedRows > 0) {
-            return res.status(200).json({ "message": "se actualizo con exito" });
+            if (respuesta.changedRows > 0) {
+                return res.status(200).json({ "message": "Se actualizó con éxito" });
+            } else {
+                return res.status(200).json({ "message": "Los datos son los mismos, no se realizaron cambios." });
+            }
         } else {
-            return res.status(404).json({ "message": "No se actualizo" });
+            return res.status(404).json({ "message": "No se actualizó" });
         }
-
+        
     } catch (error) {
-        return res.status(500).json({ "message": "error " + error.message });
+        console.error("Error al actualizar la actividad:", error); // Para revisar errores
+        return res.status(500).json({ "message": "Error " + error.message });
     }
 };
 

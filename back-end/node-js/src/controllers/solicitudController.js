@@ -148,25 +148,25 @@ export const actualizarSolicitudes = async(req, res)=>{
       return res.status(400).json({ error: resultado.error.errors });
   
 
-      let idSolicitud = req.params.idSolicitud
+      let idSolicitud = req.params.id // Cambia idSolicitud por id
 
       let {
         prioridad,
         descripcion, 
         costo_estimado, 
-        observaciones,
+        obsevaciones,
         temaLegal, 
         nombre_solicitante,
         correo_solicitante
       }= req.body
-      const estado = "aprobado";
+      const estado = "pendiente";
       let sql = `
       UPDATE solicitud_mantenimiento 
       SET  
         soli_prioridad = '${prioridad}', 
         soli_descripcion_problemas = '${descripcion}', 
         soli_costo_estimado = '${costo_estimado}', 
-        soli_observaciones = '${observaciones}', 
+        soli_observaciones = '${obsevaciones}', 
         soli_estado = '${estado}', 
         temas_legal = '${temaLegal}', 
         nombre_solicitante = '${nombre_solicitante}', 
@@ -190,11 +190,10 @@ export const actualizarSolicitudes = async(req, res)=>{
   }
 }
 
-
 export const listarSolicitudPorId = async (req, res) => {
   try {
     const { idSolicitud } = req.params;
-    console.log("ID de la solicitud:", idSolicitud); // Agregar para depurar
+
     const sql = `
       SELECT
           idSolicitud,
