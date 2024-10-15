@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { axiosCliente } from '../../../service/api/axios';
@@ -36,66 +36,88 @@ const InfoDetalladaSede = () => {
   }
 
   return (
-    <div className='bg-gray-200 min-h-screen p-4'>
-      <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mb-60'>
-        <header className='bg-green-500 py-4 px-6 flex justify-between items-center'>
-          <h1 className='text-2xl font-extrabold text-white'>{t('sede_info')}</h1>
-          <Link to='/Sedes'>
-            <button className='bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center'>
-              <FaArrowLeft className='mr-2' /> {t('back')}
+    <div className="bg-gray-100 min-h-screen py-10">
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8">
+
+        {/* Header con navegación */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">{t('sede_info')}</h1>
+          <Link to="/Sedes">
+            <button className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+              <FaArrowLeft className="mr-2" /> {t('back')}
             </button>
           </Link>
-        </header>
-        <div className='relative h-80'>
+        </div>
+
+        {/* Imagen de la sede */}
+        <div className="relative flex justify-center items-center w-full h-80 mb-6">
           <img
             src={`http://localhost:3000/imagenes/${sede[0].img_sede}`}
             alt={sede[0].sede_nombre}
-            className='w-full h-full object-cover'
-            onError={handleImageError}
+            className="h-full rounded-lg shadow-md"
+            onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
           />
         </div>
-        <div className='p-2'>
-          <table className='min-w-full bg-white text-gray-500'>
-            {sede.map((detalle, index) => (
-              <tbody key={index}>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('id')}</td>
-                  <td className='py-4 px-6'>{detalle.idSede}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('nombre_sede')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_nombre}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('subdirector')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_subdirector}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('descripcion')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_descripcion}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('centro_ubicado')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_nombre_centro}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('regional')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_regional}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('municipio')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_municipio}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('direccion')}</td>
-                  <td className='py-4 px-6'>{detalle.sede_direccion}</td>
-                </tr>
-                <tr className='w-full border-b'>
-                  <td className='py-4 px-6 font-bold'>{t('contacto')}</td>
-                  <td className='py-4 px-6'>{detalle.contacto}</td>
-                </tr>
-              </tbody>
-            ))}
+
+        {/* Ficha técnica en formato tabla */}
+        <div className="bg-white border border-gray-300 rounded-lg shadow-sm">
+          <table className="table-auto w-full text-left text-gray-700">
+            <thead className="bg-green-600">
+              <tr>
+                <th className="px-4 py-2 font-semibold text-gray-800">{t('campo_sede')}</th>
+                <th className="px-4 py-2 font-semibold text-gray-800">{t('valor_sede')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sede.map((detalle, index) => (
+                <React.Fragment key={index}>
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('id')}:</td>
+                    <td className="px-4 py-2">{detalle.idSede}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('nombre_sede')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_nombre}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('subdirector')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_subdirector}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('descripcion')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_descripcion}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('centro_ubicado')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_nombre_centro}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('regional')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_regional}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('municipio')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_municipio}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('direccion')}:</td>
+                    <td className="px-4 py-2">{detalle.sede_direccion}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="px-4 py-2 font-medium">{t('contacto')}:</td>
+                    <td className="px-4 py-2">{detalle.contacto}</td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

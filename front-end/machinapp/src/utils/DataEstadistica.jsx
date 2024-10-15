@@ -42,3 +42,18 @@ export const menus = (t) => [
     icon: FaUserGear,
   },
 ];
+
+export const tipoDocumentoData = [
+  {
+    value: "cedula de ciudadania",
+    view: "Cédula de ciudadanía",
+  },
+  {
+    value: "tarjeta identidad",
+    view: "Tarjeta de Identidad",
+  },
+  {
+    value: "cedula extranjeria",
+    view: "Cédula de Extranjería",
+  },
+];

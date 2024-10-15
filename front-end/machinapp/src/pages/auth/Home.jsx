@@ -43,7 +43,7 @@ export const Home = () => {
       link: "/solicitud",
     },
     {
-      title: t("total_maintenance_requests"),
+      title: t("total_ambientes_formacion"),
       total: ambientes.length,
       icon: V.UsersIcon,
       link: "/Ambientes",
@@ -55,7 +55,7 @@ export const Home = () => {
   }
   return (
     <>
-      <Layout titlePage={"Home"}>
+      <Layout>
         <Breadcrumb pageName={t("inicio")} />
         {/* Primera fila con 4 tarjetas */}
 
@@ -102,9 +102,7 @@ export const Home = () => {
 
             <CardStyle
               subtitle={t("machinery_and_equipment_status_summary")}
-              titleCard={t(
-                "Clasificación de máquinas y equipos según su estado operativo.")
-              }
+              titleCard={t("clasificacion_maquinas_equipos")}
             >
               <ChartMaquinas />
             </CardStyle>

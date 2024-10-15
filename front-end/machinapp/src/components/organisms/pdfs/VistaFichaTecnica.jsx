@@ -4,11 +4,19 @@ import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/out
 import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
 import {FichaTecnicaEquiposPDF} from "../../index.js"
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next"
+import { useContext } from "react"
+import { AuthContext } from '../../../contexts/AuthContext.jsx'
 
 
 export const VistaFichaTecnica = ({idMaquina})=>{
     
     const navigate = useNavigate()
+    const { t } = useTranslation()
+
+    const { rol } = useContext(AuthContext)
+    const isAdmin = rol === "Administrador"
+  
 
     const handleEdit =()=>{
         navigate(`/listarFichaTecnica/${idMaquina}`)
@@ -17,14 +25,19 @@ export const VistaFichaTecnica = ({idMaquina})=>{
     const componenteModal = (
         <div className="flex flex-col space-y-4">
         <div className="flex justify-end space-x-2">
-            <Button
-            color="warning"
-            startContent={<PencilSquareIcon className="h-5 w-5" />}
-            className="text-white"
-            onClick={handleEdit}
-            >
-            Editar
-            </Button>
+
+            {
+                isAdmin && (
+                    <Button
+                    color="warning"
+                    startContent={<PencilSquareIcon className="h-5 w-5" />}
+                    className="text-white"
+                    onClick={handleEdit}
+                    >
+                    {t('editar')}
+                    </Button>
+                )
+            }
 
             <PDFDownloadLink
                 document={<FichaTecnicaEquiposPDF idMaquina = {idMaquina}/>}
@@ -36,7 +49,7 @@ export const VistaFichaTecnica = ({idMaquina})=>{
                 startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
                 className="text-white"
                 >
-                Descargar
+                {t('descargar_pdf')}
                 </Button>
 
             </PDFDownloadLink>
@@ -53,8 +66,8 @@ export const VistaFichaTecnica = ({idMaquina})=>{
     return (
         <>
             <ModalComponte
-            buttonModal="Ficha tecnica"
-            tittleModal={`Vista previa del PDF`}
+            buttonModal={t('fichaTecnica')}
+            tittleModal={t('vistaPdf')}
             componente={componenteModal}
             size="5xl"
             variantButton="shadow"

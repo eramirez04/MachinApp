@@ -137,7 +137,7 @@ export const Editar_Component = () => {
           par_nombre_repuesto: repuesto.nombreRepuesto,
           par_costo: parseFloat(repuesto.costo) // Asegúrate de que esto sea un número
         };
-      
+        console.log(parteData)
         if (repuesto.id_partes_mantenimiento) {
           // Si existe id_partes_mantenimiento, actualizar la parte existente
           await axiosCliente.put(`partes_mantenimiento/Actualizar/${repuesto.id_partes_mantenimiento}`, parteData);
@@ -379,67 +379,86 @@ export const Editar_Component = () => {
             </div>
           </CardStyle>
 
-          <CardStyle
-            titleCard={t("parts_used_and_costs")}
-            className="col-span-2 p-6 shadow-md rounded-lg"
-          >
+          <div className="mt-8 col-span-full">
+            <CardStyle
+              titleCard={t("parts_used_and_costs")}
+              className="p-6 shadow-md rounded-lg"
+            >
+            <div className="space-y-6">
             <div className="flex justify-end mb-4">
               <Button
                 color="primary"
                 onClick={() => append({ nombreRepuesto: "", costo: "" })}
+                className="flex items-center"
               >
                 <PlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
                 {t("add_part")}
               </Button>
             </div>
-            <Table aria-label={t("parts_table")}>
-              <TableHeader>
-                <TableColumn>{t("part_name")}</TableColumn>
-                <TableColumn>{t("cost")}</TableColumn>
-                <TableColumn>{t("actions")}</TableColumn>
-              </TableHeader>
-              <TableBody>
-                {fields.map((item, index) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <InputforForm
-                        register={register}
-                        errors={errors}
-                        name={`repuestos.${index}.nombreRepuesto`}
-                        tipo="text"
-                        placeholder={t("part_name")}
-                        label={t("part_name")}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <InputforForm
-                        register={register}
-                        errors={errors}
-                        name={`repuestos.${index}.costo`}
-                        tipo="number"
-                        placeholder={t("cost")}
-                        label={t("cost")}
-                        min="0"
-                        step="0.01"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Button color="error" onClick={() => handleDeleteParte(index, item.id_partes_mantenimiento)}>
-                        <TrashIcon
-                          className="h-5 w-5 mr-2"
-                          aria-hidden="true"
+                
+            <div className="overflow-x-auto">
+              <Table aria-label={t("parts_table")} className="min-w-full">
+                <TableHeader>
+                  <TableColumn className="w-2/5">{t("part_name")}</TableColumn>
+                  <TableColumn className="w-2/5">{t("cost")}</TableColumn>
+                  <TableColumn className="w-1/5">{t("actions")}</TableColumn>
+                </TableHeader>
+                <TableBody>
+                  {fields.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <InputforForm
+                          register={register}
+                          errors={errors}
+                          name={`repuestos.${index}.nombreRepuesto`}
+                          tipo="text"
+                          placeholder={t("part_name")}
+                          label={t("part_name")}
+                          className="w-full"
                         />
-                        {t("delete")}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+                      </TableCell>
+                      <TableCell>
+                        <InputforForm
+                          register={register}
+                          errors={errors}
+                          name={`repuestos.${index}.costo`}
+                          tipo="number"
+                          placeholder={t("cost")}
+                          label={t("cost")}
+                          min="0"
+                          step="0.01"
+                          className="w-full"
+                        />
+                      </TableCell>
+                      <TableCell>
+                      <ButtonNext
+                        type="button"
+                        text={t("remove")}
+                        className="bg-red-600 text-white"
+                        onClick={() => handleDeleteParte(index, item.id_partes_mantenimiento)}
+                      >
+                  <TrashIcon className="h-5 w-5" />
+                </ButtonNext>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
             </Table>
-          </CardStyle>
+          </div>
+          
+          {fields.length === 0 && (
+            <p className="text-center text-gray-500 mt-4">
+              {t("no_parts_added")}
+            </p>
+          )}
+        </div>
+      </CardStyle>
+    </div>
           {error && <p className="text-red-500">{error}</p>}
 
-          <ButtonNext type="submit" text={t("actualizar")} className="bg-green-600 text-white w-full mt-8"/>
+          {<div className="mt-12">
+            <ButtonNext type="submit" text={t("actualizar")} className="bg-green-600 text-white w-full"/>
+          </div>}
         </div>
       </form>
     </Layout>

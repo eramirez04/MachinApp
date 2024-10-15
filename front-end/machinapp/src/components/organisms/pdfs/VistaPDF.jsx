@@ -26,7 +26,7 @@ export const VistaPDF = ({ item }) => {
     }
   };
 
-    const isAdmin = rol === "Administrador";
+  const isAdmin = rol === "Administrador";
 
   if (isLoading) {
     return <p>Cargando datos del mantenimiento...</p>;
@@ -76,13 +76,15 @@ export const VistaPDF = ({ item }) => {
 
   return (
     <ModalComponte
-      buttonModal={t('Ver_pdf')}
-      tittleModal={`Vista previa del PDF - ${item.codigo_mantenimiento}`}
+      buttonModal={t("Ver_pdf")}
+      tittleModal={`${t("vista_previa_del_pdf")} - ${
+        item.codigo_mantenimiento
+      }`}
       componente={componenteModal}
       size="5xl"
       variantButton="shadow"
       colorButton="success"
-      classNames="text-white" 
+      classNames="text-white"
     />
   );
 };

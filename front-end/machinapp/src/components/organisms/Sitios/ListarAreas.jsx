@@ -49,12 +49,12 @@ const BuscarAreas = ({ idSede }) => {
               className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative'
               key={area.idArea}
             >
-              <div className='relative h-64'>
+              <div className='relative h-64 flex items-center justify-center'>
                 <img
                   src={`http://localhost:3000/imagenes/${area.img_area}`}
                   alt={area.area_nombre}
-                  className='w-full h-full object-cover'
-                  onError={handleImageError}
+                  className='h-full'
+                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
                 />  
               </div>
               <div className='p-6'>

@@ -79,11 +79,11 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
             <SelectComponent
               options={ambientes}
               name="fk_sitio"
-              placeholder="Ambiente"
+              placeholder={t('ambiente')}
               valueKey="id"
               textKey="valor"
               register={register}
-              label="Ambiente"
+              label={t('ambiente')}
             />
             </div>
         ) : (
@@ -98,13 +98,13 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
                 onSelectionChange={setSelectedKeys}
               >
                 <ListboxItem key="operacion" color="success">
-                  Operacion
+                  {t('operacion')}
                 </ListboxItem>
                 <ListboxItem key="en_reparacion" color="warning">
-                  En reparación
+                  {t('reparasion')}
                 </ListboxItem>
                 <ListboxItem key="fuera_de_servicio" color="danger">
-                  Fuera de servicio
+                  {t('fueraServicio')}
                 </ListboxItem>
               </Listbox>
             </div>
