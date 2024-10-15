@@ -4,7 +4,28 @@ import { useState, useEffect } from 'react'
 
 export const  Imagenes  =  ({rutaImg})  => {   //Pasar ruta a partir de la carpeta public 
 
-    let rutaImagen = `http://localhost:3000/${rutaImg}`
+  const imgRuta = rutaImg
+
+  const [imagen, setImagen] = useState('http://localhost:3000/imagenes/noEncontrada.jpg')
+
+
+  useEffect(()=>{
+
+    const verificarImg = async ()=>{
+
+      let url = `http://localhost:3000/${imgRuta}`
+
+      const response = await fetch(url)
+
+      if (response.ok) {
+        setImagen(url)
+      }
+    }
+    verificarImg()
+
+  }, [])
+
+/*     let rutaImagen = `http://localhost:3000/${rutaImg}`
 
     const [estadoImg, setEstadoImg] = useState(false)
 
@@ -27,12 +48,13 @@ export const  Imagenes  =  ({rutaImg})  => {   //Pasar ruta a partir de la carpe
     
         verificarImagen()
       }, [rutaImagen])
-
+ */
     return (
       <>
-        {
+{/*         {
             estadoImg ? (<img className='w-full rounded-2xl object-cover'  src={rutaImagen} alt="Imagen" />  ) : (<img src="http://localhost:3000/imagenes/noEncontrada.jpg" alt="Imagen" />)
-        }
+        } */}
+        <img className='w-full rounded-2xl object-cover' src={imagen} alt="" />
       </>
     )
 }

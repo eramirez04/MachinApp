@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   Layout,
   Icons,
@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import { PlusIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "@nextui-org/react";
-import { FaEye } from "react-icons/fa";
-
+import { FaEye } from "react-icons/fa"
+import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -20,7 +20,10 @@ export const Maquinas = () => {
   const { equiposData, eroresMaquinas } = useGlobalData();
   const { t } = useTranslation();
 
-  const [maquinasFilt, setMaquinasFil] = useState([]);
+  const [maquinasFilt, setMaquinasFil] = useState([])
+
+  const { rol } = useContext(AuthContext)
+  const isAdmin = rol === "Administrador"
 
   useEffect(() => {
     if (eroresMaquinas) {
@@ -68,36 +71,41 @@ export const Maquinas = () => {
     <>
       <Layout titlePage="Maquinas">
         <Breadcrumb pageName={t("FichasTecnicas")} />
-        <div className="pt-3 px-9 mt-10 flex justify-between">
-          <div>
-            <Button type="suc" className="text-white text-base bg-green-600 ">
-              <Link
-                to={"/crearTiposFichaTec"}
-                className="flex gap-2 justify-center items-center h-full w-full"
-              >
-                {t("RegistrarTipoFicha")} <Icons icon={PlusIcon} />
-              </Link>
-            </Button>
 
-            <Button type="suc" className="text-white text-base bg-yellow-400 ml-4">
+        {
+          isAdmin && (
+          <div className="pt-3 px-9 mt-10 flex justify-between">
+            <div>
+              <Button type="suc" className="text-white text-base bg-green-600 ">
+                <Link
+                  to={"/crearTiposFichaTec"}
+                  className="flex gap-2 justify-center items-center h-full w-full"
+                >
+                  {t("RegistrarTipoFicha")} <Icons icon={PlusIcon} />
+                </Link>
+              </Button>
+  
+              <Button type="suc" className="text-white text-base bg-yellow-400 ml-4">
+                <Link
+                  to={"/editarTiposFichaTec"}
+                  className="flex gap-2 justify-center items-center h-full w-full"
+                >
+                  Editar tipo de ficha <Icons icon={PencilSquareIcon} />
+                </Link>
+              </Button>
+            </div>
+  
+            <Button type="suc" className="text-white text-base bg-green-600">
               <Link
-                to={"/editarTiposFichaTec"}
+                to={"/crearfichaequipos"}
                 className="flex gap-2 justify-center items-center h-full w-full"
               >
-                Editar tipo de ficha <Icons icon={PencilSquareIcon} />
+                {t("agregarEquipo")} <Icons icon={PlusIcon} />
               </Link>
             </Button>
           </div>
-
-          <Button type="suc" className="text-white text-base bg-green-600">
-            <Link
-              to={"/crearfichaequipos"}
-              className="flex gap-2 justify-center items-center h-full w-full"
-            >
-              {t("agregarEquipo")} <Icons icon={PlusIcon} />
-            </Link>
-          </Button>
-        </div>
+          )
+        }
 
         <div className="pt-3 px-9 mt-8 mb-10">
           <div className="mb-6">
