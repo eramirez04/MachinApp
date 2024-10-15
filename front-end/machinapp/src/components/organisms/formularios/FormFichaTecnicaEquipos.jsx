@@ -194,7 +194,6 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
 
         // se muestra el formulario para variables de maquinas y elementos
         if (varObligatoriasArr.length > 0) {
-          console.log(varObligatoriasArr);
 
           const varObligatoriasObj = {};
 
