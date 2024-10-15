@@ -13,6 +13,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
 
     const [noMaquinas, setNoMaquinas] = useState(false)
     
+    const [infoMa, setInfoMa] = useState(false)
     //para la paginacion de las cards
     const [currentPage, setCurrentPage] = useState(1)
     const total = maquinas.length
@@ -53,6 +54,7 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     setDataMaquinas(response.data)
                     setMaquinas(response.data) // Para que cargue por defecto todos los equipos
                     setNoMaquinas(false) // Hay máquinas disponibles
+                    setInfoMa(true)
                 } else {
                     setNoMaquinas(true) // No hay máquinas
                 }
@@ -126,8 +128,6 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
                     </div>
                 ))
                 .slice(firsIndex, lastIndex)
-
-
                 )
             }
         </div>
