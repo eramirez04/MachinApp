@@ -100,41 +100,106 @@ import { mantenimiento_correo } from "../config/mantenimiento_email/email_manten
 import { emailHtml_mantenimiento } from "../config/mantenimiento_email/emailhtml_mantenimiento.js";
 
 /* Listo función para verificar y enviar correos electrónicos de mantenimiento automáticamente */
-export const verificarEnvioCorreosMantenimiento = async () => {
+const verificarEnvioCorreosMantenimiento = async () => {
   try {
-    let sql = `
-        SELECT u.*, m.*, a.*, tm.*, fme.fi_placa_sena AS referencia_maquina
-        FROM usuarios u
-        JOIN tecnicos_has_actividades tha ON u.idUsuarios = tha.fk_usuarios
-        JOIN actividades a ON tha.fk_actividades = a.idActividades
-        JOIN solicitud_mantenimiento sm ON a.acti_fk_solicitud = sm.idSolicitud
-        JOIN mantenimiento m ON sm.idSolicitud = m.fk_solicitud_mantenimiento
-        JOIN tipo_mantenimiento tm ON m.fk_tipo_mantenimiento = tm.idTipo_mantenimiento
-        JOIN solicitud_has_fichas shf ON sm.idSolicitud = shf.fk_solicitud
-        JOIN fichas_maquinas_equipos fme ON shf.fk_fichas = fme.idFichas
-        WHERE DATEDIFF(m.mant_fecha_proxima, CURDATE()) <= 7
-        `;
+    const currentDate = new Date(); 
 
-    const [mantenimientos] = await conexion.query(sql);
+    //calcular la fecha de inicio
+    const startDate = new Date(currentDate);
+    startDate.setDate(startDate.getDate() + 1); 
 
+    const endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 7);
+
+    //formatear las fechas a 'YYYY-MM-DD'
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const currentDateString = formatDate(currentDate);
+    const startDateString = formatDate(startDate);
+    const endDateString = formatDate(endDate);
+
+    const sqlMantenimientos = `
+      SELECT 
+        m.idMantenimiento,
+        m.fk_solicitud_mantenimiento,
+        m.mant_fecha_proxima, 
+        m.mant_codigo_mantenimiento,
+        sm.correo_solicitante
+      FROM mantenimiento m
+      JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
+      WHERE 
+        m.mant_fecha_proxima BETWEEN ? AND ?
+        AND m.mant_estado != 'Completado'
+    `;
+
+    const [mantenimientos] = await conexion.query(sqlMantenimientos, [startDateString, endDateString]);
+
+    // 6. Verificar si se encontraron mantenimientos
     if (mantenimientos.length === 0) {
-      console.log("No hay mantenimientos programados en 7 días o menos.");
+      console.log("No hay mantenimientos programados en los próximos 7 días.");
       return;
     }
 
-    for (const mantenimiento of mantenimientos) {
-      const html = emailHtml_mantenimiento(mantenimiento);
-      await mantenimiento_correo.sendMail({
-        from: '"MachinApp" <machinappsena@gmail.com>',
-        to: mantenimiento.us_correo,
-        subject: "Recordatorio de Mantenimiento",
-        html: html,
-      });
+    console.log(`Se encontraron ${mantenimientos.length} mantenimientos programados.`);
+
+    // extrae todos los correos solicitantes únicos
+    const correosSolicitantes = [...new Set(mantenimientos.map(m => m.correo_solicitante))];
+
+    if (correosSolicitantes.length === 0) {
+      console.log("No se encontraron correos solicitantes para los mantenimientos.");
+      return;
     }
 
-    console.log("Todos los correos electrónicos enviados correctamente.");
+    const sqlUsuarios = `
+      SELECT 
+        us_nombre, 
+        us_apellidos, 
+        us_correo
+      FROM usuarios
+      WHERE us_correo IN (?)
+    `;
+
+    const [usuarios] = await conexion.query(sqlUsuarios, [correosSolicitantes]);
+
+    const mapaUsuarios = {};
+    usuarios.forEach(user => {
+      mapaUsuarios[user.us_correo.toLowerCase()] = user;
+    });
+
+    for (const mantenimiento of mantenimientos) {
+      const correoSolicitante = mantenimiento.correo_solicitante.toLowerCase();
+      const usuario = mapaUsuarios[correoSolicitante];
+
+      if (!usuario) {
+        console.warn(`No se encontró usuario para el correo solicitante: ${mantenimiento.correo_solicitante}`);
+        continue;
+      }
+      const html = emailHtml_mantenimiento({
+        ...mantenimiento,
+        us_nombre: usuario.us_nombre,
+        us_apellidos: usuario.us_apellidos,
+        us_correo: usuario.us_correo,
+      });
+
+      try {
+        await mantenimiento_correo.sendMail({
+          from: '"MachinApp" <machinappsena@gmail.com>',
+          to: usuario.us_correo,
+          subject: "Recordatorio de Mantenimiento",
+          html: html,
+        });
+      } catch (error) {
+        console.error(`Error al enviar correo a ${usuario.us_correo}:`, error);
+      }
+    }
+
   } catch (error) {
-    console.error("Error al enviar correos electrónicos:", error);
+    console.error("Error al verificar y enviar correos electrónicos:", error);
   }
 };
 
@@ -418,7 +483,10 @@ export const excelconsultavariables = async (req, res) => {
         MAX(s.sede_nombre) AS sede_nombre,
         MAX(sm.soli_prioridad) AS soli_prioridad,
         GROUP_CONCAT(DISTINCT pm.par_nombre_repuesto SEPARATOR ', ') AS par_nombre_repuesto,
-        SUM(DISTINCT pm.par_costo) AS par_costo_total
+        (SELECT SUM(pm_inner.par_costo) 
+         FROM partes_mantenimiento pm_inner 
+         WHERE pm_inner.par_fk_mantenimientos = m.idMantenimiento
+        ) AS par_costo_total
       FROM 
         mantenimiento m
         LEFT JOIN solicitud_mantenimiento sm ON m.fk_solicitud_mantenimiento = sm.idSolicitud
@@ -435,15 +503,12 @@ export const excelconsultavariables = async (req, res) => {
     `;
     const [resultado] = await conexion.query(sql);
     
-
-    // Procesar los resultados para asegurar que los tipos de datos sean correctos
     const resultadoCorregido = resultado.map(item => ({
-      
       ...item,
       mant_fecha_proxima: item.mant_fecha_proxima ? new Date(item.mant_fecha_proxima).toISOString().split('T')[0] : null,
       man_fecha_realizacion: item.man_fecha_realizacion ? new Date(item.man_fecha_realizacion).toISOString().split('T')[0] : null,
       mant_costo_final: parseFloat(item.mant_costo_final),
-      par_costo_total: parseFloat(item.par_costo_total) || 0,
+      par_costo_total: parseFloat(item.par_costo_total),
     }));
 
     res.status(200).json(resultadoCorregido);

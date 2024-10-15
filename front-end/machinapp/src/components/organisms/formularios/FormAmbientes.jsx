@@ -104,7 +104,7 @@ export const FormAmbientes = () => {
         <div className="flex items-center justify-center h-64 rounded bg-gray-100 w-3/5 shadow-inner">
           {previewImagen ? (
             <img
-              className="h-full w-full object-cover rounded"
+              className="h-full rounded"
               alt="Preview"
               src={previewImagen}
             />

@@ -1,7 +1,7 @@
 // GenerarPdf.jsx
 import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import axios from 'axios';
+import { axiosCliente } from "../../../index.js";
 import { useTranslation } from "react-i18next"; 
 
 const styles = StyleSheet.create({
@@ -88,7 +88,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/mantenimiento/excelconsultavariables');
+        const response = await axiosCliente.get('http://localhost:3000/mantenimiento/excelconsultavariables');
         const filteredData = response.data.find(item => item.idMantenimiento === idMantenimiento);
         setData(filteredData);
       } catch (error) {

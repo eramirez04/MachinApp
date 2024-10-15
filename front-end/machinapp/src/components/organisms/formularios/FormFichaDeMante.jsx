@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Image,
@@ -62,6 +64,7 @@ class ErrorBoundary extends React.Component {
 export const FormFichaDeMantenimiento = () => {
   const { t } = useTranslation();
   const { dataUser } = useGlobalData();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -168,9 +171,9 @@ export const FormFichaDeMantenimiento = () => {
         partesMantenimiento
       );
 
-      alert(t("registration_success"));
+      toast.success(t("registration_success"));
 
-      reset();
+      navigate('/historial');
       setSelectedFile(null);
     } catch (error) {
       let errorMessage = t("registration_error");
@@ -238,7 +241,7 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle titleCard={"Tecnico de mantenimiento"}>
+            <CardStyle titleCard={t("Tecnico_encargado")}>
               <SelectComponent
                 options={dataUser
                   .filter((item) =>
@@ -249,11 +252,11 @@ export const FormFichaDeMantenimiento = () => {
                     valor: item.us_nombre + " " + item.us_apellidos,
                   }))}
                 name="tecnico"
-                placeholder={t("instructor_encargado")}
+                placeholder={t("Tecnico_encargado")}
                 valueKey="id"
                 textKey="valor"
                 register={register}
-                label={t("instructor_encargado")}
+                label={t("Tecnico_encargado")}
                 required
               />
             </CardStyle>

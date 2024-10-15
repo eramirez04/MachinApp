@@ -65,7 +65,7 @@ const BuscarAreasGeneral = () => {
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative"
               key={area.idArea}
             >
-              <div className="relative h-72 items-center justify-center flex">
+              <div className="relative h-72 flex items-center justify-center">
                 <img
                   src={`http://localhost:3000/imagenes/${area.img_area}`}
                   alt={area.area_nombre}

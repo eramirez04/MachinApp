@@ -143,6 +143,37 @@ export const registrarVariasVariables = async (req, res)=>{
     }
 }
 
+/* Actualizar varias variables */
+
+export const actualizarVariasVariables = async (req, res)=>{
+
+    try{
+
+        let {varsUpdate} = req.body
+
+        let sql
+    
+    
+        for(let i = 0; i < varsUpdate.length; i++){
+            sql = `update variable set var_nombre='${varsUpdate[i].var_nombre}', var_descripcion='${varsUpdate[i].var_descripcion}', var_estado='${varsUpdate[i].var_estado}' where idVariable=${varsUpdate[i].idVariable} `
+    
+            const [response] = await conexion.query(sql)
+    
+            if (response.affectedRows == 0){
+                return res.status(404).json({"message":"Error al actualizar variables"})
+            }
+        }
+    
+        return res.status(200).json({"message":"Las variables se actualizaron con exito"})
+    
+    }catch(error){
+        return res.status(500).json({"message":"Error al actualizar variables"+error})
+    }
+
+}
+
+
+
 
 /* ---------------------------Listo------------------------------------------------------------- */
 //listar las variables dependiendo del tipo de ficha tecnica, esto se utilizara al momento de generar el formulario de registro de la ficha tecnica
@@ -160,11 +191,48 @@ export const listarVarFicha = async (req, res)=>{
         var_nombre,
         var_descripcion,
         var_clase,
+        var_estado,
         var_tipoDato
         FROM variable
         WHERE (fk_tipo_equipo = ${idTipoFicha} or var_clase = 'obligatoria')
             AND variable.ficha = "${tipo_ficha}" 
             AND var_estado = "activo"; 
+        `
+
+        const [respuesta] = await conexion.query(sql)
+
+        if (respuesta.length>0){
+
+            return  res.status(200).json({respuesta})
+        }
+
+        return  res.status(404).json({"mensaje":"error al listar variables"})
+
+
+    }
+    catch(e){
+        return res.status(500).json({"mensaje":"Error del servidor"})
+    }
+}
+
+
+export const listarVarFichaAll = async (req, res)=>{
+    try{
+        let {idTipoFicha, tipo_ficha} = req.params
+
+        let sql = `
+        
+        SELECT 
+        idVariable,
+        var_nombre,
+        var_descripcion,
+        var_clase,
+        var_estado,
+        var_tipoDato
+        FROM variable
+        WHERE (fk_tipo_equipo = ${idTipoFicha} or var_clase = 'obligatoria')
+            AND variable.ficha = "${tipo_ficha}" 
+
         `
 
         const [respuesta] = await conexion.query(sql)

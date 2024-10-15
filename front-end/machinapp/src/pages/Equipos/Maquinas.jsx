@@ -9,7 +9,7 @@ import {
 } from "../../index.js";
 import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "@nextui-org/react";
 import { FaEye } from "react-icons/fa";
 
@@ -57,9 +57,6 @@ export const Maquinas = () => {
     const filtrarMaquinas = contentTable.filter((maquina) => {
       return (
         maquina.placa_sena.toLowerCase().includes(search.toLowerCase()) ||
-        /* maquina.serial.toLowerCase().includes(search.toLowerCase()) ||
-        maquina.marca.toLowerCase().includes(search.toLowerCase()) ||
-        maquina.modelo.toLowerCase().includes(search.toLowerCase()) || */
         maquina.ubicacion.toLowerCase().includes(search.toLowerCase()) ||
         maquina.estado.toLowerCase().includes(search.toLowerCase())
       );
@@ -72,14 +69,25 @@ export const Maquinas = () => {
       <Layout titlePage="Maquinas">
         <Breadcrumb pageName={t("FichasTecnicas")} />
         <div className="pt-3 px-9 mt-10 flex justify-between">
-          <Button type="suc" className="text-white text-base bg-green-600">
-            <Link
-              to={"/crearTiposFichaTec"}
-              className="flex gap-2 justify-center items-center h-full w-full"
-            >
-              {t("RegistrarTipoFicha")} <Icons icon={PlusIcon} />
-            </Link>
-          </Button>
+          <div>
+            <Button type="suc" className="text-white text-base bg-green-600 ">
+              <Link
+                to={"/crearTiposFichaTec"}
+                className="flex gap-2 justify-center items-center h-full w-full"
+              >
+                {t("RegistrarTipoFicha")} <Icons icon={PlusIcon} />
+              </Link>
+            </Button>
+
+            <Button type="suc" className="text-white text-base bg-yellow-400 ml-4">
+              <Link
+                to={"/editarTiposFichaTec"}
+                className="flex gap-2 justify-center items-center h-full w-full"
+              >
+                Editar tipo de ficha <Icons icon={PencilSquareIcon} />
+              </Link>
+            </Button>
+          </div>
 
           <Button type="suc" className="text-white text-base bg-green-600">
             <Link
