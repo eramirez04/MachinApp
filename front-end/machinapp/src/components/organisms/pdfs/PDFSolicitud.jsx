@@ -265,6 +265,7 @@ export const PDFSolicitud = ({idSolicitud}) => {
         </View>
 
         <View style={styles.prioritySection}>
+        <Text style={styles.sectionTitle}>PRIORITY</Text>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'inmediata' && { backgroundColor: 'black' }]} />
             <Text style={styles.priorityText}>Immediate</Text>
