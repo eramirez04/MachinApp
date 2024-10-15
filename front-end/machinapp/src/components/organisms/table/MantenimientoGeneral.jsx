@@ -153,22 +153,21 @@ export const MantenimientoGeneral = () => {
                                         document={<MantenimientoGeneralPDF mantenimientos={filteredItems} />}
                                         fileName="mantenimientos.pdf"
                                     >
-                                        {({loading }) =>
-                                            loading ? (
-                                                <Button color="primary" disabled>
-                                                    {t('cargando')}
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    color="primary"
-                                                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
-                                                    className="text-white text-xs sm:text-sm"
-                                                    onClick={() => toast.success(t('pdf_descargado_exitosamente'))}
-                                                >
-                                                    {t('descargar_pdf')}
-                                                </Button>
-                                            )
-                                        }
+                                        {({ loading }) => (
+                                            <Button
+                                                color="primary"
+                                                startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                                                className="text-white text-xs sm:text-sm"
+                                                onClick={() => {
+                                                    if (!loading) {
+                                                        toast.success(t('pdf_descargado_exitosamente'));
+                                                    }
+                                                }}
+                                                disabled={loading}
+                                            >
+                                                {t('descargar_pdf')}
+                                            </Button>
+                                        )}
                                     </PDFDownloadLink>
                                     <ExcelMantenimientos 
                                         mantenimientos={filteredItems} 
