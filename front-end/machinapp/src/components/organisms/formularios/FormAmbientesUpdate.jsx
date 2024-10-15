@@ -17,7 +17,7 @@ export const FormAmbientesUpdate = () => {
   const [dataSitio, setDataSitio] = useState(null);
   
   const {
-    register,
+    register, 
     formState: { errors },
     handleSubmit,
     setValue,
@@ -126,10 +126,10 @@ export const FormAmbientesUpdate = () => {
         </header>
 
         <div className="flex flex-col w-full mt-8 items-center justify-center">
-          <div className="flex items-center justify-center h-80 rounded bg-gray-100 w-[800px] shadow-inner">
+          <div className="flex items-center justify-center h-80 rounded bg-gray-100 w-3/5 shadow-inner">
             {previewImagen ? (
               <img
-                className="h-full w-full object-cover rounded"
+                className="h-full rounded"
                 alt={t("imagePreview")}
                 src={previewImagen}
               />
