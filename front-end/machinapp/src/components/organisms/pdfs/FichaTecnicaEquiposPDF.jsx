@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 
 
 
+
 export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
     
   const { t } = useTranslation()
