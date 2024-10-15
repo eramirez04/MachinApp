@@ -284,5 +284,12 @@
   "rol": "Role",
   "dimensiones_y_caracteristicas_fisicas": "Dimensiones y características físicas",
   "acabados_del_ambiente_de_formacion": "Acabados del ambiente de formación",
-  "vista_previa_del_pdf": "Vista previa del PDF"
+  "vista_previa_del_pdf": "Vista previa del PDF",
+  "tipo_tenencia": "Tipo de tenencia",
+  "campo_ambiente": "Campo",
+  "valor_ambiente": "Valor",
+  "todas_las_areas":"Todas las áreas",
+  "filtrar_por_area": "Filtrar por área",
+  "todos_los_estados": "Todos los estados",
+  "filtrar_por_estado": "Filtrar por estado"
 }

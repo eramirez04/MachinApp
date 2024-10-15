@@ -17,7 +17,7 @@ export const cargarImagenSitio = upload.single("img");
 export const listarSitio = async (req, res) => {
   try {
     const sql = `
-      SELECT idAmbientes, sit_nombre, tipo_sitio, sit_fecha_registro, area_nombre, us_nombre AS instructor_encargado 
+      SELECT idAmbientes, sit_nombre, tipo_tenencia, tipo_sitio, sit_estado, sit_fecha_registro, area_nombre, us_nombre AS instructor_encargado 
       FROM ambientes 
       INNER JOIN tipo_sitio ON sit_fk_tipo_sitio = idTipo_sitio 
       INNER JOIN areas ON sit_fk_areas = idArea 
@@ -43,7 +43,7 @@ export const registrarSitio = async (req, res) => {
     return res.status(400).json({ errores: errors.array() });
   }
 
-  const { sit_nombre, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios } =
+  const { sit_nombre, tipo_tenencia, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios } =
     req.body;
 
   const [consulta] = await conexion.query(
@@ -60,14 +60,16 @@ export const registrarSitio = async (req, res) => {
 
   try {
     const sql = `
-      INSERT INTO ambientes (sit_nombre, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_fk_usuarios)
+      INSERT INTO ambientes (sit_nombre, tipo_tenencia, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios)
       VALUES (?, ?, ?, ?, ?)
     `;
     const [respuesta] = await conexion.query(sql, [
       sit_nombre,
+      tipo_tenencia,
       img_sitio,
       sit_fk_areas,
       sit_fk_tipo_sitio,
+      sit_estado,
       sit_fk_usuarios,
     ]);
 
@@ -118,11 +120,14 @@ export const editarSitio = async (req, res) => {
 
     const sitioExistente = resultadoSitio[0];
 
+    // Si solo se está actualizando el estado, usamos los valores existentes para los demás campos
     const {
       sit_nombre = sitioExistente.sit_nombre,
+      tipo_tenencia = sitioExistente.tipo_tenencia,
       sit_fecha_registro = sitioExistente.sit_fecha_registro,
       sit_fk_areas = sitioExistente.sit_fk_areas,
       sit_fk_tipo_sitio = sitioExistente.sit_fk_tipo_sitio,
+      sit_estado = sitioExistente.sit_estado,
       sit_fk_usuarios = sitioExistente.sit_fk_usuarios,
     } = req.body;
 
@@ -132,14 +137,17 @@ export const editarSitio = async (req, res) => {
 
     const sqlUpdate = `
       UPDATE ambientes 
-      SET sit_nombre = ?, sit_fecha_registro = ?, sit_fk_areas = ?, sit_fk_tipo_sitio = ?, sit_fk_usuarios = ?, img_sitio = ?
+      SET sit_nombre = ?, tipo_tenencia = ?, sit_fecha_registro = ?, sit_fk_areas = ?, 
+          sit_fk_tipo_sitio = ?, sit_estado = ?, sit_fk_usuarios = ?, img_sitio = ?
       WHERE idAmbientes = ?
     `;
     const [respuesta] = await conexion.query(sqlUpdate, [
       sit_nombre,
+      tipo_tenencia,
       sit_fecha_registro,
       sit_fk_areas,
       sit_fk_tipo_sitio,
+      sit_estado,
       sit_fk_usuarios,
       img_sitio,
       id,
@@ -164,7 +172,7 @@ export const listarSitioPorId = async (req, res) => {
 
   try {
     const sql = `
-      SELECT idAmbientes, sit_nombre, tipo_sitio, sit_fecha_registro, area_nombre, us_nombre AS instructor_encargado 
+      SELECT idAmbientes, sit_nombre, img_sitio, tipo_tenencia, tipo_sitio, sit_fecha_registro, sit_estado, area_nombre, us_nombre AS instructor_encargado 
       FROM ambientes 
       INNER JOIN tipo_sitio ON sit_fk_tipo_sitio = idTipo_sitio 
       INNER JOIN areas ON sit_fk_areas = idArea 
@@ -190,7 +198,7 @@ export const listarSitiosPorArea = async (req, res) => {
 
   try {
     const sql = `
-      SELECT ambientes.idAmbientes, ambientes.sit_nombre, ambientes.sit_fecha_registro, ambientes.img_sitio, tipo_sitio.tipo_sitio, areas.area_nombre, usuarios.us_nombre AS instructor_encargado
+      SELECT ambientes.idAmbientes, ambientes.sit_nombre, ambientes.tipo_tenencia, ambientes.sit_fecha_registro, ambientes.sit_estado, ambientes.img_sitio, tipo_sitio.tipo_sitio, areas.area_nombre, usuarios.us_nombre AS instructor_encargado
       FROM ambientes
       INNER JOIN tipo_sitio ON ambientes.sit_fk_tipo_sitio = tipo_sitio.idTipo_sitio
       INNER JOIN areas ON ambientes.sit_fk_areas = areas.idArea
