@@ -12,13 +12,13 @@ export const listarActividades= async (req,res)=>{
 
         if (resultadoActividad.length > 0) {
           res.status(200).json({
-            "Mensaje": "Usuarios encontrado",
+            "Mensaje": "adctividad encontrada",
             resultadoActividad
           })
         }
         else {
           return res.status(404).json(
-            { "Mensaje": "No se encontraron usuarios" }
+            { "Mensaje": "No se encontraron adctividad" }
           )
         }
     }
@@ -28,6 +28,35 @@ export const listarActividades= async (req,res)=>{
     }
 
 }
+export const listarActividadesdeSolicitudes = async (req, res) => {     
+    try {
+        const { idSolicitud } = req.params;
+
+        let sql = `SELECT 
+                    idActividades,
+                    acti_nombre,
+                    acti_descripcion 
+                   FROM actividades 
+                   WHERE acti_fk_solicitud = ?`;
+
+        const [resultadoActividad] = await conexion.query(sql, [idSolicitud]);
+
+        if (resultadoActividad.length > 0) {
+            res.status(200).json({
+                "Mensaje": "Actividad encontrado",
+                resultadoActividad
+            });
+        } else {
+            return res.status(404).json({
+                "Mensaje": "No se encontraron actividades"
+            });
+        }
+    } catch (err) {
+        res.status(500).json({ "message": "Error en el servidor: " + err });
+    }
+}; 
+
+
 
 //registrar por defecto las actividades
 export const registrarActividades = async (req, res) => {
@@ -156,31 +185,38 @@ export const eliminarActividades= async (req,res)=>{
   
 }
 
-export const actualizarActividades= async (req,res)=>{
-    try {
-        const error=validationResult(req)
 
-        if(!error.isEmpty()){
-            return res.status(400).json(error)
+export const actualizarActividades = async (req, res) => {
+    try {
+        const error = validationResult(req);
+        if (!error.isEmpty()) {
+            return res.status(400).json(error);
+        }
+
+        let { acti_nombre, acti_descripcion } = req.body;
+        let id = req.params.idActividades;
+
+        console.log("ID de actividad:", id); // Verifica que el ID sea correcto
+
+        let sql = `UPDATE actividades SET acti_nombre = ?, acti_descripcion = ? WHERE idActividades = ?`;
+        const [respuesta] = await conexion.query(sql, [acti_nombre, acti_descripcion, id]);
+
+        console.log("Respuesta de la base de datos:", respuesta); // Para verificar qué se devuelve
+
+        if (respuesta.affectedRows > 0) {
+            if (respuesta.changedRows > 0) {
+                return res.status(200).json({ "message": "Se actualizó con éxito" });
+            } else {
+                return res.status(200).json({ "message": "Los datos son los mismos, no se realizaron cambios." });
+            }
+        } else {
+            return res.status(404).json({ "message": "No se actualizó" });
         }
         
-        let{acti_nombre, acti_descripcion, acti_fecha_realizacion,acti_estado,acti_fk_solicitud}=req.body
-
-        let id=req.params.id_actividades
-
-        let sql =`update actividades set acti_nombre='${acti_nombre}', acti_descripcion='${acti_descripcion}',acti_fecha_realizacion='${acti_fecha_realizacion}', acti_estado='${acti_estado}', acti_fk_solicitud='${acti_fk_solicitud}' where idActividades=${id}`;
-    
-        const[respuesta]=await conexion.query(sql);
-    
-        if(respuesta.affectedRows>0){
-            return res.status(200).json({"menssage":"se actualizo con exito"});
-        }else{
-            return res.status(404).json({"menssage":"No se actualizo"})
-        } 
-        
     } catch (error) {
-        return res.status(500).json({"menssage":"error"+error.menssage})
+        console.error("Error al actualizar la actividad:", error); // Para revisar errores
+        return res.status(500).json({ "message": "Error " + error.message });
     }
-  
-}
+};
+
   

@@ -15,7 +15,7 @@ solicitudRouter.get("/", obtenerSolicitudes);
 solicitudRouter.get("/PDF", obtenerSolicitudesPDF);
 
 
-solicitudRouter.put("/actualizar/:idSolicitud", actualizarSolicitudes);
+solicitudRouter.put("/actualizar/:id", actualizarSolicitudes);
 solicitudRouter.get("/listarPorId/:idSolicitud", listarSolicitudPorId);
 
 

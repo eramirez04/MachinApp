@@ -286,5 +286,12 @@
   "nueva_contrasena": "New Password",
   "dimensiones_y_caracteristicas_fisicas": "Dimensions and physical characteristics",
   "acabados_del_ambiente_de_formacion": "Finishes of the training environment",
-  "vista_previa_del_pdf": "PDF Preview"
+  "vista_previa_del_pdf": "PDF Preview",
+  "tipo_tenencia": "Type of tenure",
+  "campo_ambiente": "Field",
+  "valor_ambiente": "Valor",
+  "todas_las_areas": "All areas",
+  "filtrar_por_area": "Filter by area",
+  "todos_los_estados": "All status",
+  "filtrar_por_estado": "Filter by status"
 }
