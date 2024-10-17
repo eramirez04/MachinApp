@@ -25,7 +25,7 @@ export const AvatarCom = () => {
       </Link>
     </>,
     <>
-      <Link className="flex gap-4">
+      <Link to={"/ayuda"} className="flex gap-4">
         <Icons icon={QuestionMarkCircleIcon} />{" "}
         <p>
           {t("ayuda")} & {t("retroalimentacion")}
