@@ -1,9 +1,9 @@
 import { Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent } from "../../../index.js";
+import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent, useGlobalData} from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
-//import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { useNavigate } from 'react-router-dom'
 
@@ -12,8 +12,11 @@ import { multiFormData } from "../../../utils/formData.js"
 
 
 export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
+
+  const { refreshEquipos } = useGlobalData()
+
   const idFicha = idMaquina
-  //const { t } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
 
@@ -74,11 +77,14 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
     try{
 
       //actualizamos la informacion basica de la maquina
-      /* const response =  */await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
+      await multiFormData(`/ficha/actualizar/${idFicha}`, infoFicha, "PUT")
 
 
       //actualizamos la informacion de los detalles. 
-      /* const actDetalles = */ await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+      await axiosCliente.put('detalle/actualizar',{detalles:detallesBd} )
+
+      await refreshEquipos()
+
       navigate(`/infoMaquina/${idFicha}`)
     }
     catch(error){
@@ -101,7 +107,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         //para info de las variables y detalles
         let variables = response.data.infoVar
-        console.log(variables)
 
         //registramos todos los detalles en  el formulario para poder editarlos , el id del detalle es la clave y el valor es el valor del input.  
 
@@ -146,7 +151,6 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
         setVarObligatorias(objVarObligatorias)
 
-        console.log(objVarObligatorias)
 
 
       } catch (error) {
@@ -222,7 +226,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
               />
             </figure>
             <div className="flex-grow text-center border px-4 h-16 w-1/3 flex items-center justify-center">
-              Ficha Técnica
+              {t('fichaTecnica')}
             </div>
             <div className="flex-shrink-0 w-1/3 h-16 border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
@@ -234,7 +238,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 {/* contenido */}
           <div>
             <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">
-              Información Básica
+              {t('infoBasica')}
             </h3>
             <div className="flex flex-col lg:flex-row  w-full gap-11 px-4">
               <div className="w-full lg:w-1/2 ">
@@ -246,7 +250,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label="Placa SENA"
+                        label={`${t('placaSena')}`}
                         tipo="text"
                         errors={errors}
                         isUpdating={true}
@@ -264,7 +268,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar2.var_nombre}`}
+                        label={`${t('serial')}`}
                         tipo={`${varObligatorias.idVar2.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -282,7 +286,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar9.var_nombre}`}
+                        label={`${t('precio')}`}
                         tipo={`${varObligatorias.idVar9.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -300,7 +304,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar7.var_nombre}`}
+                        label={`${t('marca')}`}
                         tipo={`${varObligatorias.idVar7.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -318,7 +322,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar8.var_nombre}`}
+                        label={`${t('modelo')}`}
                         tipo={`${varObligatorias.idVar8.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -337,7 +341,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar1.var_nombre}`}
+                        label={`${t('fechaAdquisi')}`}
                         tipo={`${varObligatorias.idVar1.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -349,43 +353,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   />
 
                 </div>
-                {/* <div className="w-full mt-[18px] flex flex-col gap-8 justify-start">
-                  <div>
-                    <SelectComponent
-                        options={ambientes}
-                        name="fi_fk_sitios"
-                        placeholder="Ambiente"
-                        valueKey="id"
-                        textKey="valor"
-                        register={register}
-                        label="Ambiente"
-                    />
-                  </div>
-                  <div>
-                    <SelectComponent 
-                      options={[
-                        {
-                          id: "operacion", 
-                          value: "operacion"
-                        },
-                        {
-                          id: "fuera_de_servicio", 
-                          value: "fuera de servicio"
-                        },
-                        {
-                          id: "en_reparacion", 
-                          value: "En reparacion"
-                        }
-                      ]}
-                      name = "fi_estado"
-                      placeholder="Seleccionar"
-                      valueKey="id"
-                      textKey="value"
-                      register={register}
-                      label="Estado maquina"
-                    />
-                  </div>
-                </div> */}
+                
 
 
               </div>
@@ -393,28 +361,24 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
 
                 {
                   estadoImg ? (
-                    <div className="flex items-center justify-center w-full h-[256px] bg-gray-200 rounded sm:w-full dark:bg-gray-300 mt-10">
+                    <div className=" border-1 border-gray-300 flex items-center justify-center w-full h-[305px] mt-9 rounded-xl px-3 py-3">
                       <img
-                        className="h-full w-full object-contain rounded"
+                        className="h-full w-full object-contain rounded-md"
                         alt=""
                         src={previewImagen}
                       />
                     </div>
                   ):(
-                  <div className="flex items-center justify-center w-full   sm:w-full  mt-10">
-                    <Imagenes rutaImg={`imagenes/ficha/${infoFicha.fi_imagen}`}  />
+                  <div  className=" border-1 border-gray-300 flex items-center justify-center w-full h-[305px] mt-9 rounded-xl px-3 py-3">
+
+                    <img
+                        className="h-full w-full object-contain rounded-md"
+                        alt=""
+                        src={`http://localhost:3000/imagenes/ficha/${infoFicha.fi_imagen}`}
+                    />
                   </div>
                   )
                 }
-{/*                 <div className="border-l-8 border-l-green-600 pl-3">
-                  <p className="mb-2 mt-6">Actualizar imagen</p>
-                  <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
-                </div>
-
-                <div className="border-l-8 border-l-green-600 pl-3">
-                  <p className="mb-2 mt-6" >Actualizar ficha tecnica</p>
-                  <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
-                </div> */}
               
               </div>
 
@@ -427,11 +391,11 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     <SelectComponent
                         options={ambientes}
                         name="fi_fk_sitios"
-                        placeholder="Ambiente"
+                        placeholder={`${t('ambiente')}`}
                         valueKey="id"
                         textKey="valor"
                         register={register}
-                        label="Ambiente"
+                        label={`${t('ambiente')}`}
                     />
                   </div>
                   <div className="w-full ">
@@ -439,23 +403,23 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                       options={[
                         {
                           id: "operacion", 
-                          value: "operacion"
+                          value: `${t('operacion')}`
                         },
                         {
                           id: "fuera_de_servicio", 
-                          value: "fuera de servicio"
+                          value: `${t('fueraServicio')}`
                         },
                         {
                           id: "en_reparacion", 
-                          value: "En reparacion"
+                          value: `${t('reparasion')}`
                         }
                       ]}
                       name = "fi_estado"
-                      placeholder="Seleccionar"
+                      placeholder={`${t('seleccionar_estado')}`}
                       valueKey="id"
                       textKey="value"
                       register={register}
-                      label="Estado maquina"
+                      label={`${t('estMaquina')}`}
                     />
                   </div>
                 
@@ -464,34 +428,25 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
               {/* contenedor para los documentos */}
               <div className="w-full md:w-1/2  flex flex-col pr-4 py-4 items-center gap-7">
                 <div className="border-l-8 border-l-green-600 pl-3 w-full">
-                  <p className="mb-2 mt-2">Actualizar imagen</p>
+                  <p className="mb-2 mt-2">{t('actImagen')}</p>
                   <input type="file" onChange={cargarImagen} className="appearance-none  w-full px-4 py-2 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  " />
                 </div>
 
                 <div className="border-l-8 border-l-green-600 pl-3 w-full">
-                  <p className="mb-2 mt-2" >Actualizar ficha tecnica</p>
+                  <p className="mb-2 mt-2" >{t('actFichaTecnica')}</p>
                   <input type="file" onChange={cargarFicha} className="appearance-none  w-full py-2 px-4 rounded-lg bg-gray-200 focus:outline-none focus:bg-white focus:border-blue-500  "  />
                 </div>
               </div>
             </div>
 
-
-
-
-
-
-
-
-
-
             <div className="w-full mt-12 px-4">
-              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion del equipo</label>
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('descripEquipo')}</label>
               <div className="mt-3">
                 <TextAreaComponent
                   errors={errors}
                   register={register}
                   name={`infoDetalles.${varObligatorias.idVar6.idDetalle}`}
-                  descripcion={'Descripcion general del equipo'}
+                descripcion={`${t('descripEquipo')}`}
                 />
               </div>
             </div>  
@@ -507,7 +462,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar3.var_nombre}`}
+                        label={`${t('fechaInicioGaran')}`}
                         tipo={`${varObligatorias.idVar3.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -524,7 +479,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     render={({ field }) => (
                       <InputUpdate
                         {...field}
-                        label={`${varObligatorias.idVar4.var_nombre}`}
+                        label={`${t('fechaFinGarantia')}`}
                         tipo={`${varObligatorias.idVar4.var_tipoDato}`}
                         errors={errors}
                         isUpdating={true}
@@ -536,12 +491,12 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                 </div>
               </div>
               <div className="w-full p-2 ">
-              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion garantia</label>
+              <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium ">{t('descripGarantia')}</label>
                 <TextAreaComponent
                   errors={errors}
                   register={register}
                   name={`infoDetalles.${varObligatorias.idVar5.idDetalle}`}
-                  descripcion={'Descripcion de la garantia'}
+                  descripcion={`${t('descripGarantia')}`}
                 />
               </div>
             </div>
@@ -552,7 +507,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                 varEspec.length >0? (                
                 
                 <div>
-                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">Caracteristicas Generales.</h3>
+                  <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600">{t('carGenerales')}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
                     {
                       
@@ -585,13 +540,13 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
             {
             varEspTecnicas.length>0 ? (
               <div className="my-14">
-                <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >Especificaciones tecnicas</h3>
+                <h3 className="w-full text-2xl pl-7 py-1 mt-12 text-white  mb-8 bg-green-600" >{t('especTecnicas')}</h3>
                 <div className="overflow-x-auto px-4">
                   <table className="min-w-full border-collapse">
                     <thead>
                       <tr>
-                        <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">Nombre</th>
-                        <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">Valor</th>
+                        <th className="py-2 px-4 text-left font-medium text-gray-700 w-1/4 border-b border-gray-300">{t('nombre')}</th>
+                        <th className="py-2 px-4 text-left font-medium text-gray-700 border-b border-gray-300">{t('valor')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -625,10 +580,10 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
             }
 
             {/* Secciones */}
-            <div className="border-t-4  border-t-green-600">
+            
             {
-              
-              varSecciones.map((varSeccion)=>(
+              <div className="border-t-4  border-t-green-600">
+              {varSecciones.map((varSeccion)=>(
                 <div className="overflow-x-auto my-14 px-4" key={varSeccion.idDetalle}>
                   <table className="min-w-full  ">
                     <tbody>
@@ -652,10 +607,12 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                   </table>
                 </div>
               ))
+              }
+              </div>
             }
-            </div>
+            
           </div>
-          <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
+          <ButtonNext text={`${t('actFichaTecnica')}`} type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
         </div>
       </form>
 

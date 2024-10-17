@@ -46,7 +46,7 @@ export const listarTipoFicha = async(req, res)=>{
             res.status(200).json(respuesta)
         }
         else{
-            res.status(404).json({"mensaje":"No se encontraron usuario"})
+            res.status(404).json({"mensaje":"No se encontraron tipos de ficha"})
         }
     }catch(error){
         res.status(500).json({"mensaje":"Error en el servidor."})

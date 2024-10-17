@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { Select, SelectItem, Button } from "@nextui-org/react";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -18,7 +18,7 @@ import {
 
 export const MantenimientoGeneral = () => {
     const { t } = useTranslation();
-    const [mensajeError, setMensajeError] = useState('');
+    const [, setMensajeError] = useState('');
     const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
     const [tipoSeleccionado, setTipoSeleccionado] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
@@ -37,7 +37,7 @@ export const MantenimientoGeneral = () => {
             setMensajeError('');
             const mantenimientosFormateados = response.data.map(mantenimiento => ({
                 ...mantenimiento,
-                mant_fecha_proxima: new Date(mantenimiento.fecha_realizacion).toLocaleDateString('es-ES')
+                mant_fecha_proxima: new Date(mantenimiento.mant_fecha_realizacion).toLocaleDateString('es-ES')
             }));
 
             setAllItems(mantenimientosFormateados);
@@ -48,8 +48,6 @@ export const MantenimientoGeneral = () => {
 
             const tiposUnicos = [...new Set(mantenimientosFormateados.map(item => item.tipo_mantenimiento))].filter(Boolean);
             setTipos(tiposUnicos);
-
-            toast.success(t("mantenimientos_cargados_exitosamente"));
 
         } catch (error) {
             const errorMessage = error.response?.data?.message || t("error_cargar_mantenimientos");
@@ -84,7 +82,6 @@ export const MantenimientoGeneral = () => {
         }
 
         setFilteredItems(filtered);
-        /* toast.info(`${filtered.length} ${t("mantenimientos_encontrados")}`); */
     };
 
     useEffect(() => {
@@ -92,15 +89,14 @@ export const MantenimientoGeneral = () => {
     }, [estadoSeleccionado, tipoSeleccionado]);
 
     const columns = [
-        t('id'), t('referencia'), t('codigo'), t('fecha_proxima'),
+        t('referencia'), t('codigo'), t('fecha de realizacion'),
         t('estado_actividad'), t('tipo'), t('nombre_actividad'), t('acciones')
     ];
 
     const data = filteredItems.map(item => ({
-        idMantenimiento: item.idMantenimiento,
         referencia_maquina: item.referencia_maquina,
         codigo_mantenimiento: item.codigo_mantenimiento,
-        fecha_realizacion: item.fecha_realizacion,
+        fecha_realizacion: item.mant_fecha_realizacion,
         estado_maquina: item.estado_maquina,
         tipo_mantenimiento: item.tipo_mantenimiento,
         acti_nombre: item.acti_nombre,
@@ -157,22 +153,21 @@ export const MantenimientoGeneral = () => {
                                         document={<MantenimientoGeneralPDF mantenimientos={filteredItems} />}
                                         fileName="mantenimientos.pdf"
                                     >
-                                        {({ blob, url, loading, error }) =>
-                                            loading ? (
-                                                <Button color="primary" disabled>
-                                                    {t('cargando')}
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    color="primary"
-                                                    startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
-                                                    className="text-white text-xs sm:text-sm"
-                                                    onClick={() => toast.success(t('pdf_descargado_exitosamente'))}
-                                                >
-                                                    {t('descargar_pdf')}
-                                                </Button>
-                                            )
-                                        }
+                                        {({ loading }) => (
+                                            <Button
+                                                color="primary"
+                                                startContent={<DocumentArrowDownIcon className="h-5 w-5" />}
+                                                className="text-white text-xs sm:text-sm"
+                                                onClick={() => {
+                                                    if (!loading) {
+                                                        toast.success(t('pdf_descargado_exitosamente'));
+                                                    }
+                                                }}
+                                                disabled={loading}
+                                            >
+                                                {t('descargar_pdf')}
+                                            </Button>
+                                        )}
                                     </PDFDownloadLink>
                                     <ExcelMantenimientos 
                                         mantenimientos={filteredItems} 

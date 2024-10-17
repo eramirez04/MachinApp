@@ -1,9 +1,11 @@
 import { useMemo } from "react";
 import { useGlobalData } from "../../../index";
 import ReactECharts from "echarts-for-react";
+import { useTranslation } from "react-i18next";
 
 export const ChartMaquinas = () => {
   const { equiposData } = useGlobalData();
+  const { t } = useTranslation();
 
   const dataFiltrada = useMemo(() => {
     const contador = equiposData.reduce((acumulador, datos) => {
@@ -23,7 +25,7 @@ export const ChartMaquinas = () => {
 
   const option = {
     title: {
-      text: "Equipos totales en el sistema",
+      text: t("total_teams_in_the_system"),
       left: "center",
       top: 20,
       textStyle: {

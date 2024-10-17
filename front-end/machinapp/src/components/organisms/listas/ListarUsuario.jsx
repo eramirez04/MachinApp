@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 export const BuscarUsuario = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
-
   const newd = {
     [t("nombre")]: user.us_nombre,
     [t("apellidos")]: user.us_apellidos,

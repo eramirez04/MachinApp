@@ -25,6 +25,7 @@ export const FormSedes = () => {
       sede_municipio: data.Municipio,
       sede_subdirector: data.Subdirector,
       sede_direccion: data.Direccion,
+      contacto: data.Contacto,
       img: imagen,
     };
 
@@ -66,10 +67,10 @@ export const FormSedes = () => {
         </header>
 
         <div className="flex flex-col w-full mt-8 items-center justify-center">
-          <div className="flex items-center justify-center h-80 rounded bg-gray-100 w-[800px] shadow-inner">
+          <div className="flex items-center justify-center h-80 rounded bg-gray-100 w-3/5 shadow-inner">
             {previewImagen ? (
               <img
-                className="h-full w-full object-cover rounded"
+                className="h-full rounded"
                 alt="Preview"
                 src={previewImagen}
               />
@@ -140,6 +141,13 @@ export const FormSedes = () => {
                 tipo={"text"}
                 name={"Subdirector"}
                 label={"Subdirector"}
+              />
+              <InputforForm
+                errors={errors}
+                register={register}
+                tipo={"text"}
+                name={"Contacto"}
+                label={"Contacto de la Sede"}
               />
             </div>
           </div>

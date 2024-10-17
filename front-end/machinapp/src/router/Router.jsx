@@ -30,8 +30,11 @@ import {
   ActualizarAmbientes,
   ActualizarAreas,
   UpdateAndListFichaTecnica,
+  UpdateFormFichaSolicitud,
   ActualizarSedes,
   Page404,
+  SettingsPanelPage,
+  ViewFormTipoFichaUpdate
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -62,7 +65,13 @@ export const AppRouter = () => {
             </Route>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
+
+            <Route path="/ayuda" element={<SettingsPanelPage />} />
+
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
+            <Route path="/editar/solicitud/:id" element={<UpdateFormFichaSolicitud/>}/>
+
+
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
             <Route path="/Sedes" element={<Sitios />} />
@@ -76,6 +85,7 @@ export const AppRouter = () => {
             <Route path="/Areas" element={<AreasGeneral />} />
             <Route path="/Ambientes" element={<AmbientesGeneral />} />
             <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica />} />
+            <Route path="/editarTiposFichaTec" element={<ViewFormTipoFichaUpdate/>}/>
           </Route>
         </Routes>
       </Suspense>

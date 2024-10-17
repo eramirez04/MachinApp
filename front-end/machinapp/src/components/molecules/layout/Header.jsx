@@ -12,15 +12,17 @@ export const Header = ({ color, contenido }) => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <figure className=" h-16 w-16 ">
+          <figure className="h-full w-24 ">
             <LazyLoadImage
-              src={V.logoSena}
+              src={V.logoTic}
               className="h-full w-full cursor-pointer"
               effect="opacity"
               alt="logo-sena"
             />
           </figure>
-          <div className="flex justify-center items-center ml-2">MachinApp</div>
+          <div className="flex justify-center items-center ml-3 font-bold text-2xl text-green-600 tracking-wide">
+            MachinApp
+          </div>
         </div>
         {contenido}
       </nav>

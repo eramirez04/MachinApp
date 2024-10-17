@@ -7,11 +7,12 @@ import {
   V,
   Breadcrumb,
   useAuth,
+ // Artboard
   ChartMaquinas,
   MantenimientoGrafico,
   useMantenimientosQuery,
 } from "../../index.js";
-/* import Artboard from "../../components/organisms/Paginacentrar.jsx"; */
+import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -42,7 +43,7 @@ export const Home = () => {
       link: "/solicitud",
     },
     {
-      title: "Total de Ambientes de formacion",
+      title: t("total_ambientes_formacion"),
       total: ambientes.length,
       icon: V.UsersIcon,
       link: "/Ambientes",
@@ -54,7 +55,7 @@ export const Home = () => {
   }
   return (
     <>
-      <Layout titlePage={"Home"}>
+      <Layout>
         <Breadcrumb pageName={t("inicio")} />
         {/* Primera fila con 4 tarjetas */}
 
@@ -91,7 +92,7 @@ export const Home = () => {
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <CardStyle
-                subtitle={"Resumen de Mantenimientos por Categoría"}
+                subtitle={t("maintenance_summary_by_category")}
                 titleCard={""}
                 footer={"Ver mas"}
               >
@@ -100,10 +101,8 @@ export const Home = () => {
             </div>
 
             <CardStyle
-              subtitle={"Resumen de Estado de Máquinas y Equipos"}
-              titleCard={
-                "Clasificación de máquinas y equipos según su estado operativo."
-              }
+              subtitle={t("machinery_and_equipment_status_summary")}
+              titleCard={t("clasificacion_maquinas_equipos")}
             >
               <ChartMaquinas />
             </CardStyle>
@@ -112,7 +111,7 @@ export const Home = () => {
           <div className="mt-6 grid grid-cols-1 gap-6">
             <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark">
               {/* Contenido de la sexta tarjeta */}
-              {/*   <Artboard /> */}
+              <Artboard />
             </div>
           </div>
         </div>

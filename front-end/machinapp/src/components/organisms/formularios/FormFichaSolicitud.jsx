@@ -62,14 +62,14 @@ export const FormFichaSolicitud = () => {
     try {
       const res = await axiosCliente.post("solicitud/", {
         prioridad: data.prioridad,
-        descripcion: data.Solicitante,
+        descripcion: data.descripcion,
         costo_estimado: "10000",
         obsevaciones: data.obervaciones,
         temaLegal: data.parte_legal,
         nombre_solicitante: data.Solicitante,
         correo_solicitante: data.Correo_de_solicitante,
       });
-
+      console.log(res);
       let id = res.data.data_id;
 
       const placasSenaConSolicitud = placasSena.map((obj) => ({
@@ -78,8 +78,16 @@ export const FormFichaSolicitud = () => {
       }));
 
       const resfichas = await registrarSolicitudFichas(placasSenaConSolicitud);
+      const activitiesData = {
+        acti_nombre: valuesTable.map(row => data[`nombre_actividad_${row.id}`]),
+        acti_descripcion: valuesTable.map(row => data[`actividad_${row.id}`]),
+        acti_fecha_realizacion: new Date().toISOString().split('T')[0], // Current date
+        acti_fk_solicitud: id
+      };
 
-      if (res && resfichas) {
+      const resActividades = await axiosCliente.post("actividades/registrar", activitiesData);
+
+      if (res && resfichas && resActividades) {
         toast.success("se registro con exito la solicitud del mantenimiento");
         reset();
         setvaluesTable([{ id: 1 }]);
@@ -130,12 +138,7 @@ export const FormFichaSolicitud = () => {
     setInputValues((prevInputValues) => [...prevInputValues, ""]); // Añade un nuevo input vacío
   };
 
-  const handleInputChange = (index, value) => {
-    value = Number(value);
-    const newInputValues = [...inputValues];
-    newInputValues[index] = value;
-    setInputValues(newInputValues);
-  };
+
 
   const handlesuma = useCallback(() => {
     return inputValues.reduce((a, b) => a + b, 0);
@@ -149,7 +152,7 @@ export const FormFichaSolicitud = () => {
     setEquipo(equiposInfor);
     /*     console.log(valuesTable);
     handlesuma(); */
-  }, [equiposData, handlesuma, valuesTable]);
+  }, [equiposData,handlesuma, valuesTable]);
 
   return (
     <>
@@ -167,57 +170,56 @@ export const FormFichaSolicitud = () => {
               />
             </figure>
             <div className="flex-grow text-center border px-4 text-base h-full w-1/3 flex items-center justify-center">
-              SOLICITUD DE SERVICIO DE MANTENIMIENTO
+            {t("maintenance_service_request")}
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                Centro de Gestión y Desarrollo Sostenible SurColombiano
+                {t("management_center")}
               </p>
             </div>
           </div>
           <div className="border flex flex-col gap-4 p-14">
             <CardStyle
-              titleCard={"Informacion de solicitante"}
-              subtitle={"dfsdfdf"}
+              subtitle={t("applicant_information")}
             >
               <div className="flex gap-5 max-md:inline justify-between">
                 <InputforForm
                   errors={errors}
                   name={"Solicitante"}
                   register={register}
-                  label={"Nombre del Solicitante"}
+                  label={t("name_of_applicant")}
                 />
                 <InputforForm
                   errors={errors}
                   name={"Correo_de_solicitante"}
                   register={register}
-                  label={"Correo del Solicitante"}
+                  label={t("applicants_email")}
                 />
                 <InputforForm
                   errors={errors}
                   name={"Direccion"}
                   register={register}
-                  label={"Direccion"}
+                  label={t("direccion")}
                 />
               </div>
             </CardStyle>
             <Divider />
             <div className="flex flex-col gap-3">
-              Prioridad
+              {t("priority")}
               <div className=" border-orange-400 inline-block w-24"></div>
               <SelectComponent
                 options={prioridad}
                 name="prioridad"
-                placeholder="Prioridad"
+                placeholder={t("priority")}
                 valueKey="name"
                 textKey="name"
                 register={register}
-                label="Prioridad"
+                label={t("priority")}
               />
             </div>
             <Divider />
-            <div className="flex flex-col gap-3">
-              Descripcion de la solicitud
+            <div className="flex flex-col gap-3" >
+              {t("Description_of_the_Request")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
@@ -228,37 +230,38 @@ export const FormFichaSolicitud = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-3">
-              Parte Legal
+              {t("Legal_Part")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
                 register={register}
                 name={"parte_legal"}
-                label={"Temas legales"}
+                label={t("Legal_Part")}
               />
             </div>
             <Divider />
             <div className="flex flex-col gap-4">
-              Obervaciones
+              {t("Observations")}
               <div className="border-b-4 border-orange-400 inline-block w-24"></div>
               <TextAreaComponent
                 errors={errors}
                 register={register}
                 name={"obervaciones"}
-                label={"Observaciones"}
+                label={t("Observations")}
               />
             </div>
             <Divider />
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-3">
-                costos
+                {t("cost")}
                 <div className="border-b-4 border-orange-400 inline-block w-24"></div>
                 <span className="font-semibold">
-                  Precio Total de las reparaciones y de mantenimientos
+                  {t("Total_price_of_repairs_and_maintenance")}
                 </span>
               </div>
               <div className="flex justify-center items-center h-full">
-                <Input value={handlesuma()} />
+                <Input
+                type="number" />
               </div>
             </div>{" "}
             <Divider />
@@ -270,7 +273,7 @@ export const FormFichaSolicitud = () => {
                 onClick={() => handleNewEquipos()}
                 radius={V.Bradius}
               >
-                <Icons icon={V.PlusIcon} /> Añadir
+                <Icons icon={V.PlusIcon} /> {t("Add")}
               </Button>
             </div>
             <div>
@@ -283,31 +286,25 @@ export const FormFichaSolicitud = () => {
                     key="name"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Equipo
-                  </TableColumn>
-                  <TableColumn
-                    key="height"
-                    className={`${V.bg_sena_verde} ${V.text_white}`}
-                  >
-                    Placa sena
+                    {t("Equipment")}
                   </TableColumn>
                   <TableColumn
                     key="mass"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Descripcion del daño
+                    {t("Name_of_the_activity")}
                   </TableColumn>
                   <TableColumn
                     key="birth_year"
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Actividad
+                    {t("Description_of_the_activity")}
                   </TableColumn>
                   <TableColumn
                     key={"accion"}
                     className={`${V.bg_sena_verde} ${V.text_white}`}
                   >
-                    Accion
+                    {t("acciones")}
                   </TableColumn>
                 </TableHeader>
 
@@ -318,38 +315,31 @@ export const FormFichaSolicitud = () => {
                         <SelectComponent
                           options={equipo}
                           name={`fi_placa_sena_${fila.id}`}
-                          placeholder="Equipo"
+                          placeholder={t("Equipment")}
                           valueKey="id"
                           textKey="valor"
                           register={register}
                           onChange={(val) => handleSelectChange(fila.id, val)}
-                          label="Seleccione el Equipo"
+                          label={t("Select_the_Equipment")}
                         />
                       </TableCell>
-                      <TableCell className="items-center justify-center">
-                        <Input
-                          type="number"
-                          id={`input$${index}`}
-                          size="sm"
-                          onChange={(e) =>
-                            handleInputChange(index, e.target.value)
-                          }
-                        />
-                      </TableCell>
+
                       <TableCell className="flex items-center ">
-                        <TextAreaComponent
-                          errors={errors}
-                          register={register}
-                          name={`obervaciones_${fila.id}`}
-                        />
-                      </TableCell>
-                      <TableCell className="">
-                        <TextAreaComponent
-                          errors={errors}
-                          register={register}
-                          name={`actividad_${fila.id}`}
-                        />
-                      </TableCell>
+                      <TextAreaComponent
+                        errors={errors}
+                        register={register}
+                        name={`nombre_actividad_${fila.id}`}
+                        label={t("Name_of_the_activity")}
+                      />
+                    </TableCell>
+                    <TableCell className="">
+                      <TextAreaComponent
+                        errors={errors}
+                        register={register}
+                        name={`actividad_${fila.id}`}
+                        label={t("Description_of_the_activity")}
+                      />
+                    </TableCell>
                       <TableCell>
                         <Button
                           color="danger"

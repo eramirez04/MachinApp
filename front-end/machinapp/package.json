@@ -22,6 +22,8 @@
     "@nextui-org/use-infinite-scroll": "^2.1.5",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf-viewer/page-navigation": "^3.12.0",
+    "@react-pdf-viewer/toolbar": "^3.12.0",
     "@react-pdf/renderer": "^3.4.4",
     "@react-stately/data": "^3.11.6",
     "axios": "^1.6.8",
@@ -30,7 +32,7 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "i18next": "^23.12.2",
-
+    "machinapp": "file:",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

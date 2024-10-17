@@ -27,8 +27,10 @@ export { ViewFormTipoFicha } from "./fichastecnicas/ViewFormTipoFichaVar";
 export { RegistrarAmbiente } from "./Sitios/RegistrarAmbiente";
 export { RegistrarArea } from "./Sitios/RegistrarArea";
 export { RegistrarSede } from "./Sitios/RegistrarSede";
-export { UpdateAndListFichaTecnica } from "./Equipos/UpdateAndListFichaTecnica";
+export { UpdateAndListFichaTecnica } from "./Equipos/UpdateAndListFichaTecnica"
+export {ViewFormTipoFichaUpdate} from "./fichastecnicas/ViewFormUpdateTipoFichaVars"
 
+export {UpdateFormFichaSolicitud} from "./fichastecnicas/UpdateFormFichaSolicitud"
 // fichas
 export { Fichas } from "./admin/Fichas";
 export { FichaSolicitudPage } from "./fichastecnicas/ViewFormFichaSolicitudPage";

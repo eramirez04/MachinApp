@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
 
 const BuscarSedes = () => {
+  const { t } = useTranslation(); // Hook de traducción
   const [sedes, setSedes] = useState([]);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const BuscarSedes = () => {
     const errorMessage = document.createElement("div");
     errorMessage.className =
       "absolute inset-0 flex items-center justify-center bg-gray-100 text-red-500 font-bold";
-    errorMessage.textContent = "No se encontró imagen";
+    errorMessage.textContent = t("imageNotFound"); // Texto traducido
     parent.appendChild(errorMessage);
   };
 
@@ -34,11 +36,10 @@ const BuscarSedes = () => {
     <div className="bg-gray-200 min-h-screen">
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className="text-4xl font-extrabold text-center text-white">
-          Centro de Gestión y Desarrollo Sostenible Surcolombiano
+          {t("title")} {/* Título traducido */}
         </h1>
         <p className="text-center text-white mt-6 mx-4 md:mx-0">
-          Este centro está ubicado en el departamento del Huila, municipio de
-          Pitalito. Este centro cuenta con dos sedes a día de hoy.
+          {t("description_centro")} {/* Descripción traducida */}
         </p>
       </header>
       <div className="container mx-auto p-4">
@@ -48,7 +49,7 @@ const BuscarSedes = () => {
             startContent={<Icons icon={V.PlusIcon} />}
             className={`text-white`}
           >
-            <Link to={"/Sedes/Registrar"}>Registrar nueva</Link>
+            <Link to={"/Sedes/Registrar"}>{t("registerNew")}</Link>
           </ButtonNext>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -57,12 +58,14 @@ const BuscarSedes = () => {
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative"
               key={sede.idSede}
             >
-              <div className="relative h-72">
+              <div className="relative h-72 items-center justify-center flex">
                 <img
                   src={`http://localhost:3000/imagenes/${sede.img_sede}`}
                   alt={sede.sede_nombre}
-                  className="w-full h-full object-cover"
-                  onError={handleImageError}
+                  className="h-full"
+                  onError={(e) =>
+                    (e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`)
+                  }
                 />
               </div>
               <Link to={`/Sedes/InfoSede/${sede.idSede}`}>
@@ -93,7 +96,7 @@ const BuscarSedes = () => {
                       to={`/Sedes/${sede.idSede}`}
                       className=" h-full w-full flex justify-center items-center"
                     >
-                      Ingresar
+                      {t("ingresar")}
                     </Link>
                   </ButtonNext>
                 </div>

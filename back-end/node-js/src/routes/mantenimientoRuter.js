@@ -1,21 +1,28 @@
 import { Router } from "express";
+import { 
+  registrarMantenimiento, 
+  listartodosmantenimientos, 
+  actualizarMantenimiento, 
+  graficas, 
+  listarMantenimientoPorId, 
+  excelconsultavariables,
+  cargarMantenimiento
+} from "../controllers/mantenimientoController.js";
+import { VerificarMantenimiento } from '../../validar/mantenimiento/mantenimiento_validar.js';
+import { verificar } from '../middlewares/LoginMidleware.js';
 
-import { registrarMantenimiento, listartodosmantenimientos, actualizarMantenimiento, graficas, listarMantenimientoPorId  } from "../controllers/mantenimientoController.js";
+const mantenimiento = Router();
 
-const mantenimiento= Router();
+mantenimiento.post('/registrar',verificar,  cargarMantenimiento, VerificarMantenimiento, registrarMantenimiento);
 
-import {VerificarMantenimiento} from '../../validar/mantenimiento/mantenimiento_validar.js'
-import {verificar} from '../middlewares/LoginMidleware.js'
+mantenimiento.get('/listar/',verificar,  listartodosmantenimientos);
 
-/* registrar es el requerimiento 14 */
-mantenimiento.post('/registrar', registrarMantenimiento);
+mantenimiento.put('/Actualizar_mantenimiento/:idMantenimiento',verificar,  cargarMantenimiento, VerificarMantenimiento, actualizarMantenimiento);
 
-/* listar mantenimientos */
-mantenimiento.get('/listar/',/* verificar, */ listartodosmantenimientos);
+mantenimiento.get('/listar_por_id/:idMantenimiento',verificar,  listarMantenimientoPorId);
 
-/* actualizar */
-mantenimiento.put('/Actualizar_mantenimiento/:idMantenimiento', actualizarMantenimiento);
-mantenimiento.get('/listar_por_id/:idMantenimiento', listarMantenimientoPorId);
-mantenimiento.get("/grafica/",graficas);
+mantenimiento.get("/grafica/",verificar, graficas);
 
-export default mantenimiento
+mantenimiento.get("/excelconsultavariables",verificar,  excelconsultavariables);
+
+export default mantenimiento;

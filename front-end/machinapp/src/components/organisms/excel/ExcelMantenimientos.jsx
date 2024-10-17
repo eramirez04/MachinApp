@@ -1,13 +1,29 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { Button } from "@nextui-org/react";
-import { TableCellsIcon } from '@heroicons/react/24/outline'; 
+import { TableCellsIcon } from '@heroicons/react/24/outline';
+import { axiosCliente } from "../../../index.js";
+import { useTranslation } from "react-i18next";
 
-export const ExcelMantenimientos = ({ mantenimientos }) => {
+export const ExcelMantenimientos = () => {
+    const [mantenimientosData, setMantenimientosData] = useState([]);
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axiosCliente.get('mantenimiento/excelconsultavariables');
+                setMantenimientosData(response.data);
+            } catch (error) {
+                console.error('Error en excel:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const exportToExcel = async () => {
-        // Crear un nuevo libro de trabajo
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Mantenimientos');
 
@@ -26,60 +42,69 @@ export const ExcelMantenimientos = ({ mantenimientos }) => {
         });
 
         // Ajustar el tamaño en centímetros (convertir a píxeles)
-        const cmToPx = (cm) => cm * 37.8; // Aproximadamente 37.8 px por cm
+        const cmToPx = (cm) => cm * 37.8;
+        const logoSenaNaranjaWidthPx = cmToPx(3);
+        const logoSenaNaranjaHeightPx = cmToPx(3);
         const defLOGOTICWidthPx = cmToPx(8.02);
         const defLOGOTICHeightPx = cmToPx(3.97);
 
-        // Añadir imágenes a las celdas correspondientes
+        // Añadir imágenes a las celdas correspondientes y centrarlas
         worksheet.addImage(logoSenaNaranjaId, {
             tl: { col: 0, row: 0 },
-            ext: { width: cmToPx(5), height: cmToPx(5) }, // Ajusta el tamaño de la imagen logoSenaNaranja
-            position: {
-                type: 'oneCellAnchor',
-                from: { col: 0, row: 0 },
-                to: { col: 3, row: 0 }
-            }
+            ext: { width: logoSenaNaranjaWidthPx, height: logoSenaNaranjaHeightPx },
+            editAs: 'oneCell'
         });
 
         worksheet.addImage(defLOGOTICId, {
-            tl: { col: 7, row: 0 },
-            ext: { width: defLOGOTICWidthPx, height: defLOGOTICHeightPx }, // Ajusta el tamaño de la imagen def_LOGOTIC
-            position: {
-                type: 'oneCellAnchor',
-                from: { col: 7, row: 0 },
-                to: { col: 10, row: 0 }
-            }
+            tl: { col: 11, row: 0 },
+            ext: { width: defLOGOTICWidthPx, height: defLOGOTICHeightPx },
+            editAs: 'oneCell'
+        });
+
+        // Combinar celdas y añadir imágenes
+        worksheet.mergeCells('A1:D1');
+        worksheet.mergeCells('I1:P1');
+
+        worksheet.addImage(logoSenaNaranjaId, {
+            tl: { col: 0, row: 0 },
+            br: { col: 3, row: 0 },
+            editAs: 'oneCell'
+        });
+
+        worksheet.addImage(defLOGOTICId, {
+            tl: { col: 8, row: 0 },
+            br: { col: 14, row: 0 },
+            editAs: 'oneCell'
         });
 
         // Añadir texto en el centro de las imágenes
-        worksheet.getCell('E1').value = 'Información general de los mantenimientos';
-        worksheet.getCell('F1').value = 'Información general de los mantenimientos';
-        worksheet.getCell('G1').value = 'Información general de los mantenimientos';
-        worksheet.getCell('E1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('F1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('G1').alignment = { horizontal: 'center', vertical: 'middle' };
-
-        // Combinar celdas para las imágenes y el texto
-        worksheet.mergeCells('A1:D1'); // Combina las celdas para el logoSenaNaranja.png
-        worksheet.mergeCells('E1:G1'); // Combina las celdas para el texto "Información general de los mantenimientos"
-        worksheet.mergeCells('H1:K1'); // Combina las celdas para def_LOGOTIC.jpg
+        worksheet.mergeCells('E1:H1');
+        const titleCell = worksheet.getCell('E1');
+        titleCell.value = 'Información general de mantenimientos';
+        titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+        titleCell.font = { bold: true, size: 14 };
 
         // Ajustar la altura de la fila del encabezado para las imágenes
-        worksheet.getRow(1).height = Math.max(defLOGOTICHeightPx / 37.8, 150); // Altura de la primera fila (imágenes y texto)
+        worksheet.getRow(1).height = Math.max(defLOGOTICHeightPx, logoSenaNaranjaHeightPx);
 
-        // Definir los nuevos encabezados
+        // Definir los nuevos encabezados basados en los datos recibidos
         const headers = [
-            'id del mantenimiento',
-            'referencia de la maquina',
-            'codigo del mantenimiento',
-            'descripcion',
-            'fecha de realizacion',
-            'estado de la maquina',
-            'id de la actividad',
-            'nombre de la actividad',
-            'tipo de mantenimiento',
-            'estado de la ficha',
-            'ficha relacionada'
+            'ID Mantenimiento',
+            'Placa SENA',
+            'Código Mantenimiento',
+            'Fecha Realización',
+            'Proximo mantenimiento',
+            'Nombre',
+            'Costo Final',
+            'Descripción Mantenimiento',
+            'Tipo Mantenimiento',
+            'Sitio',
+            'Área',
+            'Centro',
+            'Sede',
+            'Prioridad',
+            'Nombre Repuesto',
+            'Costo Total Repuestos'
         ];
 
         // Insertar encabezados en la fila 2
@@ -98,57 +123,44 @@ export const ExcelMantenimientos = ({ mantenimientos }) => {
         });
 
         // Ajustar altura de la fila de encabezado
-        worksheet.getRow(2).height = 40; // Altura de la fila de encabezado
+        worksheet.getRow(2).height = 40;
 
         // Ajustar ancho de columnas
         worksheet.columns.forEach(column => {
-            column.width = 25; // Ajusta el ancho de todas las columnas (cambia este valor para ajustar la anchura)
+            column.width = 25;
         });
 
-        // Ajustar el tamaño y el alineamiento de las imágenes
-        worksheet.getCell('A1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('C1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('D1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('E1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('F1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('G1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('H1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('I1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('J1').alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getCell('K1').alignment = { horizontal: 'center', vertical: 'middle' };
-
-        // Agregar datos
-        mantenimientos.forEach(item => {
+        mantenimientosData.forEach(item => {
             const row = worksheet.addRow([
                 item.idMantenimiento,
-                item.referencia_maquina,
+                item.fi_placa_sena,
                 item.codigo_mantenimiento,
+                `Fecha: ${new Date(item.man_fecha_realizacion).toLocaleDateString()}`,
+                `Fecha: ${new Date(item.mant_fecha_proxima).toLocaleDateString()}`,
+                item.nombre,
+                item.mant_costo_final,
                 item.descripcion_mantenimiento,
-                item.fecha_realizacion,
-                item.estado_maquina,
-                item.idActividades,
-                item.acti_nombre,
                 item.tipo_mantenimiento,
-                item.estado_ficha,
-                item.mant_fecha_proxima
+                item.sit_nombre,
+                item.area_nombre,
+                item.sede_nombre_centro,
+                item.sede_nombre,
+                item.soli_prioridad,
+                item.par_nombre_repuesto,
+                item.par_costo_total
             ]);
 
-            // Ajustar alineación de las celdas de datos a la izquierda
             row.eachCell({ includeEmpty: true }, (cell) => {
                 cell.alignment = { horizontal: 'left', vertical: 'middle' };
             });
         });
 
-        // Ajustar altura de las filas de datos
         worksheet.eachRow({ includeEmpty: true }, (row) => {
-            // Ajustar solo las filas que no son la primera fila (imágenes) y la fila de encabezado
             if (row.number !== 1 && row.number !== 2) {
-                row.height = 30; // Ajusta la altura de las filas de datos
+                row.height = 30;
             }
         });
 
-        // Generar el archivo Excel y guardarlo
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
         saveAs(blob, 'mantenimientos.xlsx');
@@ -157,11 +169,11 @@ export const ExcelMantenimientos = ({ mantenimientos }) => {
     return (
         <Button
             onClick={exportToExcel}
-            color="success" // Color verde para diferenciar
-            startContent={<TableCellsIcon className="h-5 w-5" />} // Ícono de Excel
+            color="success"
+            startContent={<TableCellsIcon className="h-5 w-5" />}
             className="text-white text-xs md:text-sm"
         >
-            Descargar Excel
+            {t('descargar_Excel')}
         </Button>
     );
 };

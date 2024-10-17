@@ -11,6 +11,7 @@ export { FormFichaSolicitud } from "./formularios/FormFichaSolicitud.jsx";
 /*  */
 export { FormFichaTecnicaListUpdate } from "./formularios/FormFichaTecnicaListUpdate";
 export { UpdateEstAmbienteFicha } from "./formularios/UpdateEstAmbienteFicha";
+export  {FormUpdateVarsTipoFicha} from "./formularios/FormUpdateVarsTipoFicha"
 
 // listas
 export { SolicitudList } from "./listas/SolicitudList";
@@ -26,11 +27,25 @@ export { MantenimientoGeneralPDF } from "./pdfs/MantenimientoGeneralPDF";
 export { GenerarPdf } from "./pdfs/PDFMantenimiento";
 export { FichaTecnicaEquiposPDF } from "./pdfs/FichaTecnicaEquiposPDF";
 export { VistaPDF } from "./pdfs/VistaPDF.jsx";
+export {VistaFichaTecnica} from "./pdfs/VistaFichaTecnica.jsx"
+
+export { PDFSolicitud } from "./pdfs/PDFSolicitud";
+export { PDFvistaSolicitud } from "./pdfs/PDFvistaSolicitud.jsx";
+
+// actividades
+
+
+export {Artboard} from "./Paginacentrar"
+
+// solicitudes
+
+export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate.jsx"
 
 // graficos
 export { ChartMaquinas } from "./graficos/MaquinasChart";
 export { MantenimientoGrafico } from "./graficos/MantenimientoGrafico";
 export { ExcelMantenimientos } from "./excel/ExcelMantenimientos.jsx";
+export {ExcelMaquinasMant} from "./excel/ExcelMaquinaMantenimientos.jsx";
 
 // sitios
 export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";
