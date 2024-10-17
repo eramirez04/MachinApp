@@ -78,7 +78,7 @@ export const AppRouter = () => {
             <Route path="/Areas/:idArea" element={<Areas />} />{" "}
             <Route path="/Panelcontrol/*" element={<AdminRoute />} />
             <Route path="/MaquinasAmb/:idAmbiente" element={<MaquinasAmbiente />}  />
-            <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
+            
             <Route path="/Sedes/InfoSede/:idSede" element={<InfoSede />} />
             <Route path="/Ambientes/InfoAmbiente/:idAmbientes" element={<InfoAmbiente />}  />
             <Route path="/Areas" element={<AreasGeneral />} />
@@ -86,6 +86,7 @@ export const AppRouter = () => {
             <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica />} />
             <Route path="/editarTiposFichaTec" element={<ViewFormTipoFichaUpdate/>}/>
           </Route>
+          <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
         </Routes>
       </Suspense>
     </>
