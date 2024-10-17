@@ -56,7 +56,7 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
       try {
         const [ambientesRes] = await Promise.all([axiosCliente.get("sitio/listarsitio")])
 
-        console.log(ambientesRes)
+
 
         const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
           id: item.idAmbientes,

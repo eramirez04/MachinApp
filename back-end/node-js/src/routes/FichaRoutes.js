@@ -16,9 +16,9 @@ rutaFicha.put('/actualizar/:idFicha',  verificar, cargarImagenFicha,  validar_fi
 
 
 
-rutaFicha.get('/listarUnica/:idFicha',  /* verificar,  */listarFichaUnica)
+rutaFicha.get('/listarUnica/:idFicha',  verificar, listarFichaUnica)
 rutaFicha.get('/listarPorAmbiente/:idAmbiente',  verificar, listarFichaPorAmbiente)
-rutaFicha.patch('/actualizarFichaEsp/:idFicha', /* verificar,  */ actualizarFichaEsp)
+rutaFicha.patch('/actualizarFichaEsp/:idFicha', verificar,  actualizarFichaEsp)
 
 /* No requieren autenticacion */
 rutaFicha.get('/listarMantenimientosMaquina/:idFicha', listarMantenimientosMaquina)

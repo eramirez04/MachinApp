@@ -27,8 +27,6 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
             try{
                 const response = await axiosCliente.get(`ficha/listarUnica/${idMaquina}`)
                 setMaquinaGen(response.data.infoFicha[0])
-
-                console.log(response.data.infoFicha[0])
     
     
                 //variables
@@ -61,7 +59,6 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
     
                 setVarObligatorias(objVarObligatorias)
 
-                console.log(objVarObligatorias)
         
             }catch(error){
                 console.error(error.response)

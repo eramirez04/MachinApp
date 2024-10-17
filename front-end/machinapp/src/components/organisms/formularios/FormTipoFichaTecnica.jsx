@@ -85,8 +85,6 @@ export const FormTipoFichaTecnica = () => {
 
     /* console.table(data) */
     data.tipo_ficha = tipoFicha;
-    console.log(data.tipo_ficha);
-    console.log(data)
 
 
     // Filtrar las variables específicas, esto se hace par aque no me traiga arrais basios si hay, como nimino tiene que contener el nombre y el tipo de dato
@@ -146,12 +144,9 @@ export const FormTipoFichaTecnica = () => {
     }
   }
 
-
-  
   const handleSelectionChange = (value) => {
     
-   settipoFicha(value.target.value);
-   console.log( value.target.value)
+   settipoFicha(value.target.value)
    reset(register())
   };
 
