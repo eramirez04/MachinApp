@@ -7,7 +7,7 @@ import {
   registrarActividades,
   eliminarActividades,
   actualizarActividades,
-  registrarVariasActividades,
+  listarActividadesdeSolicitudes,
 
 } from "../controllers/activitiesController.js";
 
@@ -17,24 +17,24 @@ const ActivitiesRoutes = Router();
 
 ActivitiesRoutes.get("/listar", listarActividades);
 
+ActivitiesRoutes.get("/listarSolicitud/:idSolicitud", listarActividadesdeSolicitudes);
+
+
 ActivitiesRoutes.post(
   "/registrar",
+  verificar,
   validar_actividad,
   registrarActividades
 );
-ActivitiesRoutes.post(
-  "/registrarvarias",
-  validar_actividad,
-  registrarVariasActividades
-);
 
-ActivitiesRoutes.delete(
+
+ActivitiesRoutes.delete( 
   "/eliminar/:idActividades",
   verificar,
   eliminarActividades
 );
 ActivitiesRoutes.put(
-  "/actualizar/:id_actividades",
+  "/actualizar/:idActividades",
   verificar,
   validar_actividad,
   actualizarActividades

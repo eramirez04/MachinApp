@@ -8,15 +8,17 @@ import {
 
 } from "../controllers/solicitudController.js";
 
+import { verificar } from "../middlewares/LoginMidleware.js";
+
 const solicitudRouter = Router();
 
-solicitudRouter.post("/", registarSolicitud);
-solicitudRouter.get("/", obtenerSolicitudes);
-solicitudRouter.get("/PDF", obtenerSolicitudesPDF);
+solicitudRouter.post("/", verificar, registarSolicitud);
+solicitudRouter.get("/",verificar, obtenerSolicitudes);
+solicitudRouter.get("/PDF", verificar, obtenerSolicitudesPDF);
 
 
-solicitudRouter.put("/actualizar/:idSolicitud", actualizarSolicitudes);
-solicitudRouter.get("/listarPorId/:idSolicitud", listarSolicitudPorId);
+solicitudRouter.put("/actualizar/:id",verificar, actualizarSolicitudes);
+solicitudRouter.get("/listarPorId/:idSolicitud",verificar, listarSolicitudPorId);
 
 
 export default solicitudRouter;

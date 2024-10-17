@@ -248,23 +248,24 @@ export const PDFSolicitud = ({idSolicitud}) => {
       <Page size="A4" style={styles.page}>
       <View style={styles.header}>
           <Image style={styles.logo} src="/logoSenaNaranja.png" />
-          <Text style={styles.title}>MAINTENANCE SERVICE REQUEST</Text>
-          <Text style={styles.subTitle}>South Colombian Management and{'\n'}Sustainable Development Center</Text>
+          <Text style={styles.title}>SOLICITUD Y SERVICIO DE MANTENIMIENTO</Text>
+          <Text style={styles.subTitle}>Centro de gestión y desarrollo {'\n'}sostenible surColombiano</Text>
         </View>
 
         <View style={styles.applicantInfo}>
-          <Text style={styles.infoTitle}>APPLICANT INFORMATION</Text>
+          <Text style={styles.infoTitle}>Información de Solicitante</Text>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Name of Applicant:</Text>
+            <Text style={styles.infoLabel}>Nombre del Solicitante:</Text>
             <Text style={styles.infoInput}>{data.nombre_solicitante}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Applicant's email:</Text>
+            <Text style={styles.infoLabel}>Correo del Solicitante:</Text>
             <Text style={styles.infoInput}>{data.correo_solicitante}</Text>
           </View>
         </View>
 
         <View style={styles.prioritySection}>
+        <Text style={styles.sectionTitle}>Prioridad</Text>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'inmediata' && { backgroundColor: 'black' }]} />
             <Text style={styles.priorityText}>Immediate</Text>
@@ -279,9 +280,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
           </View>
         </View>
 
-        {renderSection('Description of the request', data.soli_descripcion_problemas)}
-        {renderSection('Legal Part', data.temas_legal)}
-        {renderSection('Observations', data.soli_observaciones)}
+        {renderSection('Descripción de la Solicitud', data.soli_descripcion_problemas)}
+        {renderSection('Parte Legal', data.temas_legal)}
+        {renderSection('Observaciones', data.soli_observaciones)}
 
         <View style={styles.costSection}>
           <Text style={styles.costLabel}>COSTO DE REPARACIÓN $</Text>

@@ -39,7 +39,7 @@ export {Artboard} from "./Paginacentrar"
 
 // solicitudes
 
-export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate"
+export {FormSolicitudesUpdate} from "./formularios/FormSolicitudesUpdate.jsx"
 
 // graficos
 export { ChartMaquinas } from "./graficos/MaquinasChart";
@@ -49,3 +49,5 @@ export {ExcelMaquinasMant} from "./excel/ExcelMaquinaMantenimientos.jsx";
 
 // sitios
 export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";
+export { FormTipoSitio } from "./formularios/FormTipoSitio.jsx";
+

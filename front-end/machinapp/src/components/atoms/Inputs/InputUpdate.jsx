@@ -18,7 +18,7 @@ export const InputUpdate = React.forwardRef(
   ) => {
     const handleValidation = () => {
       if (isUpdating && !value) {
-        return `${name} es obligatorio`;
+        return `${label} es obligatorio`;
       }
       return errors[name]?.message;
     };

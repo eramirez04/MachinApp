@@ -1,7 +1,12 @@
 import { Input } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
+
 
 // eslint-disable-next-line react/prop-types
 export const InputForm = ({ register, errors, value, name, tipo, onChange, text , disabled }) => {
+  
+  const {t} = useTranslation()
+
   return (
     <>
       <div className="mb-5">
@@ -14,7 +19,6 @@ export const InputForm = ({ register, errors, value, name, tipo, onChange, text 
           </label>
           <Input
             disabled={disabled}
-            
             type={tipo}
             variant="bordered"
             radius="sm"
@@ -29,7 +33,11 @@ export const InputForm = ({ register, errors, value, name, tipo, onChange, text 
             {...register(name, {
               required: {
                 value: true,
-                message: `${name} es obligatorio`,
+                message: `${text} ${t("es_obligatorio")}`,
+              },
+              maxLength:{
+                value: 60,
+                message: `${text} ${t('no_puede_exceder_60_caracteres')}`
               },
               onChange: (e) =>console.log(e.target.value)
             })}

@@ -31,7 +31,15 @@ export const InputforForm = ({ register, errors, value, name, tipo, onChange, la
                 value: true,
                 message: `${label} ${t("es_obligatorio")}`,
               },
-              onChange: (e) =>console.log(e.target.value)
+              maxLength: {
+                value: 60,
+                message: `${label} ${t("no_puede_exceder_60_caracteres")}`,
+              },
+              onChange: (e) => {
+                if (e.target.value.length <= 60) {
+                  onChange(e);
+                }
+              },
             })}
             value={value}
             onChange={onChange}

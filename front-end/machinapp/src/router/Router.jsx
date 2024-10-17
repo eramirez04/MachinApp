@@ -34,7 +34,8 @@ import {
   ActualizarSedes,
   Page404,
   SettingsPanelPage,
-  ViewFormTipoFichaUpdate
+  ViewFormTipoFichaUpdate,
+  RegistrarTipoSitio
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -62,6 +63,7 @@ export const AppRouter = () => {
               <Route path="/Sedes/Actualizar/:id" element={<ActualizarSedes />} />
               <Route path="/Areas/Registrar" element={<RegistrarArea />} />
               <Route path="/listar_por_id/:idMantenimiento" element={<Editar_Component />} />
+              <Route path="/editar/solicitud/:id" element={<UpdateFormFichaSolicitud/>}/>
             </Route>
             <Route path="/home" element={<Home />} />
             <Route path="/perfil/*" element={<PerfilRoutes />} />
@@ -69,8 +71,6 @@ export const AppRouter = () => {
             <Route path="/ayuda" element={<SettingsPanelPage />} />
 
             <Route path="/solicitud/*" element={<SolicitudRouter />} />
-            <Route path="/editar/solicitud/:id" element={<UpdateFormFichaSolicitud/>}/>
-
 
             <Route path="/Historial" element={<Historial />} />
             <Route path="/Maquinas" element={<Maquinas />} />
@@ -79,7 +79,7 @@ export const AppRouter = () => {
             <Route path="/Areas/:idArea" element={<Areas />} />{" "}
             <Route path="/Panelcontrol/*" element={<AdminRoute />} />
             <Route path="/MaquinasAmb/:idAmbiente" element={<MaquinasAmbiente />}  />
-            <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
+            
             <Route path="/Sedes/InfoSede/:idSede" element={<InfoSede />} />
             <Route path="/Ambientes/InfoAmbiente/:idAmbientes" element={<InfoAmbiente />}  />
             <Route path="/Areas" element={<AreasGeneral />} />
@@ -87,6 +87,8 @@ export const AppRouter = () => {
             <Route path="/listarFichaTecnica/:idMaquina" element={<UpdateAndListFichaTecnica />} />
             <Route path="/editarTiposFichaTec" element={<ViewFormTipoFichaUpdate/>}/>
           </Route>
+          <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
+          <Route path="/TipoSitio/Registrar" element={<RegistrarTipoSitio />} />
         </Routes>
       </Suspense>
     </>

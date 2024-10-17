@@ -1,7 +1,11 @@
 import { check } from "express-validator"
 
-export const validar_detalle = [
-    check('detFkFicha', 'Es necesario indicarle a que ficha pertenece').not().isEmpty().isInt(),
-    check('detFkVariable', 'Es necesario indicarle a que variable pertenece').not().isEmpty().isInt(),
-    check('detValor', 'Es ingresar el campo, asi este basio').exists(),
+export const validar_detalles = [
+    check('detalles.*.detFkVariable', 'Es necesario indicarle a que variable pertenece').not().isEmpty().isInt(),
+    check('detalles.*.detValor', 'Es necesario ingresar el valor').not().isEmpty()
+]
+
+
+export const validar_detalles_put = [
+    check('detalles.*.detValor', 'Es necesario ingresar el valor').not().isEmpty()
 ]

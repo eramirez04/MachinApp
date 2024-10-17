@@ -3,7 +3,8 @@ import zod from "zod";
 const requestUsuariosZod = zod.object({
   nombre: zod
     .string({ required_error: "El nombre es requerido" })
-    .min(1, { message: "El nombre es requerido" }),
+    .min(1, { message: "El nombre es requerido" })
+      .max(60, { message: "El nombre es requerido" }),
   apellidos: zod.string().min(1, { message: "El apellido es requerido" }),
   correo: zod
     .string({ required_error: "El correo es requerido" })

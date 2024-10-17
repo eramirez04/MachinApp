@@ -43,7 +43,7 @@ export const registrarSitio = async (req, res) => {
     return res.status(400).json({ errores: errors.array() });
   }
 
-  const { sit_nombre, tipo_tenencia, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios } =
+  const { sit_nombre, tipo_tenencia, sit_fecha_registro, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios } =
     req.body;
 
   const [consulta] = await conexion.query(
@@ -60,12 +60,13 @@ export const registrarSitio = async (req, res) => {
 
   try {
     const sql = `
-      INSERT INTO ambientes (sit_nombre, tipo_tenencia, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO ambientes (sit_nombre, tipo_tenencia, sit_fecha_registro, img_sitio, sit_fk_areas, sit_fk_tipo_sitio, sit_estado, sit_fk_usuarios)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [respuesta] = await conexion.query(sql, [
       sit_nombre,
       tipo_tenencia,
+      sit_fecha_registro,
       img_sitio,
       sit_fk_areas,
       sit_fk_tipo_sitio,

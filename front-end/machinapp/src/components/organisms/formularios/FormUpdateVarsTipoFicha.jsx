@@ -80,8 +80,6 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
     /* Formulario con la info */
     const handleSubmitData = async (data) => {
-        console.log(data)
-
 
     
         //convetimos los datos que tenemos en el formulario a un array de objetos
@@ -214,7 +212,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
         <div className="flex flex-row items-center justify-around mb-20 border-b-2 border-b-green-600 pb-10">
           <label className="flex flex-row items-center gap-4 ">
             {" "}
-            Seleccione el tipo de ficha a actualizar
+            {t('selectTipoFichaAct')}
             <SelectComponent
               options={tipoEquipo}
               name="tipo_equipo"
@@ -233,7 +231,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
             <div>
                 
             <h3 className="text-2xl font-bold text-gray-700 border-b-2 border-gray-300 pb-2 mb-4">
-                Variables generales
+                {t('varGenerales')}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-9">
@@ -252,7 +250,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                             render={({ field }) => (
                               <InputUpdate
                                 {...field}
-                                label={"Nombre"}
+                                label={`${t('nombre')}`}
                                 tipo={`text`}
                                 errors={errors}
                                 isUpdating={true}
@@ -272,7 +270,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                             
                               return (
                                 <>
-                                  <label className="font-medium text-gray-700">Estado:</label>
+                                  <label className="font-medium text-gray-700">{t('estado')}:</label>
                                   <Switch
                                     isSelected={field.value === "activo"}
                                     onValueChange={(isSelected) => {
@@ -303,7 +301,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
 
             <h3 className="text-2xl font-bold text-gray-700 border-b-2 border-gray-300 pb-2 mb-4">
-                Especificaciones tecnicas
+                {t('especTecnicas')}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-9">
             {
@@ -321,7 +319,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                         render={({ field }) => (
                           <InputUpdate
                             {...field}
-                            label={"Nombre"}
+                            label={`${t('nombre')}`}
                             tipo={`text`}
                             errors={errors}
                             isUpdating={true}
@@ -340,7 +338,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                         render={({ field }) => {
                           return (
                             <>
-                              <label className="font-medium text-gray-700">Estado:</label>
+                              <label className="font-medium text-gray-700">{t('estado')}:</label>
                               <Switch
                                 isSelected={field.value === "activo"}
                                 onValueChange={(isSelected) => {
@@ -372,7 +370,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
             {/* Para las variables de seccion */}
             <h3 className="text-2xl font-bold text-gray-700 border-b-2 border-gray-300 pb-2 mb-4">
-                Secciones
+                {t('secciones')}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-9">
@@ -391,7 +389,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                             render={({ field }) => (
                               <InputUpdate
                                 {...field}
-                                label={"Nombre"}
+                                label={`${t('nombre')}`}
                                 tipo={`text`}
                                 errors={errors}
                                 isUpdating={true}
@@ -411,7 +409,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                               
                               return (
                                 <>
-                                  <label className="font-medium text-gray-700">Estado:</label>
+                                  <label className="font-medium text-gray-700">{t('estado')}:</label>
                                   <Switch
                                     isSelected={field.value === "activo"}
                                     onValueChange={(isSelected) => {
@@ -436,7 +434,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
                         <div className="mt-5">
 
-                            <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> Descripcion</label>
+                            <label className="mb-3 block text-green-500 dark:text-gray-400text-sm font-medium "> {t('descripcion')}</label>
                             <div className="mt-3">
                                 <TextAreaComponent
                                 errors={errors}
@@ -453,7 +451,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
             </div>
 
             
-                <ButtonNext text="Actualizar ficha tecnica"  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
+                <ButtonNext text={`${t('actFichaTecnica')}`}  type="submit" className={"bg-green-600 text-white w-full mt-8"}/>
             </div>
         </>)}
         </form>
@@ -461,16 +459,16 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
         {/* Modal para la confirmacion de actualizacion del estado */}
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ModalContent>
-                    <ModalHeader>Confirmar cambio de estado</ModalHeader>
+                    <ModalHeader>{t('confirmCamEstado')}</ModalHeader>
                     <ModalBody>
-                        ¿Está seguro de que desea cambiar el estado de esta variable?
+                        {t('mensajeConfirm')}
                     </ModalBody>
                     <ModalFooter>
                         <Button color="danger" variant="light" onPress={() => setIsOpen(false)}>
-                            Cancelar
+                            {t('cerrar')}
                         </Button>
                         <Button color="primary" onPress={confirmStateChange}>
-                            Confirmar
+                            {t('aceptar')}
                         </Button>
                     </ModalFooter>
                 </ModalContent>
