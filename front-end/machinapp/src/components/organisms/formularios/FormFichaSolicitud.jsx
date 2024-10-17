@@ -69,7 +69,7 @@ export const FormFichaSolicitud = () => {
         nombre_solicitante: data.Solicitante,
         correo_solicitante: data.Correo_de_solicitante,
       });
-      console.log(res);
+
       let id = res.data.data_id;
 
       const placasSenaConSolicitud = placasSena.map((obj) => ({

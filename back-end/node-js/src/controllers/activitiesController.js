@@ -66,8 +66,6 @@ export const registrarActividades = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        console.log(req.body);
-
         const { acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_fk_solicitud } = req.body;
 
         if (!Array.isArray(acti_nombre) || !Array.isArray(acti_descripcion)) {
@@ -110,61 +108,6 @@ export const registrarActividades = async (req, res) => {
     }
 };
 
-
-//registrar manualmente las actividades 
-export const registrarVariasActividades = async (req, res) => {
-    const actividades = req.body;
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    console.log(req.body);
-    let connection;
-
-    try {
-        connection = await conexion.getConnection(); 
-        await connection.beginTransaction(); 
-
-        for (let i = 0; i < actividades.length; i++) {
-            const { acti_nombre, acti_descripcion, acti_fecha_realizacion, acti_estado, acti_fk_solicitud } = actividades[i];
-
-            const sql = `INSERT INTO actividades (
-                acti_nombre,
-                acti_descripcion,
-                acti_fecha_realizacion,
-                acti_estado,
-                acti_fk_solicitud
-            ) VALUES (?, ?, ?, ?, ?)`;
-
-            const [respuesta] = await connection.query(sql, [
-                acti_nombre,
-                acti_descripcion,
-                acti_fecha_realizacion,
-                acti_estado,
-                acti_fk_solicitud
-            ]);
-
-            if (respuesta.affectedRows === 0) {
-                throw new Error("Error al registrar una o más actividades");
-            }
-        }
-
-        await connection.commit(); 
-
-        return res.status(200).json({ message: "Se registraron correctamente las actividades" });
-
-    } catch (error) {
-        if (connection) await connection.rollback(); 
-        console.error(error);
-        return res.status(500).json({ message: "Error en el servidor: " + error.message });
-    } finally {
-        if (connection) connection.release(); 
-    }
-};
-
-
-
 export const eliminarActividades= async (req,res)=>{
     try {
         let idActividades=req.params.idActividades
@@ -196,12 +139,10 @@ export const actualizarActividades = async (req, res) => {
         let { acti_nombre, acti_descripcion } = req.body;
         let id = req.params.idActividades;
 
-        console.log("ID de actividad:", id); // Verifica que el ID sea correcto
 
         let sql = `UPDATE actividades SET acti_nombre = ?, acti_descripcion = ? WHERE idActividades = ?`;
         const [respuesta] = await conexion.query(sql, [acti_nombre, acti_descripcion, id]);
 
-        console.log("Respuesta de la base de datos:", respuesta); // Para verificar qué se devuelve
 
         if (respuesta.affectedRows > 0) {
             if (respuesta.changedRows > 0) {

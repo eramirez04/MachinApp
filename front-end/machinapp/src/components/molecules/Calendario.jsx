@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useGlobalData } from "../../index";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 
 export const Calendario = () => {
-  const { equiposData } = useGlobalData(); // Datos globales de máquinas
   const [events, setEvents] = useState([]);
+  const [calendarApi, setCalendarApi] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -17,14 +16,10 @@ export const Calendario = () => {
         const data = await response.json();
   
         if (data.resultadoActividad) {
-          const mappedEvents = data.resultadoActividad.map(event => {
-
-            const equipo = equiposData.find(equipo => equipo.idFichas === event.idFichas);
-            return {
-              title: equipo ? equipo.fi_placa_sena : 'Sin Placa',
-              start: event.acti_fecha_realizacion,
-            };
-          });
+          const mappedEvents = data.resultadoActividad.map(event => ({
+            title: event.acti_nombre, 
+            start: event.acti_fecha_realizacion,
+          }));
           setEvents(mappedEvents);
         } else {
           console.error(data);
@@ -35,26 +30,36 @@ export const Calendario = () => {
     };
 
     fetchEvents();
-  }, [equiposData]); // Ejecutar cuando cambie equiposData
+  }, []); 
+
+  const handleDateClick = (info) => {
+    if (calendarApi) {
+      calendarApi.changeView('listDay', info.dateStr);
+    }
+  };
 
   return (
     <div>
       <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         locale={esLocale}
-        navLinks={true}
         height={750}
         headerToolbar={{
           start: '', 
-          center: 'title', // Título centrado
-          end: 'today dayGridMonth prev,next' // Botones de navegación a la derecha
+          center: 'title',
+          end: 'today dayGridMonth prev,next'
         }}
         events={events}
+        dateClick={handleDateClick}
+        ref={(calendarRef) => {
+          if (calendarRef) {
+            setCalendarApi(calendarRef.getApi());
+          }
+        }}
+        dayMaxEvents={1} 
+        moreLinkClick="popover" 
       />
     </div>
   );
 };
-
-
-
