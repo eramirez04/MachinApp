@@ -80,8 +80,6 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
     /* Formulario con la info */
     const handleSubmitData = async (data) => {
-        console.log(data)
-
 
     
         //convetimos los datos que tenemos en el formulario a un array de objetos
