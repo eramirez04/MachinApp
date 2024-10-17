@@ -1,6 +1,7 @@
 import { conexion } from "../database/database.js";
 import { validationResult } from "express-validator";
 import multer from "multer";
+import path from "path";
 
 // Configuración de Multer
 const storage = multer.diskStorage({
@@ -8,7 +9,7 @@ const storage = multer.diskStorage({
     cb(null, "public/pdfs");
   },
   filename: function (req, file, cb) {
-    cb(null, `${Date.now()}_${file.originalname}`); // Renombrar el archivo para evitar colisiones
+    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
   },
 });
 
@@ -21,17 +22,29 @@ const upload = multer({
       cb(new Error("Solo se permiten archivos PDF"), false);
     }
   },
-});
+}).single("mant_ficha_soporte");
 
-// Middleware para manejar la subida del archivo
-export const cargarMantenimiento = upload.single("mant_ficha_soporte");
+// para manejar la subida del archivo y procesar los datos del formulario
+export const cargarMantenimiento = (req, res, next) => {
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({ mensaje: "Error en la carga del archivo: " + err.message });
+    } else if (err) {
+      return res.status(500).json({ mensaje: "Error inesperado: " + err.message });
+    }
+    // Convertir los campos numéricos a su tipo correcto
+    if (req.body.mant_costo_final) req.body.mant_costo_final = parseFloat(req.body.mant_costo_final);
+    if (req.body.fk_tipo_mantenimiento) req.body.fk_tipo_mantenimiento = parseInt(req.body.fk_tipo_mantenimiento, 10);
+    if (req.body.fk_solicitud_mantenimiento) req.body.fk_solicitud_mantenimiento = parseInt(req.body.fk_solicitud_mantenimiento, 10);
+    if (req.body.fk_tecnico) req.body.fk_tecnico = parseInt(req.body.fk_tecnico, 10);
+    
+    
+    next();
+  });
+};
 
 export const registrarMantenimiento = async (req, res) => {
-  cargarMantenimiento(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ mensaje: err.message });
-    }
-
+  try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -46,27 +59,13 @@ export const registrarMantenimiento = async (req, res) => {
       mant_costo_final,
       fk_tipo_mantenimiento,
       fk_solicitud_mantenimiento,
-      tecnico
+      fk_tecnico
     } = req.body;
 
     const mant_ficha_soporte = req.file ? req.file.path : null;
 
-    try {
-      const sql = `
-        INSERT INTO mantenimiento (
-          mant_codigo_mantenimiento,
-          mant_estado,
-          mant_fecha_proxima,
-          man_fecha_realizacion,
-          fk_tipo_mantenimiento,
-          mant_descripcion,
-          mant_ficha_soporte,
-          mant_costo_final,
-          fk_solicitud_mantenimiento,
-          fk_tecnico
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
-      const [resultado] = await conexion.query(sql, [
+    const sql = `
+      INSERT INTO mantenimiento (
         mant_codigo_mantenimiento,
         mant_estado,
         mant_fecha_proxima,
@@ -76,23 +75,34 @@ export const registrarMantenimiento = async (req, res) => {
         mant_ficha_soporte,
         mant_costo_final,
         fk_solicitud_mantenimiento,
-        tecnico
-      ]);
+        fk_tecnico
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const [resultado] = await conexion.query(sql, [
+      mant_codigo_mantenimiento,
+      mant_estado,
+      mant_fecha_proxima,
+      man_fecha_realizacion,
+      fk_tipo_mantenimiento,
+      mant_descripcion,
+      mant_ficha_soporte,
+      mant_costo_final,
+      fk_solicitud_mantenimiento,
+      fk_tecnico
+    ]);
 
-
-      if (resultado.affectedRows > 0) {
-        const idMantenimiento = resultado.insertId;
-        return res.status(200).json({
-          mensaje: "Se registró el mantenimiento con éxito",
-          idMantenimiento,
-        });
-      } else {
-        return res.status(400).json({ mensaje: "No se registró el mantenimiento" });
-      }
-    } catch (e) {
-      return res.status(500).json({ mensaje: "Error: " + e.message });
+    if (resultado.affectedRows > 0) {
+      const idMantenimiento = resultado.insertId;
+      return res.status(200).json({
+        mensaje: "Se registró el mantenimiento con éxito",
+        idMantenimiento,
+      });
+    } else {
+      return res.status(400).json({ mensaje: "No se registró el mantenimiento" });
     }
-  });
+  } catch (e) {
+    return res.status(500).json({ mensaje: "Error: " + e.message });
+  }
 };
 
 /* 5.1 Generar alertas de mantenimiento de a través de correo electrónico */
@@ -286,11 +296,7 @@ export const listartodosmantenimientos = async (req, res) => {
 
 /* listo actualizar */
 export const actualizarMantenimiento = async (req, res) => {
-  cargarMantenimiento(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ mensaje: err.message });
-    }
-
+  try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -311,49 +317,47 @@ export const actualizarMantenimiento = async (req, res) => {
 
     const { idMantenimiento } = req.params;
 
-    try {
-      let sql = `
-        UPDATE mantenimiento SET
-          mant_codigo_mantenimiento = ?,
-          mant_estado = ?,
-          mant_fecha_proxima = ?,
-          man_fecha_realizacion = ?,
-          fk_tipo_mantenimiento = ?,
-          mant_descripcion = ?,
-          mant_costo_final = ?,
-          fk_solicitud_mantenimiento = ?
-      `;
+    let sql = `
+      UPDATE mantenimiento SET
+        mant_codigo_mantenimiento = ?,
+        mant_estado = ?,
+        mant_fecha_proxima = ?,
+        man_fecha_realizacion = ?,
+        fk_tipo_mantenimiento = ?,
+        mant_descripcion = ?,
+        mant_costo_final = ?,
+        fk_solicitud_mantenimiento = ?
+    `;
 
-      const params = [
-        mant_codigo_mantenimiento,
-        mant_estado,
-        mant_fecha_proxima,
-        man_fecha_realizacion,
-        fk_tipo_mantenimiento,
-        mant_descripcion,
-        mant_costo_final,
-        fk_solicitud_mantenimiento,
-      ];
+    const params = [
+      mant_codigo_mantenimiento,
+      mant_estado,
+      mant_fecha_proxima,
+      man_fecha_realizacion,
+      fk_tipo_mantenimiento,
+      mant_descripcion,
+      mant_costo_final,
+      fk_solicitud_mantenimiento,
+    ];
 
-      if (mant_ficha_soporte) {
-        sql += ', mant_ficha_soporte = ?';
-        params.push(mant_ficha_soporte);
-      }
-
-      sql += ' WHERE idMantenimiento = ?';
-      params.push(idMantenimiento);
-
-      const [resultado] = await conexion.query(sql, params);
-
-      if (resultado.affectedRows > 0) {
-        return res.status(200).json({ mensaje: "Mantenimiento actualizado con éxito" });
-      } else {
-        return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
-      }
-    } catch (e) {
-      return res.status(500).json({ mensaje: "Error: " + e.message });
+    if (mant_ficha_soporte) {
+      sql += ', mant_ficha_soporte = ?';
+      params.push(mant_ficha_soporte);
     }
-  });
+
+    sql += ' WHERE idMantenimiento = ?';
+    params.push(idMantenimiento);
+
+    const [resultado] = await conexion.query(sql, params);
+
+    if (resultado.affectedRows > 0) {
+      return res.status(200).json({ mensaje: "Mantenimiento actualizado con éxito" });
+    } else {
+      return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
+    }
+  } catch (e) {
+    return res.status(500).json({ mensaje: "Error: " + e.message });
+  }
 };
 
 export const graficas = async (req, res) => {

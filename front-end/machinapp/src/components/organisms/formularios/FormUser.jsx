@@ -33,7 +33,6 @@ export const FormUser = () => {
         reset();
         toast.success(res.Mensaje);
         setError("");
-        return;
       }
     } catch (error) {
       /*  console.log(error); */
