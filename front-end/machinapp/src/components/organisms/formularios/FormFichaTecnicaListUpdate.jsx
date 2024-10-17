@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent, useGlobalData} from "../../../index.js";
+import { InputUpdate, SelectComponent,ButtonNext, TextAreaComponent, useGlobalData} from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
