@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { Button } from "@nextui-org/react"
 import { TableCellsIcon } from '@heroicons/react/24/outline';
-
+import { useTranslation } from "react-i18next"
 
 // En su componente React
 export const ExcelMaquinasMant = ({infoMaquina, infoMantenimientos}) => {
@@ -10,6 +10,7 @@ export const ExcelMaquinasMant = ({infoMaquina, infoMantenimientos}) => {
 
   const infoMa = infoMaquina
 
+  const { t } = useTranslation()
   const infoMant = infoMantenimientos
 
     const generateExcel = async () => {
@@ -161,7 +162,7 @@ export const ExcelMaquinasMant = ({infoMaquina, infoMantenimientos}) => {
     className='text-white' 
     onClick={generateExcel} >
       
-      Generar Excel
+      {t('generarExel')}
 
     </Button>
     </>

@@ -116,7 +116,7 @@
   "seleccioneOpcion": "Seleccione una opción",
   "siguiente": "Siguiente",
   "registrarEquipos": "Registrar máquina",
-  "fichaTecnica": "Ficha tecnica",
+  "fichaTecnica": "Ficha Técnica",
   "selecTipoFicha": "Seleccione el tipo de ficha técnica",
   "subirImg": "Subir imagen (opcional)",
   "subirFicha": "Subir ficha técnica de respaldo (opcional)",
@@ -127,6 +127,21 @@
   "infoBasica": "Información básica",
   "carGenerales": "Características generales",
   "especTecnicas": "Especificaciones técnicas",
+
+  "EditarTipoFicha":"Editar tipos de ficha tecnica",
+  "selectTipoFichaAct":"Seleccione el tipo de ficha a actualizar",
+  "actVars":"Actualizar las variables de la ficha tecnica",
+  "varGenerales":"Variables generales",
+  "secciones":"Secciones",
+  "actFichaTecnica":"Actualizar ficha tecnica",
+  "estMaquina":"Estado de la máquina",
+  "actImagen":"Actualizar imagen",
+  "confirmCamEstado":"Confirmar cambio de estado",
+  "mensajeConfirm":"¿Está seguro de que desea cambiar el estado de esta variable?", 
+  "cerrar":"Cerrar",
+  "generarExel":"Generar Excel",
+
+
 
   "nombreSolic": "Nombre solicitante",
   "soporte": "Soporte",
