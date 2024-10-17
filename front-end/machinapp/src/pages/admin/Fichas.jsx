@@ -16,13 +16,7 @@ export const Fichas = () => {
     <Layout>
       <Breadcrumb pageName={t("Application")} />
 
-      {loading ? (
-        <>
-          <Spinner />
-        </>
-      ) : (
         <SolicitudList DataSolicitud={solicitudData} />
-      )}
     </Layout>
   );
 };

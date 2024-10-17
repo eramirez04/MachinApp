@@ -7,7 +7,6 @@ import {
   registrarActividades,
   eliminarActividades,
   actualizarActividades,
-  registrarVariasActividades,
   listarActividadesdeSolicitudes,
 
 } from "../controllers/activitiesController.js";
@@ -23,22 +22,20 @@ ActivitiesRoutes.get("/listarSolicitud/:idSolicitud", listarActividadesdeSolicit
 
 ActivitiesRoutes.post(
   "/registrar",
+  verificar,
   validar_actividad,
   registrarActividades
 );
-ActivitiesRoutes.post(
-  "/registrarvarias",
-  validar_actividad,
-  registrarVariasActividades
-);
 
-ActivitiesRoutes.delete(
+
+ActivitiesRoutes.delete( 
   "/eliminar/:idActividades",
   verificar,
   eliminarActividades
 );
 ActivitiesRoutes.put(
   "/actualizar/:idActividades",
+  verificar,
   validar_actividad,
   actualizarActividades
 );
