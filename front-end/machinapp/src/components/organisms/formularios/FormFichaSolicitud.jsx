@@ -10,8 +10,9 @@ import {
   axiosCliente,
 } from "../../../index";
 import { Image, TableCell, TableRow } from "@nextui-org/react";
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import { useForm } from "react-hook-form";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -29,6 +30,7 @@ export const FormFichaSolicitud = () => {
   const { equiposData } = useGlobalData();
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
+  const { rol } = useContext(AuthContext);
   const [inputValues, setInputValues] = useState([]);
   const { t } = useTranslation();
 
@@ -94,6 +96,7 @@ export const FormFichaSolicitud = () => {
       }
     } catch (error) {
       console.error(error.response.data);
+      toast.error("Error en peticion");
     }
   };
 
@@ -126,10 +129,11 @@ export const FormFichaSolicitud = () => {
 
   //añade una nueva fila a la tabla, para poder ingresar un nuevo equipo o maquinaria
   const handleNewEquipos = () => {
-    if (valuesTable.length >= equiposData.length) {
+/*     if (valuesTable.length >= equiposData.length) {
       toast.warning("llegaste al limite de equipos en el sistema");
       return 0;
-    }
+      
+    } */
 
     const nuevaFila = {
       id: valuesTable[valuesTable.length - 1].id + 1,
@@ -153,6 +157,8 @@ export const FormFichaSolicitud = () => {
     /*     console.log(valuesTable);
     handlesuma(); */
   }, [equiposData,handlesuma, valuesTable]);
+
+  const isAdmin = rol === "Administrador";
 
   return (
     <>
@@ -355,15 +361,18 @@ export const FormFichaSolicitud = () => {
               </Table>
             </div>
           </div>
+          { isAdmin&&(
 
-          <Button
-            type="submit"
-            size="lg"
-            radius={V.Bradius}
-            className={`${V.btnSecundary} mb-6`}
-          >
-            <span className="text-white font-bold">{t("registrar")}</span>
-          </Button>
+                  <Button
+                        type="submit"
+                        size="lg"
+                        radius={V.Bradius}
+                        className={`${V.btnSecundary} mb-6`}
+                        >
+                        <span className="text-white font-bold">{t("registrar")}</span>
+                  </Button>
+                )}
+
         </form>
       </div>
     </>
