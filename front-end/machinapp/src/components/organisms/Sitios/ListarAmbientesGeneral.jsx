@@ -151,7 +151,28 @@ export const BuscarAmbientesGeneral = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Sitios</h1>
-      <div className="flex justify-between items-center mb-4 gap-6">
+      <div className="flex flex-col mb-4 gap-6">
+        <div className="flex flex-row justify-end gap-6">
+        <Link to={"/Ambientes/Registrar"}>
+          <ButtonNext
+            type="submit"
+            className={`${V.bg_sena_verde} ${V.text_white}`}
+            startContent={<Icons icon={V.PlusIcon} />}
+          >
+            {t("registrar_nuevo_ambiente")}
+          </ButtonNext>
+        </Link>
+        <Link to={"/TipoSitio/Registrar"}>
+          <ButtonNext
+            type="submit"
+            className={`${V.bg_sena_verde} ${V.text_white}`}
+            startContent={<Icons icon={V.PlusIcon} />}
+          >
+            {t("registrar_nuevo_tipositio")}
+          </ButtonNext>
+        </Link>
+        </div>
+        <div className="flex flex-row gap-6">
         <SearchComponent
           onSearch={filtrarAmbientes}
           label={`${t("nombre_aula")} ${t("tipo_aula")}, ${t("area")}, ${t("profesor_encargado")}`}
@@ -190,17 +211,7 @@ export const BuscarAmbientesGeneral = () => {
             {t("inactivo")}
           </SelectItem>
         </Select>
-
-
-        <Link to={"/Ambientes/Registrar"}>
-          <ButtonNext
-            type="submit"
-            className={`${V.bg_sena_verde} ${V.text_white}`}
-            startContent={<Icons icon={V.PlusIcon} />}
-          >
-            {t("registrar_nuevo_ambiente")}
-          </ButtonNext>
-        </Link>
+        </div>
       </div>
 
       <PaginateTable

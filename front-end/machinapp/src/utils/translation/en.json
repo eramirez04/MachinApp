@@ -309,6 +309,9 @@
   "cerrar":"Close",
   "generarExel":"Generate Excel",
    "no_puede_exceder_60_caracteres": "Cannot exceed 60 characters",
- "excedio_el_maximo_de_caracteres": "Exceeded the maximum number of characters"
+ "excedio_el_maximo_de_caracteres": "Exceeded the maximum number of characters",
+ "registrar_nuevo_tipositio": "Register New Site Type",
+ "registrar_tipo_sitio": "Register site type",
+ "tipo_sitio_info": "Site Type Information"
 
 }

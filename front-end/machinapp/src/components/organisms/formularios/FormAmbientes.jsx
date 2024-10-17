@@ -26,12 +26,19 @@ export const FormAmbientes = () => {
   const { dataUser, refress } = useGlobalData();
 
   const handleSubmitData = async (data) => {
+    // Generar la fecha actual automáticamente
+    const fechaActual = new Date().toISOString().split('T')[0];
+
+    // Asignar 'activo' por defecto al campo sit_estado
     const dataSitio = {
       sit_nombre: data.Nombre_del_ambiente,
+      sit_fecha_registro: fechaActual, // Fecha actual enviada automáticamente
       sit_fk_areas: data.area,
       sit_fk_tipo_sitio: data.tipo_sitio,
       sit_fk_usuarios: data.instructor,
       img: imagen,
+      tipo_tenencia: data.tipo_tenencia,
+      sit_estado: 'activo', // Estado asignado automáticamente como 'activo'
     };
 
     try {
@@ -44,8 +51,6 @@ export const FormAmbientes = () => {
       toast.success(t("successMessage"));
       await refress();
 
-      // Optionally reset the form here if needed
-      // reset();
     } catch (error) {
       toast.error(error.response?.data?.mensaje || t("unknownError"));
     }
@@ -137,7 +142,7 @@ export const FormAmbientes = () => {
             {t("environmentInfo")}
           </h2>
 
-          <div className="grid grid-cols-2 gap-6 mt-4">
+          <div className="flex flex-col gap-6 mt-4">
             <InputforForm
               errors={errors}
               register={register}
@@ -146,6 +151,7 @@ export const FormAmbientes = () => {
               label={t("environmentName")}
               required
             />
+            <div className="flex flex-row">
             <SelectComponent
               options={areas}
               name="area"
@@ -166,7 +172,7 @@ export const FormAmbientes = () => {
               label={t("siteType")}
               required
             />
-            <SelectComponent
+                        <SelectComponent
               options={dataUser
                 .filter((item) =>
                   item.rol_nombre
@@ -186,6 +192,22 @@ export const FormAmbientes = () => {
               label={t("instructor_encargado")}
               required
             />
+            <SelectComponent
+              options={[
+                { id: 'propio', valor: 'Propio' },
+                { id: 'comodato', valor: 'Comodato' },
+                { id: 'arriendo', valor: 'Arriendo' },
+                { id: 'convenio', valor: 'Convenio' }
+              ]}
+              name="tipo_tenencia"
+              placeholder={t("tipo_tenencia")}
+              valueKey="id"
+              textKey="valor"
+              register={register}
+              label={t("tipo_tenencia")}
+              required
+            />
+            </div>
           </div>
         </div>
         <div className="pb-8">

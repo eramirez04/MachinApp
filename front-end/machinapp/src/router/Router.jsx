@@ -34,7 +34,8 @@ import {
   ActualizarSedes,
   Page404,
   SettingsPanelPage,
-  ViewFormTipoFichaUpdate
+  ViewFormTipoFichaUpdate,
+  RegistrarTipoSitio
 } from "../index";
 
 import { PerfilRoutes } from "./rutas/PerfilRoute";
@@ -87,6 +88,7 @@ export const AppRouter = () => {
             <Route path="/editarTiposFichaTec" element={<ViewFormTipoFichaUpdate/>}/>
           </Route>
           <Route path="/infoMaquina/:idMaquina" element={<InfoMaquina />} />
+          <Route path="/TipoSitio/Registrar" element={<RegistrarTipoSitio />} />
         </Routes>
       </Suspense>
     </>
