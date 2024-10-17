@@ -306,5 +306,7 @@
   "todas_las_areas":"Todas las áreas",
   "filtrar_por_area": "Filtrar por área",
   "todos_los_estados": "Todos los estados",
-  "filtrar_por_estado": "Filtrar por estado"
+  "filtrar_por_estado": "Filtrar por estado",
+   "no_puede_exceder_60_caracteres": "No puede exceder 60 caracteres",
+    "excedio_el_maximo_de_caracteres": "Excedió el máximo de caracteres"
 }
