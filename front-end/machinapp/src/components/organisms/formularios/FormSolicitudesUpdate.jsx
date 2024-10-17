@@ -72,10 +72,10 @@ export const FormSolicitudesUpdate = () => {
   }, [id, reset, t]);
 
   const onSubmit = async (data) => {
-    console.log("onSubmit function called");
+
     setIsLoading(true);
     setError(null);
-    console.log("Data being sent to the backend:", data);
+
     try {
       await axiosCliente.put(`/solicitud/actualizar/${id}`, data);
       toast.success(t("update_success"));

@@ -90,7 +90,7 @@ export const Maquinas = () => {
                   to={"/editarTiposFichaTec"}
                   className="flex gap-2 justify-center items-center h-full w-full"
                 >
-                  Editar tipo de ficha <Icons icon={PencilSquareIcon} />
+                  {t('EditarTipoFicha')}<Icons icon={PencilSquareIcon} />
                 </Link>
               </Button>
             </div>

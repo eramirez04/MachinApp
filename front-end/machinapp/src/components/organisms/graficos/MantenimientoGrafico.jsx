@@ -1,5 +1,5 @@
 import ReactECharts from "echarts-for-react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 export const MantenimientoGrafico = ({ data }) => {
   const { t } = useTranslation();
   const xAxisData = useMemo(
+      // eslint-disable-next-line react/prop-types
     () => [...new Set(data.map((item) => `${item.anio}-${item.mes}`))],
     [data]
   );
@@ -15,6 +16,7 @@ export const MantenimientoGrafico = ({ data }) => {
   /*  const seriesData = data.map((item) => item.tota_mantenimientos); */
 
   const types = useMemo(
+      // eslint-disable-next-line react/prop-types
     () => [...new Set(data.map((item) => item.tipo_mantenimiento))],
     [data]
   );
@@ -25,6 +27,7 @@ export const MantenimientoGrafico = ({ data }) => {
       type: "line",
 
       data: xAxisData.map((time) => {
+        // eslint-disable-next-line react/prop-types
         const foundItem = data.find(
           (item) =>
             `${item.anio}-${item.mes}` === time &&
