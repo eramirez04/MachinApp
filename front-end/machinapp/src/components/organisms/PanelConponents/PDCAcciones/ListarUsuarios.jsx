@@ -174,9 +174,3 @@ export const ListarUsuarios = () => {
     </>
   );
 };
-
-/*   <DropDown
-                              DropdownTriggerElement={"..."}
-                              dropdown={["Editar"]}
-                              onClick={() => handleEdit(row.numero_documento)}
-                            /> */
