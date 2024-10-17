@@ -49,3 +49,5 @@ export {ExcelMaquinasMant} from "./excel/ExcelMaquinaMantenimientos.jsx";
 
 // sitios
 export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";
+export { FormTipoSitio } from "./formularios/FormTipoSitio.jsx";
+
