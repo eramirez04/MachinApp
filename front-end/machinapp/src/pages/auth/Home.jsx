@@ -109,8 +109,7 @@ export const Home = () => {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-6">
-            <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark">
-              {/* Contenido de la sexta tarjeta */}
+            <div className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-sm dark:border-strokedark dark:bg-boxdark">
               <Artboard />
             </div>
           </div>

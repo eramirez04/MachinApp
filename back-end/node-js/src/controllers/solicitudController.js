@@ -106,39 +106,6 @@ export const obtenerSolicitudesPDF = async (req, res) => {
   }
 }; 
 
-/* export const obtenerSolicitudesPDF = async (req, res) => {
-  try {
-    const consultaSQL = `
-      SELECT DISTINCT
-        idSolicitud,
-        soli_prioridad,
-        soli_descripcion_problemas,
-        soli_costo_estimado,
-        soli_observaciones,
-        temas_legal,
-        nombre_solicitante,
-        correo_solicitante,
-        fi_placa_sena,
-        GROUP_CONCAT(DISTINCT acti_nombre SEPARATOR ', ') AS acti_nombres,
-        GROUP_CONCAT(DISTINCT acti_descripcion SEPARATOR ', ') AS acti_descripciones
-      FROM solicitud_mantenimiento 
-      INNER JOIN solicitud_has_fichas ON idSolicitud = fk_solicitud
-      INNER JOIN fichas_maquinas_equipos ON fk_fichas = idFichas
-      LEFT JOIN actividades ON idSolicitud = acti_fk_solicitud
-      GROUP BY idSolicitud, soli_prioridad, soli_descripcion_problemas, 
-               soli_costo_estimado, soli_observaciones,
-               temas_legal, nombre_solicitante, 
-               correo_solicitante, fi_placa_sena
-    `;
-
-    const [resultadoConsulta] = await conexion.query(consultaSQL);
-
-    return res.status(200).json(resultadoConsulta);
-  } catch (error) {
-    return res.status(500).json({ Mensaje: "Error en el servidor", error });
-  }
-};
- */
 
 export const actualizarSolicitudes = async(req, res)=>{
   try{
@@ -148,7 +115,7 @@ export const actualizarSolicitudes = async(req, res)=>{
       return res.status(400).json({ error: resultado.error.errors });
   
 
-      let idSolicitud = req.params.id // Cambia idSolicitud por id
+      let idSolicitud = req.params.id 
 
       let {
         prioridad,
@@ -176,7 +143,7 @@ export const actualizarSolicitudes = async(req, res)=>{
     `;
 
       let [respuesta] = await conexion.query(sql)
-      console.log(respuesta)
+
   
       if(respuesta.affectedRows>0){
           return res.status(200).json({"mensaje":"Se actualizo correctamente la solicitud"})
