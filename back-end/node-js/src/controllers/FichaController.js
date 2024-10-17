@@ -50,11 +50,7 @@ export const registrarFicha = async(req, res)=>{
 
         let fiTecnica = req.files.fiTecnica?  req.files.fiTecnica[0].filename:''
 
-/*         let placaSenaBD = placaSena==undefined? null: placaSena  // nos da error si se repite indefinido en la bd 
 
-        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) 
-        values( '${placaSenaBD}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
-     */
 
         let sql
          
@@ -72,7 +68,7 @@ export const registrarFicha = async(req, res)=>{
 
             let id = respuesta.insertId  //id de la ficha creada
 
-            let data = `http://192.168.1.108:5173/infoMaquinas/${id}`   //poner la url que queramos.
+            let data = `http://192.168.1.109:5173/infoMaquina/${id}`   //poner la url que queramos.
             let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
             let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
             
@@ -111,6 +107,12 @@ export const registrarFicha = async(req, res)=>{
 
 
 export const actualizarFicha = async(req, res)=>{
+
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json(error)
+    }
+
 
     let idFicha = req.params.idFicha
 
@@ -204,58 +206,35 @@ export const listarFichas = async(req, res)=>{
                 //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
                 for(let j = 0; infoVar.length > j; j++){
                     
-                        switch(infoVar[j].idVariable){
-                            case 1 :
-                                respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
-                                break
-                            case 2:
-                                respuesta[i]["fi_serial"] = infoVar[j].det_valor
-                                break
-                            case 3:
-                                respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
-                                break
-                            case 4:
-                                respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
-                                break
-                            case 5:
-                                respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
-                                break
-                            case 6:
-                                respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
-                                break
-                            case 7:
-                                respuesta[i]["fi_marca"] = infoVar[j].det_valor
-                                break
-                            case 8:
-                                respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                                break
-                            case 9:
-                                respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
-                                break
-                        }
-                    
-/* 
-                    if(infoVar[j].idVariable == 1){
-                        respuesta[i]["fecha_adquisicion"] = infoVar[j].det_valor
+                    switch(infoVar[j].idVariable){
+                        case 1 :
+                            respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
+                            break
+                        case 2:
+                            respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                            break
+                        case 3:
+                            respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
+                            break
+                        case 4:
+                            respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
+                            break
+                        case 5:
+                            respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
+                            break
+                        case 6:
+                            respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
+                            break
+                        case 7:
+                            respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                            break
+                        case 8:
+                            respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                            break
+                        case 9:
+                            respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
+                            break
                     }
-                    else if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
-                        respuesta[i]["serial"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 3){              
-                        respuesta[i]["fecha_inicioGarantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 4){              
-                        respuesta[i]["fecha_finGarantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 5){              
-                        respuesta[i]["descripcion_garantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 7){
-                        respuesta[i]["fi_marca"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 8){
-                        respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                    } */
                 }
             }
 
@@ -270,7 +249,6 @@ export const listarFichas = async(req, res)=>{
     }
 }
 
-/*----------------------------------------------------------------Correcto----------------------*/
 export const listarFichaPorAmbiente = async(req, res)=>{
 
     try{
@@ -336,7 +314,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 }
 
 
-/*----------------------------------------------------------------Correcto----------------------*/
+
 export const listarInfoEspecifica = async(req, res)=>{
 
     try{
@@ -434,7 +412,7 @@ export const listarInfoEspecifica = async(req, res)=>{
 
 
 
-/* --------------------------------------------------------------Correcto ---------------------- */
+
 export const actualizarFichaEsp = async ( req, res)=>{
 
     try{
@@ -453,7 +431,6 @@ export const actualizarFichaEsp = async ( req, res)=>{
             sql = `update fichas_maquinas_equipos set fi_fk_sitios =${fk_sitio} where  idFichas = ${idFicha}`
             mensaje = "Se actualizó correctamente el sitio de la ficha";
         } else {
-
             return res.status(400).json({ mensaje: "No se proporcionaron datos válidos para actualizar" });
         }
     
@@ -473,7 +450,7 @@ export const actualizarFichaEsp = async ( req, res)=>{
 
 
 
-/* Falta por revisar */
+
 export const eliminarFicha = async(req, res)=>{
     try{
         let idFicha = req.params.idFicha
@@ -494,7 +471,7 @@ export const eliminarFicha = async(req, res)=>{
     }
 }
 
-/* Falta por revisar   ----->  es el resultado de toda la informacion de la ficha*/
+
 export const listarFichaUnica=async (req, res)=>{
     try{
 
@@ -570,7 +547,6 @@ export const listarFichaUnica=async (req, res)=>{
 
 
 
-/* este controlador debe ir en el de mantenimientos */
 
 export const  listarMantenimientosMaquina = async (req, res)=>{
 
