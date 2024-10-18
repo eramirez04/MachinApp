@@ -51,10 +51,10 @@ const BuscarAreas = ({ idSede }) => {
             >
               <div className='relative h-64 flex items-center justify-center'>
                 <img
-                  src={`http://localhost:3000/imagenes/${area.img_area}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${area.img_area}`}
                   alt={area.area_nombre}
                   className='h-full'
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
                 />  
               </div>
               <div className='p-6'>
