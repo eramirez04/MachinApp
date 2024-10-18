@@ -43,7 +43,7 @@ export const FormAmbientes = () => {
 
     try {
       await multiFormData(
-        "http://localhost:3000/sitio/registrarsitio",
+        "sitio/registrarsitio",
         dataSitio,
         "POST"
       );

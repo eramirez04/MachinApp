@@ -31,7 +31,7 @@ export const FormSedes = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/sede/registrarsede",
+        "sede/registrarsede",
         dataSede,
         "POST"
       );

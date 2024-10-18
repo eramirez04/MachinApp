@@ -31,7 +31,7 @@ export const FormAreasUpdate = () => {
 
     try {
       await multiFormData(
-        `http://localhost:3000/area/editararea/${id}`,
+        `area/editararea/${id}`,
         dataArea,
         "PUT"
       );
