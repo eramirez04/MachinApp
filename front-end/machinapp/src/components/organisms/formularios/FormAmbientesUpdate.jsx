@@ -116,7 +116,7 @@ export const FormAmbientesUpdate = () => {
 
     try {
       await multiFormData(
-        `http://localhost:3000/sitio/editarsitio/${id}`,
+        `sitio/editarsitio/${id}`,
         dataSitio,
         "PUT"
       );
