@@ -24,21 +24,21 @@ const upload = multer({
   },
 }).single("mant_ficha_soporte");
 
-// para manejar la subida del archivo y procesar los datos del formulario
+// Middleware para manejar la subida del archivo y procesar los datos del formulario
 export const cargarMantenimiento = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(400).json({ mensaje: "Error en la carga del archivo: " + err.message });
+      return res.status(400).json({ mensaje: "Error en la carga del archivo" });
     } else if (err) {
-      return res.status(500).json({ mensaje: "Error inesperado: " + err.message });
+      return res.status(500).json({ mensaje: "Error inesperado" });
     }
+
     // Convertir los campos numéricos a su tipo correcto
     if (req.body.mant_costo_final) req.body.mant_costo_final = parseFloat(req.body.mant_costo_final);
     if (req.body.fk_tipo_mantenimiento) req.body.fk_tipo_mantenimiento = parseInt(req.body.fk_tipo_mantenimiento, 10);
     if (req.body.fk_solicitud_mantenimiento) req.body.fk_solicitud_mantenimiento = parseInt(req.body.fk_solicitud_mantenimiento, 10);
     if (req.body.fk_tecnico) req.body.fk_tecnico = parseInt(req.body.fk_tecnico, 10);
-    
-    
+
     next();
   });
 };
@@ -62,7 +62,8 @@ export const registrarMantenimiento = async (req, res) => {
       fk_tecnico
     } = req.body;
 
-    const mant_ficha_soporte = req.file ? req.file.path : null;
+    // Extraer solo el nombre del archivo, sin la ruta "public/pdfs/"
+    const mant_ficha_soporte = req.file ? path.basename(req.file.path) : null;
 
     const sql = `
       INSERT INTO mantenimiento (
@@ -104,6 +105,7 @@ export const registrarMantenimiento = async (req, res) => {
     return res.status(500).json({ mensaje: "Error: " + e.message });
   }
 };
+
 
 /* 5.1 Generar alertas de mantenimiento de a través de correo electrónico */
 import { mantenimiento_correo } from "../config/mantenimiento_email/email_mantenimineto.js";

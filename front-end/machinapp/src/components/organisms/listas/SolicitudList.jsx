@@ -68,8 +68,6 @@ export const SolicitudList = ({ DataSolicitud }) => {
                     <Icons icon={V.PencilIcon} />
                   </Link>
                 )}
-
-
                   <PDFvistaSolicitud item={fila}/>
                   
                 </div>
