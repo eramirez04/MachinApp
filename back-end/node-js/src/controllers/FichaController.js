@@ -68,7 +68,7 @@ export const registrarFicha = async(req, res)=>{
 
             let id = respuesta.insertId  //id de la ficha creada
 
-            let data = `http://192.168.1.109:5173/infoMaquina/${id}`   //poner la url que queramos.
+            let data = `http://10.193.144.26:5173/infoMaquina/${id}`   //poner la url que queramos.
             let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
             let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
             
@@ -113,54 +113,60 @@ export const actualizarFicha = async(req, res)=>{
         return res.status(400).json(error)
     }
 
+    try{
 
-    let idFicha = req.params.idFicha
+        let idFicha = req.params.idFicha
 
-    let { placaSena, fiEstado, fk_sitio } = req.body
-
-
-    let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : null  // Se valida si se cargó o no un documento, si no se cargó no se actualiza
-    let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : null
-
-    // Consulta la información actual de la ficha
-    const [dataFicha] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
-
-    // Ruta de las imágenes y documentos técnicos
-    const fichaImagenPath = path.join('public/imagenes/ficha', dataFicha[0].fi_imagen)
-    const fichaTecnicaPath = path.join('public/FichasTecnicas/FichasRespaldo', dataFicha[0].ficha_respaldo)
-
-    // Verifica y elimina la imagen anterior si se está subiendo una nueva
-    if (fiImagen && dataFicha[0].fi_imagen) {
-        if (fs.existsSync(fichaImagenPath)) {
-            fs.unlinkSync(fichaImagenPath)  // Elimina la imagen anterior
+        let { placaSena, fiEstado, fk_sitio } = req.body
+    
+    
+        let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : null  // Se valida si se cargó o no un documento, si no se cargó no se actualiza
+        let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : null
+    
+        // Consulta la información actual de la ficha
+        const [dataFicha] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
+    
+        // Ruta de las imágenes y documentos técnicos
+        const fichaImagenPath = path.join('public/imagenes/ficha', dataFicha[0].fi_imagen)
+        const fichaTecnicaPath = path.join('public/FichasTecnicas/FichasRespaldo', dataFicha[0].ficha_respaldo)
+    
+        // Verifica y elimina la imagen anterior si se está subiendo una nueva
+        if (fiImagen && dataFicha[0].fi_imagen) {
+            if (fs.existsSync(fichaImagenPath)) {
+                fs.unlinkSync(fichaImagenPath)  // Elimina la imagen anterior
+            }
         }
-    }
-
-    // Verifica y elimina la ficha técnica anterior si se está subiendo una nueva
-    if (fiTecnica && dataFicha[0].ficha_respaldo) {
-        if (fs.existsSync(fichaTecnicaPath)) {
-            fs.unlinkSync(fichaTecnicaPath)  // Elimina el documento técnico anterior
+    
+        // Verifica y elimina la ficha técnica anterior si se está subiendo una nueva
+        if (fiTecnica && dataFicha[0].ficha_respaldo) {
+            if (fs.existsSync(fichaTecnicaPath)) {
+                fs.unlinkSync(fichaTecnicaPath)  // Elimina el documento técnico anterior
+            }
         }
+    
+        // Construcción de la consulta SQL para actualizar la ficha según los archivos subidos
+        let sql
+    
+        if (fiImagen && fiTecnica) {  // Se actualizan ambos documentos
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+        
+        } else if (fiImagen && fiTecnica == null) {  // Solo se actualiza la imagen
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+        
+        } else if (fiTecnica && fiImagen == null) {  // Solo se actualiza el documento técnico
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+        
+        } else {  // No se actualizan los documentos, solo otros campos
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+        }
+    
+        const [respuesta] = await conexion.query(sql)
+        return res.json({"mensaje":"se actualizo con exito la ficha "})
+    }catch(error){
+        return res.json({"mensaje":"error en el servidor",error})
     }
 
-    // Construcción de la consulta SQL para actualizar la ficha según los archivos subidos
-    let sql
 
-    if (fiImagen && fiTecnica) {  // Se actualizan ambos documentos
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
-    
-    } else if (fiImagen && fiTecnica == null) {  // Solo se actualiza la imagen
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
-    
-    } else if (fiTecnica && fiImagen == null) {  // Solo se actualiza el documento técnico
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
-    
-    } else {  // No se actualizan los documentos, solo otros campos
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
-    }
-
-    const [respuesta] = await conexion.query(sql)
-    return res.json({"mensaje":"se actualizo con exito la ficha "})
     
   
 }

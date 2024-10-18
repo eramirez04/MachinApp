@@ -59,7 +59,7 @@ export const FormSedesUpdate = () => {
 
     try {
       const response = await multiFormData(
-        `http://localhost:3000/sede/editarsede/${id}`,
+        `sede/editarsede/${id}`,
         dataSede,
         "PUT"
       );

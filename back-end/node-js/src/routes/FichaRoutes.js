@@ -12,7 +12,7 @@ const rutaFicha = Router()
 rutaFicha.post('/registrar', verificar, cargarImagenFicha, validar_ficha, registrarFicha)
 rutaFicha.get('/listar',  verificar, listarFichas)
 rutaFicha.delete('/eliminar/:idFicha',  verificar, eliminarFicha)
-rutaFicha.put('/actualizar/:idFicha',  verificar, cargarImagenFicha,  validar_ficha, actualizarFicha)
+rutaFicha.put('/actualizar/:idFicha',  verificar, cargarImagenFicha,  /* validar_ficha,  */actualizarFicha)
 
 
 
