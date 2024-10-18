@@ -111,7 +111,7 @@ export const FormFichaDeMantenimiento = () => {
         setTiposMantenimiento(tiposMantenimientoRes.data || []);
 
         const solicitudesRes = await axiosCliente.get(
-          "http://localhost:3000/solicitud/"
+          "/solicitud/"
         );
         setSolicitudes(solicitudesRes.data || []);
       } catch (error) {
@@ -142,9 +142,9 @@ export const FormFichaDeMantenimiento = () => {
       formData.append("mant_costo_final", data.mant_costo_final);
       formData.append("fk_tipo_mantenimiento", data.fk_tipo_mantenimiento);
       formData.append("fk_solicitud_mantenimiento", data.fk_solicitud_mantenimiento);
-      formData.append("tecnico", data.tecnico);
+      formData.append("fk_tecnico", data.tecnico);
 
-      const mantenimientoResponse = await axiosCliente.post(
+      const response = await axiosCliente.post(
         "mantenimiento/registrar",
         formData,
         {
@@ -154,31 +154,29 @@ export const FormFichaDeMantenimiento = () => {
         }
       );
 
-      const mantenimientoId = mantenimientoResponse.data.idMantenimiento;
+      if (response.data.idMantenimiento) {
+        const mantenimientoId = response.data.idMantenimiento;
 
-      if (!mantenimientoId) {
+        const partesMantenimiento = data.repuestos.map((repuesto) => ({
+          par_fk_mantenimientos: mantenimientoId,
+          par_nombre_repuesto: repuesto.nombreRepuesto,
+          par_costo: parseFloat(repuesto.costo),
+        }));
+
+        await axiosCliente.post(
+          "partes_mantenimiento/registrar",
+          partesMantenimiento
+        );
+
+        toast.success(t("registration_success"));
+        navigate('/historial');
+      } else {
         throw new Error(t("no_maintenance_id_received"));
       }
-
-      const partesMantenimiento = data.repuestos.map((repuesto) => ({
-        par_fk_mantenimientos: mantenimientoId,
-        par_nombre_repuesto: repuesto.nombreRepuesto,
-        par_costo: parseFloat(repuesto.costo),
-      }));
-
-      await axiosCliente.post(
-        "partes_mantenimiento/registrar",
-        partesMantenimiento
-      );
-
-      toast.success(t("registration_success"));
-
-      navigate('/historial');
-      setSelectedFile(null);
     } catch (error) {
       let errorMessage = t("registration_error");
       if (error.response) {
-        errorMessage += `${t("server_error")}: ${error.response.status} - ${
+        errorMessage += `: ${error.response.status} - ${
           error.response.data.message || error.response.statusText
         }`;
         setFileError(
@@ -320,15 +318,12 @@ export const FormFichaDeMantenimiento = () => {
               />
             </CardStyle>
 
-            <CardStyle
-              titleCard={t("maintenance_type")}
-              className="p-6 shadow-md rounded-lg"
-            >
+            <CardStyle titleCard={t("maintenance_type")}>
               <Controller
                 name="fk_tipo_mantenimiento"
                 control={control}
                 render={({ field }) => (
-                  <RadioGroup {...field} aria-label="grop">
+                  <RadioGroup {...field}>
                     {tiposMantenimiento && tiposMantenimiento.length > 0 ? (
                       tiposMantenimiento.map((tipo) => (
                         <Radio
