@@ -44,10 +44,10 @@ const InfoDetalladaAmbiente = () => {
         {/* Imagen del ambiente */}
         <div className="relative flex justify-center items-center w-full h-80 mb-6">
           <img
-            src={`http://localhost:3000/imagenes/${ambiente[0].img_sitio}`}
+            src={`${import.meta.env.VITE_API_IMAGE}imagenes/${ambiente[0].img_sitio}`}
             alt={ambiente[0].sit_nombre}
             className="h-full rounded-lg shadow-md"
-            onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+            onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
           />
         </div>
 
