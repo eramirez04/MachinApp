@@ -60,11 +60,11 @@ const BuscarSedes = () => {
             >
               <div className="relative h-72 items-center justify-center flex">
                 <img
-                  src={`http://localhost:3000/imagenes/${sede.img_sede}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${sede.img_sede}`}
                   alt={sede.sede_nombre}
                   className="h-full"
                   onError={(e) =>
-                    (e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`)
+                    (e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`)
                   }
                 />
               </div>

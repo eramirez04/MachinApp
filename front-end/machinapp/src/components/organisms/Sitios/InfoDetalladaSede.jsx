@@ -52,10 +52,10 @@ const InfoDetalladaSede = () => {
         {/* Imagen de la sede */}
         <div className="relative flex justify-center items-center w-full h-80 mb-6">
           <img
-            src={`http://localhost:3000/imagenes/${sede[0].img_sede}`}
+            src={`${import.meta.env.VITE_API_IMAGE}imagenes/${sede[0].img_sede}`}
             alt={sede[0].sede_nombre}
             className="h-full rounded-lg shadow-md"
-            onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+            onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
           />
         </div>
 
