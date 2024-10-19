@@ -50,7 +50,7 @@ export const AvatarCom = () => {
               isBordered: true,
             }}
             name={
-              loading ? "cargando" : `${user.us_nombre} ${user.us_apellidos}`
+              loading ? t("loading") : `${user.us_nombre} ${user.us_apellidos}`
             }
           />
         }

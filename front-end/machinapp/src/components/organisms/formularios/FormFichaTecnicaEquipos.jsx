@@ -85,7 +85,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
     try {
       //registramos la ficha tecnica
       const response = await multiFormData(
-        "http://localhost:3000/ficha/registrar",
+        "ficha/registrar",
         dataFicha,
         "POST"
       )
@@ -99,7 +99,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
       };
 
       //empezamos a registrar las variables
-      const responseDet = await axiosCliente.post(
+       await axiosCliente.post(
         "detalle/registrarDetalles",
         dataVariables
       );

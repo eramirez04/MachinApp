@@ -51,7 +51,7 @@ export const Home = () => {
   ];
 
   if (isLoading) {
-    return <>cargando</>;
+    return <>{t("loading")}</>;
   }
   return (
     <>

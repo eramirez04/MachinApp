@@ -8,7 +8,7 @@ import {
   multiFormData,
   ButtonNext,
   slepp,
-  tipoDocumentoData
+  tipoDocumentoData,
 } from "../../../index";
 
 import { useForm, Controller } from "react-hook-form";
@@ -44,12 +44,12 @@ export const FormUserUpdate = ({ userData }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
     data.rol =
       data.rol === "undefined" || !data.rol
         ? String(user.id_rol)
         : String(data.rol);
-   // data.tipo_documento = data.tipo_documento || user.tipo_documento;
+    // data.tipo_documento = data.tipo_documento || user.tipo_documento;
 
     try {
       const res = await multiFormData(
@@ -109,7 +109,7 @@ export const FormUserUpdate = ({ userData }) => {
         empresa: user.empresa || "",
         especialidad: user.especialidad || "",
         rol: user.id_rol || "",
-        tipo_documento: user.tipo_documento
+        tipo_documento: user.tipo_documento,
       });
     }
     setIsLoading(false);
@@ -127,7 +127,7 @@ export const FormUserUpdate = ({ userData }) => {
   }, [rol, admin]);
 
   if (isLoading) {
-    return <div>Cargando datos del usuario...</div>;
+    return <div>{t("cargando_datos_usuario")}</div>;
   }
   return (
     <>
