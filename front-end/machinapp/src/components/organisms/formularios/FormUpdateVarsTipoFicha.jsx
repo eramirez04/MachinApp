@@ -441,6 +441,7 @@ export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
                                 register={register}
                                 name={`var_${varSeccion.idVariable}.var_descripcion`}
                                 descripcion={``}
+                                max={1000}
                                 />
                             </div>
                         </div>

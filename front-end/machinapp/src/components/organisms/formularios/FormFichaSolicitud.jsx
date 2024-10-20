@@ -65,7 +65,7 @@ export const FormFichaSolicitud = () => {
       const res = await axiosCliente.post("solicitud/", {
         prioridad: data.prioridad,
         descripcion: data.descripcion,
-        costo_estimado: "10000",
+        costo_estimado: data.costo_estimado,
         obsevaciones: data.obervaciones,
         temaLegal: data.parte_legal,
         nombre_solicitante: data.Solicitante,
@@ -129,11 +129,11 @@ export const FormFichaSolicitud = () => {
 
   //añade una nueva fila a la tabla, para poder ingresar un nuevo equipo o maquinaria
   const handleNewEquipos = () => {
-/*     if (valuesTable.length >= equiposData.length) {
+     if (valuesTable.length >= equiposData.length) {
       toast.warning("llegaste al limite de equipos en el sistema");
       return 0;
       
-    } */
+    }
 
     const nuevaFila = {
       id: valuesTable[valuesTable.length - 1].id + 1,
@@ -333,6 +333,7 @@ export const FormFichaSolicitud = () => {
                       <TableCell className="flex items-center ">
                       <TextAreaComponent
                         errors={errors}
+                        max={150}
                         register={register}
                         name={`nombre_actividad_${fila.id}`}
                         label={t("Name_of_the_activity")}
