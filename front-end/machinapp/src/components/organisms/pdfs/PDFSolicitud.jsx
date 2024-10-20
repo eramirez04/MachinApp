@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { axiosCliente } from "../../../index.js";
 
@@ -211,7 +211,7 @@ export const PDFSolicitud = ({idSolicitud}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
+        const response = await axiosCliente.get('solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
         setData(filteredData || {});
       } catch (error) {

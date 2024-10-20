@@ -88,7 +88,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/mantenimiento/excelconsultavariables');
+        const response = await axiosCliente.get('/mantenimiento/excelconsultavariables');
         const filteredData = response.data.find(item => item.idMantenimiento === idMantenimiento);
         setData(filteredData);
       } catch (error) {

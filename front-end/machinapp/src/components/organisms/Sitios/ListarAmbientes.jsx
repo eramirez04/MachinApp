@@ -45,14 +45,14 @@ const BuscarAmbientes = ({ idArea }) => {
       </header>
       <div className='container mx-auto p-4'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
-          {ambientes.map((ambiente) => (
-            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={ambiente.idSede}>
+          {ambientes.map((ambiente, index) => (
+            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={index}>
               <div className='relative h-72 items-center justify-center flex'>
                 <img
-                  src={`http://localhost:3000/imagenes/${ambiente.img_sitio}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${ambiente.img_sitio}`}
                   alt={ambiente.area_nombre}
                   className='h-full'
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
                 />
               </div>
               <Link to={`/Ambientes/InfoAmbiente/${ambiente.idAmbientes}`}>

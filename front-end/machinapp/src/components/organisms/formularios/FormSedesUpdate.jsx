@@ -34,7 +34,7 @@ export const FormSedesUpdate = () => {
         setValue("Descripcion", sedeData.sede_descripcion);
 
         if (sedeData.img) {
-          setPreviewImagen(`http://localhost:3000/imagenes/${sedeData.img}`);
+          setPreviewImagen(`${import.meta.env.VITE_API_IMAGE}imagenes/${sedeData.img}`);
         }
       } catch (error) {
         console.error(t("error.fetch_data"), error);
@@ -59,7 +59,7 @@ export const FormSedesUpdate = () => {
 
     try {
       const response = await multiFormData(
-        `http://localhost:3000/sede/editarsede/${id}`,
+        `sede/editarsede/${id}`,
         dataSede,
         "PUT"
       );

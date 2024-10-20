@@ -31,7 +31,7 @@ export const FormAreasUpdate = () => {
 
     try {
       await multiFormData(
-        `http://localhost:3000/area/editararea/${id}`,
+        `area/editararea/${id}`,
         dataArea,
         "PUT"
       );
@@ -77,7 +77,7 @@ export const FormAreasUpdate = () => {
 
         if (areaResponse.data.img) {
           setPreviewImagen(
-            `http://localhost:3000/imagenes/${areaResponse.data.img}`
+            `${import.meta.env.VITE_API_IMAGE}imagenes/${areaResponse.data.img}`
           );
         }
       } catch (error) {
