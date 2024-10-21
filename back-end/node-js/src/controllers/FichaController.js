@@ -687,5 +687,5 @@ export const ExcelAmbiente = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json({ "mensaje": "Error en el servidor" });
-    }
+    }
   };

@@ -1,5 +1,11 @@
 import {Router} from 'express'
-import { registrarFicha, eliminarFicha, actualizarFicha, listarFichas, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha, actualizarFichaEsp, listarMantenimientosMaquina} from '../controllers/FichaController.js'
+import { 
+    registrarFicha, 
+    eliminarFicha,
+     actualizarFicha, 
+     listarFichas, 
+     listarFichaUnica, 
+     listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha, actualizarFichaEsp, listarMantenimientosMaquina,ExcelAmbiente} from '../controllers/FichaController.js'
 
 import {validar_ficha} from '../../validar/fichas/validationFicha.js'
 

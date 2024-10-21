@@ -42,7 +42,9 @@ export const SolicitudList = ({ DataSolicitud }) => {
 
   const handleSearSolicitud = (search) => {
     const filtered = newArrayDataSolicitud.filter((item) =>
-      item.costo.toLowerCase().includes(search.toLowerCase())
+      item.costo.toLowerCase().includes(search.toLowerCase()) ||
+      item.prioridad.toLowerCase().includes(search.toLowerCase())
+
     );
     setFilteredData(filtered);
   };
@@ -51,7 +53,10 @@ export const SolicitudList = ({ DataSolicitud }) => {
     <>
 
       <div className="min-h-screen p-6 flex flex-col gap-8 ">
-        <SearchComponent onSearch={handleSearSolicitud} />
+        <SearchComponent onSearch={handleSearSolicitud} 
+          label={`${t("cost")}, ${t("priority")}`}
+          className="w-full md:w-auto"
+          />
         <div className="w-full overflow-x-auto">
           <PaginateTable
             columns={COLUMNAS}

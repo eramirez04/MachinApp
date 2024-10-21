@@ -233,8 +233,8 @@ export const FormSolicitudesUpdate = () => {
             <div className="border-b-4 border-orange-400 inline-block w-24"></div>
             <TextAreaComponent
               errors={errors}
-              descripcion={t("maintenance_description")}
-              label={t("maintenance_description")}
+              descripcion={t("Legal_Part")}
+              label={t("Legal_Part")}
               register={() => register("temaLegal")}
             />
           </div>
@@ -244,8 +244,8 @@ export const FormSolicitudesUpdate = () => {
             <div className="border-b-4 border-orange-400 inline-block w-24"></div>
             <TextAreaComponent
               errors={errors}
-              descripcion={t("maintenance_description")}
-              label={t("maintenance_description")}
+              descripcion={t("Observations")}
+              label={t("Observations")}
               register={() => register("obsevaciones")}
             />
           </div>
@@ -328,7 +328,7 @@ export const FormSolicitudesUpdate = () => {
                     </TableCell>
                     <TableCell>
                       <Button onClick={() => onActivityUpdate(actividad.idActividades)}>
-                        {t("Edit")}
+                        {t("editar")}
                       </Button>
                     </TableCell>
                   </TableRow>
