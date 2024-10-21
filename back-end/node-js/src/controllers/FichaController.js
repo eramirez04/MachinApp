@@ -629,3 +629,63 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"+error})
     }
 }
+
+export const ExcelAmbiente = async (req, res) => { 
+    try {
+        let idAmbientes = req.params.idAmbientes;
+  
+        /* Consultamos la información básica del equipo */
+        let sqlEquipo = `
+        SELECT DISTINCT
+            idAmbientes,
+            fi_fk_sitios,
+            sit_nombre,
+            area_nombre,
+            sede_nombre,
+            sede_regional,
+            sede_municipio,
+            ti_fi_nombre 
+        FROM tipo_equipo
+        INNER JOIN fichas_maquinas_equipos ON idTipo_ficha = fi_fk_tipo_ficha
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        INNER JOIN areas ON sit_fk_areas = idArea
+        INNER JOIN sedes ON area_fk_sedes = idSede
+        WHERE idAmbientes = ${idAmbientes}
+        `;
+  
+        const [infoEquipo] = await conexion.query(sqlEquipo);
+  
+        if (infoEquipo.length > 0) {
+            let sqlVariables = `
+            SELECT
+                idDetalle,
+                det_valor,
+                idVariable,
+                var_nombre,
+                var_descripcion,
+                var_clase,
+                var_tipoDato
+            FROM detalles_fichas
+            INNER JOIN variable ON det_fk_variable = idVariable
+            WHERE det_fk_fichas IN (
+                SELECT idFichas 
+                FROM fichas_maquinas_equipos 
+                WHERE fi_fk_sitios = ${idAmbientes}
+            )
+            `;
+  
+            const [varEquipo] = await conexion.query(sqlVariables);
+  
+            let objFicha = {
+                infoFicha: infoEquipo,  // Información básica sin duplicados
+                infoVar: varEquipo      // Variables relacionadas con la ficha
+            };
+  
+            return res.status(200).json(objFicha);
+        } else {
+            return res.status(404).json({ "mensaje": "No se encontraron fichas para este ambiente." });
+        }
+    } catch (error) {
+        return res.status(500).json({ "mensaje": "Error en el servidor" });
+    }
+  };
