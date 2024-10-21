@@ -1,10 +1,17 @@
 export const SelectComponent = ({
+                                  // eslint-disable-next-line react/prop-types
   options,
+                                  // eslint-disable-next-line react/prop-types
   name,
+                                  // eslint-disable-next-line react/prop-types
   register,
+                                  // eslint-disable-next-line react/prop-types
   placeholder,
+                                  // eslint-disable-next-line react/prop-types
   label,
+                                  // eslint-disable-next-line react/prop-types
   onChange,
+                                  // eslint-disable-next-line react/prop-types
   value = true,
   ...restProps
 }) => {

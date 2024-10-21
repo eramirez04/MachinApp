@@ -8,7 +8,7 @@ export const MantenimientoGeneralPDF = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosCliente.get('http://localhost:3000/mantenimiento/excelconsultavariables');
+                const response = await axiosCliente.get('/mantenimiento/excelconsultavariables');
                 setMantenimientos(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);

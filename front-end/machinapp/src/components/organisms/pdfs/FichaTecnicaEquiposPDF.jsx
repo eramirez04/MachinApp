@@ -611,7 +611,7 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
                 <View style={[styles.containerHijo , styles.paddignTopMa]}>
                   <View style={styles.contenedorImagen}>
                     
-                    <Image style={styles.imagen}   src={`http://localhost:3000/imagenes/ficha/${infoMaquina.fi_imagen}`} />
+                    <Image style={styles.imagen}   src={`${import.meta.env.VITE_API_IMAGE}imagenes/ficha/${infoMaquina.fi_imagen}`} />
                   </View> 
                 </View>
               </View>

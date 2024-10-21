@@ -374,7 +374,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     <img
                         className="h-full w-full object-contain rounded-md"
                         alt=""
-                        src={`http://localhost:3000/imagenes/ficha/${infoFicha.fi_imagen}`}
+                        src={`${import.meta.env.VITE_API_IMAGE}imagenes/ficha/${infoFicha.fi_imagen}`}
                     />
                   </div>
                   )

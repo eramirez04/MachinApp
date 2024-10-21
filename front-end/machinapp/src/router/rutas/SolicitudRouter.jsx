@@ -1,25 +1,20 @@
-import { Fichas } from "../../index";
-import { Route, Routes } from "react-router-dom";
+import {Fichas} from "../../index";
+import {Route, Routes} from "react-router-dom";
+import {ProtegerRutasAdminInstru} from "./AdminRoutes.jsx";
 
 // paginas
 
-import { FichaSolicitudPage } from "../../pages/fichastecnicas/ViewFormFichaSolicitudPage";
+import {FichaSolicitudPage} from "../../pages/index.js";
 
 export const SolicitudRouter = () => {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Fichas />} />
-        <Route path="/registrar" element={<FichaSolicitudPage />} />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <div>hola como estas</div>
-            </>
-          }
-        />
-      </Routes>
-    </>
-  );
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={<Fichas/>}/>
+                <Route element={<ProtegerRutasAdminInstru/>}>
+                    <Route path="/registrar" element={<FichaSolicitudPage/>}/>
+                </Route>
+            </Routes>
+        </>
+    );
 };

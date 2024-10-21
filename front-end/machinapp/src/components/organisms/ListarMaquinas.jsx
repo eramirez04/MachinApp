@@ -1,24 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-/* import Nav from '../molecules/Nav'
-import ButtonSitios from '../atoms/buttons/ButtonSitios' */
-
-import {Nav,ButtonSitios } from "../../index"
+import {Nav } from "../../index"
 
 import { axiosCliente } from '../../service/api/axios'
 
-const BuscarMaquinas=()=>  {
-
+export const BuscarMaquinas=()=>  {
     const [maquinas, setMaquinas] = useState([])
-    const navigate = useNavigate()
 
     useEffect(()=>{
         const listarFicha = async ()=>{
             try{
                 const response = await axiosCliente.get('/ficha/listar')
                 setMaquinas(response.data.respuesta)
-
-                
             } catch(error){
                 console.error(error)
             }
@@ -44,7 +36,7 @@ const BuscarMaquinas=()=>  {
               <div className='flex flex-row mt-10 items-center'>
                 <div className='bg-blue-600 w-40 h-40 mb-10'>p</div>
                 <p className='text-black ml-10 mb-12'>{maquina.fi_placa_sena}</p>
-                <Link to={'/Maquinas'}><ButtonSitios /></Link>
+
               </div>
             </div>
         ))
@@ -53,4 +45,3 @@ const BuscarMaquinas=()=>  {
   )
 }
 
-export default BuscarMaquinas

@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 
-const BuscarSedes = () => {
+export const BuscarSedes = () => {
   const { t } = useTranslation(); // Hook de traducción
   const [sedes, setSedes] = useState([]);
 
@@ -108,5 +108,3 @@ const BuscarSedes = () => {
     </div>
   );
 };
-
-export default BuscarSedes;

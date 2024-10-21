@@ -90,7 +90,7 @@ export const BuscarAmbientesGeneral = () => {
         acciones: (
           <div className="flex space-x-2"> {/* Alinea los íconos horizontalmente */}
             <ButtonNext isIconOnly color="warning" variant="faded">
-              <Tooltip content="Editar">
+              <Tooltip content="Editar" aria-label={"fasd"}>
                 <Link
                   to={`/Ambientes/Actualizar/${sitio.idAmbientes}`}
                   className="flex justify-center items-center h-full w-full"
@@ -101,12 +101,15 @@ export const BuscarAmbientesGeneral = () => {
             </ButtonNext>
 
             {/* Ícono de Descargar Excel */}
-            <Tooltip content="Descargar Excel">
+            <ButtonNext isIconOnly color="warning" variant="faded">
+
               <ExcelAmbientes
-                ambientes={[sitio]} 
+                ambientes={[sitio]}
                 onDownloadSuccess={() => toast.success(t("excel_descargado_exitosamente"))}
               />
-            </Tooltip>
+
+            </ButtonNext>
+
           </div>
         ),
       }));
@@ -183,12 +186,13 @@ export const BuscarAmbientesGeneral = () => {
           value={areaSeleccionada}
           onChange={(e) => setAreaSeleccionada(e.target.value)}
           className="w-full sm:w-40 lg:w-60"
+          aria-label="area"
         >
-          <SelectItem key="" value="">
+          <SelectItem key="" value="" aria-label="erer">
             {t("todas_las_areas")}
           </SelectItem>
           {obtenerAreasUnicas().map((area) => (
-            <SelectItem key={area} value={area}>
+            <SelectItem key={area} value={area} aria-label="erer" >
               {area}
             </SelectItem>
           ))}
@@ -200,14 +204,15 @@ export const BuscarAmbientesGeneral = () => {
           value={estadoSeleccionado}
           onChange={(e) => setEstadoSeleccionado(e.target.value)}
           className="w-full sm:w-40 lg:w-60"
+          aria-label="estado-12"
         >
-          <SelectItem key="todos" value="todos">
+          <SelectItem key="todos" value="todos" aria-label="erer">
             {t("todos_los_estados")} {/* Asegúrate de que la clave sea correcta */}
           </SelectItem>
-          <SelectItem key="activo" value="activo">
+          <SelectItem key="activo" value="activo" aria-label="erer">
             {t("activo")}
           </SelectItem>
-          <SelectItem key="inactivo" value="inactivo">
+          <SelectItem key="inactivo" value="inactivo" aria-label="erer">
             {t("inactivo")}
           </SelectItem>
         </Select>

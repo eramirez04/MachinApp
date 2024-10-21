@@ -1,13 +1,12 @@
+import { ButtonC, V, axiosCliente } from "../../../index.js"
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../../service/api/axios';
-import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
-import { V } from '../../../style';
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
-const BuscarAmbientes = ({ idArea }) => {
+// eslint-disable-next-line react/prop-types
+export const BuscarAmbientes = ({ idArea }) => {
   const { t } = useTranslation(); // Usar el hook para obtener la función de traducción
   const [ambientes, setAmbientes] = useState([]);
 
@@ -45,8 +44,8 @@ const BuscarAmbientes = ({ idArea }) => {
       </header>
       <div className='container mx-auto p-4'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
-          {ambientes.map((ambiente) => (
-            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={ambiente.idSede}>
+          {ambientes.map((ambiente, index) => (
+            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={index}>
               <div className='relative h-72 items-center justify-center flex'>
                 <img
                   src={`${import.meta.env.VITE_API_IMAGE}imagenes/${ambiente.img_sitio}`}
@@ -85,5 +84,3 @@ const BuscarAmbientes = ({ idArea }) => {
     </div>
   );
 }
-
-export default BuscarAmbientes;

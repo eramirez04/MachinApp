@@ -160,13 +160,13 @@ export const InfoMaquina = () => {
                 estadoInfo && (
                   <div className="flex flex-row justify-end">
                     <QRCodeLink
-                    imageUrl={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`}
+                    imageUrl={`${import.meta.env.VITE_API_IMAGE}QRimagenes/${maquina.CodigoQR}`}
                     tooltipContent={t("codigoQR")}
                     icon={<BiQrScan />}
                   />
-                  {/* http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo} */}
+                
                   <QRCodeLink
-                    imageUrl={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`}
+                    imageUrl={`${import.meta.env.VITE_API_IMAGE}fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`}
                     tooltipContent={t("fichaRespaldo")}
                     icon={<CiSaveDown1 />}
                   />
