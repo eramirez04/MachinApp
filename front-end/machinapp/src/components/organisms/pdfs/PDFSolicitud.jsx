@@ -196,15 +196,20 @@ const TableHeader = () => (
   </View>
 );
 
+// eslint-disable-next-line react/prop-types
 const TableRow = ({ item, index }) => (
   <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]} wrap={false}>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.equipo}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.descripcion}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={[styles.tableCell, styles.lastCell]}>{item.actividad}</Text>
   </View>
 );
 
 
+// eslint-disable-next-line react/prop-types
 export const PDFSolicitud = ({idSolicitud}) => {
   const [data, setData] = useState({});
 

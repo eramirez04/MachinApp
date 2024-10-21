@@ -201,7 +201,7 @@ export const FormUserUpdate = ({ userData }) => {
               className={`border-b border-stroke py-3 px-5 dark:border-strokedark ${V.bg_sena_verde}`}
             >
               <span className="font-medium text-black dark:text-white">
-                {t("tu_foto")}
+                {t("restablecer_contresena")}
               </span>
             </div>
             <div className="p-10">

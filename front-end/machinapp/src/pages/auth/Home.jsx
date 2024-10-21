@@ -12,7 +12,7 @@ import {
   MantenimientoGrafico,
   useMantenimientosQuery,
 } from "../../index.js";
-import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
+import {Artboard} from "../../components/index.js";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

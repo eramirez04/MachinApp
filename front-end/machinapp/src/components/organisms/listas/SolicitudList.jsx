@@ -1,7 +1,6 @@
-import { PaginateTable } from "../table/PaginateTable";
 import { Link } from "react-router-dom";
 import { useState,useContext } from "react";
-import { SearchComponent,Icons, V,PDFvistaSolicitud } from "../../../index.js";
+import { SearchComponent,Icons, V,PDFvistaSolicitud, PaginateTable } from "../../../index.js";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 

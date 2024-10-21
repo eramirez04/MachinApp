@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState, useCallback, useContext} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -23,16 +24,18 @@ import {
   TableBody,
   Button,
   Divider,
-  Input,
 } from "@nextui-org/react";
 
 export const FormFichaSolicitud = () => {
-  const { equiposData } = useGlobalData();
+  const { equiposData, refreshSolicitud } = useGlobalData();
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
   const { rol } = useContext(AuthContext);
   const [inputValues, setInputValues] = useState([]);
   const { t } = useTranslation();
+
+  // navegacion de paginas
+   const navigate = useNavigate();
 
   // permite almacenar un array, para poder pasarsimport Alert from "../feedback/Alert";elo como propiedad a al componente select
   const [equipo, setEquipo] = useState([]);
@@ -92,6 +95,8 @@ export const FormFichaSolicitud = () => {
       if (res && resfichas && resActividades) {
         toast.success("se registro con exito la solicitud del mantenimiento");
         reset();
+        navigate("/solicitud");
+        await  refreshSolicitud();
         setvaluesTable([{ id: 1 }]);
       }
     } catch (error) {
@@ -266,8 +271,13 @@ export const FormFichaSolicitud = () => {
                 </span>
               </div>
               <div className="flex justify-center items-center h-full">
-                <Input
-                type="number" />
+                 <InputforForm
+                  errors={errors}
+                  tipo={"number"}
+                  name={"costo_estimado"}
+                  register={register}
+                  label={"costo"}
+                />
               </div>
             </div>{" "}
             <Divider />

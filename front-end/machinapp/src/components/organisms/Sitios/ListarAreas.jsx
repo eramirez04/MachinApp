@@ -1,12 +1,11 @@
+import { ButtonC,axiosCliente, V} from "../../../index.js"
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../../service/api/axios';
-import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from 'react-icons/fa';
-import { V } from '../../../style';
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
-const BuscarAreas = ({ idSede }) => {
+// eslint-disable-next-line react/prop-types
+export const BuscarAreas = ({ idSede }) => {
   const { t } = useTranslation(); // Usar el hook para obtener la función de traducción
   const [areas, setAreas] = useState([]);
 
@@ -80,5 +79,3 @@ const BuscarAreas = ({ idSede }) => {
     </div>
   );
 };
-
-export default BuscarAreas;

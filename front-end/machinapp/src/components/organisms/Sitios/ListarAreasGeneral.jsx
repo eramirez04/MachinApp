@@ -1,13 +1,12 @@
+import { V, Icons, ButtonC, axiosCliente } from "../../../index.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosCliente } from "../../../service/api/axios";
-import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
-import { V, Icons } from "../../../index";
+
 import { Button } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 
-const BuscarAreasGeneral = () => {
+export const BuscarAreasGeneral = () => {
   const { t } = useTranslation(); // Hook de traducción
   const [areas, setAreas] = useState([]);
 
@@ -101,5 +100,3 @@ const BuscarAreasGeneral = () => {
     </div>
   );
 };
-
-export default BuscarAreasGeneral;

@@ -314,5 +314,6 @@
   "tipo_sitio_info": "Site Type Information",
   "manual_prototipado": "Prototyping Manual",
   "guia_prototipado": "Here you will find the detailed guide for system prototyping",
-   "cargando_datos_usuario": "Loading user data..."
+   "cargando_datos_usuario": "Loading user data...",
+  "sin_permisos_accion": "You do not have permission to perform this action"
 }

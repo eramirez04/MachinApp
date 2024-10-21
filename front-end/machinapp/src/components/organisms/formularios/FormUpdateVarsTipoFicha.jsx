@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useForm,  Controller} from "react-hook-form";
-import { Button } from "@nextui-org/button"
 import { toast } from "react-toastify"
 import {
     axiosCliente,
@@ -11,15 +10,15 @@ import {
 } from "../../../index.js"
 import { useTranslation } from "react-i18next"
 import { MdNavigateNext } from "react-icons/md"
-import { Switch } from '@nextui-org/react'
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
+
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter , Switch, Button } from '@nextui-org/react'
 
 import { useNavigate } from 'react-router-dom'
 
 
 
-
+// eslint-disable-next-line react/prop-types
 export const FormUpdateVarsTipoFicha = ({ tipo_ficha })=>{
 
 

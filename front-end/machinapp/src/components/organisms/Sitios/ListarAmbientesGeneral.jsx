@@ -90,7 +90,7 @@ export const BuscarAmbientesGeneral = () => {
         acciones: (
           <div className="flex space-x-2"> {/* Alinea los íconos horizontalmente */}
             <ButtonNext isIconOnly color="warning" variant="faded">
-              <Tooltip content="Editar">
+              <Tooltip content="Editar" aria-label={"fasd"}>
                 <Link
                   to={`/Ambientes/Actualizar/${sitio.idAmbientes}`}
                   className="flex justify-center items-center h-full w-full"
@@ -101,12 +101,15 @@ export const BuscarAmbientesGeneral = () => {
             </ButtonNext>
 
             {/* Ícono de Descargar Excel */}
-            <Tooltip content="Descargar Excel" >
+            <ButtonNext isIconOnly color="warning" variant="faded">
+
               <ExcelAmbientes
-                ambientes={[sitio]} 
+                ambientes={[sitio]}
                 onDownloadSuccess={() => toast.success(t("excel_descargado_exitosamente"))}
               />
-            </Tooltip>
+
+            </ButtonNext>
+
           </div>
         ),
       }));

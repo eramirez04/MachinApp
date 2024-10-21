@@ -1,10 +1,9 @@
 
-import { ButtonNext, InputforForm } from "../../../index.js";
+import { ButtonNext, InputforForm, TextAreaComponent} from "../../../index.js";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea.jsx";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useTranslation } from "react-i18next"; // Importar el hook de traducción

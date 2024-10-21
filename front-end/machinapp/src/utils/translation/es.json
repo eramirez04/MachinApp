@@ -312,5 +312,6 @@
   "tipo_sitio_info": "Información del Tipo de Sitio",
   "manual_prototipado": "Manual de prototipado",
   "guia_prototipado": "Aquí encontrarás la guía detallada del prototipado del sistema",
-   "cargando_datos_usuario": "Cargando datos del usuario..."
+   "cargando_datos_usuario": "Cargando datos del usuario...",
+   "sin_permisos_accion": "No tienes permisos para realizar esta acción"
 }
