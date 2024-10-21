@@ -630,7 +630,7 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
     }
 }
 
-export const ExcelAmbiente = async (req, res) => { 
+export const ExcelAmbiente = async (req, res) => {
     try {
         let idAmbientes = req.params.idAmbientes;
   
@@ -650,7 +650,7 @@ export const ExcelAmbiente = async (req, res) => {
         INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
         INNER JOIN areas ON sit_fk_areas = idArea
         INNER JOIN sedes ON area_fk_sedes = idSede
-        WHERE idAmbientes = ${idAmbientes}
+        WHERE idAmbientes = ${idAmbientes} AND  fi_placa_sena IS NULL
         `;
   
         const [infoEquipo] = await conexion.query(sqlEquipo);
@@ -670,7 +670,7 @@ export const ExcelAmbiente = async (req, res) => {
             WHERE det_fk_fichas IN (
                 SELECT idFichas 
                 FROM fichas_maquinas_equipos 
-                WHERE fi_fk_sitios = ${idAmbientes}
+                WHERE fi_fk_sitios = ${idAmbientes} AND ficha = "ambiente"
             )
             `;
   
