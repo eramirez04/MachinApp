@@ -313,5 +313,9 @@
   "manual_prototipado": "Manual de prototipado",
   "guia_prototipado": "Aquí encontrarás la guía detallada del prototipado del sistema",
    "cargando_datos_usuario": "Cargando datos del usuario...",
-   "sin_permisos_accion": "No tienes permisos para realizar esta acción"
+   "sin_permisos_accion": "No tienes permisos para realizar esta acción",
+   "cedula_ciudadania": "Cédula de ciudadanía",
+  "tarjeta_identidad": "Tarjeta de identidad",
+  "cedula_extranjeria": "Cédula de extranjería",
+    "administrador": "Administrador"
 }

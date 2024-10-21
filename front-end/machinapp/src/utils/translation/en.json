@@ -315,5 +315,9 @@
   "manual_prototipado": "Prototyping Manual",
   "guia_prototipado": "Here you will find the detailed guide for system prototyping",
    "cargando_datos_usuario": "Loading user data...",
-  "sin_permisos_accion": "You do not have permission to perform this action"
+  "sin_permisos_accion": "You do not have permission to perform this action",
+   "cedula_ciudadania": "Citizenship ID",
+  "tarjeta_identidad": "Identity Card",
+  "cedula_extranjeria": "Foreigner ID",
+   "administrador": "Administrator"
 }
