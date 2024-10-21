@@ -120,11 +120,11 @@ export const ExcelAmbientes = ({idAmbiente}) => {
         addBorders('A4:L4');
 
         const generalInfo = [
-            ['FECHA DILIGENCIAMIENTO:', '14/JUNIO/2019.', '', '', 'MUNICIPIO:', infoAmbiente[0].sede_municipio],
-            ['REGIONAL:', 'HUILA', '', '', '', ''],
-            ['CENTRO DE FORMACIÓN:', 'CENTRO DE GESTION Y DESARROLLO SOSTENIBLE SURCOLOMBIANO', '', '', '', ''],
-            ['NOMBRE DE LA SEDE:', 'SEDE COMERCIO Y SERVICIOS', '', '', 'DIRECCIÓN SEDE:', 'CARRERA 8 # 7-53'],
-            ['NOMBRE SUBDIRECTOR DE CENTRO:', 'JAMES ANTONIO RAMIRES LÓPEZ', '', '', 'DATOS DE CONTACTO:', '8365960']
+            ['FECHA DILIGENCIAMIENTO:', infoAmbiente[0].sit_fecha_registro, '', '', 'MUNICIPIO:', infoAmbiente[0].sede_municipio],
+            ['REGIONAL:', infoAmbiente[0].sede_regional, '', '', '', ''],
+            ['CENTRO DE FORMACIÓN:', infoAmbiente[0].sede_nombre_centro, '', '', '', ''],
+            ['NOMBRE DE LA SEDE:', infoAmbiente[0].sede_nombre, '', '', 'DIRECCIÓN SEDE:', infoAmbiente[0].sede_direccion],
+            ['NOMBRE SUBDIRECTOR DE CENTRO:', infoAmbiente[0].sede_subdirector, '', '', 'DATOS DE CONTACTO:', infoAmbiente[0].contacto]
         ];
 
         generalInfo.forEach((row, index) => {
@@ -171,6 +171,7 @@ export const ExcelAmbientes = ({idAmbiente}) => {
             pattern: 'solid',
             fgColor: {argb: 'FFFFF2CC'}
         };
+
         addBorders('A10:L10');
 
         worksheet.mergeCells('A11:L11');
@@ -219,6 +220,42 @@ export const ExcelAmbientes = ({idAmbiente}) => {
             pattern: 'solid',
             fgColor: {argb: 'FFFFF2CC'}
         };
+
+        const subEspecifica = variableClase.especifica.map((nombre) => ({
+            nombre: nombre.var_nombre,
+            detalle: nombre.det_valor
+        }));
+
+        const iniciarCeldaEspecifica = 14
+
+        subEspecifica.forEach((seccion, index) => {
+            const rowNumber = iniciarCeldaEspecifica + 1 + index;
+            const nombreCell = worksheet.getCell(`A${rowNumber}`);
+            const detalleCell = worksheet.getCell(`B${rowNumber}`);
+
+            nombreCell.value = seccion.nombre; //
+            nombreCell.font = {bold: true, size: 11};
+            nombreCell.alignment = {horizontal: 'left', vertical: 'middle'};
+
+            detalleCell.value = seccion.detalle; // Asignar el detalle a la celda B
+            detalleCell.font = {size: 10}; // Formato para el detalle
+            detalleCell.alignment = {horizontal: 'left', vertical: 'middle'};
+
+            // Aplicar un color de fondo si deseas
+            nombreCell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: {argb: 'FFA6A6A6'}
+            };
+
+            detalleCell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: {argb: 'FFFFFFFF'} // Color para la celda B
+            };
+        });
+
+
         addBorders('A14:D14');
 
         worksheet.mergeCells('E14:I14');

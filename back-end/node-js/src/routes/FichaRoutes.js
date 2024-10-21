@@ -27,7 +27,7 @@ rutaFicha.patch('/actualizarFichaEsp/:idFicha', verificar,  actualizarFichaEsp)
 /* No requieren autenticacion */
 rutaFicha.get('/listarMantenimientosMaquina/:idFicha', listarMantenimientosMaquina)
 rutaFicha.get('/listarInfoEspecifica/:idFicha', listarInfoEspecifica )
-rutaFicha.get('/excelambientes/:idAmbientes',  ExcelAmbiente)
+rutaFicha.get('/excelambientes/:idAmbientes', verificar, ExcelAmbiente)
 
 
 export default rutaFicha
