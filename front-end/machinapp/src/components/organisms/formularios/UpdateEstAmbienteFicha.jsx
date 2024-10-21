@@ -1,14 +1,10 @@
+import { SelectComponent, useGlobalData, axiosCliente  } from "../../../index.js"
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Listbox, ListboxItem, Button } from "@nextui-org/react";
-
-import { axiosCliente } from "../../../service/api/axios"
-
-import { SelectComponent, useGlobalData  } from "../../../index.js"
-
-
 import { useTranslation } from "react-i18next"
 
+// eslint-disable-next-line react/prop-types
 export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) => {
 
   const { refreshEquipos } = useGlobalData();
@@ -56,7 +52,7 @@ export const UpdateEstAmbienteFicha = ({ dataMaquina, procesoAct, buscarInfo }) 
       try {
         const [ambientesRes] = await Promise.all([axiosCliente.get("sitio/listarsitio")])
 
-        console.log(ambientesRes)
+
 
         const ambientesArray = ambientesRes.data.resultadoSitio.map((item) => ({
           id: item.idAmbientes,

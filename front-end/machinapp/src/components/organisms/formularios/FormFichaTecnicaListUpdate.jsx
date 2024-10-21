@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { axiosCliente } from "../../../service/api/axios";
-import { InputUpdate, SelectComponent,ButtonNext, Imagenes, TextAreaComponent, useGlobalData} from "../../../index.js";
+import { InputUpdate, SelectComponent,ButtonNext, TextAreaComponent, useGlobalData} from "../../../index.js";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -374,7 +374,7 @@ export const FormFichaTecnicaListUpdate = ({ idMaquina }) => {
                     <img
                         className="h-full w-full object-contain rounded-md"
                         alt=""
-                        src={`http://localhost:3000/imagenes/ficha/${infoFicha.fi_imagen}`}
+                        src={`${import.meta.env.VITE_API_IMAGE}imagenes/ficha/${infoFicha.fi_imagen}`}
                     />
                   </div>
                   )

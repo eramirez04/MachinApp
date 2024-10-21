@@ -5,7 +5,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { DocumentArrowDownIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import { toast } from "react-toastify";
 
-import { ExcelMantenimientos } from '../../organisms/excel/ExcelMantenimientos.jsx';
+import { ExcelMantenimientos } from '../excel/ExcelMantenimientos.jsx';
 
 import { 
   MantenimientoGeneralPDF, 

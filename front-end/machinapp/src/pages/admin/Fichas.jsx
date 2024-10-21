@@ -4,11 +4,10 @@ import {
   SolicitudList,
   Breadcrumb,
 } from "../../index.js";
-import { Spinner } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 
 export const Fichas = () => {
-  const { solicitudData, loading } = useGlobalData();
+  const { solicitudData } = useGlobalData();
   const { t } = useTranslation();
 
 

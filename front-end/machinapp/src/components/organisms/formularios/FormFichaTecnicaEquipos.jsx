@@ -71,7 +71,6 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
       })
     );
 
-    console.log(transformedArray);
 
     //objeto para registrar la ficha con los datos fijos del formulario
     const dataFicha = {
@@ -86,7 +85,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
     try {
       //registramos la ficha tecnica
       const response = await multiFormData(
-        "http://localhost:3000/ficha/registrar",
+        "ficha/registrar",
         dataFicha,
         "POST"
       )
@@ -100,14 +99,13 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
       };
 
       //empezamos a registrar las variables
-      const responseDet = await axiosCliente.post(
+       await axiosCliente.post(
         "detalle/registrarDetalles",
         dataVariables
       );
       await refreshEquipos();
       navigate(`/infoMaquina/${idFicha}`);
     } catch (error) {
-      console.log(error.response)
       alert(error.response?.data.mensaje);
     }
   };
@@ -177,11 +175,12 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
           variables?.filter(
             (item) => item.var_clase == "especificacionesTecnicas"
           )
-        );
+        )
+        
         setVarSecciones(
           variables?.filter((item) => item.var_clase == "seccion")
-        );
-        console.log(variables?.filter((item) => item.var_clase == "seccion"))
+        )
+        
         setVarEspecificas(
           variables?.filter((item) => item.var_clase == "especifica")
         );
@@ -190,7 +189,7 @@ export const FormFichaTecnica = ({ tipo_ficha }) => {
 
         let varObligatoriasArr = variables?.filter(
           (item) => item.var_clase == "obligatoria"
-        );
+        )
 
         // se muestra el formulario para variables de maquinas y elementos
         if (varObligatoriasArr.length > 0) {

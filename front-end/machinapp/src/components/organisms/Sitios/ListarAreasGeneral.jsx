@@ -1,13 +1,12 @@
+import { V, Icons, ButtonC, axiosCliente } from "../../../index.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosCliente } from "../../../service/api/axios";
-import ButtonC from "../../atoms/buttons/BottonC";
 import { FaEdit } from "react-icons/fa";
-import { V, Icons } from "../../../index";
+
 import { Button } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 
-const BuscarAreasGeneral = () => {
+export const BuscarAreasGeneral = () => {
   const { t } = useTranslation(); // Hook de traducción
   const [areas, setAreas] = useState([]);
 
@@ -67,10 +66,10 @@ const BuscarAreasGeneral = () => {
             >
               <div className="relative h-72 flex items-center justify-center">
                 <img
-                  src={`http://localhost:3000/imagenes/${area.img_area}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${area.img_area}`}
                   alt={area.area_nombre}
                   className="h-full"
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
                 />
               </div>
               <div className="p-6">
@@ -101,5 +100,3 @@ const BuscarAreasGeneral = () => {
     </div>
   );
 };
-
-export default BuscarAreasGeneral;

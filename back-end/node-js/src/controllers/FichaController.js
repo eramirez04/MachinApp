@@ -50,11 +50,7 @@ export const registrarFicha = async(req, res)=>{
 
         let fiTecnica = req.files.fiTecnica?  req.files.fiTecnica[0].filename:''
 
-/*         let placaSenaBD = placaSena==undefined? null: placaSena  // nos da error si se repite indefinido en la bd 
 
-        let sql = `insert into fichas_maquinas_equipos (fi_placa_sena, fi_imagen, fi_estado, fi_fk_sitios, fi_fk_tipo_ficha, CodigoQR, ficha_respaldo ) 
-        values( '${placaSenaBD}', '${fiImagen}','${fiEstado}', ${fk_sitio} , ${fk_tipo_ficha}, '', '${fiTecnica}' )`
-     */
 
         let sql
          
@@ -72,7 +68,7 @@ export const registrarFicha = async(req, res)=>{
 
             let id = respuesta.insertId  //id de la ficha creada
 
-            let data = `http://192.168.1.108:5173/infoMaquinas/${id}`   //poner la url que queramos.
+            let data = `http://10.193.144.26:5173/infoMaquina/${id}`   //poner la url que queramos.
             let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
             let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
             
@@ -112,53 +108,65 @@ export const registrarFicha = async(req, res)=>{
 
 export const actualizarFicha = async(req, res)=>{
 
-    let idFicha = req.params.idFicha
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json(error)
+    }
 
-    let { placaSena, fiEstado, fk_sitio } = req.body
+    try{
 
+        let idFicha = req.params.idFicha
 
-    let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : null  // Se valida si se cargó o no un documento, si no se cargó no se actualiza
-    let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : null
-
-    // Consulta la información actual de la ficha
-    const [dataFicha] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
-
-    // Ruta de las imágenes y documentos técnicos
-    const fichaImagenPath = path.join('public/imagenes/ficha', dataFicha[0].fi_imagen)
-    const fichaTecnicaPath = path.join('public/FichasTecnicas/FichasRespaldo', dataFicha[0].ficha_respaldo)
-
-    // Verifica y elimina la imagen anterior si se está subiendo una nueva
-    if (fiImagen && dataFicha[0].fi_imagen) {
-        if (fs.existsSync(fichaImagenPath)) {
-            fs.unlinkSync(fichaImagenPath)  // Elimina la imagen anterior
+        let { placaSena, fiEstado, fk_sitio } = req.body
+    
+    
+        let fiImagen = req.files.fiImagen ? req.files.fiImagen[0].filename : null  // Se valida si se cargó o no un documento, si no se cargó no se actualiza
+        let fiTecnica = req.files.fiTecnica ? req.files.fiTecnica[0].filename : null
+    
+        // Consulta la información actual de la ficha
+        const [dataFicha] = await conexion.query(`SELECT fi_imagen, ficha_respaldo FROM fichas_maquinas_equipos WHERE idFichas = ${idFicha}`)
+    
+        // Ruta de las imágenes y documentos técnicos
+        const fichaImagenPath = path.join('public/imagenes/ficha', dataFicha[0].fi_imagen)
+        const fichaTecnicaPath = path.join('public/FichasTecnicas/FichasRespaldo', dataFicha[0].ficha_respaldo)
+    
+        // Verifica y elimina la imagen anterior si se está subiendo una nueva
+        if (fiImagen && dataFicha[0].fi_imagen) {
+            if (fs.existsSync(fichaImagenPath)) {
+                fs.unlinkSync(fichaImagenPath)  // Elimina la imagen anterior
+            }
         }
-    }
-
-    // Verifica y elimina la ficha técnica anterior si se está subiendo una nueva
-    if (fiTecnica && dataFicha[0].ficha_respaldo) {
-        if (fs.existsSync(fichaTecnicaPath)) {
-            fs.unlinkSync(fichaTecnicaPath)  // Elimina el documento técnico anterior
+    
+        // Verifica y elimina la ficha técnica anterior si se está subiendo una nueva
+        if (fiTecnica && dataFicha[0].ficha_respaldo) {
+            if (fs.existsSync(fichaTecnicaPath)) {
+                fs.unlinkSync(fichaTecnicaPath)  // Elimina el documento técnico anterior
+            }
         }
+    
+        // Construcción de la consulta SQL para actualizar la ficha según los archivos subidos
+        let sql
+    
+        if (fiImagen && fiTecnica) {  // Se actualizan ambos documentos
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+        
+        } else if (fiImagen && fiTecnica == null) {  // Solo se actualiza la imagen
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+        
+        } else if (fiTecnica && fiImagen == null) {  // Solo se actualiza el documento técnico
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
+        
+        } else {  // No se actualizan los documentos, solo otros campos
+            sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
+        }
+    
+        const [respuesta] = await conexion.query(sql)
+        return res.json({"mensaje":"se actualizo con exito la ficha "})
+    }catch(error){
+        return res.json({"mensaje":"error en el servidor",error})
     }
 
-    // Construcción de la consulta SQL para actualizar la ficha según los archivos subidos
-    let sql
 
-    if (fiImagen && fiTecnica) {  // Se actualizan ambos documentos
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
-    
-    } else if (fiImagen && fiTecnica == null) {  // Solo se actualiza la imagen
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_imagen = '${fiImagen}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
-    
-    } else if (fiTecnica && fiImagen == null) {  // Solo se actualiza el documento técnico
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio}, ficha_respaldo = '${fiTecnica}' WHERE idFichas = ${idFicha}`
-    
-    } else {  // No se actualizan los documentos, solo otros campos
-        sql = `UPDATE fichas_maquinas_equipos SET fi_placa_sena ='${placaSena}', fi_estado = '${fiEstado}', fi_fk_sitios = ${fk_sitio} WHERE idFichas = ${idFicha}`
-    }
-
-    const [respuesta] = await conexion.query(sql)
-    return res.json({"mensaje":"se actualizo con exito la ficha "})
     
   
 }
@@ -204,58 +212,35 @@ export const listarFichas = async(req, res)=>{
                 //for para seleccionar solo las variables que queremos, y con una condicion le decimos que variable queremos traer a travez del id
                 for(let j = 0; infoVar.length > j; j++){
                     
-                        switch(infoVar[j].idVariable){
-                            case 1 :
-                                respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
-                                break
-                            case 2:
-                                respuesta[i]["fi_serial"] = infoVar[j].det_valor
-                                break
-                            case 3:
-                                respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
-                                break
-                            case 4:
-                                respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
-                                break
-                            case 5:
-                                respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
-                                break
-                            case 6:
-                                respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
-                                break
-                            case 7:
-                                respuesta[i]["fi_marca"] = infoVar[j].det_valor
-                                break
-                            case 8:
-                                respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                                break
-                            case 9:
-                                respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
-                                break
-                        }
-                    
-/* 
-                    if(infoVar[j].idVariable == 1){
-                        respuesta[i]["fecha_adquisicion"] = infoVar[j].det_valor
+                    switch(infoVar[j].idVariable){
+                        case 1 :
+                            respuesta[i]["fi_fecha_adquisicion"] = infoVar[j].det_valor
+                            break
+                        case 2:
+                            respuesta[i]["fi_serial"] = infoVar[j].det_valor
+                            break
+                        case 3:
+                            respuesta[i]["fi_fecha_inicio_garantia"] = infoVar[j].det_valor
+                            break
+                        case 4:
+                            respuesta[i]["fi_fecha_fin_garantia"] = infoVar[j].det_valor
+                            break
+                        case 5:
+                            respuesta[i]["fi_descripcion_garantia"] = infoVar[j].det_valor
+                            break
+                        case 6:
+                            respuesta[i]["fi_descripcion"] = infoVar[j].det_valor
+                            break
+                        case 7:
+                            respuesta[i]["fi_marca"] = infoVar[j].det_valor
+                            break
+                        case 8:
+                            respuesta[i]["fi_modelo"] = infoVar[j].det_valor
+                            break
+                        case 9:
+                            respuesta[i]["fi_precioEquipo"] = infoVar[j].det_valor
+                            break
                     }
-                    else if(infoVar[j].idVariable == 2){              //2 = id de la variable serial........
-                        respuesta[i]["serial"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 3){              
-                        respuesta[i]["fecha_inicioGarantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 4){              
-                        respuesta[i]["fecha_finGarantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 5){              
-                        respuesta[i]["descripcion_garantia"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 7){
-                        respuesta[i]["fi_marca"] = infoVar[j].det_valor
-                    }
-                    else if(infoVar[j].idVariable == 8){
-                        respuesta[i]["fi_modelo"] = infoVar[j].det_valor
-                    } */
                 }
             }
 
@@ -270,7 +255,6 @@ export const listarFichas = async(req, res)=>{
     }
 }
 
-/*----------------------------------------------------------------Correcto----------------------*/
 export const listarFichaPorAmbiente = async(req, res)=>{
 
     try{
@@ -336,7 +320,7 @@ export const listarFichaPorAmbiente = async(req, res)=>{
 }
 
 
-/*----------------------------------------------------------------Correcto----------------------*/
+
 export const listarInfoEspecifica = async(req, res)=>{
 
     try{
@@ -434,7 +418,7 @@ export const listarInfoEspecifica = async(req, res)=>{
 
 
 
-/* --------------------------------------------------------------Correcto ---------------------- */
+
 export const actualizarFichaEsp = async ( req, res)=>{
 
     try{
@@ -453,7 +437,6 @@ export const actualizarFichaEsp = async ( req, res)=>{
             sql = `update fichas_maquinas_equipos set fi_fk_sitios =${fk_sitio} where  idFichas = ${idFicha}`
             mensaje = "Se actualizó correctamente el sitio de la ficha";
         } else {
-
             return res.status(400).json({ mensaje: "No se proporcionaron datos válidos para actualizar" });
         }
     
@@ -473,7 +456,7 @@ export const actualizarFichaEsp = async ( req, res)=>{
 
 
 
-/* Falta por revisar */
+
 export const eliminarFicha = async(req, res)=>{
     try{
         let idFicha = req.params.idFicha
@@ -494,7 +477,7 @@ export const eliminarFicha = async(req, res)=>{
     }
 }
 
-/* Falta por revisar   ----->  es el resultado de toda la informacion de la ficha*/
+
 export const listarFichaUnica=async (req, res)=>{
     try{
 
@@ -570,7 +553,6 @@ export const listarFichaUnica=async (req, res)=>{
 
 
 
-/* este controlador debe ir en el de mantenimientos */
 
 export const  listarMantenimientosMaquina = async (req, res)=>{
 
@@ -647,3 +629,63 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"+error})
     }
 }
+
+export const ExcelAmbiente = async (req, res) => { 
+    try {
+        let idAmbientes = req.params.idAmbientes;
+  
+        /* Consultamos la información básica del equipo */
+        let sqlEquipo = `
+        SELECT DISTINCT
+            idAmbientes,
+            fi_fk_sitios,
+            sit_nombre,
+            area_nombre,
+            sede_nombre,
+            sede_regional,
+            sede_municipio,
+            ti_fi_nombre 
+        FROM tipo_equipo
+        INNER JOIN fichas_maquinas_equipos ON idTipo_ficha = fi_fk_tipo_ficha
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        INNER JOIN areas ON sit_fk_areas = idArea
+        INNER JOIN sedes ON area_fk_sedes = idSede
+        WHERE idAmbientes = ${idAmbientes}
+        `;
+  
+        const [infoEquipo] = await conexion.query(sqlEquipo);
+  
+        if (infoEquipo.length > 0) {
+            let sqlVariables = `
+            SELECT
+                idDetalle,
+                det_valor,
+                idVariable,
+                var_nombre,
+                var_descripcion,
+                var_clase,
+                var_tipoDato
+            FROM detalles_fichas
+            INNER JOIN variable ON det_fk_variable = idVariable
+            WHERE det_fk_fichas IN (
+                SELECT idFichas 
+                FROM fichas_maquinas_equipos 
+                WHERE fi_fk_sitios = ${idAmbientes}
+            )
+            `;
+  
+            const [varEquipo] = await conexion.query(sqlVariables);
+  
+            let objFicha = {
+                infoFicha: infoEquipo,  // Información básica sin duplicados
+                infoVar: varEquipo      // Variables relacionadas con la ficha
+            };
+  
+            return res.status(200).json(objFicha);
+        } else {
+            return res.status(404).json({ "mensaje": "No se encontraron fichas para este ambiente." });
+        }
+    } catch (error) {
+        return res.status(500).json({ "mensaje": "Error en el servidor" });
+    }
+  };

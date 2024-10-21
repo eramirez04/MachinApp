@@ -3,7 +3,7 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline/index.js";
 import { Nav } from "../../../index";
 
-const MenuMobile = () => {
+export const MenuMobile = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <>
@@ -40,4 +40,4 @@ const MenuMobile = () => {
   );
 };
 
-export default MenuMobile;
+

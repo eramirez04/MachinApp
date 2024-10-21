@@ -30,7 +30,7 @@ export const Paginacion = ({
           <Button
             size="sm"
             color="primary"
-            isDisabled={currentPage === 1 ? true : false}
+            isDisabled={currentPage === 1}
             onClick={previosPage}
           >
             Previous
@@ -39,7 +39,7 @@ export const Paginacion = ({
             size="sm"
             color="primary"
             onClick={onNextPage}
-            isDisabled={currentPage >= pageNumbers ? true : false}
+            isDisabled={currentPage >= pageNumbers}
           >
             Next
           </Button>

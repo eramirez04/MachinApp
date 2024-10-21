@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { V } from "../../../style";
 
+// eslint-disable-next-line react/prop-types
 export const Breadcrumb = ({ pageName }) => {
   return (
     <>

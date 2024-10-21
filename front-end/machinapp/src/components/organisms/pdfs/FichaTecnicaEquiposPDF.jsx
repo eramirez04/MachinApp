@@ -27,8 +27,6 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
             try{
                 const response = await axiosCliente.get(`ficha/listarUnica/${idMaquina}`)
                 setMaquinaGen(response.data.infoFicha[0])
-
-                console.log(response.data.infoFicha[0])
     
     
                 //variables
@@ -61,7 +59,6 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
     
                 setVarObligatorias(objVarObligatorias)
 
-                console.log(objVarObligatorias)
         
             }catch(error){
                 console.error(error.response)
@@ -614,7 +611,7 @@ export const FichaTecnicaEquiposPDF = ({idMaquina}) => {
                 <View style={[styles.containerHijo , styles.paddignTopMa]}>
                   <View style={styles.contenedorImagen}>
                     
-                    <Image style={styles.imagen}   src={`http://localhost:3000/imagenes/ficha/${infoMaquina.fi_imagen}`} />
+                    <Image style={styles.imagen}   src={`${import.meta.env.VITE_API_IMAGE}imagenes/ficha/${infoMaquina.fi_imagen}`} />
                   </View> 
                 </View>
               </View>

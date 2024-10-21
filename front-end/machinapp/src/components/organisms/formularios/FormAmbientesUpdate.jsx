@@ -1,44 +1,57 @@
-import { ButtonNext, InputforForm, SelectComponent, InputDate } from "../../../index.js";
+import { ButtonNext } from "../../../index.js";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useGlobalData } from "../../../index.js";
 import { useTranslation } from "react-i18next";
+import { InputUpdate, SelectComponent } from "../../../index.js";
 
 export const FormAmbientesUpdate = () => {
   const [areas, setAreas] = useState([]);
   const [tipositios, setTipositios] = useState([]);
-  const [fechaRegistro, setFechaRegistro] = useState("");
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
   const [dataSitio, setDataSitio] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   const {
-    register, 
+    control,
+    register,
     formState: { errors },
     handleSubmit,
     setValue,
+    watch,
   } = useForm();
   
   const navigate = useNavigate();
   const { id } = useParams();
-
   const { t } = useTranslation();
+  const { dataUser } = useGlobalData();
 
-  const { dataUser } = useGlobalData(); 
+  // Para debug - observar todos los valores del formulario
+  const formValues = watch();
+  useEffect(() => {
+    console.log("Valores actuales del formulario:", formValues);
+  }, [formValues]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const [areaResponse, tipoSitioResponse, sitioResponse] =
           await Promise.all([
             axiosCliente.get("area/listararea"),
             axiosCliente.get("tipositio/listartipositio"),
-          axiosCliente.get(`/sitio/listarsitioporid/${id}`)
-        ]);
+            axiosCliente.get(`/sitio/listarsitioporid/${id}`)
+          ]);
+
+        // Debug - ver las respuestas
+        console.log("Respuesta del sitio:", sitioResponse.data);
+        console.log("Respuesta de áreas:", areaResponse.data);
+        console.log("Respuesta de tipos:", tipoSitioResponse.data);
 
         const areaArray = areaResponse.data.resultadoArea.map((item) => ({
           id: item.idArea,
@@ -53,39 +66,57 @@ export const FormAmbientesUpdate = () => {
         setAreas(areaArray);
         setTipositios(tipositioArray);
 
-        const sitioData = sitioResponse.data;
+        const sitioData = sitioResponse.data.resultadoSitio[0]; // Asegúrate de acceder al primer elemento del array
         setDataSitio(sitioData);
+        
+        // Establecer los valores uno por uno para asegurar que se actualicen
         setValue("Nombre_del_ambiente", sitioData.sit_nombre);
-        setValue("area", sitioData.sit_fk_areas);
-        setValue("tipo_sitio", sitioData.sit_fk_tipo_sitio);
-        setValue("instructor", sitioData.sit_fk_usuarios);
-        setFechaRegistro(sitioData.sit_fecha_registro);
+        setValue("area", sitioData.sit_fk_areas?.toString());
+        setValue("tipo_sitio", sitioData.sit_fk_tipo_sitio?.toString());
+        setValue("instructor", sitioData.sit_fk_usuarios?.toString());
+        setValue("tipo_de_tenencia", sitioData.tipo_tenencia);
+        setValue("sitio_estado", sitioData.sit_estado);
+
+        // Debug - verificar que los valores se establecieron
+        console.log("Valores establecidos:", {
+          nombre: sitioData.sit_nombre,
+          area: sitioData.sit_fk_areas,
+          tipo_sitio: sitioData.sit_fk_tipo_sitio,
+          instructor: sitioData.sit_fk_usuarios,
+          tipo_tenencia: sitioData.tipo_tenencia,
+          estado: sitioData.sit_estado
+        });
 
         if (sitioData.img) {
-          const previewUrl = `http://localhost:3000/imagenes/${sitioData.img}`;
+          const previewUrl = `${import.meta.env.VITE_API_IMAGE}imagenes/${sitioData.img}`;
           setPreviewImagen(previewUrl);
         }
+        
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [id, t]);
+  }, [id, setValue]);
 
   const handleSubmitData = async (data) => {
+    console.log("Datos enviados:", data); // Debug
     const dataSitio = {
       sit_nombre: data.Nombre_del_ambiente,
-      sit_fecha_registro: fechaRegistro,
       sit_fk_areas: data.area,
       sit_fk_tipo_sitio: data.tipo_sitio,
       sit_fk_usuarios: data.instructor,
+      tipo_tenencia: data.tipo_de_tenencia,
+      sit_estado: data.sitio_estado,
       img: imagen,
     };
 
     try {
       await multiFormData(
-        `http://localhost:3000/sitio/editarsitio/${id}`,
+        `sitio/editarsitio/${id}`,
         dataSitio,
         "PUT"
       );
@@ -98,10 +129,6 @@ export const FormAmbientesUpdate = () => {
     }
   };
 
-  const dateRegistro = (date) => {
-    setFechaRegistro(date.target.value);
-  };
-
   const handleFileUpload = (event) => {
     const archivo = event.target.files[0];
     if (archivo) {
@@ -112,6 +139,19 @@ export const FormAmbientesUpdate = () => {
       setPreviewImagen(null);
     }
   };
+
+  // Debug - mostrar el estado actual
+  console.log("Estado actual:", {
+    areas,
+    tipositios,
+    dataSitio,
+    isLoading,
+    formValues
+  });
+
+  if (isLoading) {
+    return <div>Cargando datos del ambiente...</div>;
+  }
 
   return (
     <>
@@ -153,65 +193,161 @@ export const FormAmbientesUpdate = () => {
               className="hidden"
             />
           </label>
-          {errors.img_sede && (
-            <p className="text-red-500 text-xs mt-2">
-              {errors.img_sede.message}
-            </p>
-          )}
 
           <div className="w-3/4 my-8 p-4 bg-gray-50 rounded-lg shadow-md">
             <h2 className="mt-5 text-2xl font-semibold text-center text-gray-700">
               {t("ambiente_info")}
             </h2>
 
-            <div className="grid grid-cols-2 gap-6 mt-4">
-              <InputforForm
-                errors={errors}
-                register={register}
-                tipo={"text"}
-                name={"Nombre_del_ambiente"}
-                label={t("environmentName")}
+            <div className="flex flex-col gap-6 mt-4">
+              <Controller
+                name="Nombre_del_ambiente"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <InputUpdate
+                    label={t("environmentName")}
+                    tipo="text"
+                    errors={errors}
+                    isUpdating={true}
+                    {...field}
+                  />
+                )}
               />
-              <InputDate
-                label={t("fechaRegistro")}
-                value={fechaRegistro}
-                onChange={dateRegistro}
-              />
-              <SelectComponent
-                options={areas}
-                name={"area"}
-                placeholder={t("area")}
-                valueKey="id"
-                textKey="valor"
-                register={register}
-                label={t("area")}
-              />
-              <SelectComponent
-                options={tipositios}
-                name={"tipo_sitio"}
-                placeholder={t("tipo_sitio")}
-                valueKey="id"
-                textKey="valor"
-                register={register}
-                label={t("tipo_sitio")}
-              />
-              <SelectComponent
-                options={dataUser.filter(item => item.rol_nombre === "instructor").map(item => ({
-                  id: item.idUsuarios,
-                  valor: item.us_nombre + " " + item.us_apellidos,
-                }))}
-                name={"instructor"}
-                placeholder={t("instructor_encargado")}
-                valueKey="id"
-                textKey="valor"
-                register={register}
-                label={t("instructor_encargado")}
+
+              <div className="flex flex-row gap-4">
+                <Controller
+                  name="tipo_sitio"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <SelectComponent
+                      options={tipositios}
+                      name="tipo_sitio"
+                      placeholder={t("tipo_sitio")}
+                      valueKey="id"
+                      textKey="valor"
+                      register={register}
+                      label={t("tipo_sitio")}
+                      value={value}
+                      onChange={(e) => {
+                        console.log("Cambio en tipo_sitio:", e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  name="instructor"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <SelectComponent
+                      options={dataUser.filter(item => item.rol_nombre === "instructor").map(item => ({
+                        id: item.idUsuarios,
+                        valor: item.us_nombre + " " + item.us_apellidos,
+                      }))}
+                      name="instructor"
+                      placeholder={t("instructor_encargado")}
+                      valueKey="id"
+                      textKey="valor"
+                      register={register}
+                      label={t("instructor_encargado")}
+                      value={value}
+                      onChange={(e) => {
+                        console.log("Cambio en instructor:", e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="flex flex-row gap-4">
+                <Controller
+                  name="area"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <SelectComponent
+                      options={areas}
+                      name="area"
+                      placeholder={t("area")}
+                      valueKey="id"
+                      textKey="valor"
+                      register={register}
+                      label={t("area")}
+                      value={value}
+                      onChange={(e) => {
+                        console.log("Cambio en area:", e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  name="tipo_de_tenencia"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <SelectComponent
+                      options={[
+                        { id: "propio", valor: t("propio") },
+                        { id: "comodato", valor: t("comodato") },
+                        { id: "arriendo", valor: t("arriendo") },
+                        { id: "convenio", valor: t("convenio") },
+                      ]}
+                      name="tipo_de_tenencia"
+                      placeholder={t("tipo_de_tenencia")}
+                      label={t("tipo_de_tenencia")}
+                      valueKey="id"
+                      textKey="valor"
+                      register={register}
+                      value={value}
+                      onChange={(e) => {
+                        console.log("Cambio en estado:", e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              <Controller
+                name="sitio_estado"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value, ...field } }) => (
+                  <SelectComponent
+                    options={[
+                      { id: "activo", valor: t("activo") },
+                      { id: "inactivo", valor: t("inactivo") },
+                    ]}
+                    name="sitio_estado"
+                    placeholder={t("sitio_estado")}
+                    valueKey="id"
+                    textKey="valor"
+                    register={register}
+                    label={t("sitio_estado")}
+                    value={value}
+                    onChange={(e) => {
+                      console.log("Cambio en estado:", e.target.value);
+                      onChange(e.target.value);
+                    }}
+                    {...field}
+                  />
+                )}
               />
             </div>
           </div>
-          <div className="pb-8">
-            <ButtonNext color="success" text={t("update_ambiente")} type="submit" />
-          </div>
+
+          <ButtonNext color={"success"} type="submit" text={t("update_ambiente")} />
         </div>
       </form>
     </>

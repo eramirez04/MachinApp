@@ -1,8 +1,7 @@
-import { Nav, useAuth, AvatarCom, Footer, Header, V } from "../../index.js";
+import { Nav, useAuth, AvatarCom, Footer, Header, MenuMobile, V } from "../../index.js";
 import { Suspense } from "react";
 import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
-import MenuMobile from "../molecules/navigation/MenuMobile.jsx";
 
 export const Layout = ({ children }) => {
   const { rol } = useAuth();

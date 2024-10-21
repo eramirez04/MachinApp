@@ -1,11 +1,8 @@
-import React from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
-import { Button } from "@nextui-org/react";
-import { TableCellsIcon } from '@heroicons/react/24/outline';
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 
-export const ExcelAmbientes = ({ ambientes }) => {
+export const ExcelAmbientes = () => {
     const exportToExcel = async () => {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Hoja1');

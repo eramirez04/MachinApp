@@ -1,12 +1,14 @@
 import { Layout, useAuth, FormUserUpdate } from "../../index";
+import { useTranslation } from "react-i18next";
 
 export const PerfilSettings = () => {
   const { user, loading } = useAuth();
+  const { t } = useTranslation();
 
   if (loading) {
     return (
       <>
-        <div>cargando</div>
+        <div>{t("loading")}</div>
       </>
     );
   }

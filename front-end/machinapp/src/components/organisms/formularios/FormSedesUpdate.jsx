@@ -1,10 +1,9 @@
 
-import { ButtonNext, InputforForm } from "../../../index.js";
+import { ButtonNext, InputforForm, TextAreaComponent} from "../../../index.js";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea.jsx";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useTranslation } from "react-i18next"; // Importar el hook de traducción
@@ -34,7 +33,7 @@ export const FormSedesUpdate = () => {
         setValue("Descripcion", sedeData.sede_descripcion);
 
         if (sedeData.img) {
-          setPreviewImagen(`http://localhost:3000/imagenes/${sedeData.img}`);
+          setPreviewImagen(`${import.meta.env.VITE_API_IMAGE}imagenes/${sedeData.img}`);
         }
       } catch (error) {
         console.error(t("error.fetch_data"), error);
@@ -59,7 +58,7 @@ export const FormSedesUpdate = () => {
 
     try {
       const response = await multiFormData(
-        `http://localhost:3000/sede/editarsede/${id}`,
+        `sede/editarsede/${id}`,
         dataSede,
         "PUT"
       );

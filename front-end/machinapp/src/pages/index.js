@@ -39,6 +39,7 @@ export { FichaSolicitudPage } from "./fichastecnicas/ViewFormFichaSolicitudPage"
 export { ActualizarAmbientes } from "./Sitios/ActualizarAmbientes";
 export { ActualizarAreas } from "./Sitios/ActualizarAreas";
 export { ActualizarSedes } from "./Sitios/ActualizarSedes";
+export { RegistrarTipoSitio } from "./Sitios/RegistrarTipoSitio";
 
 // errores
 export { Page404 } from "./error/Page404";

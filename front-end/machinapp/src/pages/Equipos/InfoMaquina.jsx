@@ -9,7 +9,7 @@ import {  DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { toast } from "react-toastify"
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { 
     Layout, 
     CardStyle, 
@@ -49,7 +49,6 @@ export const InfoMaquina = () => {
     const buscarInfo = async ()=>{
         try{
             const response = await axiosCliente.get(`ficha/listarInfoEspecifica/${idMaquina}`)
-            console.log(response.data)
             setInfoMaquina(response.data)
             setEstadoInfo(true)
 
@@ -69,7 +68,6 @@ export const InfoMaquina = () => {
                 codigo_mantenimiento: mant_codigo_mantenimiento, //aqui cambiamos el nombre de la clave
                 ...contenido
             }))        
-            console.log(mantenimientosAct)
 
 
             setMantenimientosMaquina(mantenimientosAct)
@@ -162,13 +160,13 @@ export const InfoMaquina = () => {
                 estadoInfo && (
                   <div className="flex flex-row justify-end">
                     <QRCodeLink
-                    imageUrl={`http://localhost:3000/QRimagenes/${maquina.CodigoQR}`}
+                    imageUrl={`${import.meta.env.VITE_API_IMAGE}QRimagenes/${maquina.CodigoQR}`}
                     tooltipContent={t("codigoQR")}
                     icon={<BiQrScan />}
                   />
-                  {/* http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo} */}
+                
                   <QRCodeLink
-                    imageUrl={`http://localhost:3000/fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`}
+                    imageUrl={`${import.meta.env.VITE_API_IMAGE}fichasTecnicas/FichasRespaldo/${maquina.ficha_respaldo}`}
                     tooltipContent={t("fichaRespaldo")}
                     icon={<CiSaveDown1 />}
                   />
@@ -353,7 +351,7 @@ export const InfoMaquina = () => {
           </div>
         </div>
 
-        <div className=" block mx-16 mb-14 ">
+        <div className=" block mx-7 mb-14 ">
           <h3 className="text-3xl font-medium mb-10 text-zinc-700  pb-2">
             {t("mantEquipo")}{" "}
           </h3>
@@ -365,7 +363,7 @@ export const InfoMaquina = () => {
             />
           </div>
 
-          <div className="pt-3 px-9 mt-3 mb-10">
+          <div className=" mt-3 mb-10">
             <div className="mb-6">
               <SearchComponent
                 label={`${t("codigo")}, ${t("nombreSolic")}, ${t(
@@ -408,7 +406,6 @@ const QRCodeLink = ({ imageUrl, tooltipContent, icon }) => {
   useEffect(() => {
     const checkImageExistence = async () => {
       try {
-        console.log(imageUrl)
         const response = await fetch(imageUrl, { method: "HEAD" })
 
         if (!response.ok) {

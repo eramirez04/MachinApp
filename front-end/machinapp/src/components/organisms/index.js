@@ -7,16 +7,23 @@ export { Editar_Component } from "./formularios/Editar_mantenimiento";
 export { FormAmbientes } from "./formularios/FormAmbientes.jsx";
 export { FormFichaTecnica } from "./formularios/FormFichaTecnicaEquipos.jsx";
 export { FormFichaSolicitud } from "./formularios/FormFichaSolicitud.jsx";
+export {FormAreas } from "./formularios/FormAreas.jsx";
+export { FormSedes } from "./formularios/FormSedes.jsx";
 
 /*  */
 export { FormFichaTecnicaListUpdate } from "./formularios/FormFichaTecnicaListUpdate";
 export { UpdateEstAmbienteFicha } from "./formularios/UpdateEstAmbienteFicha";
-export  {FormUpdateVarsTipoFicha} from "./formularios/FormUpdateVarsTipoFicha"
+export {FormUpdateVarsTipoFicha} from "./formularios/FormUpdateVarsTipoFicha"
+export { FormFichaDeMantenimiento } from "./formularios/FormFichaDeMante.jsx";
+export { FormTipoFichaTecnica } from "./formularios/FormTipoFichaTecnica.jsx";
 
 // listas
 export { SolicitudList } from "./listas/SolicitudList";
 export { BuscarUsuario } from "./listas/ListarUsuario";
 export { ListarUsuarios } from "./PanelConponents/PDCAcciones/ListarUsuarios";
+export { BuscarMaquinas } from "./ListarMaquinas.jsx";
+export { BuscarAreas } from "./Sitios/ListarAreas.jsx";
+export { BuscarSedes } from "./Sitios/ListarSedes.jsx"
 
 // tablas
 export { PaginateTable } from "./table/PaginateTable";
@@ -35,7 +42,8 @@ export { PDFvistaSolicitud } from "./pdfs/PDFvistaSolicitud.jsx";
 // actividades
 
 
-export {Artboard} from "./Paginacentrar"
+export {Artboard} from "./Paginacentrar";
+export { ListarMaquinasAmb } from "./ListarMaquinasAmb.jsx"
 
 // solicitudes
 
@@ -49,3 +57,7 @@ export {ExcelMaquinasMant} from "./excel/ExcelMaquinaMantenimientos.jsx";
 
 // sitios
 export { BuscarAmbientesGeneral } from "./Sitios/ListarAmbientesGeneral.jsx";
+export { FormTipoSitio } from "./formularios/FormTipoSitio.jsx";
+export { BuscarAmbientes } from "./Sitios/ListarAmbientes.jsx";
+export { BuscarAreasGeneral } from "./Sitios/ListarAreasGeneral.jsx"
+

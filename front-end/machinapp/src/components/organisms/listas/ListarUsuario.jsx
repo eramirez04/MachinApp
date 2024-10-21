@@ -52,7 +52,7 @@ export const BuscarUsuario = () => {
               <img
                 src={
                   user.us_imagen
-                    ? `http://localhost:3000/imagenes/${user.us_imagen}`
+                    ? `${import.meta.env.VITE_API_IMAGE}imagenes/${user.us_imagen}`
                     : null
                 }
                 className="object-cover w-full h-48 sm:h-64 md:h-80 lg:h-96"
@@ -97,4 +97,3 @@ export const BuscarUsuario = () => {
   );
 };
 
-/*    */

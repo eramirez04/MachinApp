@@ -1,5 +1,4 @@
-import BuscarSedes from '../../components/organisms/Sitios/ListarSedes'
-import {Layout} from "../../index";
+import {Layout, BuscarSedes} from "../../index";
 
 export const Sitios=()=>  {
   return (
