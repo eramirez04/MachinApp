@@ -82,7 +82,7 @@ export const Login = () => {
             className="text-white bg-custom-green"
             /* color="success" */
           >
-            {loading ? "Cargando" : t("iniciar_sesion")}
+            {loading ? t("loading") : t("iniciar_sesion")}
           </Button>
           <Link to="/recuperar">{t("olvidaste_contrasena")}</Link>
         </form>

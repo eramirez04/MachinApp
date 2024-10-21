@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"
+/* import nodemailer from "nodemailer"
 
 export const mantenimiento_correo = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -15,4 +15,4 @@ export const mantenimiento_correo = nodemailer.createTransport({
 
 mantenimiento_correo.verify().then(() => {
   console.log("listo para enviar correos de mantenimiento")
-})
+}) */

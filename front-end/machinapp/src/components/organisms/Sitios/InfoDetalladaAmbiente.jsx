@@ -44,10 +44,10 @@ const InfoDetalladaAmbiente = () => {
         {/* Imagen del ambiente */}
         <div className="relative flex justify-center items-center w-full h-80 mb-6">
           <img
-            src={`http://localhost:3000/imagenes/${ambiente[0].img_sitio}`}
+            src={`${import.meta.env.VITE_API_IMAGE}imagenes/${ambiente[0].img_sitio}`}
             alt={ambiente[0].sit_nombre}
             className="h-full rounded-lg shadow-md"
-            onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+            onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
           />
         </div>
 
@@ -57,7 +57,7 @@ const InfoDetalladaAmbiente = () => {
             <thead className="bg-green-600">
               <tr>
                 <th className="px-4 py-2 font-semibold text-gray-800">{t('campo_ambiente')}</th>
-                <th className="px-4 py-2 font-semibold text-gray-800">{t('valor_ambiente')}</th>
+                <th className="px-4 py-2 font-semibold text-gray-800">{t('valor_sede')}</th>
               </tr>
             </thead>
             <tbody>

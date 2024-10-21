@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
+import { useTranslation } from "react-i18next";
 
 export const FormAreas = () => {
   const [sedes, setSedes] = useState([]);
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
+  const {t} = useTranslation()
   const {
     register,
     formState: { errors },
@@ -26,7 +28,7 @@ export const FormAreas = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/area/registrararea",
+        "area/registrararea",
         dataArea,
         "POST"
       );
@@ -79,7 +81,7 @@ export const FormAreas = () => {
       >
         <header className="bg-gradient-to-r from-green-400 to-green-600 h-24 flex justify-center items-center rounded-t-lg">
           <h1 className="text-3xl font-bold text-white">
-            Registrar nueva Area
+            {t("registrar_nueva_area")}
           </h1>
         </header>
 
@@ -96,11 +98,11 @@ export const FormAreas = () => {
             )}
           </div>
 
-          <h2 className="mt-5 text-xl font-semibold">Imagen del área</h2>
+          <h2 className="mt-5 text-xl font-semibold">{t("area_image")}</h2>
           <label className="mt-2 w-64 flex flex-col items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow-md tracking-wide uppercase border border-green-600 cursor-pointer hover:bg-green-600">
             <FaUpload className="text-xl" />
             <span className="mt-2 text-base leading-normal">
-              Seleccionar archivo
+              {t("select_file")}
             </span>
             <input
               type="file"
@@ -117,7 +119,7 @@ export const FormAreas = () => {
 
           <div className="w-3/4 my-8 p-4 bg-gray-50 rounded-lg shadow-md">
             <h2 className="mt-5 text-2xl font-semibold text-center text-gray-700">
-              Información del área
+              {t("area_info")}
             </h2>
 
             <div className="grid grid-cols-2 gap-6 mt-4">
@@ -126,7 +128,7 @@ export const FormAreas = () => {
                 register={register}
                 tipo={"text"}
                 name={"Nombre_del_area"}
-                label={"Nombre del área"}
+                label={t("area_name")}
               />
               <SelectComponent
                 options={sedes}
@@ -135,12 +137,12 @@ export const FormAreas = () => {
                 valueKey="id"
                 textKey="nombre"
                 register={register}
-                label="Sede"
+                label={t("Sede")}
               />
             </div>
           </div>
           <div className="pb-8">
-            <ButtonNext color="success" text="Registrar Area" type="submit" />
+            <ButtonNext color="success" text={t("registrar_area")} type="submit" />
           </div>
         </div>
       </form>

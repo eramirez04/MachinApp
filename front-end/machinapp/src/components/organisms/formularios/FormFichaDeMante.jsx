@@ -395,7 +395,7 @@ export const FormFichaDeMantenimiento = () => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    placeholder={t("seleccione una solicitud pendiente")}
+                    placeholder={t("enter_maintenance_request")}
                     aria-label="solicitudes-mantenimiento"
                   >
                     {solicitudes.map((solicitud) => (
@@ -447,6 +447,7 @@ export const FormFichaDeMantenimiento = () => {
                     <TableCell>
                       <InputforForm
                         register={register}
+                        maxLength={9}
                         errors={errors}
                         name={`repuestos.${index}.costo`}
                         tipo="number"

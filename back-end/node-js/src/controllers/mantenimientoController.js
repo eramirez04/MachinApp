@@ -108,7 +108,7 @@ export const registrarMantenimiento = async (req, res) => {
 
 
 /* 5.1 Generar alertas de mantenimiento de a través de correo electrónico */
-import { mantenimiento_correo } from "../config/mantenimiento_email/email_mantenimineto.js";
+/* import { mantenimiento_correo } from "../config/mantenimiento_email/email_mantenimineto.js"; */
 import { emailHtml_mantenimiento } from "../config/mantenimiento_email/emailhtml_mantenimiento.js";
 
 /* Listo función para verificar y enviar correos electrónicos de mantenimiento automáticamente */

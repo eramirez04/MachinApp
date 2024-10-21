@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 
-const BuscarSedes = () => {
+export const BuscarSedes = () => {
   const { t } = useTranslation(); // Hook de traducción
   const [sedes, setSedes] = useState([]);
 
@@ -36,7 +36,7 @@ const BuscarSedes = () => {
     <div className="bg-gray-200 min-h-screen">
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className="text-4xl font-extrabold text-center text-white">
-          {t("title")} {/* Título traducido */}
+        Centro de Gestión y Desarrollo Sostenible SurColombiano
         </h1>
         <p className="text-center text-white mt-6 mx-4 md:mx-0">
           {t("description_centro")} {/* Descripción traducida */}
@@ -60,11 +60,11 @@ const BuscarSedes = () => {
             >
               <div className="relative h-72 items-center justify-center flex">
                 <img
-                  src={`http://localhost:3000/imagenes/${sede.img_sede}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${sede.img_sede}`}
                   alt={sede.sede_nombre}
                   className="h-full"
                   onError={(e) =>
-                    (e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`)
+                    (e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`)
                   }
                 />
               </div>
@@ -108,5 +108,3 @@ const BuscarSedes = () => {
     </div>
   );
 };
-
-export default BuscarSedes;

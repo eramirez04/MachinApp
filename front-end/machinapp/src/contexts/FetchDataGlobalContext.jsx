@@ -1,6 +1,5 @@
-import { useFetchSolicitud, useFetchRoles, useFetchAmbientes } from "../index";
+import { useFetchSolicitud, useFetchRoles, useFetchAmbientes, useFetchUserData } from "../index";
 import { createContext, useState, useEffect } from "react";
-import { useFetchUserData } from "../hooks/user/useFetchUsuarios";
 import { useFetchEquipo } from "../hooks/useFetchEquipos";
 import PropTypes from "prop-types";
 
@@ -20,7 +19,7 @@ export const GlobalDataProvider = ({ children }) => {
     refreshEquipos,
   } = useFetchEquipo();
 
-  const { solicitudData, loading: loadinDataSolicitud } = useFetchSolicitud();
+  const { solicitudData, loading: loadinDataSolicitud, refreshSolicitud } = useFetchSolicitud();
   const { roles, loading: loadingRol, refreshRol } = useFetchRoles();
   const {
     ambientes,
@@ -61,7 +60,8 @@ export const GlobalDataProvider = ({ children }) => {
     ambientes,
     refress,
     eroresMaquinas,
-    refreshEquipos
+    refreshEquipos,
+    refreshSolicitud
   };
 
   return (

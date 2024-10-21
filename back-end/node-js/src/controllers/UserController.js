@@ -8,7 +8,7 @@ import Jwt from "jsonwebtoken";
 import { encriptarContra } from "../config/bcryptjs.js";
 
 // transporte que contiene la configuracion de envio de correos
-import { transporter } from "../config/email.js";
+/* import { transporter } from "../config/email.js"; */
 
 // importacion del modelo que hace consultas a la base de datos
 import { UsuarioModel } from "../database/model/usuario.js";

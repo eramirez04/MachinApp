@@ -1,13 +1,12 @@
+import { ButtonC, V, axiosCliente } from "../../../index.js"
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../../service/api/axios';
-import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
-import { V } from '../../../style';
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
-const BuscarAmbientes = ({ idArea }) => {
+// eslint-disable-next-line react/prop-types
+export const BuscarAmbientes = ({ idArea }) => {
   const { t } = useTranslation(); // Usar el hook para obtener la función de traducción
   const [ambientes, setAmbientes] = useState([]);
 
@@ -37,7 +36,7 @@ const BuscarAmbientes = ({ idArea }) => {
     <div className='bg-gray-200 min-h-screen'>
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className='text-4xl font-extrabold text-center text-white'>
-          {t('titulo_principal')} {/* Usar la traducción para el título */}
+        Centro de Gestión y Desarrollo Sostenible SurColombiano
         </h1>
         <p className='text-center text-white mt-6 mx-4 md:mx-0'>
           {t('descripcion_centro')} {/* Usar la traducción para la descripción */}
@@ -45,14 +44,14 @@ const BuscarAmbientes = ({ idArea }) => {
       </header>
       <div className='container mx-auto p-4'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
-          {ambientes.map((ambiente) => (
-            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={ambiente.idSede}>
+          {ambientes.map((ambiente, index) => (
+            <div className='bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl relative' key={index}>
               <div className='relative h-72 items-center justify-center flex'>
                 <img
-                  src={`http://localhost:3000/imagenes/${ambiente.img_sitio}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${ambiente.img_sitio}`}
                   alt={ambiente.area_nombre}
                   className='h-full'
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
                 />
               </div>
               <Link to={`/Ambientes/InfoAmbiente/${ambiente.idAmbientes}`}>
@@ -85,5 +84,3 @@ const BuscarAmbientes = ({ idArea }) => {
     </div>
   );
 }
-
-export default BuscarAmbientes;

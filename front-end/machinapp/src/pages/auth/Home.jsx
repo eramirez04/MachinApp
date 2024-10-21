@@ -12,7 +12,7 @@ import {
   MantenimientoGrafico,
   useMantenimientosQuery,
 } from "../../index.js";
-import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
+import {Artboard} from "../../components/index.js";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -37,7 +37,7 @@ export const Home = () => {
       link: "/Maquinas",
     },
     {
-      title: t("total_solicitudes_mantenimiento"),
+      title: t("total_maintenance_requests"),
       total: solicitudData.length,
       icon: V.NewspaperIcon,
       link: "/solicitud",
@@ -51,7 +51,7 @@ export const Home = () => {
   ];
 
   if (isLoading) {
-    return <>cargando</>;
+    return <>{t("loading")}</>;
   }
   return (
     <>
@@ -75,7 +75,7 @@ export const Home = () => {
                     link={
                       <>
                         {rol === "Administrador" ? (
-                          <Link to={value.link}>Ver</Link>
+                          <Link to={value.link}>{t("ver")}</Link>
                         ) : (
                           " "
                         )}

@@ -29,8 +29,8 @@ export const ListarUsuarios = () => {
     t("correo"),
     t("tipo_documento"),
     t("numero_documento"),
-    "Rol",
-    "Acciones",
+    t("rol"),
+    t("acciones"),
   ];
 
   const capitalizarPrimeraLetra = (str) => {

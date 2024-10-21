@@ -1,9 +1,7 @@
-import { ButtonNext, InputforForm } from "../../../index.js";
+import { ButtonNext, InputforForm, TextAreaComponent, multiFormData } from "../../../index.js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { multiFormData } from "../../../utils/formData.js";
-import { TextAreaComponent } from "../../atoms/Inputs/TextArea.jsx";
 import { FaUpload } from "react-icons/fa";
 
 export const FormSedes = () => {
@@ -31,7 +29,7 @@ export const FormSedes = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/sede/registrarsede",
+        "sede/registrarsede",
         dataSede,
         "POST"
       );

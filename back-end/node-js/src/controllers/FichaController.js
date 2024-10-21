@@ -68,7 +68,7 @@ export const registrarFicha = async(req, res)=>{
 
             let id = respuesta.insertId  //id de la ficha creada
 
-            let data = `http://10.193.144.26:5173/infoMaquina/${id}`   //poner la url que queramos.
+            let data = `http://192.168.56.1:5173/infoMaquina/${id}`   //poner la url que queramos. http://192.168.56.1:5173
             let folderPath = 'public/QRimagenes'; //ruta de donde se va a guardar
             let filePath = `${folderPath}/${id}-qr.png`     //le pasamos la ruta y en nombre de como se va a crear la imagen. 
             
@@ -629,3 +629,70 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         return res.status(500).json({"mensaje":"Error en el servidor"+error})
     }
 }
+
+export const ExcelAmbiente = async (req, res) => {
+    try {
+        let idAmbientes = req.params.idAmbientes;
+  
+        /* Consultamos la información básica del equipo */
+        let sqlEquipo = `
+        SELECT DISTINCT
+            idAmbientes,
+            fi_fk_sitios,
+            sit_nombre,
+            sit_fecha_registro,
+            area_nombre,
+            sede_nombre,
+            sede_subdirector,
+            contacto,
+            sede_direccion,
+            tipo_tenencia,
+            sede_nombre_centro,
+            sede_nombre,
+            sede_regional,
+            sede_municipio,
+            ti_fi_nombre 
+        FROM tipo_equipo
+        INNER JOIN fichas_maquinas_equipos ON idTipo_ficha = fi_fk_tipo_ficha
+        INNER JOIN ambientes ON fi_fk_sitios = idAmbientes
+        INNER JOIN areas ON sit_fk_areas = idArea
+        INNER JOIN sedes ON area_fk_sedes = idSede
+        WHERE idAmbientes = ${idAmbientes} AND  fi_placa_sena IS NULL
+        `;
+  
+        const [infoEquipo] = await conexion.query(sqlEquipo);
+  
+        if (infoEquipo.length > 0) {
+            let sqlVariables = `
+            SELECT
+                idDetalle,
+                det_valor,
+                idVariable,
+                var_nombre,
+                var_descripcion,
+                var_clase,
+                var_tipoDato
+            FROM detalles_fichas
+            INNER JOIN variable ON det_fk_variable = idVariable
+            WHERE det_fk_fichas IN (
+                SELECT idFichas 
+                FROM fichas_maquinas_equipos 
+                WHERE fi_fk_sitios = ${idAmbientes} AND ficha = "ambiente"
+            )
+            `;
+  
+            const [varEquipo] = await conexion.query(sqlVariables);
+  
+            let objFicha = {
+                infoFicha: infoEquipo,  // Información básica sin duplicados
+                infoVar: varEquipo      // Variables relacionadas con la ficha
+            };
+  
+            return res.status(200).json(objFicha);
+        } else {
+            return res.status(404).json({ "mensaje": "No se encontraron fichas para este ambiente." });
+        }
+    } catch (error) {
+        return res.status(500).json({ "mensaje": "Error en el servidor" });
+    }
+  };

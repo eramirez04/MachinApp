@@ -1,10 +1,7 @@
-
+import { ListarMaquinasAmb, axiosCliente } from "../../index.js"
 import { useEffect, useState } from 'react'
-import ListarMaquinasAmb from '../../components/organisms/ListarMaquinasAmb.jsx'
 import {Layout, Breadcrumb} from "../../index.js"
 import { useParams } from "react-router-dom"
-
-import {axiosCliente} from "../../service/api/axios.js"
 
 
 export const MaquinasAmbiente=()=>{

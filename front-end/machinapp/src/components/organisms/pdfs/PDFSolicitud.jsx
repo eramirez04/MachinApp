@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { axiosCliente } from "../../../index.js";
-
+import { useTranslation } from "react-i18next"
 
 const styles = StyleSheet.create({
   page: {
@@ -196,22 +196,28 @@ const TableHeader = () => (
   </View>
 );
 
+// eslint-disable-next-line react/prop-types
 const TableRow = ({ item, index }) => (
   <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]} wrap={false}>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.equipo}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.descripcion}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={[styles.tableCell, styles.lastCell]}>{item.actividad}</Text>
   </View>
 );
 
 
+// eslint-disable-next-line react/prop-types
 export const PDFSolicitud = ({idSolicitud}) => {
   const [data, setData] = useState({});
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
+        const response = await axiosCliente.get('solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
         setData(filteredData || {});
       } catch (error) {
@@ -253,19 +259,19 @@ export const PDFSolicitud = ({idSolicitud}) => {
         </View>
 
         <View style={styles.applicantInfo}>
-          <Text style={styles.infoTitle}>Información de Solicitante</Text>
+          <Text style={styles.infoTitle}>{t("applicant_information")}</Text>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Nombre del Solicitante:</Text>
+            <Text style={styles.infoLabel}>{t("name_of_applicant")}:</Text>
             <Text style={styles.infoInput}>{data.nombre_solicitante}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Correo del Solicitante:</Text>
+            <Text style={styles.infoLabel}>{"Correo_de_solicitante"}:</Text>
             <Text style={styles.infoInput}>{data.correo_solicitante}</Text>
           </View>
         </View>
 
         <View style={styles.prioritySection}>
-        <Text style={styles.sectionTitle}>Prioridad</Text>
+        <Text style={styles.sectionTitle}>{t("priority")}</Text>
           <View style={styles.priorityItem}>
             <View style={[styles.checkbox, data.soli_prioridad === 'inmediata' && { backgroundColor: 'black' }]} />
             <Text style={styles.priorityText}>Immediate</Text>
@@ -280,9 +286,9 @@ export const PDFSolicitud = ({idSolicitud}) => {
           </View>
         </View>
 
-        {renderSection('Descripción de la Solicitud', data.soli_descripcion_problemas)}
-        {renderSection('Parte Legal', data.temas_legal)}
-        {renderSection('Observaciones', data.soli_observaciones)}
+        {renderSection(t("Description_of_the_Request"), data.soli_descripcion_problemas)}
+        {renderSection(t("Legal_Part"), data.temas_legal)}
+        {renderSection(t("Observations"), data.soli_observaciones)}
 
         <View style={styles.costSection}>
           <Text style={styles.costLabel}>COSTO DE REPARACIÓN $</Text>

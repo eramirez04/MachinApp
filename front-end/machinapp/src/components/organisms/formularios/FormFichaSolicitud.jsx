@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState, useCallback, useContext} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -23,16 +24,18 @@ import {
   TableBody,
   Button,
   Divider,
-  Input,
 } from "@nextui-org/react";
 
 export const FormFichaSolicitud = () => {
-  const { equiposData } = useGlobalData();
+  const { equiposData, refreshSolicitud } = useGlobalData();
   const { registrarSolicitudFichas } = useSolicitudFichasData();
   const [valuesTable, setvaluesTable] = useState([{ id: 1 }]);
   const { rol } = useContext(AuthContext);
   const [inputValues, setInputValues] = useState([]);
   const { t } = useTranslation();
+
+  // navegacion de paginas
+   const navigate = useNavigate();
 
   // permite almacenar un array, para poder pasarsimport Alert from "../feedback/Alert";elo como propiedad a al componente select
   const [equipo, setEquipo] = useState([]);
@@ -65,7 +68,7 @@ export const FormFichaSolicitud = () => {
       const res = await axiosCliente.post("solicitud/", {
         prioridad: data.prioridad,
         descripcion: data.descripcion,
-        costo_estimado: "10000",
+        costo_estimado: data.costo_estimado,
         obsevaciones: data.obervaciones,
         temaLegal: data.parte_legal,
         nombre_solicitante: data.Solicitante,
@@ -92,6 +95,8 @@ export const FormFichaSolicitud = () => {
       if (res && resfichas && resActividades) {
         toast.success("se registro con exito la solicitud del mantenimiento");
         reset();
+        navigate("/solicitud");
+        await  refreshSolicitud();
         setvaluesTable([{ id: 1 }]);
       }
     } catch (error) {
@@ -129,11 +134,11 @@ export const FormFichaSolicitud = () => {
 
   //añade una nueva fila a la tabla, para poder ingresar un nuevo equipo o maquinaria
   const handleNewEquipos = () => {
-/*     if (valuesTable.length >= equiposData.length) {
+     if (valuesTable.length >= equiposData.length) {
       toast.warning("llegaste al limite de equipos en el sistema");
       return 0;
       
-    } */
+    }
 
     const nuevaFila = {
       id: valuesTable[valuesTable.length - 1].id + 1,
@@ -180,7 +185,7 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                {t("management_center")}
+                  Centro de Gestión y Desarrollo Sostenible SurColombiano
               </p>
             </div>
           </div>
@@ -266,8 +271,13 @@ export const FormFichaSolicitud = () => {
                 </span>
               </div>
               <div className="flex justify-center items-center h-full">
-                <Input
-                type="number" />
+                 <InputforForm
+                  errors={errors}
+                  tipo={"number"}
+                  name={"costo_estimado"}
+                  register={register}
+                  label={t("costo")}
+                />
               </div>
             </div>{" "}
             <Divider />
@@ -333,6 +343,7 @@ export const FormFichaSolicitud = () => {
                       <TableCell className="flex items-center ">
                       <TextAreaComponent
                         errors={errors}
+                        max={150}
                         register={register}
                         name={`nombre_actividad_${fila.id}`}
                         label={t("Name_of_the_activity")}

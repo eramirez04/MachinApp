@@ -1,5 +1,4 @@
-import React from 'react'
-import BuscarMaquinas from '../../components/organisms/ListarMaquinas'
+import { BuscarMaquinas } from "../../index.js"
 
 const Ambientes=()=>  {
   return (

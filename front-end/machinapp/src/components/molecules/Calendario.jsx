@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
+import { axiosCliente } from "../../index";
 
 export const Calendario = () => {
   const [events, setEvents] = useState([]);
@@ -12,8 +13,8 @@ export const Calendario = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:3000/actividades/listar');
-        const data = await response.json();
+        const response = await axiosCliente.get('/actividades/listar');
+        const data = response.data; 
   
         if (data.resultadoActividad) {
           const mappedEvents = data.resultadoActividad.map(event => ({
@@ -50,6 +51,7 @@ export const Calendario = () => {
           center: 'title',
           end: 'today dayGridMonth prev,next'
         }}
+        
         events={events}
         dateClick={handleDateClick}
         ref={(calendarRef) => {

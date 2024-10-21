@@ -1,5 +1,6 @@
 export { SelectComponent } from "./form/SelectComponent";
 export { Nav } from "./navigation/Nav";
+export { MenuMobile } from "./navigation/MenuMobile.jsx"
 export { Footer } from "./layout/Footer";
 export { AvatarCom } from "./user/Avatar";
 export { Header } from "./layout/Header";

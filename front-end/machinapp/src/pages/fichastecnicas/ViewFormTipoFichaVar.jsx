@@ -1,5 +1,4 @@
-import  {FormTipoFichaTecnica}  from "../../components/organisms/formularios/FormTipoFichaTecnica";
-import {Layout, Breadcrumb} from "../../index";
+import {Layout, Breadcrumb, FormTipoFichaTecnica} from "../../index";
 import { useTranslation } from "react-i18next"
 
 export const  ViewFormTipoFicha = ()=> {

@@ -16,7 +16,7 @@ export const TextAreaComponent = ({
                                     // eslint-disable-next-line react/prop-types
     onChange,
                                     // eslint-disable-next-line no-unused-vars,react/prop-types
-    max=150,
+    max=5000,
   ...props
 }) => {
 

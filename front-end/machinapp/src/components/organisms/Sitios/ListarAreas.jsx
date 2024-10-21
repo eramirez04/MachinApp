@@ -1,12 +1,11 @@
+import { ButtonC,axiosCliente, V} from "../../../index.js"
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosCliente } from '../../../service/api/axios';
-import ButtonC from '../../atoms/buttons/BottonC';
 import { FaEdit } from 'react-icons/fa';
-import { V } from '../../../style';
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
-const BuscarAreas = ({ idSede }) => {
+// eslint-disable-next-line react/prop-types
+export const BuscarAreas = ({ idSede }) => {
   const { t } = useTranslation(); // Usar el hook para obtener la función de traducción
   const [areas, setAreas] = useState([]);
 
@@ -36,7 +35,7 @@ const BuscarAreas = ({ idSede }) => {
     <div className='bg-gray-200 min-h-screen'>
       <header className={`py-16 shadow-md top-0 z-10 ${V.bg_sena_verde}`}>
         <h1 className='text-4xl font-extrabold text-center text-white'>
-          {t('titulo_principal')} {/* Usar la traducción para el título */}
+        Centro de Gestión y Desarrollo Sostenible SurColombiano
         </h1>
         <p className='text-center text-white mt-6 mx-4 md:mx-0'>
           {t('descripcion_centro')} {/* Usar la traducción para la descripción */}
@@ -51,10 +50,10 @@ const BuscarAreas = ({ idSede }) => {
             >
               <div className='relative h-64 flex items-center justify-center'>
                 <img
-                  src={`http://localhost:3000/imagenes/${area.img_area}`}
+                  src={`${import.meta.env.VITE_API_IMAGE}imagenes/${area.img_area}`}
                   alt={area.area_nombre}
                   className='h-full'
-                  onError={(e) => e.target.src = `http://localhost:3000/imagenes/noEncontrada.jpg`}
+                  onError={(e) => e.target.src = `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`}
                 />  
               </div>
               <div className='p-6'>
@@ -80,5 +79,3 @@ const BuscarAreas = ({ idSede }) => {
     </div>
   );
 };
-
-export default BuscarAreas;
