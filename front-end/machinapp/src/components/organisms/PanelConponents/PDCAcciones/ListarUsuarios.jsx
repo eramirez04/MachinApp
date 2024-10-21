@@ -30,7 +30,7 @@ export const ListarUsuarios = () => {
     t("tipo_documento"),
     t("numero_documento"),
     "Rol",
-    "Acciones",
+    t("acciones"),
   ];
 
   const capitalizarPrimeraLetra = (str) => {
@@ -45,12 +45,12 @@ export const ListarUsuarios = () => {
   // definimos las filas: nota => hay que tener en cuanta que tanto las columnas y filas deben ser igual en numero
   // si envio 4 columnas debo tambien de enviarle 4 filas, de lo contrario nos arrojara un error
   const newArrayDataUser = dataUser.map((item) => ({
-    nombre: item.us_nombre,
+    nombre: capitalizarPrimeraLetra(item.us_nombre),
     apellidos: item.us_apellidos,
     correo: item.us_correo,
-    tipo_documento: t("cedula_ciudadania"),
+    tipo_documento: item.us_tipo_documento,
     numero_documento: item.us_numero_documento,
-    rol:t("administrador"),
+    rol:  capitalizarPrimeraLetra(item.rol_nombre),
   }));
 
   const handleEdit = (id) => {
@@ -165,11 +165,7 @@ export const ListarUsuarios = () => {
                           </>
                         ),
                       }))
-                    : roles.map((rol) => ({
-                    id: rol.idRoles,
-                    nombre: t("administrador"),
-                    descripcion : "."
-                      }))
+                    :roles
                 }
                 className="w-full table-auto"
               />
