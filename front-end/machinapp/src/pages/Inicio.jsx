@@ -59,19 +59,19 @@ export const Inicio = () => {
                         <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                           <div className="h-64 w-44 overflow-hidden rounded-lg ">
                             <LazyLoadImage
-                              src="escuela.jpg"
+                              src="ambienteE.jpeg"
                               className="h-full w-full object-cover object-center"
                             />
                           </div>
                           <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
                             <LazyLoadImage
-                              src="escuela.jpg"
+                              src="panorama.jpeg"
                               className="h-full w-full object-cover object-center"
                             />
                           </div>
                           <div className="h-64 w-44 overflow-hidden rounded-lg bg-black">
                             <LazyLoadImage
-                              src="escuela.jpg"
+                              src="maquinas.jpeg"
                               className="h-full w-full object-cover object-center"
                             />
                           </div>

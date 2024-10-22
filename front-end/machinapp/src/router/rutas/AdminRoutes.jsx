@@ -6,6 +6,8 @@ import {
 } from "../../index";
 import { Route, Routes, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
 export const AdminRoute = () => {
   return (
@@ -36,6 +38,7 @@ import { Navigate } from "react-router-dom";
 const ProtectedRouteAdmin = ({ children }) => {
   const { rol } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Verifica si el rol está disponible y si es el rol correcto
@@ -51,6 +54,7 @@ const ProtectedRouteAdmin = ({ children }) => {
 
   // Redirige si el usuario no está autorizado
   if (!isAuthorized) {
+      toast.warning(t("sin_permisos_accion"))
     return <Navigate to="/home" />;
   }
 
@@ -60,6 +64,7 @@ const ProtectedRouteAdmin = ({ children }) => {
 export const ProtegerRutasAdminInstru = () => {
   const { rol } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const  { t } = useTranslation();
 
   useEffect(() => {
     // Verifica si el rol está disponible y si es el rol correcto
@@ -78,6 +83,7 @@ export const ProtegerRutasAdminInstru = () => {
 
   // Redirige si el usuario no está autorizado
   if (!isAuthorized) {
+    toast.warning(t("sin_permisos_accion"))
     return <Navigate to="/home" />;
   }
 

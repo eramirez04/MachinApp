@@ -5,8 +5,6 @@ export const useUpdateUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //
-
   const updateUser = async (data, id) => {
     setLoading(true); // Establecer loading a true al inicio
     setError(null); // Limpiar errores previos

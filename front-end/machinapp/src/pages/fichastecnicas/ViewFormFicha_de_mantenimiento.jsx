@@ -1,5 +1,4 @@
-import { FormFichaDeMantenimiento } from "../../components/organisms/formularios/FormFichaDeMante";
-import { Layout } from "../../index";
+import { Layout, FormFichaDeMantenimiento } from "../../index";
 
 export const ViewFormFicha_De_mantenimiento = () => {
   return (

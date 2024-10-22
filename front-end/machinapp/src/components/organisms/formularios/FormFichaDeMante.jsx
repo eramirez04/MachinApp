@@ -447,6 +447,7 @@ export const FormFichaDeMantenimiento = () => {
                     <TableCell>
                       <InputforForm
                         register={register}
+                        maxLength={9}
                         errors={errors}
                         name={`repuestos.${index}.costo`}
                         tipo="number"

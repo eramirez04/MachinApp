@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { axiosCliente } from "../../../index.js";
 
@@ -196,22 +196,27 @@ const TableHeader = () => (
   </View>
 );
 
+// eslint-disable-next-line react/prop-types
 const TableRow = ({ item, index }) => (
   <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]} wrap={false}>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.equipo}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={styles.tableCell}>{item.descripcion}</Text>
+    {/* eslint-disable-next-line react/prop-types */}
     <Text style={[styles.tableCell, styles.lastCell]}>{item.actividad}</Text>
   </View>
 );
 
 
+// eslint-disable-next-line react/prop-types
 export const PDFSolicitud = ({idSolicitud}) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosCliente.get('http://localhost:3000/solicitud/PDF');
+        const response = await axiosCliente.get('solicitud/PDF');
         const filteredData = response.data.find(item => item.idSolicitud === idSolicitud);
         setData(filteredData || {});
       } catch (error) {

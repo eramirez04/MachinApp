@@ -1,8 +1,9 @@
+import { axiosCliente, Layout, BuscarAmbientes } from "../../index.js"
 import { useEffect, useState } from 'react'
-import BuscarAmbientes from '../../components/organisms/Sitios/ListarAmbientes.jsx'
-import { Layout } from "../../index";
+
+
 import { useParams } from "react-router-dom"
-import { axiosCliente } from "../../service/api/axios.js"
+
 
 export const Areas = () => {
   const { idArea } = useParams();

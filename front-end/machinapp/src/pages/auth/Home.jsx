@@ -12,7 +12,7 @@ import {
   MantenimientoGrafico,
   useMantenimientosQuery,
 } from "../../index.js";
-import {Artboard} from "../../components/organisms/Paginacentrar.jsx";
+import {Artboard} from "../../components/index.js";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -51,7 +51,7 @@ export const Home = () => {
   ];
 
   if (isLoading) {
-    return <>cargando</>;
+    return <>{t("loading")}</>;
   }
   return (
     <>
@@ -75,7 +75,8 @@ export const Home = () => {
                     link={
                       <>
                         {rol === "Administrador" ? (
-                          <Link to={value.link}>Ver</Link>
+                          // <Link to={value.link}>Ver</Link>
+                            <p>.</p>
                         ) : (
                           " "
                         )}
@@ -94,7 +95,6 @@ export const Home = () => {
               <CardStyle
                 subtitle={t("maintenance_summary_by_category")}
                 titleCard={""}
-                footer={"Ver mas"}
               >
                 <MantenimientoGrafico data={mantenimientos} />
               </CardStyle>

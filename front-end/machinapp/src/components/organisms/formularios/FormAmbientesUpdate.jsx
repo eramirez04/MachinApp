@@ -88,7 +88,7 @@ export const FormAmbientesUpdate = () => {
         });
 
         if (sitioData.img) {
-          const previewUrl = `http://localhost:3000/imagenes/${sitioData.img}`;
+          const previewUrl = `${import.meta.env.VITE_API_IMAGE}imagenes/${sitioData.img}`;
           setPreviewImagen(previewUrl);
         }
         
@@ -116,7 +116,7 @@ export const FormAmbientesUpdate = () => {
 
     try {
       await multiFormData(
-        `http://localhost:3000/sitio/editarsitio/${id}`,
+        `sitio/editarsitio/${id}`,
         dataSitio,
         "PUT"
       );
