@@ -113,7 +113,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
       <Document>
         <Page style={styles.page}>
           <View style={styles.section}>
-            <Text>{t('loading')}</Text>
+            <Text>{t('cargando')}</Text>
           </View>
         </Page>
       </Document>
@@ -125,7 +125,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
       <Document>
         <Page style={styles.page}>
           <View style={styles.section}>
-            <Text>{t('error_loading_data')}</Text>
+            <Text>{t('error_carga_datos')}</Text>
           </View>
         </Page>
       </Document>
@@ -138,21 +138,21 @@ export const GenerarPdf = ({ idMantenimiento }) => {
         <View style={styles.header}>
           <Image style={styles.logo} src="/logoSenaNaranja.png" />
           <View style={styles.headerText}>
-            <Text>SUBSISTEMA DE MANTENIMIENTO Y</Text>
-            <Text>CONTROL DE MAQUINARIA Y EQUIPO</Text>
-            <Text>ORDEN DE TRABAJO DE MANTENIMIENTO</Text>
+            <Text>{t('titulo_header_1')}</Text>
+            <Text>{t('titulo_header_2')}</Text>
+            <Text>{t('titulo_header_3')}</Text>
           </View>
           <View style={styles.dateText}>
-            <Text>Fecha actual: {formatDate(new Date().toISOString())}</Text>
+            <Text>{t('fecha_actual')}: {formatDate(new Date().toISOString())}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <View style={styles.row}>
-            <Text style={styles.column}>Regional</Text>
-            <Text style={styles.column}>Sede de formación</Text>
-            <Text style={styles.column}>Unidad productiva</Text>
-            <Text style={styles.column}>Aula o Taller</Text>
+            <Text style={styles.column}>{t('regional')}</Text>
+            <Text style={styles.column}>{t('sedeFormacion')}</Text>
+            <Text style={styles.column}>{t('unidad_productiva')}</Text>
+            <Text style={styles.column}>{t('aula_taller')}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.column}>{data.sede_nombre}</Text>
@@ -163,11 +163,11 @@ export const GenerarPdf = ({ idMantenimiento }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.greenText}>Datos del equipo o maquinaria</Text>
+          <Text style={styles.greenText}>{t('datos_equipo')}</Text>
           <View style={styles.row}>
-            <Text style={styles.column}>Placa sena</Text>
-            <Text style={styles.column}>Serial</Text>
-            <Text style={styles.column}>Modelo</Text>
+            <Text style={styles.column}>{t('placaSena')}</Text>
+            <Text style={styles.column}>{t('serial')}</Text>
+            <Text style={styles.column}>{t('modelo')}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.column}>{data.fi_placa_sena}</Text>
@@ -178,9 +178,9 @@ export const GenerarPdf = ({ idMantenimiento }) => {
 
         <View style={styles.section}>
           <View style={styles.row}>
-            <Text style={styles.column}>Tipo de reparación</Text>
-            <Text style={styles.column}>DOCUMENTO QUE ORIGINÓ ESTA ORDEN DE MANTENIMIENTO</Text>
-            <Text style={styles.column}>PRIORIDAD</Text>
+            <Text style={styles.column}>{t('tipo_reparacion')}</Text>
+            <Text style={styles.column}>{t('documento_origen')}</Text>
+            <Text style={styles.column}>{t('priority')}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.column}>{data.tipo_mantenimiento}</Text>
@@ -190,12 +190,12 @@ export const GenerarPdf = ({ idMantenimiento }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.greenText}>Trabajo ejecutado</Text>
+          <Text style={styles.greenText}>{t('work_executed')}</Text>
           <View style={styles.row}>
-            <Text style={[styles.column, { flex: 3 }]}>Descripción</Text>
+            <Text style={[styles.column, { flex: 3 }]}>{t('descripcion')}</Text>
             <View style={[styles.column, { flex: 2 }]}>
-              <Text>Fecha : {formatDate(data.man_fecha_realizacion)}</Text>
-              <Text>Próximo mantenimiento : {formatDate(data.mant_fecha_proxima)}</Text>
+              <Text>{t('fecha')}: {formatDate(data.man_fecha_realizacion)}</Text>
+              <Text>{t('proximo_mantenimiento')}: {formatDate(data.mant_fecha_proxima)}</Text>
             </View>
           </View>
           <View style={styles.textBox}>
@@ -204,10 +204,10 @@ export const GenerarPdf = ({ idMantenimiento }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.greenText}>Repuestos utilizados y costos</Text>
+          <Text style={styles.greenText}>{t('parts_used_and_costs')}</Text>
           <View style={styles.row}>
-            <Text style={[styles.column, { flex: 2 }]}>Nombre repuesto</Text>
-            <Text style={[styles.column, { flex: 1 }]}>Costo</Text>
+            <Text style={[styles.column, { flex: 2 }]}>{t('part_name')}</Text>
+            <Text style={[styles.column, { flex: 1 }]}>{t('cost')}</Text>
           </View>
           <View style={styles.row}>
             <Text style={[styles.column, { flex: 2 }]}>{data.par_nombre_repuesto}</Text>
@@ -216,7 +216,7 @@ export const GenerarPdf = ({ idMantenimiento }) => {
         </View>
 
         <View style={styles.footer}>
-          <Text>COSTO DE REPARACIÓN: ${data.mant_costo_final}</Text>
+          <Text>{t('costo_reparacion')}: ${data.mant_costo_final}</Text>
         </View>
       </Page>
     </Document>

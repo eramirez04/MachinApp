@@ -89,7 +89,7 @@ export const MantenimientoGeneral = () => {
     }, [estadoSeleccionado, tipoSeleccionado]);
 
     const columns = [
-        t('referencia'), t('codigo'), t('fecha de realizacion'),
+        t('referencia'), t('codigo'), t('Fecha_realizacion'),
         t('estado_actividad'), t('tipo'), t('nombre_actividad'), t('acciones')
     ];
 
