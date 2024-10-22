@@ -324,6 +324,20 @@
   "tipo_reparacion": "Repair type",
   "documento_origen": "Document that originated this maintenance order",
   "proximo_mantenimiento": "Next maintenance",
-  "costo_reparacion": "REPAIR COST"
+  "costo_reparacion": "REPAIR COST",
+  "campo_sede": "Field",
+  "valor_sede": "Value",
+  "enter": "Enter",
+  "register_new_area": "Register new Area",
+  "registrar_nueva_sede": "Register New Headquarter",
+  "imagen_de_la_sede": "Headquarter Image",
+  "seleccionar_archivo": "Select File",
+  "informacion_de_la_sede": "Headquarter Information",
+  "nombre_del_centro": "Center Name",
+  "nombre_de_la_sede": "Headquarter Name",
+  "descripcion_de_la_sede": "Headquarter Description",
+  "registrar_sede": "Register Headquarter",
+  "error_al_registrar": "Error registering new Headquarter",
+  "exito_registro": "Headquarter registered successfully"
 
 }
