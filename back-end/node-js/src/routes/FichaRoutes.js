@@ -1,5 +1,9 @@
 import {Router} from 'express'
-import { registrarFicha, eliminarFicha, actualizarFicha, listarFichas, listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica, cargarImagenFicha, actualizarFichaEsp, listarMantenimientosMaquina} from '../controllers/FichaController.js'
+import { registrarFicha, eliminarFicha, actualizarFicha, listarFichas,
+    listarFichaUnica, listarFichaPorAmbiente, listarInfoEspecifica,
+    cargarImagenFicha, actualizarFichaEsp,
+    ExcelAmbiente,
+    listarMantenimientosMaquina} from '../controllers/FichaController.js'
 
 import {validar_ficha} from '../../validar/fichas/validationFicha.js'
 
@@ -23,7 +27,7 @@ rutaFicha.patch('/actualizarFichaEsp/:idFicha', verificar,  actualizarFichaEsp)
 /* No requieren autenticacion */
 rutaFicha.get('/listarMantenimientosMaquina/:idFicha', listarMantenimientosMaquina)
 rutaFicha.get('/listarInfoEspecifica/:idFicha', listarInfoEspecifica )
-rutaFicha.get('excelambientes/:idAmbientes', verificar, ExcelAmbiente)
+rutaFicha.get('/excelambientes/:idAmbientes', verificar, ExcelAmbiente)
 
 
 export default rutaFicha

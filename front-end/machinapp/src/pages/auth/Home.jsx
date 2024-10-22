@@ -75,7 +75,8 @@ export const Home = () => {
                     link={
                       <>
                         {rol === "Administrador" ? (
-                          <Link to={value.link}>Ver</Link>
+                          // <Link to={value.link}>Ver</Link>
+                            <p>.</p>
                         ) : (
                           " "
                         )}
@@ -94,7 +95,6 @@ export const Home = () => {
               <CardStyle
                 subtitle={t("maintenance_summary_by_category")}
                 titleCard={""}
-                footer={"Ver mas"}
               >
                 <MantenimientoGrafico data={mantenimientos} />
               </CardStyle>

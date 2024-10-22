@@ -8,9 +8,9 @@ import {
 } from "../../../index";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Tooltip, Select, SelectItem } from "@nextui-org/react"; 
+import { Tooltip, Select, SelectItem, Button } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
-import { ExcelAmbientes } from "../../organisms/excel/ExcelAmbientes"; // Import the Excel component
+import { ExcelAmbientes } from "../excel/ExcelAmbientes.jsx"; // Import the Excel component
 import { toast } from "react-toastify"; // Import toast for notifications
 import { axiosCliente } from '../../../service/api/axios';
 
@@ -22,14 +22,26 @@ export const BuscarAmbientesGeneral = () => {
   const { ambientes } = useGlobalData();
   const { t } = useTranslation();
 
+
+
+  const [selectedIdAmbiente, setSelectedIdAmbiente] = useState(null);
+
+const handleDownloadClick = (idAmbiente) => {
+  setSelectedIdAmbiente(idAmbiente); // Actualiza el estado con el idAmbiente seleccionado
+};
+
+
+
+
+
   const columns = [
     "ID",
     t("nombre_aula"),
     t("tipo_aula"),
     t("area"),
     t("profesor_encargado"),
-    "Estado", // Nueva columna para el estado
-    "Acciones",
+    t("estado"), // Nueva columna para el estado
+    t("acciones"),
   ];
 
   const obtenerAreasUnicas = () => {
@@ -101,14 +113,11 @@ export const BuscarAmbientesGeneral = () => {
             </ButtonNext>
 
             {/* Ícono de Descargar Excel */}
-            <ButtonNext isIconOnly color="warning" variant="faded">
-
-              <ExcelAmbientes
-                ambientes={[sitio]}
-                onDownloadSuccess={() => toast.success(t("excel_descargado_exitosamente"))}
-              />
-
-            </ButtonNext>
+            <Button isIconOnly color="warning" variant="faded"
+            onClick={() => handleDownloadClick(sitio.idAmbientes)}
+            >
+afas
+            </Button>
 
           </div>
         ),
@@ -153,27 +162,24 @@ export const BuscarAmbientesGeneral = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Sitios</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("sitios")}</h1>
       <div className="flex flex-col mb-4 gap-6">
         <div className="flex flex-row justify-end gap-6">
-        <Link to={"/Ambientes/Registrar"}>
-          <ButtonNext
-            type="submit"
-            className={`${V.bg_sena_verde} ${V.text_white}`}
-            startContent={<Icons icon={V.PlusIcon} />}
-          >
-            {t("registrar_nuevo_ambiente")}
+          <ButtonNext className={`${V.bg_sena_verde} ${V.text_white}`}   startContent={<Icons icon={V.PlusIcon} />} >
+            <Link to={"/Ambientes/Registrar"} >
+              {t("registrar_nuevo_ambiente")}
+            </Link>
           </ButtonNext>
-        </Link>
-        <Link to={"/TipoSitio/Registrar"}>
+
           <ButtonNext
             type="submit"
             className={`${V.bg_sena_verde} ${V.text_white}`}
             startContent={<Icons icon={V.PlusIcon} />}
-          >
+          > <Link to={"/TipoSitio/Registrar"}>
             {t("registrar_nuevo_tipositio")}
+             </Link>
           </ButtonNext>
-        </Link>
+
         </div>
         <div className="flex flex-row gap-6">
         <SearchComponent
@@ -236,6 +242,12 @@ export const BuscarAmbientesGeneral = () => {
           acciones: ambiente.acciones, // Acciones
         }))}
       />
+      {selectedIdAmbiente && (
+      <ExcelAmbientes
+        idAmbiente={selectedIdAmbiente}
+        onDownloadSuccess={() => toast.success(t("excel_descargado_exitosamente"))}
+      />
+    )}
     </div>
   );
 };
