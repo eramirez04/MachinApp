@@ -10,7 +10,7 @@ export const CardStyle = ({imagen, bodyContent, titleCard, subtitle, link, nameL
   useEffect(() => {
     const verificarImagen = async () => {
       if (imagen) {
-        const rutaImagen = `http://localhost:3000/${imagen}`;
+        const rutaImagen = `${import.meta.env.VITE_API_IMAGE}${imagen}`;
         try {
           const response = await fetch(rutaImagen);
           setEstadoImg(response.ok);
@@ -43,8 +43,8 @@ export const CardStyle = ({imagen, bodyContent, titleCard, subtitle, link, nameL
             className="object-cover w-full h-48 rounded-lg transition-transform duration-300 hover:scale-105"
             src={
               estadoImg
-                ? `http://localhost:3000/${imagen}`
-                : `http://localhost:3000/imagenes/noEncontrada.jpg`
+                ? `${import.meta.env.VITE_API_IMAGE}${imagen}`
+                : `${import.meta.env.VITE_API_IMAGE}imagenes/noEncontrada.jpg`
             }
             width={270}
             height={210}

@@ -1,6 +1,4 @@
-import React from 'react';
-
-const ButtonC = (props) => {
+export const ButtonC = (props) => {
     let bgColor = props.bgColor
     let name = props.name
     let click = props.onClick
@@ -10,4 +8,3 @@ const ButtonC = (props) => {
         </button>
     );
 }
-export default ButtonC

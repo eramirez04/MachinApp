@@ -17,15 +17,20 @@ export const SettingsPanelPage = () => {
     {
       titulo: t("manual_usuario"),
       subTitulo: t("aqui_encontrar_manual_usuario"),
-      url: "http://localhost:3000/pdfs/8.ManualDeUsuario.pdf",
+      url: `${import.meta.env.VITE_API_IMAGE}/pdfs/8.ManualDeUsuario.pdf`,
+    },
+    {
+      titulo: t("manual_prototipado"),
+      subTitulo: t("guia_prototipado"),
+      url: `${import.meta.env.VITE_API_IMAGE}/pdfs/4.PrototipadoDelSistema.pdf`,
     },
     {
       titulo: t("manual_tecnico"),
       subTitulo: t("aqui_encontrar_manual_tecnico"),
-      url: "http://localhost:3000/pdfs/8.ManualDeUsuario.pdf",
+      url: `${import.meta.env.VITE_API_IMAGE}/pdfs/7.ManualTecnicoDeConfiguracion.pdf`,
     },
     
-  ];
+  ]; // 7.ManualTecnicoDeConfiguracion
 
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const toolbarPluginInstance = toolbarPlugin();

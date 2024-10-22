@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Layout, FormUserUpdate } from "../../index";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const UpdateUserAdmin = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const resultadoUsuario = location.state?.resultadoUsuario;
 
@@ -15,7 +17,7 @@ export const UpdateUserAdmin = () => {
   }, [resultadoUsuario, navigate]);
 
   if (!resultadoUsuario) {
-    return <div>Cargando...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   const DataUser = {

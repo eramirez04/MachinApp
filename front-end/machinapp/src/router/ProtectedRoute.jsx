@@ -1,13 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../index";
+import { useTranslation } from "react-i18next";
 
 export const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
   const { tokenIsValido } = useAuth();
+  const { t } = useTranslation();
 
   try {
     if (tokenIsValido === null) {
-      return <>Cargando</>;
+      return <>{t("loading")}</>;
     }
 
     if (!token || !tokenIsValido) {

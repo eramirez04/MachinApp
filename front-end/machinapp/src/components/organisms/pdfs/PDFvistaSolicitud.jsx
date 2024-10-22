@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { Button } from "@nextui-org/react";
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
@@ -6,6 +6,7 @@ import { PDFSolicitud } from "../../../index.js";
 import { ModalComponte } from "../../molecules/index.js";
 import { useTranslation } from "react-i18next";
 
+// eslint-disable-next-line react/prop-types
 export const PDFvistaSolicitud = ({ item }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);

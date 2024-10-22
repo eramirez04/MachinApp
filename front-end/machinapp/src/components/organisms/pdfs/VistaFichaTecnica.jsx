@@ -1,14 +1,14 @@
-import { ModalComponte } from "../../molecules/index.js"
+import { FichaTecnicaEquiposPDF, ModalComponte } from "../../../index.js"
 import { Button } from "@nextui-org/react"
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-import {FichaTecnicaEquiposPDF} from "../../index.js"
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next"
 import { useContext } from "react"
 import { AuthContext } from '../../../contexts/AuthContext.jsx'
 
 
+// eslint-disable-next-line react/prop-types
 export const VistaFichaTecnica = ({idMaquina})=>{
     
     const navigate = useNavigate()

@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line react/prop-types
 export const GenerarPdf = ({ idMantenimiento }) => {
   const [data, setData] = useState(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
