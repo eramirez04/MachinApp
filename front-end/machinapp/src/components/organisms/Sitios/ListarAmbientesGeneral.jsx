@@ -184,7 +184,7 @@ afas
         <div className="flex flex-row gap-6">
         <SearchComponent
           onSearch={filtrarAmbientes}
-          label={`${t("nombre_aula")} ${t("tipo_aula")}, ${t("area")}, ${t("profesor_encargado")}`}
+          label={`${t("tipo_aula")}, ${t("area")}, ${t("profesor_encargado")}`}
         />
 
         <Select

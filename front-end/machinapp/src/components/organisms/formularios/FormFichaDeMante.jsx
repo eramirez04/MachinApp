@@ -29,6 +29,7 @@ import {
   useGlobalData,
 } from "../../../index.js";
 
+// eslint-disable-next-line react/prop-types
 const Textarea = ({ register, name, placeholder, rows }) => (
   <textarea
     {...register(name)}
@@ -57,6 +58,7 @@ class ErrorBoundary extends React.Component {
       return <h1>Algo salió mal. Intente actualizar la página.</h1>;
     }
 
+    // eslint-disable-next-line react/prop-types
     return this.props.children;
   }
 }
@@ -169,6 +171,7 @@ export const FormFichaDeMantenimiento = () => {
         );
 
         toast.success(t("registration_success"));
+        reset()
         navigate('/historial');
       } else {
         throw new Error(t("no_maintenance_id_received"));
@@ -220,7 +223,7 @@ export const FormFichaDeMantenimiento = () => {
               </h2>
             </div>
             <div className="w-1/4 text-right">
-              <p className="text-sm">Centro de gestión y desarrollo sostenible surColombiano</p>
+              <p className="text-sm">Centro de Gestión y Desarrollo Sostenible Surcolombiano</p>
             </div>
           </div>
 
@@ -330,7 +333,7 @@ export const FormFichaDeMantenimiento = () => {
                           key={tipo.idTipo_mantenimiento}
                           value={tipo.idTipo_mantenimiento.toString()}
                         >
-                          {tipo.tipo_mantenimiento || t("no_maintenance_type")}
+                          {t(tipo.tipo_mantenimiento) || t("no_maintenance_type")}
                         </Radio>
                       ))
                     ) : (
@@ -395,7 +398,7 @@ export const FormFichaDeMantenimiento = () => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    placeholder={t("seleccione una solicitud pendiente")}
+                    placeholder={t("seleccione_solicitud_pendiente")}
                     aria-label="solicitudes-mantenimiento"
                   >
                     {solicitudes.map((solicitud) => (

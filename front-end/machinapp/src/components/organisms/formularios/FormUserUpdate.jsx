@@ -314,7 +314,7 @@ export const FormUserUpdate = ({ userData }) => {
                     <>
                       <div className="w-full sm:w-1/2 flex justify-center items-center">
                         <SelectComponent
-                          options={tipoDocumentoData}
+                          options={[{view: "CC"}]}
                           name="tipo_documento"
                           placeholder={t("tipo_documento")}
                           valueKey="value"
@@ -334,7 +334,7 @@ export const FormUserUpdate = ({ userData }) => {
                     <>
                       <div className="w-full sm:w-1/2 flex justify-center items-center">
                         <SelectComponent
-                          options={roles}
+                          options={[{rol_nombre: "Admin"}]}
                           name="rol"
                           placeholder={t("rol")}
                           valueKey="idRoles"

@@ -154,7 +154,7 @@ export const FormSolicitudesUpdate = () => {
           </div>
           <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
             <p className="overflow-hidden overflow-ellipsis text-center">
-            Centro de gestión y desarrollo sostenible surColombiano
+            Centro de Gestión y Desarrollo Sostenible Surcolombiano
             </p>
           </div>
         </div>

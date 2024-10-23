@@ -311,8 +311,8 @@ export const FormAmbientesUpdate = () => {
                         { id: "convenio", valor: t("convenio") },
                       ]}
                       name="tipo_de_tenencia"
-                      placeholder={t("tipo_de_tenencia")}
-                      label={t("tipo_de_tenencia")}
+                      placeholder={"Type of tenure"}
+                      label={"Type of tenure"}
                       valueKey="id"
                       textKey="valor"
                       register={register}
@@ -338,11 +338,11 @@ export const FormAmbientesUpdate = () => {
                       { id: "inactivo", valor: t("inactivo") },
                     ]}
                     name="sitio_estado"
-                    placeholder={t("sitio_estado")}
+                    placeholder={"Site status"}
                     valueKey="id"
                     textKey="valor"
                     register={register}
-                    label={t("sitio_estado")}
+                    label={"Site status"}
                     value={value}
                     onChange={(e) => {
                       console.log("Cambio en estado:", e.target.value);
