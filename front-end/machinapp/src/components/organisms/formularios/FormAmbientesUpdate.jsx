@@ -1,5 +1,5 @@
 import { ButtonNext } from "../../../index.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
@@ -8,6 +8,8 @@ import { axiosCliente } from "../../../service/api/axios.js";
 import { useGlobalData } from "../../../index.js";
 import { useTranslation } from "react-i18next";
 import { InputUpdate, SelectComponent } from "../../../index.js";
+import { AuthContext } from "../../../contexts/AuthContext.jsx";
+import { toast } from "react-toastify";
 
 export const FormAmbientesUpdate = () => {
   const [areas, setAreas] = useState([]);
@@ -16,7 +18,7 @@ export const FormAmbientesUpdate = () => {
   const [imagen, setImagen] = useState(null);
   const [dataSitio, setDataSitio] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const { rol } = useContext(AuthContext);
   const {
     control,
     register,
@@ -151,6 +153,12 @@ export const FormAmbientesUpdate = () => {
 
   if (isLoading) {
     return <div>Cargando datos del ambiente...</div>;
+  }
+
+  if (rol !== "Administrador") {
+    toast.error("Acceso denegado. Solo los administradores pueden acceder a este apartado.");
+    navigate("/Ambientes"); 
+    return null;
   }
 
   return (
