@@ -1,16 +1,6 @@
 import logoSenaVerde from "/logoSenaNaranja.png";
 import logoTic from "/def_LOGOTIC.png"
 
-/* import {
-  HomeIcon,
-  MapIcon,
-  DocumentTextIcon,
-  ServerIcon,
-  ClockIcon,
-  MagnifyingGlassIcon,
-  ChevronRightIcon,
-  BuildingOfficeIcon
-} from "@heroicons/react/24/solid"; */
 import {
   HomeIcon,
   MapIcon,

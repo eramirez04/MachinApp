@@ -26,7 +26,7 @@ export const FormAreas = () => {
 
     try {
       const response = await multiFormData(
-        "http://localhost:3000/area/registrararea",
+        "area/registrararea",
         dataArea,
         "POST"
       );

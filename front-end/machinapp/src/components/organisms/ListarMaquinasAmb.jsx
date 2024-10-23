@@ -6,7 +6,8 @@ import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
 
 
-const ListarMaquinasAmb = ({idAmbiente}) => {
+// eslint-disable-next-line react/prop-types
+export const ListarMaquinasAmb = ({idAmbiente}) => {
 
     const [maquinas, setMaquinas] = useState([])
     const [dataMaquinas, setDataMaquinas] = useState([])
@@ -141,4 +142,3 @@ const ListarMaquinasAmb = ({idAmbiente}) => {
       </>
     )
 }
-export default ListarMaquinasAmb  

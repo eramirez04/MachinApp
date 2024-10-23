@@ -1,5 +1,4 @@
-import BuscarAreasGeneral from "../../components/organisms/Sitios/ListarAreasGeneral"
-import { Layout } from "../../index";
+import { Layout, BuscarAreasGeneral } from "../../index";
 
 export const AreasGeneral=()=>  {
   return (

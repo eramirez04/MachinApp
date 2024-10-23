@@ -5,7 +5,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { DocumentArrowDownIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import { toast } from "react-toastify";
 
-import { ExcelMantenimientos } from '../../organisms/excel/ExcelMantenimientos.jsx';
+import { ExcelMantenimientos } from '../excel/ExcelMantenimientos.jsx';
 
 import { 
   MantenimientoGeneralPDF, 
@@ -89,7 +89,7 @@ export const MantenimientoGeneral = () => {
     }, [estadoSeleccionado, tipoSeleccionado]);
 
     const columns = [
-        t('referencia'), t('codigo'), t('fecha de realizacion'),
+        t('referencia'), t('codigo'), t('Fecha_realizacion'),
         t('estado_actividad'), t('tipo'), t('nombre_actividad'), t('acciones')
     ];
 

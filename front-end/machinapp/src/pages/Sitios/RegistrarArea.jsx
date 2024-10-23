@@ -1,5 +1,4 @@
-import { FormAreas } from '../../components/organisms/formularios/FormAreas';
-import { Layout } from "../../components/index";
+import { Layout, FormAreas } from "../../index.js";
 
 export const RegistrarArea = () => {
   return (

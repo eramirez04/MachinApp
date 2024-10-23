@@ -18,7 +18,7 @@ import {
       console.log(dataTipoSitio);
       try {
         await axiosCliente.post(
-          "http://localhost:3000/tipositio/registrartipositio",
+          "tipositio/registrartipositio",
           dataTipoSitio
         );
   

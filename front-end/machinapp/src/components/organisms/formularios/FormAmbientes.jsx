@@ -20,7 +20,7 @@ export const FormAmbientes = () => {
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState([]);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   // Obtener datos globales de los ambientes
   const { dataUser, refress } = useGlobalData();
@@ -43,13 +43,14 @@ export const FormAmbientes = () => {
 
     try {
       await multiFormData(
-        "http://localhost:3000/sitio/registrarsitio",
+        "sitio/registrarsitio",
         dataSitio,
         "POST"
       );
 
       toast.success(t("successMessage"));
       await refress();
+      reset();
 
     } catch (error) {
       toast.error(error.response?.data?.mensaje || t("unknownError"));

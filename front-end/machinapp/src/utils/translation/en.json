@@ -47,7 +47,7 @@
   "olvidaste_contrasena": "Forgot Your Password?",
   "restablecer_contresena": "Reset password",
   "restablecer": "Restore",
-  "introduzca_numero_documento": "Enter your document number",
+  "introduzca_numero_documento": "Enter your ID number",
   "es_obligatorio": "This field is required",
   "registrar_usuario": "Register User",
   "registrar_rol": "Registrer Rol",
@@ -57,7 +57,7 @@
   "FichasTecnicas": "Technical Data Sheets",
   "RegistrarTipoFicha": "Register types of technical sheets",
   "agregarEquipo": "Add machine",
-  "placaSena": "SENA plate",
+  "placaSena": "SENA tag",
   "serial": "Series",
   "precio": "Price",
   "marca": "Brand",
@@ -89,7 +89,7 @@
   "fechaFinGarantia": "Warranty end date",
   "sede": "Headquarters",
   "area": "Area",
-  "ambiente": "Environment",
+  "ambiente": "Classroom",
   "infoGarantia": "Warranty information",
   "todasMaquinas": "All machines",
   "operacion": "operation",
@@ -115,7 +115,7 @@
   "carGenerales": "General characteristics",
   "especTecnicas": "Technical specifications",
 
-  "nombreSolic": "Name of the applicant",
+  "nombreSolic": "Responsible",
   "soporte": "support",
   "mantEquipo": "Machine maintenance",
   "inicioGarantia": "Start of warranty",
@@ -312,6 +312,18 @@
  "excedio_el_maximo_de_caracteres": "Exceeded the maximum number of characters",
  "registrar_nuevo_tipositio": "Register New Site Type",
  "registrar_tipo_sitio": "Register site type",
- "tipo_sitio_info": "Site Type Information"
+ "tipo_sitio_info": "Site Type Information",
+
+  "titulo_header_1": "MAINTENANCE SUBSYSTEM AND",
+  "titulo_header_2": "MACHINERY AND EQUIPMENT CONTROL",
+  "titulo_header_3": "MAINTENANCE WORK ORDER",
+  "unidad_productiva": "Productive unit",
+  "aula_taller": "Classroom or Workshop",
+  "datos_equipo": "Equipment or machinery data",
+  "fecha_actual": "Current date",
+  "tipo_reparacion": "Repair type",
+  "documento_origen": "Document that originated this maintenance order",
+  "proximo_mantenimiento": "Next maintenance",
+  "costo_reparacion": "REPAIR COST"
 
 }

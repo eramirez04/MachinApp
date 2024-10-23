@@ -1,4 +1,5 @@
 export { ButtonNext } from "./buttons/ButtonNext";
+export  { ButtonC } from "./buttons/BottonC.jsx"
 export * from "./Inputs";
 export { Icons } from "./icons/Icons";
 

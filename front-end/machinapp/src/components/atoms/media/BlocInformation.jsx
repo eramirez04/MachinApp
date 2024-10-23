@@ -1,4 +1,4 @@
-
+// eslint-disable-next-line react/prop-types
 export const BlocInformation = ({titulo, contenido})=> {
   return (
     <>

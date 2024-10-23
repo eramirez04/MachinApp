@@ -1,13 +1,9 @@
-//import InputForm from "../../atoms/Inputs/InputForm"
-//import {TextAreaComponent} from "../../atoms/Inputs/TextArea"
+import { axiosCliente, } from  "../../../index.js";
 import { useForm } from "react-hook-form";
 import { Button, Select, SelectItem } from "@nextui-org/react";
-//import { Icons } from "../../atoms/icons/Icons";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react"
 import { MdDelete } from "react-icons/md";
-import { axiosCliente } from "../../../service/api/axios"
-//import ButtonNext from "../../atoms/buttons/ButtonNext"
 import { useNavigate } from 'react-router-dom'
 
 import { useTranslation } from "react-i18next"
@@ -77,13 +73,9 @@ export const FormTipoFichaTecnica = () => {
     setContainersSecc(containersSecc.filter(container => container.id !== id))
   }
 
-
-
-
   //recuperar datos del formulario
   const handleSubmitData = async (data) => {
 
-    /* console.table(data) */
     data.tipo_ficha = tipoFicha;
 
 
