@@ -1,15 +1,18 @@
 import { ButtonNext, InputforForm, SelectComponent } from "../../../index.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { multiFormData } from "../../../utils/formData.js";
 import { FaUpload } from "react-icons/fa";
 import { axiosCliente } from "../../../service/api/axios.js";
 import { useTranslation } from "react-i18next";
+import { AuthContext } from "../../../contexts/AuthContext.jsx";
+import { toast } from "react-toastify";
 
 export const FormAreas = () => {
   const [sedes, setSedes] = useState([]);
   const {t} = useTranslation();
+  const { rol } = useContext(AuthContext);
   const [previewImagen, setPreviewImagen] = useState(null);
   const [imagen, setImagen] = useState(null);
   const {
@@ -72,6 +75,12 @@ export const FormAreas = () => {
     };
     fetchSedes();
   }, []);
+
+  if (rol !== "Administrador") {
+    toast.error("Acceso denegado. Solo los administradores pueden acceder a este apartado.");
+    navigate("/Areas"); 
+    return null;
+  }
 
   return (
     <>
