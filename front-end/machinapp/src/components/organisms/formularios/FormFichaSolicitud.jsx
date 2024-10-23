@@ -185,7 +185,7 @@ export const FormFichaSolicitud = () => {
             </div>
             <div className="flex-shrink-0 w-1/3 h-full border flex items-center">
               <p className="overflow-hidden overflow-ellipsis text-center">
-                {t("management_center")}
+              Centro de gestión y desarrollo sostenible surColombiano
               </p>
             </div>
           </div>
