@@ -220,7 +220,7 @@ export const FormFichaDeMantenimiento = () => {
               </h2>
             </div>
             <div className="w-1/4 text-right">
-              <p className="text-sm">{t("management_center")}</p>
+              <p className="text-sm">Centro de gestión y desarrollo sostenible surColombiano</p>
             </div>
           </div>
 

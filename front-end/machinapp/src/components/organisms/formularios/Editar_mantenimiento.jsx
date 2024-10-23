@@ -203,7 +203,7 @@ export const Editar_Component = () => {
             <h2 className="text-xl font-bold">{idMantenimiento ? t("edit_maintenance") : t("maintenance_work_order")}</h2>
           </div>
           <div className="w-1/4 text-right">
-            <p className="text-sm">{t("management_center")}</p>
+            <p className="text-sm">Centro de gestión y desarrollo sostenible surColombiano</p>
           </div>
         </div>
 
