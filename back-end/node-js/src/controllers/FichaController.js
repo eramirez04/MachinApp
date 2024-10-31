@@ -584,11 +584,35 @@ export const  listarMantenimientosMaquina = async (req, res)=>{
         FROM tipo_mantenimiento
         INNER JOIN mantenimiento ON idTipo_mantenimiento = fk_tipo_mantenimiento
         INNER JOIN solicitud_mantenimiento ON fk_solicitud_mantenimiento = idSolicitud
+        WHERE mant_maquina = ${idFicha}
+        `
+
+        /* `
+
+        SELECT
+        idMantenimiento,
+        nombre_solicitante,
+        mant_codigo_mantenimiento,
+        mant_estado,
+        mant_costo_final,
+        man_fecha_realizacion,
+        mant_descripcion, 
+        mant_ficha_soporte,
+        mant_fecha_proxima,
+        soli_descripcion_problemas,
+        fecha_solicitud,
+        soli_costo_estimado,
+        fk_tecnico,
+        mant_costo_final,
+        tipo_mantenimiento 
+        FROM tipo_mantenimiento
+        INNER JOIN mantenimiento ON idTipo_mantenimiento = fk_tipo_mantenimiento
+        INNER JOIN solicitud_mantenimiento ON fk_solicitud_mantenimiento = idSolicitud
         INNER JOIN solicitud_has_fichas ON idSolicitud = fk_solicitud
         INNER JOIN fichas_maquinas_equipos ON fk_fichas = idFichas
         WHERE idFichas = ${idFicha}
         GROUP BY idMantenimiento
-        `
+        ` */
         
         const[mantenimientos] = await conexion.query(sqlMantenimientos)
 
