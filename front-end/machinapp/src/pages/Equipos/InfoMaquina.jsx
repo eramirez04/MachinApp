@@ -63,10 +63,12 @@ export const InfoMaquina = () => {
     }
 
     const buscarInfoMantenimientos = async()=>{
+
         try{
             const mantenimientos  = await axiosCliente.get(`ficha/listarMantenimientosMaquina/${idMaquina}`)
 
             let dataMantenimientos = mantenimientos.data
+            console.log(mantenimientos.data)
 
             //se hace esto para poder abrir el pdf de los mantenimientos sin problema. 
             const mantenimientosAct = dataMantenimientos.map(({ mant_codigo_mantenimiento, ...contenido }) => ({
@@ -388,13 +390,12 @@ export const InfoMaquina = () => {
                 ...mantenimiento,
                 mant_ficha_soporte: (
                   <>
-                    <Button
-                      color="default"
-                      startContent={
-                        <DocumentArrowDownIcon className="h-5 w-5" />
-                      }
-                      className="text-white"
-                    ></Button>
+                    <QRCodeLink
+                    imageUrl={`${import.meta.env.VITE_API_IMAGE}pdfs/${mantenimiento.mant_ficha_soporte}`}
+                    tooltipContent={'Mantenimiento Respaldo'}
+                    icon={<DocumentArrowDownIcon className="h-10 w-10"/>}
+                    />
+                    
                   </>
                 ),
               }))}
@@ -410,6 +411,7 @@ export const InfoMaquina = () => {
 // eslint-disable-next-line react/prop-types
 const QRCodeLink = ({ imageUrl, tooltipContent, icon }) => {
   const [imageExists, setImageExists] = useState(false);
+
 
   useEffect(() => {
     const checkImageExistence = async () => {
