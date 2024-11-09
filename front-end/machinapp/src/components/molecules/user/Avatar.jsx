@@ -14,7 +14,7 @@ export const AvatarCom = () => {
   const { logout, user, loading } = useAuth();
   const { t } = useTranslation();
    const capitalizarPrimeraLetra = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return str?.charAt(0)?.toUpperCase() + str?.slice(1);
   };
 
   const ItemsDrop = [
